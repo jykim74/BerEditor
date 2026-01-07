@@ -49,29 +49,21 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickOutputType()));
     connect( mOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickOutputDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
-    connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
-    connect( mSignCertFindBtn, SIGNAL(clicked()), this, SLOT(clickSignCertFind()));
-    connect( mKMPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickKMPriFind()));
-    connect( mKMCertFindBtn, SIGNAL(clicked()), this, SLOT(clickKMCertFind()));
+    connect( mPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickPriFind()));
+    connect( mCertFindBtn, SIGNAL(clicked()), this, SLOT(clickCertFind()));
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
     connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
 
-    connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyView()));
-    connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyDecode()));
-    connect( mSignCertViewBtn, SIGNAL(clicked()), this, SLOT(clickSignCertView()));
-    connect( mSignCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignCertDecode()));
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyView()));
+    connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
+    connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
+    connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
-    connect( mKMPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyView()));
-    connect( mKMPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyDecode()));
-    connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
-    connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
 
-    connect( mSignPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyType()));
-    connect( mSignCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickSignCertType()));
-    connect( mKMPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyType()));
-    connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
+    connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
+    connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
 
     connect( mSrcViewBtn, SIGNAL(clicked()), this, SLOT(clickSrcView()));
     connect( mOutputViewBtn, SIGNAL(clicked()), this, SLOT(clickOutputView()));
@@ -79,8 +71,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
 
-    connect( mSignEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkSignEncPriKey()));
-    connect( mKMEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkKMEncPriKey()));
+    connect( mEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
     initialize();
     mSrcText->setFocus();
@@ -88,24 +79,15 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-    mSignCertGroup->layout()->setSpacing(5);
-    mSignCertGroup->layout()->setMargin(5);
-    mKMCertGroup->layout()->setSpacing(5);
-    mKMCertGroup->layout()->setMargin(5);
+    mCertGroup->layout()->setSpacing(5);
+    mCertGroup->layout()->setMargin(5);
 
-    mSignPriKeyViewBtn->setFixedWidth(34);
-    mSignPriKeyTypeBtn->setFixedWidth(34);
-    mSignPriKeyDecodeBtn->setFixedWidth(34);
-    mSignCertDecodeBtn->setFixedWidth(34);
-    mSignCertTypeBtn->setFixedWidth(34);
-    mSignCertViewBtn->setFixedWidth(34);
-
-    mKMPriKeyViewBtn->setFixedWidth(34);
-    mKMPriKeyTypeBtn->setFixedWidth(34);
-    mKMPriKeyDecodeBtn->setFixedWidth(34);
-    mKMCertDecodeBtn->setFixedWidth(34);
-    mKMCertTypeBtn->setFixedWidth(34);
-    mKMCertViewBtn->setFixedWidth(34);
+    mPriKeyViewBtn->setFixedWidth(34);
+    mPriKeyTypeBtn->setFixedWidth(34);
+    mPriKeyDecodeBtn->setFixedWidth(34);
+    mCertDecodeBtn->setFixedWidth(34);
+    mCertTypeBtn->setFixedWidth(34);
+    mCertViewBtn->setFixedWidth(34);
 
     mSrcDecodeBtn->setFixedWidth(34);
     mOutputViewBtn->setFixedWidth(34);
@@ -198,14 +180,10 @@ void PKCS7Dlg::initialize()
 
     mCipherCombo->addItems( kCipherList );
 
-    checkSignEncPriKey();
-    checkKMEncPriKey();
+    checkEncPriKey();
 
-    mSignPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
-    mSignCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
-
-    mKMPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
-    mKMCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 int PKCS7Dlg::getFlags()
@@ -246,19 +224,19 @@ int PKCS7Dlg::getFlags()
     return nFlags;
 }
 
-int PKCS7Dlg::readSignPrivateKey( BIN *pPriKey )
+int PKCS7Dlg::readPrivateKey( BIN *pPriKey )
 {
     int ret = 0;
     BIN binData = {0,0};
     BIN binDec = {0,0};
     BIN binInfo = {0,0};
 
-    QString strPriPath = mSignPriKeyPathText->text();
+    QString strPriPath = mPriKeyPathText->text();
 
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a private key for sign"), this );
-        mSignPriKeyPathText->setFocus();
+        mPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -266,17 +244,17 @@ int PKCS7Dlg::readSignPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
-        mSignPriKeyPathText->setFocus();
+        mPriKeyPathText->setFocus();
         return  -1;
     }
 
-    if( mSignEncPriKeyCheck->isChecked() )
+    if( mEncPriKeyCheck->isChecked() )
     {
-        QString strPasswd = mSignPasswdText->text();
+        QString strPasswd = mPasswdText->text();
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Please enter a password"), this );
-            mSignPasswdText->setFocus();
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -285,68 +263,7 @@ int PKCS7Dlg::readSignPrivateKey( BIN *pPriKey )
         if( ret != 0 )
         {
             berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
-            mSignPasswdText->setFocus();
-            ret = -1;
-            goto end;
-        }
-
-        JS_BIN_copy( pPriKey, &binDec );
-        ret = 0;
-    }
-    else
-    {
-        JS_BIN_copy( pPriKey, &binData );
-        ret = 0;
-    }
-
-end :
-    JS_BIN_reset( &binData );
-    JS_BIN_reset( &binDec );
-    JS_BIN_reset( &binInfo );
-
-    return ret;
-}
-
-int PKCS7Dlg::readKMPrivateKey( BIN *pPriKey )
-{
-    int ret = 0;
-    BIN binData = {0,0};
-    BIN binDec = {0,0};
-    BIN binInfo = {0,0};
-
-    QString strPriPath = mKMPriKeyPathText->text();
-
-    if( strPriPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Select a private key for recipient"), this );
-        mSignPriKeyPathText->setFocus();
-        return -1;
-    }
-
-    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
-    if( ret <= 0 )
-    {
-        berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
-        mKMPriKeyPathText->setFocus();
-        return  -1;
-    }
-
-    if( mKMEncPriKeyCheck->isChecked() )
-    {
-        QString strPasswd = mKMPasswdText->text();
-        if( strPasswd.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Please enter a password"), this );
-            mKMPasswdText->setFocus();
-            ret = -1;
-            goto end;
-        }
-
-        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
-        if( ret != 0 )
-        {
-            berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
-            mKMPasswdText->setFocus();
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -438,43 +355,23 @@ end :
     JS_BIN_reset( &binOutput );
 }
 
-void PKCS7Dlg::clickSignPriFind()
+void PKCS7Dlg::clickPriFind()
 {
-    QString strPath = mSignPriKeyPathText->text();
+    QString strPath = mPriKeyPathText->text();
 
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
-    mSignPriKeyPathText->setText( fileName );
+    mPriKeyPathText->setText( fileName );
 }
 
-void PKCS7Dlg::clickSignCertFind()
+void PKCS7Dlg::clickCertFind()
 {
-    QString strPath = mSignCertPathText->text();
+    QString strPath = mCertPathText->text();
 
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
-    mSignCertPathText->setText( fileName );
-}
-
-void PKCS7Dlg::clickKMPriFind()
-{
-    QString strPath = mKMPriKeyPathText->text();
-
-    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
-    if( fileName.isEmpty() ) return;
-
-    mKMPriKeyPathText->setText( fileName );
-}
-
-void PKCS7Dlg::clickKMCertFind()
-{
-    QString strPath = mKMCertPathText->text();
-
-    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.isEmpty() ) return;
-
-    mKMCertPathText->setText( fileName );
+    mCertPathText->setText( fileName );
 }
 
 void PKCS7Dlg::clickSignedData()
@@ -501,12 +398,12 @@ void PKCS7Dlg::clickSignedData()
         return;
     }
 
-    if( mSignCertGroup->isChecked() == true )
+    if( mCertGroup->isChecked() == true )
     {
-        ret = readSignPrivateKey( &binPri );
+        ret = readPrivateKey( &binPri );
         if( ret != 0 ) return;
 
-        QString strSignCertPath = mSignCertPathText->text();
+        QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
@@ -557,6 +454,7 @@ void PKCS7Dlg::clickSignedData()
     {
         mOutputCmdText->setText( kCmdSignedData );
         strOutput = getHexString( &binOutput );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdSignedData ) );
@@ -570,8 +468,6 @@ void PKCS7Dlg::clickSignedData()
 
         berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
-
-    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -604,13 +500,13 @@ void PKCS7Dlg::clickEnvelopedData()
         return;
     }
 
-    if( mKMCertGroup->isChecked() == true )
+    if( mCertGroup->isChecked() == true )
     {
-        QString strKMCertPath = mKMCertPathText->text();
+        QString strKMCertPath = mCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for recipient" ), this );
-            mKMCertPathText->setFocus();
+            mCertPathText->setFocus();
             return;
         }
 
@@ -659,6 +555,7 @@ void PKCS7Dlg::clickEnvelopedData()
     {
         mOutputCmdText->setText( kCmdEnvelopedData );
         strOutput = getHexString( &binOutput );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdEnvelopedData ) );
@@ -672,8 +569,6 @@ void PKCS7Dlg::clickEnvelopedData()
         berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
-    mOutputText->setPlainText( strOutput );
-
 end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binOutput );
@@ -681,155 +576,6 @@ end :
     JS_BIN_reset( &binPubKey );
 }
 
-void PKCS7Dlg::clickSignAndEnvloped()
-{
-    int ret = 0;
-    int nType = -1;
-
-    BIN binSignPri = {0,0};
-    BIN binSignCert = {0,0};
-    BIN binKMCert = {0,0};
-    BIN binKMPubKey = {0,0};
-    BIN binSrc = {0,0};
-    BIN binOutput = {0,0};
-
-    QString strInput = mSrcText->toPlainText();
-    QString strHash = mHashCombo->currentText();
-    QString strCipher = mCipherCombo->currentText();
-    QString strSrcType = mSrcTypeCombo->currentText();
-    QString strOutput;
-
-    if( strInput.isEmpty() )
-    {
-        berApplet->warningBox( tr( "Please enter input value" ), this );
-        mSrcText->setFocus();
-        return;
-    }
-
-    if( mSignCertGroup->isChecked() == true )
-    {
-        ret = readSignPrivateKey( &binSignPri );
-        if( ret != 0 ) return;
-
-        QString strSignCertPath = mSignCertPathText->text();
-        if( strSignCertPath.isEmpty() )
-        {
-            berApplet->warningBox(tr("Select a certificate for signing" ), this );
-            mSignCertPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelBoth);
-        certMan.setTitle( tr( "Select a sign certificate") );
-
-        if(certMan.exec() != QDialog::Accepted )
-            return;
-
-        certMan.getCert( &binSignCert );
-        certMan.getPriKey( &binSignPri );
-    }
-
-    if( mKMCertGroup->isChecked() == true )
-    {
-        QString strKMCertPath = mKMCertPathText->text();
-        if( strKMCertPath.isEmpty() )
-        {
-            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
-            mKMCertPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a recipient certificate") );
-        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
-
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        certMan.getCert( &binKMCert );
-    }
-
-    JS_PKI_getPubKeyFromCert( &binKMCert, &binKMPubKey );
-    nType = JS_PKI_getPubKeyType( &binKMPubKey );
-    if( nType != JS_PKI_KEY_TYPE_RSA )
-    {
-        berApplet->warningBox(tr( "This key algorithm(%1) is not supported for recipient encryption\nOnly RSA is supported.")
-                                  .arg( JS_PKI_getKeyAlgName( nType )), this );
-        goto end;
-    }
-
-    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
-    FORMAT_WARN_GO(ret);
-
-    if( binSrc.nLen <= 0 )
-    {
-        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
-        goto end;
-    }
-
-    nType = JS_PKI_getPriKeyType( &binSignPri );
-    if( nType != JS_PKI_KEY_TYPE_RSA )
-    {
-        berApplet->warningBox( tr("This key algorithm(%1) is not supported for signing.")
-                                  .arg( JS_PKI_getKeyAlgName( nType )), this );
-        goto end;
-    }
-
-    ret = JS_PKCS7_makeSignedAndEnveloped(
-        strHash.toStdString().c_str(),
-        strCipher.toStdString().c_str(),
-        &binSrc,
-        &binSignCert,
-        &binSignPri,
-        &binKMCert,
-        &binOutput );
-
-    if( ret != 0 )
-    {
-        berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(JERR(ret)), this );
-        goto end;
-    }
-
-    if( ret == 0 )
-    {
-        mOutputCmdText->setText( kCmdSignedAndEnveloped );
-        strOutput = getHexString( &binOutput );
-
-        berApplet->logLine();
-        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdSignedAndEnveloped ) );
-        berApplet->logLine2();
-        berApplet->log( QString( "Hash            : %1").arg( strHash ));
-        berApplet->log( QString( "Cipher          : %1").arg( strCipher ));
-        berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
-        berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
-        berApplet->log( QString( "Sign PrivateKey : [hidden]" ));
-        berApplet->log( QString( "KM Cert         : %1" ).arg( getHexString( &binKMCert )));
-        berApplet->log( QString( "Output          : %1" ).arg( strOutput ));
-        berApplet->logLine();
-
-        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
-    }
-
-    mOutputText->setPlainText( strOutput );
-
-end :
-    JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binOutput );
-    JS_BIN_reset( &binSignPri );
-    JS_BIN_reset( &binSignCert );
-    JS_BIN_reset( &binKMCert );
-    JS_BIN_reset( &binKMPubKey );
-}
 
 void PKCS7Dlg::clickVerifyData()
 {
@@ -864,13 +610,13 @@ void PKCS7Dlg::clickVerifyData()
         goto end;
     }
 
-    if( mSignCertGroup->isChecked() == true )
+    if( mCertGroup->isChecked() == true )
     {
-        QString strSignCertPath = mSignCertPathText->text();
+        QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
-            mSignCertPathText->setFocus();
+            mCertPathText->setFocus();
             return;
         }
 
@@ -953,16 +699,16 @@ void PKCS7Dlg::clickDevelopedData()
         goto end;
     }
 
-    if( mKMCertGroup->isChecked() == true )
+    if( mCertGroup->isChecked() == true )
     {
-        ret = readKMPrivateKey( &binPri );
+        ret = readPrivateKey( &binPri );
         if( ret != 0 ) return;
 
-        QString strKMCertPath = mKMCertPathText->text();
+        QString strKMCertPath = mCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for recipient" ), this );
-            mKMCertPathText->setFocus();
+            mCertPathText->setFocus();
             return;
         }
 
@@ -1024,134 +770,6 @@ end :
     JS_BIN_reset( &binCert );
 }
 
-void PKCS7Dlg::clickDevelopedAndVerify()
-{
-    int ret = 0;
-    int nType = -1;
-    int nCMSType = -1;
-
-    BIN binSignCert = {0,0};
-    BIN binKMPri = {0,0};
-    BIN binKMCert = {0,0};
-    BIN binSrc = {0,0};
-    BIN binCMS = {0,0};
-
-    QString strCMS = mSrcText->toPlainText();
-    QString strSrcType = mSrcTypeCombo->currentText();
-
-    if( strCMS.isEmpty() )
-    {
-        berApplet->warningBox( tr( "Please enter input value" ), this );
-        mSrcText->setFocus();
-        return;
-    }
-
-    ret = getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
-    FORMAT_WARN_GO(ret);
-
-    nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
-    {
-        berApplet->warningBox( tr( "This message is not signed and enveloped data type[Type:%1]").arg( nCMSType ), this);
-        goto end;
-    }
-
-    if( mSignCertGroup->isChecked() == true )
-    {
-        QString strSignCertPath = mSignCertPathText->text();
-        if( strSignCertPath.isEmpty() )
-        {
-            berApplet->warningBox(tr("Select a certificate for signing" ), this );
-            mSignCertPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a sign certificate") );
-
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        certMan.getCert(&binSignCert);
-    }
-
-    if( mKMCertGroup->isChecked() == true )
-    {
-        QString strKMCertPath = mKMCertPathText->text();
-        if( strKMCertPath.isEmpty() )
-        {
-            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
-            mKMCertPathText->setFocus();
-            goto end;
-        }
-
-        ret = readKMPrivateKey( &binKMPri );
-        if( ret != 0 ) return;
-
-        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelBoth);
-        certMan.setTitle( tr( "Select a recipient certificate") );
-        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
-
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        certMan.getCert( &binKMCert );
-        certMan.getPriKey( &binKMPri );
-    }
-
-
-    nType = JS_PKI_getPriKeyType( &binKMPri );
-    if( nType < 0 )
-    {
-        berApplet->warningBox( tr( "Invalid private key" ), this );
-        goto end;
-    }
-
-    ret = JS_PKCS7_makeDevelopedAndVerify( &binCMS, &binSignCert, &binKMPri, &binKMCert, &binSrc );
-    berApplet->log( QString("developedAndVerify Results: %1").arg(ret));
-
-    if( ret == JSR_VERIFY )
-    {
-        int nDataType = DATA_HEX;
-        QString strSrc = getHexString( &binSrc );
-        mOutputCmdText->setText( kCmdDevelopedAndVerify );
-
-        berApplet->logLine();
-        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDevelopedAndVerify ) );
-        berApplet->logLine2();
-        berApplet->log( QString( "CMS           : %1" ).arg( getHexString( &binCMS )));
-        berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
-        berApplet->log( QString( "KM PrivateKey : [hidden]" ));
-        berApplet->log( QString( "KM Cert       : %1" ).arg( getHexString( &binKMCert )));
-        berApplet->log( QString( "Src           : %1" ).arg( strSrc ));
-        berApplet->logLine();
-
-        mOutputText->setPlainText( strSrc );
-
-        berApplet->messageBox( tr( "verify and develop data successfully"), this );
-    }
-    else
-    {
-        berApplet->warnLog( tr( "fail to verify and develop data: %1").arg( JERR(ret) ), this );
-    }
-
-end :
-    JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binCMS );
-    JS_BIN_reset( &binSignCert );
-    JS_BIN_reset( &binKMPri );
-    JS_BIN_reset( &binKMCert );
-}
 
 void PKCS7Dlg::clickAddSigner()
 {
@@ -1177,12 +795,12 @@ void PKCS7Dlg::clickAddSigner()
         return;
     }
 
-    if( mSignCertGroup->isChecked() == true )
+    if( mCertGroup->isChecked() == true )
     {
-        ret = readSignPrivateKey( &binPri );
+        ret = readPrivateKey( &binPri );
         if( ret != 0 ) return;
 
-        QString strSignCertPath = mSignCertPathText->text();
+        QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
@@ -1278,15 +896,15 @@ void PKCS7Dlg::clearOutput()
     mOutputText->clear();
 }
 
-void PKCS7Dlg::clickSignPriKeyDecode()
+void PKCS7Dlg::clickPriKeyDecode()
 {
     BIN binData = {0,0};
-    QString strPath = mSignPriKeyPathText->text();
+    QString strPath = mPriKeyPathText->text();
 
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a private key for sign"), this );
-        mSignPriKeyPathText->setFocus();
+        mPriKeyPathText->setFocus();
         return;
     }
 
@@ -1295,7 +913,7 @@ void PKCS7Dlg::clickSignPriKeyDecode()
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
-        mSignPriKeyPathText->setFocus();
+        mPriKeyPathText->setFocus();
         return;
     }
 
@@ -1304,13 +922,13 @@ void PKCS7Dlg::clickSignPriKeyDecode()
     JS_BIN_reset( &binData );
 }
 
-void PKCS7Dlg::clickSignCertView()
+void PKCS7Dlg::clickCertView()
 {
-    QString strPath = mSignCertPathText->text();
+    QString strPath = mCertPathText->text();
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
-        mSignCertPathText->setFocus();
+        mCertPathText->setFocus();
         return;
     }
 
@@ -1319,15 +937,15 @@ void PKCS7Dlg::clickSignCertView()
     certInfoDlg.exec();
 }
 
-void PKCS7Dlg::clickSignCertDecode()
+void PKCS7Dlg::clickCertDecode()
 {
     BIN binData = {0,0};
-    QString strPath = mSignCertPathText->text();
+    QString strPath = mCertPathText->text();
 
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
-        mSignCertPathText->setFocus();
+        mCertPathText->setFocus();
         return;
     }
 
@@ -1344,80 +962,14 @@ void PKCS7Dlg::clickSignCertDecode()
     JS_BIN_reset( &binData );
 }
 
-void PKCS7Dlg::clickKMPriKeyDecode()
-{
-    BIN binData = {0,0};
-    QString strPath = mKMPriKeyPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Select a private key for recipient"), this );
-        mSignPriKeyPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
-
-    if( binData.nLen < 1 )
-    {
-        berApplet->warningBox( tr("failed to read data"), this );
-        return;
-    }
-
-    berApplet->decodeData( &binData, strPath );
-
-    JS_BIN_reset( &binData );
-}
-
-void PKCS7Dlg::clickKMCertView()
-{
-    QString strPath = mKMCertPathText->text();
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( "Select a certificate", this );
-        mKMCertPathText->setFocus();
-        return;
-    }
-
-    CertInfoDlg certInfoDlg;
-    certInfoDlg.setCertPath( strPath );
-    certInfoDlg.exec();
-}
-
-void PKCS7Dlg::clickKMCertDecode()
-{
-    BIN binData = {0,0};
-    QString strPath = mKMCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( "Select a certificate", this );
-        mKMCertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
-
-    if( binData.nLen < 1 )
-    {
-        berApplet->warningBox( tr("failed to read data"), this );
-        mKMCertPathText->setFocus();
-        return;
-    }
-
-    berApplet->decodeData( &binData, strPath );
-
-    JS_BIN_reset( &binData );
-}
-
-void PKCS7Dlg::clickSignPriKeyView()
+void PKCS7Dlg::clickPriKeyView()
 {
     int ret = 0;
     BIN binPri = {0,0};
     int nType = -1;
     PriKeyInfoDlg priKeyInfo;
 
-    ret = readSignPrivateKey( &binPri );
+    ret = readPrivateKey( &binPri );
     if( ret != 0) return;
 
     priKeyInfo.setPrivateKey( &binPri );
@@ -1427,34 +979,34 @@ end :
     JS_BIN_reset( &binPri );
 }
 
-void PKCS7Dlg::clickSignPriKeyType()
+void PKCS7Dlg::clickPriKeyType()
 {
     int ret = 0;
     BIN binPri = {0,0};
     int nType = -1;
 
-    ret = readSignPrivateKey( &binPri );
+    ret = readPrivateKey( &binPri );
     if( ret != 0) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private key type for signing is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
+    berApplet->messageBox( tr( "Private key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
 }
 
-void PKCS7Dlg::clickSignCertType()
+void PKCS7Dlg::clickCertType()
 {
     BIN binCert = {0,0};
     BIN binPubKey = {0,0};
     int nType = -1;
 
-    QString strPath = mSignCertPathText->text();
+    QString strPath = mCertPathText->text();
 
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a certificate for sign"), this );
-        mSignCertPathText->setFocus();
+        mCertPathText->setFocus();
         return;
     }
 
@@ -1463,73 +1015,13 @@ void PKCS7Dlg::clickSignCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate type for sign is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPubKey );
 }
 
-void PKCS7Dlg::clickKMPriKeyView()
-{
-    int ret = 0;
-    BIN binPri = {0,0};
-    int nType = -1;
-
-    PriKeyInfoDlg priKeyInfo;
-
-    ret = readKMPrivateKey( &binPri );
-    if( ret != 0 ) return;
-
-    priKeyInfo.setPrivateKey( &binPri );
-    priKeyInfo.exec();
-
-end :
-    JS_BIN_reset( &binPri );
-}
-
-void PKCS7Dlg::clickKMPriKeyType()
-{
-    int ret = 0;
-    BIN binPri = {0,0};
-    int nType = -1;
-
-    ret = readKMPrivateKey( &binPri );
-    if( ret != 0 ) return;
-    nType = JS_PKI_getPriKeyType( &binPri );
-
-    berApplet->messageBox( tr( "Private key type for recipient is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
-
-end :
-    JS_BIN_reset( &binPri );
-}
-
-void PKCS7Dlg::clickKMCertType()
-{
-    BIN binCert = {0,0};
-    BIN binPubKey = {0,0};
-    int nType = -1;
-
-    QString strPath = mKMCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Select a certificate for recipient"), this );
-        mKMCertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-
-    nType = JS_PKI_getPubKeyType( &binPubKey );
-
-    berApplet->messageBox( tr( "Certificate type for recipient is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
-
-end :
-    JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPubKey );
-}
 
 void PKCS7Dlg::clickSrcView()
 {
@@ -1687,13 +1179,9 @@ void PKCS7Dlg::clickClearDataAll()
 
     mOutputCmdText->clear();
 
-    mSignPriKeyPathText->clear();
-    mSignCertPathText->clear();
-    mSignPasswdText->clear();
-
-    mKMPriKeyPathText->clear();
-    mKMCertPathText->clear();
-    mKMPasswdText->clear();
+    mPriKeyPathText->clear();
+    mCertPathText->clear();
+    mPasswdText->clear();
 }
 
 void PKCS7Dlg::clickReadFile()
@@ -1783,20 +1271,12 @@ end :
     JS_BIN_reset( &binData );
 }
 
-void PKCS7Dlg::checkSignEncPriKey()
+void PKCS7Dlg::checkEncPriKey()
 {
-    bool bVal = mSignEncPriKeyCheck->isChecked();
+    bool bVal = mEncPriKeyCheck->isChecked();
 
-    mSignPasswdLabel->setEnabled(bVal);
-    mSignPasswdText->setEnabled(bVal);
-}
-
-void PKCS7Dlg::checkKMEncPriKey()
-{
-    bool bVal = mKMEncPriKeyCheck->isChecked();
-
-    mKMPasswdLabel->setEnabled(bVal);
-    mKMPasswdText->setEnabled(bVal);
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
 }
 
 void PKCS7Dlg::clickDigest()
@@ -1838,6 +1318,7 @@ void PKCS7Dlg::clickDigest()
     if( ret == 0 )
     {
         mOutputCmdText->setText( kCmdDigest );
+        mOutputText->setPlainText( strOutput );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -1851,7 +1332,7 @@ void PKCS7Dlg::clickDigest()
         berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
-    mOutputText->setPlainText( strOutput );
+
 
 end :
     JS_BIN_reset( &binSrc );
@@ -1894,10 +1375,11 @@ void PKCS7Dlg::clickData()
         goto end;
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         strOutput = getHexString( &binOutput );
         mOutputCmdText->setText( kCmdData );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdData ) );
@@ -1907,8 +1389,6 @@ void PKCS7Dlg::clickData()
 
         berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
-
-    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -1960,6 +1440,7 @@ void PKCS7Dlg::clickGetData()
     {
         mOutputCmdText->setText( kCmdGetData );
         strOutput = getHexString( &sData.binData );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdGetData ) );
@@ -1970,7 +1451,7 @@ void PKCS7Dlg::clickGetData()
         berApplet->messageBox( tr( "%1 success" ).arg( mOutputCmdText->text() ), this );
     }
 
-    mOutputText->setPlainText( strOutput );
+
 
 end :
     JS_BIN_reset( &binSrc );
@@ -2021,6 +1502,7 @@ void PKCS7Dlg::clickGetDigest()
     {
         mOutputCmdText->setText( kCmdGetDigest );
         strOutput = getHexString( &sData.binContent );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdGetDigest ) );
@@ -2034,7 +1516,7 @@ void PKCS7Dlg::clickGetDigest()
         berApplet->messageBox( tr( "%1 success" ).arg( mOutputCmdText->text() ), this );
     }
 
-    mOutputText->setPlainText( strOutput );
+
 
 end :
     JS_BIN_reset( &binSrc );
@@ -2080,24 +1562,19 @@ void PKCS7Dlg::changeCmd()
         mHashCombo->setEnabled( false );
     }
 
-    mSignCertGroup->setEnabled(false);
-    mKMCertGroup->setEnabled(false);
+    mCertGroup->setEnabled(false);
 
     if( strCmd == kCmdSignedData
         || strCmd == kCmdVerifyData
-        || strCmd == kCmdSignedAndEnveloped
-        || strCmd == kCmdDevelopedAndVerify
         || strCmd == kCmdAddSigned )
     {
-        mSignCertGroup->setEnabled( true );
+        mCertGroup->setEnabled( true );
     }
 
     if( strCmd == kCmdEnvelopedData
-        || strCmd == kCmdDevelopedData
-        || strCmd == kCmdSignedAndEnveloped
-        || strCmd == kCmdDevelopedAndVerify )
+        || strCmd == kCmdDevelopedData )
     {
-        mKMCertGroup->setEnabled( true );
+        mCertGroup->setEnabled( true );
     }
 }
 
@@ -2123,10 +1600,6 @@ void PKCS7Dlg::clickRun()
         else if( strCmd == kCmdEnvelopedData )
         {
             clickEnvelopedData();
-        }
-        else if( strCmd == kCmdSignedAndEnveloped )
-        {
-            clickSignAndEnvloped();
         }
         else if( strCmd == kCmdAddSigned )
         {
@@ -2168,8 +1641,6 @@ void PKCS7Dlg::clickRun()
                 clickVerifyData();
             else if( nCMSType == JS_PKCS7_TYPE_ENVELOPED )
                 clickDevelopedData();
-            else if( nCMSType == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
-                clickDevelopedAndVerify();
             else
             {
                 berApplet->warningBox( tr( "not supported CMS type[%1]").arg( nCMSType ), this );
@@ -2193,10 +1664,6 @@ void PKCS7Dlg::clickRun()
             else if( strCmd == kCmdDevelopedData )
             {
             clickDevelopedData();
-            }
-            else if( strCmd == kCmdDevelopedAndVerify )
-            {
-                clickDevelopedAndVerify();
             }
         }
     }

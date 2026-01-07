@@ -23,11 +23,11 @@ const QString kCmdDevelopedData = "Developed";
 const QString kCmdDevelopedAndVerify = "Developed and Verify";
 
 const QStringList kEncodeList = {
-    kCmdSignedData, kCmdEnvelopedData, kCmdSignedAndEnveloped, kCmdAddSigned, kCmdData, kCmdDigest
+    kCmdSignedData, kCmdEnvelopedData, kCmdAddSigned, kCmdData, kCmdDigest
 };
 
 const QStringList kDecodeList = {
-    kCmdVerifyData, kCmdDevelopedData, kCmdDevelopedAndVerify, kCmdGetData, kCmdGetDigest
+    kCmdVerifyData, kCmdDevelopedData, kCmdGetData, kCmdGetDigest
 };
 
 namespace Ui {
@@ -52,37 +52,26 @@ private slots:
 
     void clickClose();
     void clickOutputDecode();
-    void clickSignPriFind();
-    void clickSignCertFind();
-    void clickKMPriFind();
-    void clickKMCertFind();
+    void clickPriFind();
+    void clickCertFind();
 
     void clickSignedData();
     void clickEnvelopedData();
-    void clickSignAndEnvloped();
     void clickVerifyData();
     void clickDevelopedData();
-    void clickDevelopedAndVerify();
     void clickAddSigner();
     void clickData();
     void clickDigest();
     void clickGetData();
     void clickGetDigest();
 
-    void clickSignPriKeyView();
-    void clickSignPriKeyDecode();
-    void clickSignCertView();
-    void clickSignCertDecode();
+    void clickPriKeyView();
+    void clickPriKeyDecode();
+    void clickCertView();
+    void clickCertDecode();
 
-    void clickKMPriKeyView();
-    void clickKMPriKeyDecode();
-    void clickKMCertView();
-    void clickKMCertDecode();
-
-    void clickSignPriKeyType();
-    void clickSignCertType();
-    void clickKMPriKeyType();
-    void clickKMCertType();
+    void clickPriKeyType();
+    void clickCertType();
 
     void srcChanged();
     void outputChanged();
@@ -99,8 +88,7 @@ private slots:
     void clickReadFile();
     void clickExport();
 
-    void checkSignEncPriKey();
-    void checkKMEncPriKey();
+    void checkEncPriKey();
 
     void clickOutputUp();
 
@@ -110,8 +98,7 @@ private slots:
 private:
     void initUI();
     void initialize();
-    int readSignPrivateKey( BIN *pPriKey );
-    int readKMPrivateKey( BIN *pPriKey );
+    int readPrivateKey( BIN *pPriKey );
     int getFlags();
 };
 

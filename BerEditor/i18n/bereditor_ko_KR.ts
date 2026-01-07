@@ -15801,13 +15801,13 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="32"/>
-        <location filename="../pkcs7_dlg.cpp" line="381"/>
+        <location filename="../pkcs7_dlg.cpp" line="298"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="25"/>
-        <location filename="../pkcs7_dlg.cpp" line="405"/>
+        <location filename="../pkcs7_dlg.cpp" line="322"/>
         <source>Decode</source>
         <translation>디코딩</translation>
     </message>
@@ -15818,7 +15818,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="160"/>
-        <location filename="../pkcs7_dlg.ui" line="971"/>
+        <location filename="../pkcs7_dlg.ui" line="770"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -15828,52 +15828,67 @@ Use %2</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="715"/>
+        <location filename="../pkcs7_dlg.ui" line="299"/>
+        <source>Select each certificate and private key</source>
+        <translation>인증서와 개인키 각각 선택</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.ui" line="364"/>
+        <source>Certificate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.ui" line="396"/>
+        <source>PrivateKey</source>
+        <translation>개인키</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.ui" line="514"/>
         <source>PKCS7 Flags</source>
         <translation>PKCS7 플래그</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="744"/>
+        <location filename="../pkcs7_dlg.ui" line="543"/>
         <source>NOCERTS</source>
         <translation>NOCERTS</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="751"/>
+        <location filename="../pkcs7_dlg.ui" line="550"/>
         <source>NOVERIFY</source>
         <translation>NOVERIFY</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="758"/>
+        <location filename="../pkcs7_dlg.ui" line="557"/>
         <source>NOCHAIN</source>
         <translation>NOCHAIN</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="765"/>
+        <location filename="../pkcs7_dlg.ui" line="564"/>
         <source>NOSIGS</source>
         <translation>NOSIGS</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="772"/>
+        <location filename="../pkcs7_dlg.ui" line="571"/>
         <source>NOINTERN</source>
         <translation>NOINTERN</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="779"/>
+        <location filename="../pkcs7_dlg.ui" line="578"/>
         <source>DETACHED</source>
         <translation>DETACHED</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="786"/>
+        <location filename="../pkcs7_dlg.ui" line="585"/>
         <source>BINARY</source>
         <translation>BINARY</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="793"/>
+        <location filename="../pkcs7_dlg.ui" line="592"/>
         <source>NOATTR</source>
         <translation>NOATTR</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="1092"/>
+        <location filename="../pkcs7_dlg.ui" line="891"/>
         <source>Export</source>
         <translation>내보내기</translation>
     </message>
@@ -15884,7 +15899,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="147"/>
-        <location filename="../pkcs7_dlg.ui" line="978"/>
+        <location filename="../pkcs7_dlg.ui" line="777"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -15904,22 +15919,17 @@ Use %2</source>
         <location filename="../pkcs7_dlg.ui" line="121"/>
         <location filename="../pkcs7_dlg.ui" line="377"/>
         <location filename="../pkcs7_dlg.ui" line="419"/>
-        <location filename="../pkcs7_dlg.ui" line="559"/>
-        <location filename="../pkcs7_dlg.ui" line="627"/>
-        <location filename="../pkcs7_dlg.ui" line="958"/>
+        <location filename="../pkcs7_dlg.ui" line="757"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="299"/>
         <source>Select each certificate and private key for signature</source>
-        <translation>서명용 인증서와 개인키 각각 선택</translation>
+        <translation type="vanished">서명용 인증서와 개인키 각각 선택</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="354"/>
         <location filename="../pkcs7_dlg.ui" line="406"/>
-        <location filename="../pkcs7_dlg.ui" line="536"/>
-        <location filename="../pkcs7_dlg.ui" line="614"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -15927,41 +15937,33 @@ Use %2</source>
         <location filename="../pkcs7_dlg.ui" line="140"/>
         <location filename="../pkcs7_dlg.ui" line="347"/>
         <location filename="../pkcs7_dlg.ui" line="432"/>
-        <location filename="../pkcs7_dlg.ui" line="585"/>
-        <location filename="../pkcs7_dlg.ui" line="640"/>
-        <location filename="../pkcs7_dlg.ui" line="1010"/>
+        <location filename="../pkcs7_dlg.ui" line="809"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="364"/>
         <source>Sign Certificate</source>
-        <translation>서명용 인증서</translation>
+        <translation type="vanished">서명용 인증서</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="396"/>
         <source>Sign PrivateKey</source>
-        <translation>서명용 개인키</translation>
+        <translation type="vanished">서명용 개인키</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="270"/>
         <location filename="../pkcs7_dlg.ui" line="334"/>
         <location filename="../pkcs7_dlg.ui" line="445"/>
-        <location filename="../pkcs7_dlg.ui" line="572"/>
-        <location filename="../pkcs7_dlg.ui" line="653"/>
-        <location filename="../pkcs7_dlg.ui" line="997"/>
+        <location filename="../pkcs7_dlg.ui" line="796"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="456"/>
-        <location filename="../pkcs7_dlg.ui" line="683"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="475"/>
-        <location filename="../pkcs7_dlg.ui" line="676"/>
         <source>Encrypted PrivateKey</source>
         <translation>암호화된 개인키</translation>
     </message>
@@ -15978,97 +15980,89 @@ Use %2</source>
         <translation type="vanished">KM 인증서</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="846"/>
+        <location filename="../pkcs7_dlg.ui" line="645"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="853"/>
+        <location filename="../pkcs7_dlg.ui" line="652"/>
         <source>Auto Detect</source>
         <translation>자동 인지</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="939"/>
+        <location filename="../pkcs7_dlg.ui" line="738"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="1085"/>
+        <location filename="../pkcs7_dlg.ui" line="884"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="507"/>
         <source>Select each certificate and private key for recipient</source>
-        <translation>수신자용 인증서와 개인키 각각 선택</translation>
+        <translation type="vanished">수신자용 인증서와 개인키 각각 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="604"/>
         <source>Recipient PrivateKey</source>
-        <translation>수신자 개인키</translation>
+        <translation type="vanished">수신자 개인키</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="546"/>
         <source>Recipient Certificate</source>
-        <translation>수신자 인증서</translation>
+        <translation type="vanished">수신자 인증서</translation>
     </message>
     <message>
         <source>Write File</source>
         <translation type="vanished">파일 쓰기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="1166"/>
+        <location filename="../pkcs7_dlg.ui" line="965"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="1173"/>
+        <location filename="../pkcs7_dlg.ui" line="972"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="183"/>
+        <location filename="../pkcs7_dlg.cpp" line="165"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="189"/>
+        <location filename="../pkcs7_dlg.cpp" line="171"/>
         <source>Command Name</source>
         <translation>명령어 이름</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="204"/>
-        <location filename="../pkcs7_dlg.cpp" line="207"/>
+        <location filename="../pkcs7_dlg.cpp" line="185"/>
         <source>Select CertMan private key</source>
         <translation>인증서 관리자 개인키 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="205"/>
-        <location filename="../pkcs7_dlg.cpp" line="208"/>
+        <location filename="../pkcs7_dlg.cpp" line="186"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="260"/>
-        <location filename="../pkcs7_dlg.cpp" line="1288"/>
+        <location filename="../pkcs7_dlg.cpp" line="238"/>
+        <location filename="../pkcs7_dlg.cpp" line="906"/>
         <source>Select a private key for sign</source>
         <translation>서명용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="268"/>
+        <location filename="../pkcs7_dlg.cpp" line="246"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="278"/>
-        <location filename="../pkcs7_dlg.cpp" line="339"/>
+        <location filename="../pkcs7_dlg.cpp" line="256"/>
         <source>Please enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="287"/>
-        <location filename="../pkcs7_dlg.cpp" line="329"/>
-        <location filename="../pkcs7_dlg.cpp" line="348"/>
+        <location filename="../pkcs7_dlg.cpp" line="265"/>
         <source>Private key decryption failed [%1]</source>
         <translation>개인키 복호화 실패 [%1]</translation>
     </message>
@@ -16077,55 +16071,48 @@ Use %2</source>
         <translation type="vanished">KM용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="499"/>
-        <location filename="../pkcs7_dlg.cpp" line="602"/>
-        <location filename="../pkcs7_dlg.cpp" line="704"/>
-        <location filename="../pkcs7_dlg.cpp" line="852"/>
-        <location filename="../pkcs7_dlg.cpp" line="941"/>
-        <location filename="../pkcs7_dlg.cpp" line="1044"/>
-        <location filename="../pkcs7_dlg.cpp" line="1816"/>
-        <location filename="../pkcs7_dlg.cpp" line="1875"/>
-        <location filename="../pkcs7_dlg.cpp" line="1937"/>
-        <location filename="../pkcs7_dlg.cpp" line="1998"/>
-        <location filename="../pkcs7_dlg.cpp" line="2148"/>
+        <location filename="../pkcs7_dlg.cpp" line="396"/>
+        <location filename="../pkcs7_dlg.cpp" line="498"/>
+        <location filename="../pkcs7_dlg.cpp" line="598"/>
+        <location filename="../pkcs7_dlg.cpp" line="687"/>
+        <location filename="../pkcs7_dlg.cpp" line="1296"/>
+        <location filename="../pkcs7_dlg.cpp" line="1356"/>
+        <location filename="../pkcs7_dlg.cpp" line="1417"/>
+        <location filename="../pkcs7_dlg.cpp" line="1479"/>
+        <location filename="../pkcs7_dlg.cpp" line="1621"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="512"/>
-        <location filename="../pkcs7_dlg.cpp" line="717"/>
-        <location filename="../pkcs7_dlg.cpp" line="872"/>
-        <location filename="../pkcs7_dlg.cpp" line="1064"/>
-        <location filename="../pkcs7_dlg.cpp" line="1188"/>
+        <location filename="../pkcs7_dlg.cpp" line="409"/>
+        <location filename="../pkcs7_dlg.cpp" line="618"/>
+        <location filename="../pkcs7_dlg.cpp" line="806"/>
         <source>Select a certificate for signing</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="522"/>
-        <location filename="../pkcs7_dlg.cpp" line="728"/>
-        <location filename="../pkcs7_dlg.cpp" line="883"/>
-        <location filename="../pkcs7_dlg.cpp" line="1075"/>
-        <location filename="../pkcs7_dlg.cpp" line="1198"/>
+        <location filename="../pkcs7_dlg.cpp" line="419"/>
+        <location filename="../pkcs7_dlg.cpp" line="629"/>
+        <location filename="../pkcs7_dlg.cpp" line="816"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="535"/>
+        <location filename="../pkcs7_dlg.cpp" line="432"/>
         <source>This key algorithm(%1) is not supported</source>
         <translation>이 키 알고리즘은(%1)은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="544"/>
-        <location filename="../pkcs7_dlg.cpp" line="647"/>
-        <location filename="../pkcs7_dlg.cpp" line="776"/>
-        <location filename="../pkcs7_dlg.cpp" line="1212"/>
-        <location filename="../pkcs7_dlg.cpp" line="1827"/>
-        <location filename="../pkcs7_dlg.cpp" line="1885"/>
+        <location filename="../pkcs7_dlg.cpp" line="441"/>
+        <location filename="../pkcs7_dlg.cpp" line="543"/>
+        <location filename="../pkcs7_dlg.cpp" line="830"/>
+        <location filename="../pkcs7_dlg.cpp" line="1307"/>
+        <location filename="../pkcs7_dlg.cpp" line="1366"/>
         <source>There is no input value or the input type is incorrect.</source>
         <translation>입력 값이 없거나 또는 입력 타입이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="552"/>
+        <location filename="../pkcs7_dlg.cpp" line="449"/>
         <source>Failed to create SignedData [%1]</source>
         <translation>SignedData 생성 실패 [%1]</translation>
     </message>
@@ -16142,7 +16129,7 @@ Use %2</source>
         <translation type="vanished">RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="654"/>
+        <location filename="../pkcs7_dlg.cpp" line="550"/>
         <source>Failed to create EnvelopedData [%1]</source>
         <translation>EnvelopedData 생성 실패 [%1]</translation>
     </message>
@@ -16151,21 +16138,20 @@ Use %2</source>
         <translation type="vanished">RSA용 개인키가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="799"/>
         <source>Signed And Enveloped data creation failed [%1]</source>
-        <translation>서명 및 암호화 데이타(Signed And Enveloped Data) 만들기 실패 [%1]</translation>
+        <translation type="vanished">서명 및 암호화 데이타(Signed And Enveloped Data) 만들기 실패 [%1]</translation>
     </message>
     <message>
         <source>Not a SignedData type[Type:%1]</source>
         <translation type="vanished">SignedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="911"/>
+        <location filename="../pkcs7_dlg.cpp" line="657"/>
         <source>VerifyData Success</source>
         <translation>VerifyData 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="915"/>
+        <location filename="../pkcs7_dlg.cpp" line="661"/>
         <source>fail to verify signedData: %1</source>
         <translation>SignedData 검증 실패: %1</translation>
     </message>
@@ -16174,48 +16160,42 @@ Use %2</source>
         <translation type="vanished">EnvelopedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="321"/>
-        <location filename="../pkcs7_dlg.cpp" line="1354"/>
         <source>Select a private key for recipient</source>
-        <translation>수신자용 개인키를 선택하세요</translation>
+        <translation type="vanished">수신자용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="373"/>
+        <location filename="../pkcs7_dlg.cpp" line="290"/>
         <source>PKCS7 message encode</source>
         <translation>PKCS7 메세지 인코더</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="374"/>
-        <location filename="../pkcs7_dlg.cpp" line="396"/>
+        <location filename="../pkcs7_dlg.cpp" line="291"/>
+        <location filename="../pkcs7_dlg.cpp" line="313"/>
         <source>Source data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="375"/>
-        <location filename="../pkcs7_dlg.cpp" line="395"/>
+        <location filename="../pkcs7_dlg.cpp" line="292"/>
+        <location filename="../pkcs7_dlg.cpp" line="312"/>
         <source>CMS data</source>
         <translation>CMS 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="394"/>
+        <location filename="../pkcs7_dlg.cpp" line="311"/>
         <source>PKCS7 message decode</source>
         <translation>PKCS7 메세지 디코더</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="571"/>
-        <location filename="../pkcs7_dlg.cpp" line="672"/>
-        <location filename="../pkcs7_dlg.cpp" line="820"/>
-        <location filename="../pkcs7_dlg.cpp" line="1851"/>
-        <location filename="../pkcs7_dlg.cpp" line="1908"/>
+        <location filename="../pkcs7_dlg.cpp" line="469"/>
+        <location filename="../pkcs7_dlg.cpp" line="569"/>
+        <location filename="../pkcs7_dlg.cpp" line="1332"/>
+        <location filename="../pkcs7_dlg.cpp" line="1390"/>
         <source>%1 message created</source>
         <translation>%1 메세지가 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="612"/>
-        <location filename="../pkcs7_dlg.cpp" line="742"/>
-        <location filename="../pkcs7_dlg.cpp" line="964"/>
-        <location filename="../pkcs7_dlg.cpp" line="1088"/>
-        <location filename="../pkcs7_dlg.cpp" line="1517"/>
+        <location filename="../pkcs7_dlg.cpp" line="508"/>
+        <location filename="../pkcs7_dlg.cpp" line="710"/>
         <source>Select a certificate for recipient</source>
         <translation>수신자용 인증서를 선택하세요</translation>
     </message>
@@ -16228,18 +16208,17 @@ Use %2</source>
         <translation type="vanished">이 메세지는 EnvelopedData 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="989"/>
-        <location filename="../pkcs7_dlg.cpp" line="1116"/>
+        <location filename="../pkcs7_dlg.cpp" line="735"/>
         <source>Invalid private key</source>
         <translation>잘못 된 개인키 입니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1013"/>
+        <location filename="../pkcs7_dlg.cpp" line="759"/>
         <source>DevelopedData Success</source>
         <translation>DevelopedData 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1017"/>
+        <location filename="../pkcs7_dlg.cpp" line="763"/>
         <source>fail to develop data: %1</source>
         <translation>DevelopData 실패: %1</translation>
     </message>
@@ -16248,121 +16227,118 @@ Use %2</source>
         <translation type="vanished">SignedAndEnvelopedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="623"/>
-        <location filename="../pkcs7_dlg.cpp" line="753"/>
-        <location filename="../pkcs7_dlg.cpp" line="975"/>
-        <location filename="../pkcs7_dlg.cpp" line="1102"/>
+        <location filename="../pkcs7_dlg.cpp" line="519"/>
+        <location filename="../pkcs7_dlg.cpp" line="721"/>
         <source>Select a recipient certificate</source>
         <translation>수신자용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="637"/>
+        <location filename="../pkcs7_dlg.cpp" line="533"/>
         <source>This key algorithm(%1) is not supported
 Only RSA is supported.</source>
         <translation>이 키 알고리즘(%1)은 지원 하지 않습니다. RSA만 지원합니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="766"/>
         <source>This key algorithm(%1) is not supported for recipient encryption
 Only RSA is supported.</source>
-        <translation>이 키 알고리즘은(%1) 수신자 암호용으로 지원 하지 않습니다. RSA만 지원합니다.</translation>
+        <translation type="vanished">이 키 알고리즘은(%1) 수신자 암호용으로 지원 하지 않습니다. RSA만 지원합니다.</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="783"/>
         <source>This key algorithm(%1) is not supported for signing.</source>
-        <translation>이 키 알고리즘은(%1) 서명용으로 지원 하지 않습니다</translation>
+        <translation type="vanished">이 키 알고리즘은(%1) 서명용으로 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="863"/>
+        <location filename="../pkcs7_dlg.cpp" line="609"/>
         <source>This message is not signed data type[Type:%1]</source>
         <translation>이 메세지는 SignedData 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="952"/>
+        <location filename="../pkcs7_dlg.cpp" line="698"/>
         <source>This message is not enveloped data type[Type:%1]</source>
         <translation>이 메세지는 EnvelopedData 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1055"/>
         <source>This message is not signed and enveloped data type[Type:%1]</source>
-        <translation>이 메세지는 SignedAndEnveloped 데이타 타입이 아닙니다[타입:%1]</translation>
+        <translation type="vanished">이 메세지는 SignedAndEnveloped 데이타 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1141"/>
         <source>verify and develop data successfully</source>
-        <translation>검증 및 Develop 성공</translation>
+        <translation type="vanished">검증 및 Develop 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1145"/>
         <source>fail to verify and develop data: %1</source>
-        <translation>검증 및 Develop 데이타 실패: %1</translation>
+        <translation type="vanished">검증 및 Develop 데이타 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1175"/>
-        <location filename="../pkcs7_dlg.cpp" line="1546"/>
-        <location filename="../pkcs7_dlg.cpp" line="1594"/>
-        <location filename="../pkcs7_dlg.cpp" line="1626"/>
-        <location filename="../pkcs7_dlg.cpp" line="1660"/>
+        <location filename="../pkcs7_dlg.cpp" line="793"/>
+        <location filename="../pkcs7_dlg.cpp" line="1038"/>
+        <location filename="../pkcs7_dlg.cpp" line="1086"/>
+        <location filename="../pkcs7_dlg.cpp" line="1118"/>
+        <location filename="../pkcs7_dlg.cpp" line="1152"/>
         <source>Please enter CMS value</source>
         <translation>CMS 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1219"/>
+        <location filename="../pkcs7_dlg.cpp" line="837"/>
         <source>The source is not signed data[Type:%1]</source>
         <translation>이 소스는 signed 데이타가 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1226"/>
+        <location filename="../pkcs7_dlg.cpp" line="844"/>
         <source>Failed to add signer [%1]</source>
         <translation>서명자 추가 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1247"/>
+        <location filename="../pkcs7_dlg.cpp" line="865"/>
         <source>Signer is added successfully</source>
         <translation>서명자 추가에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1297"/>
-        <location filename="../pkcs7_dlg.cpp" line="1338"/>
-        <location filename="../pkcs7_dlg.cpp" line="1363"/>
-        <location filename="../pkcs7_dlg.cpp" line="1403"/>
+        <location filename="../pkcs7_dlg.cpp" line="915"/>
+        <location filename="../pkcs7_dlg.cpp" line="956"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1440"/>
         <source>Private key type for signing is %1</source>
-        <translation>서명용 개인키 타입은 %1 이다</translation>
+        <translation type="vanished">서명용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1456"/>
+        <location filename="../pkcs7_dlg.cpp" line="1008"/>
         <source>Select a certificate for sign</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1466"/>
         <source>Certificate type for sign is %1</source>
-        <translation>서명용 인증서 타입은 %1 이다</translation>
+        <translation type="vanished">서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1501"/>
         <source>Private key type for recipient is %1</source>
-        <translation>수신자용 개인키 타입은 %1 이다</translation>
+        <translation type="vanished">수신자용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1527"/>
         <source>Certificate type for recipient is %1</source>
-        <translation>수신자용 인증서 타입은 %1 이다</translation>
+        <translation type="vanished">수신자용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="161"/>
-        <location filename="../pkcs7_dlg.cpp" line="1730"/>
-        <location filename="../pkcs7_dlg.cpp" line="1765"/>
+        <location filename="../pkcs7_dlg.cpp" line="143"/>
+        <location filename="../pkcs7_dlg.cpp" line="1218"/>
+        <location filename="../pkcs7_dlg.cpp" line="1253"/>
         <source>This file is not in PKCS7 format</source>
         <translation>이 파일은 PKCS7 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1752"/>
+        <location filename="../pkcs7_dlg.cpp" line="992"/>
+        <source>Private key type is %1</source>
+        <translation>개인키 타입은 %1 이다</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.cpp" line="1018"/>
+        <source>Certificate type is %1</source>
+        <translation>인증서 타입은 %1 이다</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.cpp" line="1240"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -16375,18 +16351,18 @@ Only RSA is supported.</source>
         <translation type="vanished">데이타 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1948"/>
+        <location filename="../pkcs7_dlg.cpp" line="1428"/>
         <source>This message is not data type[Type:%1]</source>
         <translation>이 메세지는 Data 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1970"/>
-        <location filename="../pkcs7_dlg.cpp" line="2034"/>
+        <location filename="../pkcs7_dlg.cpp" line="1451"/>
+        <location filename="../pkcs7_dlg.cpp" line="1516"/>
         <source>%1 success</source>
         <translation>%1 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="2009"/>
+        <location filename="../pkcs7_dlg.cpp" line="1490"/>
         <source>This message is not digest type[Type:%1]</source>
         <translation>이 메세지는 Digest 타입이 아닙니다[타입:%1]</translation>
     </message>
@@ -16399,32 +16375,32 @@ Only RSA is supported.</source>
         <translation type="vanished">암호용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1557"/>
-        <location filename="../pkcs7_dlg.cpp" line="1605"/>
-        <location filename="../pkcs7_dlg.cpp" line="1637"/>
-        <location filename="../pkcs7_dlg.cpp" line="1671"/>
+        <location filename="../pkcs7_dlg.cpp" line="1049"/>
+        <location filename="../pkcs7_dlg.cpp" line="1097"/>
+        <location filename="../pkcs7_dlg.cpp" line="1129"/>
+        <location filename="../pkcs7_dlg.cpp" line="1163"/>
         <source>This CMS type is not supported.</source>
         <translation>이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1610"/>
-        <location filename="../pkcs7_dlg.cpp" line="1642"/>
+        <location filename="../pkcs7_dlg.cpp" line="1102"/>
+        <location filename="../pkcs7_dlg.cpp" line="1134"/>
         <source>This CMS type is %1</source>
         <translation>이 CMS 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1714"/>
+        <location filename="../pkcs7_dlg.cpp" line="1202"/>
         <source>The file size is too large(Max:1M)</source>
         <translation>파일 사이즈가 너무 큽니다(최대 1M)</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1834"/>
+        <location filename="../pkcs7_dlg.cpp" line="1314"/>
         <source>Failed to create digest [%1]</source>
         <translation>다이제스트 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1893"/>
-        <location filename="../pkcs7_dlg.cpp" line="1955"/>
+        <location filename="../pkcs7_dlg.cpp" line="1374"/>
+        <location filename="../pkcs7_dlg.cpp" line="1435"/>
         <source>Failed to create data [%1]</source>
         <translation>데이타 생성 실패 [%1]</translation>
     </message>
@@ -16433,12 +16409,12 @@ Only RSA is supported.</source>
         <translation type="vanished">이 메세지는 SignedAndEnveloped 데이타 타입이 아닙니다[타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="2016"/>
+        <location filename="../pkcs7_dlg.cpp" line="1497"/>
         <source>Failed to get digest [%1]</source>
         <translation>다이제스트 얻기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="2175"/>
+        <location filename="../pkcs7_dlg.cpp" line="1646"/>
         <source>not supported CMS type[%1]</source>
         <translation>지원 하지 않는 CMS 타입[%1]</translation>
     </message>
