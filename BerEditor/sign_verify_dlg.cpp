@@ -1167,6 +1167,9 @@ void SignVerifyDlg::checkSign()
         mPriKeyPath->setEnabled( false );
         mCertPath->setEnabled(false);
     }
+
+    mOutputText->setReadOnly(true);
+    mOutputText->setStyleSheet( kReadOnlyStyle );
 }
 
 void SignVerifyDlg::checkVerify()
@@ -1186,6 +1189,9 @@ void SignVerifyDlg::checkVerify()
         mPriKeyPath->setEnabled( false );
         mCertPath->setEnabled(false);
     }
+
+    mOutputText->setReadOnly(false);
+    mOutputText->setStyleSheet( "" );
 }
 
 void SignVerifyDlg::clickInputClear()
