@@ -10,6 +10,9 @@
 #include <QDropEvent>
 #include <QMimeData>
 
+#include <qpdf/QPDF.hh>
+#include <qpdf/QPDFWriter.hh>
+
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
@@ -111,11 +114,14 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
+    connect( mPDFEncryptedCheck, SIGNAL(clicked()), this, SLOT(checkPDFEncrypted()));
     connect( mPDFCheckBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Check()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
     connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
     connect( mPDFVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_VerifySign()));
+    connect( mPDFEncryptBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Encrypt()));
+    connect( mPDFDecryptBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Decrypt()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -646,6 +652,19 @@ void DocSignerDlg::initUI()
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
+    QStringList sHeaders = { tr( "Name" ), tr( "Value" ) };
+
+    mPDFInfoTable->clear();
+    mPDFInfoTable->horizontalHeader()->setStretchLastSection(true);
+    mPDFInfoTable->setColumnCount(sHeaders.size());
+    mPDFInfoTable->setHorizontalHeaderLabels( sHeaders );
+    mPDFInfoTable->verticalHeader()->setVisible(false);
+    mPDFInfoTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mPDFInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mPDFInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mPDFInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
     checkCMSEncode();
     checkSrcFile();
     checkDstFile();
@@ -665,6 +684,8 @@ void DocSignerDlg::initialize()
 
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
     checkUseCertMan();
+
+    checkPDFEncrypted();
 }
 
 QStringList DocSignerDlg::getUsedURL()
@@ -2775,10 +2796,23 @@ end :
     JS_BIN_reset( &binXML );
 }
 
+void DocSignerDlg::checkPDFEncrypted()
+{
+    bool bVal = mPDFEncryptedCheck->isChecked();
+
+    mPDFPasswdLabel->setEnabled( bVal );
+    mPDFPasswdText->setEnabled( bVal );
+}
+
 void DocSignerDlg::clickPDF_Check()
 {
     int ret = 0;
+    int i = 0;
     QString strSrcPath = mSrcPathText->text();
+    JPDFInfo    sInfo;
+    QString strPasswd;
+
+    memset( &sInfo, 0x00, sizeof(sInfo));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2795,13 +2829,61 @@ void DocSignerDlg::clickPDF_Check()
         return;
     }
 
-    ret = Js_PDF_isPDF( strSrcPath.toLocal8Bit().toStdString().c_str() );
+    if( mPDFEncryptedCheck->isChecked() )
+    {
+        strPasswd = mPDFPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            mPDFPasswdText->setFocus();
+            return;
+        }
+    }
 
+    ret = JS_PDF_getInfo(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        &sInfo );
+    if( ret != JSR_OK )
+    {
+        return;
+    }
+
+    mPDFInfoTable->setRowCount(0);
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("FileName" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( fileInfo.fileName() ) ));
+    i++;
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Version" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.sVersion ) ));
+    i++;
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Pages" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nPage ) ));
+    i++;
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Extension Level" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nExtLevel ) ));
+    i++;
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Encrypted" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nEncrypted ) ));
+    i++;
+
+    /*
+    ret = JS_PDF_isPDF( strSrcPath.toLocal8Bit().toStdString().c_str() );
 
     if( ret == JSR_VALID )
         berApplet->messageBox( tr( "Valid PDF") , this );
     else
         berApplet->warningBox( tr( "Invalid PDF: %1").arg( JERR(ret)), this);
+    */
 }
 
 void DocSignerDlg::clickPDF_TSP()
@@ -2826,6 +2908,7 @@ void DocSignerDlg::clickPDF_MakeSign()
 
     QString strHash = mHashCombo->currentText();
     int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_DETACHED;
+    QString strPasswd;
 
     memset( &sRange, 0x00, sizeof(sRange));
 
@@ -2844,6 +2927,18 @@ void DocSignerDlg::clickPDF_MakeSign()
         return;
     }
 
+    if( mPDFEncryptedCheck->isChecked() )
+    {
+        strPasswd = mPDFPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            mPDFPasswdText->setFocus();
+            return;
+        }
+    }
+
+
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
@@ -2851,8 +2946,11 @@ void DocSignerDlg::clickPDF_MakeSign()
         mDstPathText->setText( strDstPath );
     }
 
+
+
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         now_t,
         strDstPath.toLocal8Bit().toStdString().c_str() );
 
@@ -2977,5 +3075,119 @@ end :
 
 void DocSignerDlg::clickPDF_ClearInfo()
 {
-    mPDFInfoText->clear();
+    mPDFInfoTable->setRowCount(0);
+}
+
+void DocSignerDlg::clickPDF_Encrypt()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strPasswd = mPDFPasswdText->text();
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password"), this );
+        mPDFPasswdText->setFocus();
+        return;
+    }
+
+    try
+    {
+        QPDF pdf;
+        pdf.processFile( strSrcPath.toLocal8Bit().toStdString().c_str() );
+
+        QPDFWriter writer(pdf, strDstPath.toLocal8Bit().toStdString().c_str() );
+
+
+        writer.setR2EncryptionParametersInsecure(
+            strPasswd.toStdString().c_str(),
+            strPasswd.toStdString().c_str(),
+            true,
+            true,
+            true,
+            true );
+
+
+        writer.write();
+
+        std::cout << "PDF 암호화 완료\n";
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "에러: " << e.what() << "\n";
+        return;
+    }
+
+    return;
+}
+
+void DocSignerDlg::clickPDF_Decrypt()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strPasswd = mPDFPasswdText->text();
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password"), this );
+        mPDFPasswdText->setFocus();
+        return;
+    }
+
+    try
+    {
+        QPDF pdf;
+
+        // 비밀번호 전달
+        pdf.processFile( strSrcPath.toStdString().c_str(),
+                        strPasswd.toStdString().c_str() );
+
+        QPDFWriter writer(pdf, strDstPath.toStdString().c_str() );
+
+        // 암호화 제거
+        writer.setPreserveEncryption(false);
+
+        writer.write();
+
+        std::cout << "PDF 복호화 완료\n";
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "에러: " << e.what() << "\n";
+        return;
+    }
+
+    return;
 }
