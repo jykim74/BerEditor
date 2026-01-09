@@ -52,6 +52,7 @@ enum {
     JS_FILE_TYPE_PKCS8,
     JS_FILE_TYPE_PRIKEY_PKCS8_PFX,
     JS_FILE_TYPE_DH_PARAM,
+    JS_FILE_TYPE_PDF,
     JS_FILE_TYPE_ALL };
 
 const QString kDataHex = "Hex";

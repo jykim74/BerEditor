@@ -30,6 +30,11 @@ namespace Ui {
 class DocSignerDlg;
 }
 
+const int kIndexCMS     = 0;
+const int kIndexJSON    = 1;
+const int kIndexXML     = 2;
+const int kIndexPDF     = 3;
+
 class DocSignerDlg : public QDialog, public Ui::DocSignerDlg
 {
     Q_OBJECT
@@ -125,6 +130,13 @@ private slots:
     void changeXML_Body();
     void changeXML_Data();
     void changeXML_Res();
+
+
+    void clickPDF_Check();
+    void clickPDF_TSP();
+    void clickPDF_MakeSign();
+    void clickPDF_VerifySign();
+    void clickPDF_ClearInfo();
 
 private:
     void initUI();

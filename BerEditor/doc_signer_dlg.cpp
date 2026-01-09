@@ -33,6 +33,7 @@
 #include "js_error.h"
 #include "js_tsp.h"
 #include "js_http.h"
+#include "js_pdf.h"
 
 const QString kTSPUsedURL = "TSPUsedURL";
 
@@ -110,7 +111,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
-
+    connect( mPDFCheckBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Check()));
+    connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
+    connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
+    connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
+    connect( mPDFVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_VerifySign()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -310,7 +315,7 @@ void DocSignerDlg::checkUseCertMan()
 {
     int index = mTabSigner->currentIndex();
 
-    if( index == 0 )
+    if( index == 0 || index == 3)
     {
         mKeyLabel->setText( tr("Use CertMan key" ));
     }
@@ -344,43 +349,67 @@ void DocSignerDlg::changeSignerTab()
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( false );
     }
-    else
+    else if( index == 2 )
     {
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( true );
         mHashCombo->addItems( kSHA12HashList );
     }
+    else if( index == 3 )
+    {
+        mHashCombo->addItems( kHashList );
+        mUseCertManCheck->setEnabled( false );
+        mXMLTemplateCheck->setEnabled( false );
+    }
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash());
+    checkSrcFile();
+    checkDstFile();
 }
 
 void DocSignerDlg::checkSrcFile()
 {
-    bool bVal = mSrcFileCheck->isChecked();
+    if( mTabSigner->currentIndex() == kIndexPDF )
+    {
+        mSrcPathText->setEnabled( true );
+        mFindSrcPathBtn->setEnabled( true );
+    }
+    else
+    {
+        bool bVal = mSrcFileCheck->isChecked();
 
-    mSrcPathText->setEnabled( bVal );
-    mFindSrcPathBtn->setEnabled( bVal );
+        mSrcPathText->setEnabled( bVal );
+        mFindSrcPathBtn->setEnabled( bVal );
 
-    mCMSSrcLabel->setEnabled( !bVal );
-    mCMSSrcTypeCombo->setEnabled( !bVal );
-    mCMSSrcText->setEnabled( !bVal );
-    mCMSSrcLenText->setEnabled( !bVal );
+        mCMSSrcLabel->setEnabled( !bVal );
+        mCMSSrcTypeCombo->setEnabled( !bVal );
+        mCMSSrcText->setEnabled( !bVal );
+        mCMSSrcLenText->setEnabled( !bVal );
 
-    mJSONPayloadLabel->setEnabled( !bVal );
-    mJSONPayloadText->setEnabled( !bVal );
-    mJSONPayloadLenText->setEnabled( !bVal );
+        mJSONPayloadLabel->setEnabled( !bVal );
+        mJSONPayloadText->setEnabled( !bVal );
+        mJSONPayloadLenText->setEnabled( !bVal );
 
-    mXMLBodyLabel->setEnabled( !bVal );
-    mXMLBodyText->setEnabled( !bVal );
-    mXMLBodyLenText->setEnabled( !bVal );
+        mXMLBodyLabel->setEnabled( !bVal );
+        mXMLBodyText->setEnabled( !bVal );
+        mXMLBodyLenText->setEnabled( !bVal );
+    }
 }
 
 void DocSignerDlg::checkDstFile()
 {
-    bool bVal = mDstFileCheck->isChecked();
+    if( mTabSigner->currentIndex() == kIndexPDF )
+    {
+        mDstPathText->setEnabled( true );
+        mFindDstPathBtn->setEnabled( true );
+    }
+    else
+    {
+        bool bVal = mDstFileCheck->isChecked();
 
-    mDstPathText->setEnabled( bVal );
-    mFindDstPathBtn->setEnabled( bVal );
+        mDstPathText->setEnabled( bVal );
+        mFindDstPathBtn->setEnabled( bVal );
+    }
 }
 
 void DocSignerDlg::findSrcPath()
@@ -388,10 +417,12 @@ void DocSignerDlg::findSrcPath()
     int index = mTabSigner->currentIndex();
     int nType = JS_FILE_TYPE_PKCS7;
 
-    if( index == 1 )
+    if( index == kIndexJSON )
         nType = JS_FILE_TYPE_JSON;
-    else if( index == 2 )
+    else if( index == kIndexXML )
         nType = JS_FILE_TYPE_XML;
+    else if( index == kIndexPDF )
+        nType = JS_FILE_TYPE_PDF;
 
     QString strPath = mSrcPathText->text();
     QString strFileName = berApplet->findFile( this, nType, strPath );
@@ -408,10 +439,12 @@ void DocSignerDlg::findDstPath()
     int index = mTabSigner->currentIndex();
     int nType = JS_FILE_TYPE_PKCS7;
 
-    if( index == 1 )
+    if( index == kIndexJSON )
         nType = JS_FILE_TYPE_JSON;
-    else if( index == 2 )
+    else if( index == kIndexXML )
         nType = JS_FILE_TYPE_XML;
+    else if( index == kIndexPDF )
+        nType = JS_FILE_TYPE_PDF;
 
     QString strPath = mDstPathText->text();
     QString strFileName = berApplet->findSaveFile( this, nType, strPath );
@@ -2740,4 +2773,209 @@ void DocSignerDlg::clickXML_Export()
 
 end :
     JS_BIN_reset( &binXML );
+}
+
+void DocSignerDlg::clickPDF_Check()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = Js_PDF_isPDF( strSrcPath.toLocal8Bit().toStdString().c_str() );
+
+
+    if( ret == JSR_VALID )
+        berApplet->messageBox( tr( "Valid PDF") , this );
+    else
+        berApplet->warningBox( tr( "Invalid PDF: %1").arg( JERR(ret)), this);
+}
+
+void DocSignerDlg::clickPDF_TSP()
+{
+    TimeStampDlg tspDlg;
+    tspDlg.exec();
+}
+
+void DocSignerDlg::clickPDF_MakeSign()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+    time_t now_t = time(NULL);
+
+    JByteRange sRange;
+    BIN binData = {0,0};
+    BIN binCMS = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binTSP = {0,0};
+
+    QString strHash = mHashCombo->currentText();
+    int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_DETACHED;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    ret = JS_PDF_makeUnsigned(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        now_t,
+        strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_getByteRange( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_getData( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = getPriKeyCert( &binPri, &binCert );
+    if( ret != 0 ) goto end;
+
+    if( mPDFUseTSPCheck->isChecked() == true )
+    {
+        ret = getTSP( &binData, &binTSP );
+        if( ret != 0 ) goto end;
+    }
+
+    ret = JS_CMS_makeSignedDataWithTSP( strHash.toStdString().c_str(), &binData, &binPri, &binCert, &binTSP, nFlags, &binCMS );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_applyContentsCMS( strDstPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    berApplet->messageBox( tr("PDF signing was successful"), this );
+
+end :
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "PDF signing failed: %1" ).arg( JERR(ret)), this );
+    }
+
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binTSP );
+}
+
+void DocSignerDlg::clickPDF_VerifySign()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    BIN binCert = {0,0};
+    BIN binCMS = {0,0};
+    BIN binData = {0,0};
+
+    JByteRange  sRange;
+
+    int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_NOVERIFY;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = getPubKey( &binCert );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PDF_getByteRange( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_getCMS( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_getData( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_CMS_verifySignedData( &binCMS, &binCert, nFlags, &binData );
+    if( ret == JSR_VERIFY )
+        berApplet->messageBox( tr("Verify OK" ), this );
+    else
+        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binData );
+}
+
+void DocSignerDlg::clickPDF_ClearInfo()
+{
+    mPDFInfoText->clear();
 }

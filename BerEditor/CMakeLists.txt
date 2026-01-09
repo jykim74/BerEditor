@@ -236,6 +236,7 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
+        ../../lib/win64/qpdf/include
         ../../lib/win64/winsparkle/include )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
@@ -248,6 +249,7 @@ if(WIN32)
         ../../lib/win64/winsparkle/lib
         ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64/xmlsec1/libxml2/bin
+        ../../lib/win64/qpdf/lib
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
@@ -256,6 +258,7 @@ if(WIN32)
         ../../lib/win64/winsparkle/lib
         ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64/xmlsec1/libxml2/bin
+        ../../lib/win64/qpdf/lib
         ../../lib/win64 )
     endif()
 
@@ -264,7 +267,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 qpdf )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
