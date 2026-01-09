@@ -133,7 +133,7 @@ private slots:
 
     void checkPDFEncrypted();
 
-    void clickPDF_Check();
+    void clickPDF_GetInfo();
     void clickPDF_TSP();
     void clickPDF_MakeSign();
     void clickPDF_VerifySign();

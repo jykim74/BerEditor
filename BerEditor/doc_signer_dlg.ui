@@ -1631,6 +1631,13 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
        <item row="3" column="0">
+        <widget class="Line" name="line_13">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <layout class="QGridLayout" name="gridLayout_20">
          <property name="topMargin">
           <number>0</number>
@@ -1710,9 +1717,9 @@
           </widget>
          </item>
          <item row="0" column="6">
-          <widget class="QPushButton" name="mPDFCheckBtn">
+          <widget class="QPushButton" name="mPDFGetInfoBtn">
            <property name="text">
-            <string>Check PDF</string>
+            <string>Get PDF Information</string>
            </property>
           </widget>
          </item>
@@ -1782,13 +1789,6 @@
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="Line" name="line_11">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
         </widget>
        </item>
       </layout>

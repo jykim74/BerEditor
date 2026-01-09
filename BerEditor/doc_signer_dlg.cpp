@@ -115,7 +115,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
     connect( mPDFEncryptedCheck, SIGNAL(clicked()), this, SLOT(checkPDFEncrypted()));
-    connect( mPDFCheckBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Check()));
+    connect( mPDFGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickPDF_GetInfo()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
     connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
@@ -2804,7 +2804,7 @@ void DocSignerDlg::checkPDFEncrypted()
     mPDFPasswdText->setEnabled( bVal );
 }
 
-void DocSignerDlg::clickPDF_Check()
+void DocSignerDlg::clickPDF_GetInfo()
 {
     int ret = 0;
     int i = 0;
