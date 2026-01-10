@@ -132,6 +132,8 @@ private slots:
     void changeXML_Res();
 
     void checkPDFEncrypted();
+    void checkPDFSign();
+    void checkPDFEnc();
 
     void clickPDF_GetInfo();
     void clickPDF_TSP();
@@ -140,6 +142,9 @@ private slots:
     void clickPDF_ClearInfo();
     void clickPDF_Encrypt();
     void clickPDF_Decrypt();
+
+    void clickPDF_Make();
+    void clickPDF_Sign();
 
 private:
     void initUI();

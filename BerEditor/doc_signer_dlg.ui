@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>613</height>
+    <height>793</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1630,48 +1630,6 @@
        <string>PDF</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
-       <item row="3" column="0">
-        <widget class="Line" name="line_13">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <layout class="QGridLayout" name="gridLayout_20">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="mPDFPasswdText">
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="mPDFEncryptedCheck">
-           <property name="text">
-            <string>Encrypted</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="mPDFPasswdLabel">
-           <property name="text">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="Line" name="line_12">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_19">
          <property name="topMargin">
@@ -1725,9 +1683,23 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="0">
+       <item row="1" column="0">
+        <widget class="QTableWidget" name="mPDFInfoTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+       <item row="5" column="0">
         <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="3">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="mPDFSignCheck">
+           <property name="text">
+            <string>Signature</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <spacer name="horizontalSpacer_10">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1740,56 +1712,111 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="4">
-          <widget class="QCheckBox" name="mPDFUseTSPCheck">
-           <property name="text">
-            <string>Use TimeStamp</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QPushButton" name="mPDFVerifySignBtn">
-           <property name="text">
-            <string>Verify Signature</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mPDFDecryptBtn">
-           <property name="text">
-            <string>Decrypt</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="6">
-          <widget class="QPushButton" name="mPDFMakeSignBtn">
+          <widget class="QPushButton" name="mPDFVerifyBtn">
            <property name="text">
-            <string>Make Signature</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mPDFEncryptBtn">
-           <property name="text">
-            <string>Encrypt</string>
+            <string>Verify</string>
            </property>
           </widget>
          </item>
          <item row="0" column="5">
+          <widget class="QPushButton" name="mPDFMakeBtn">
+           <property name="text">
+            <string>Make</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mPDFEncCheck">
+           <property name="text">
+            <string>Encryption</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <widget class="Line" name="line_13">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="gridLayout_20">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="3">
+          <widget class="QLineEdit" name="mPDFPasswdText">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mPDFEncryptedCheck">
+           <property name="text">
+            <string>Encrypted</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="mPDFPasswdLabel">
+           <property name="text">
+            <string>Password</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Line" name="line_12">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0">
+        <layout class="QGridLayout" name="gridLayout_21">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mPDFVerifyChainCheck">
+           <property name="text">
+            <string>Verify Chain</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
           <widget class="QPushButton" name="mPDF_TSPBtn">
            <property name="text">
             <string>TSP</string>
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mPDFUseTSPCheck">
+           <property name="text">
+            <string>Use TimeStamp</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="QTableWidget" name="mPDFInfoTable">
-         <attribute name="horizontalHeaderHighlightSections">
-          <bool>false</bool>
-         </attribute>
-        </widget>
        </item>
       </layout>
      </widget>

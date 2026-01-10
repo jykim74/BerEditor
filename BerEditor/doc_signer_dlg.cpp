@@ -118,10 +118,10 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mPDFGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickPDF_GetInfo()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
-    connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
-    connect( mPDFVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_VerifySign()));
-    connect( mPDFEncryptBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Encrypt()));
-    connect( mPDFDecryptBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Decrypt()));
+    connect( mPDFMakeBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Make()));
+    connect( mPDFVerifyBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Verify()));
+    connect( mPDFSignCheck, SIGNAL(clicked()), this, SLOT(checkPDFSign()));
+    connect( mPDFEncCheck, SIGNAL(clicked()), this, SLOT(checkPDFEnc()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -144,6 +144,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mXMLBodyClearBtn->setFixedWidth(34);
     mXMLResClearBtn->setFixedWidth(34);
 
+    mPDFInfoClearBtn->setFixedWidth(34);
+
     mTabJSON->layout()->setSpacing(5);
     mTabJSON->layout()->setMargin(5);
 
@@ -152,6 +154,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     mTabCMS->layout()->setSpacing(5);
     mTabCMS->layout()->setMargin(5);
+
+    mTabPDF->layout()->setSpacing(5);
+    mTabPDF->layout()->setMargin(5);
 #endif
     initialize();
     mCMSRunBtn->setDefault(true);
@@ -681,6 +686,9 @@ void DocSignerDlg::initialize()
     changeSignerTab();
     changeCMSCmd();
     checkUseTSP();
+
+    mPDFSignCheck->setChecked(true);
+    checkPDFSign();
 
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
     checkUseCertMan();
@@ -2802,6 +2810,34 @@ void DocSignerDlg::checkPDFEncrypted()
 
     mPDFPasswdLabel->setEnabled( bVal );
     mPDFPasswdText->setEnabled( bVal );
+}
+
+void DocSignerDlg::checkPDFSign()
+{
+    mPDFMakeBtn->setText( tr("Make") );
+    mPDFVerifyBtn->setText( tr("Verify" ));
+}
+
+void DocSignerDlg::checkPDFEnc()
+{
+    mPDFMakeBtn->setText( tr("Encrypt") );
+    mPDFVerifyBtn->setText( tr("Decrypt" ));
+}
+
+void DocSignerDlg::clickPDF_Make()
+{
+    if( mPDFSignCheck->isChecked() )
+        clickPDF_MakeSign();
+    else
+        clickPDF_Encrypt();
+}
+
+void DocSignerDlg::clickPDF_Sign()
+{
+    if( mPDFSignCheck->isChecked() )
+        clickPDF_VerifySign();
+    else
+        clickPDF_Decrypt();
 }
 
 void DocSignerDlg::clickPDF_GetInfo()
