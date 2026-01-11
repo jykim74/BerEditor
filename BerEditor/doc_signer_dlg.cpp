@@ -9,6 +9,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QDir>
 
 #include <qpdf/QPDF.hh>
 #include <qpdf/QPDFWriter.hh>
@@ -122,6 +123,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mPDFVerifyBtn, SIGNAL(clicked()), this, SLOT(clickPDF_Verify()));
     connect( mPDFSignCheck, SIGNAL(clicked()), this, SLOT(checkPDFSign()));
     connect( mPDFEncCheck, SIGNAL(clicked()), this, SLOT(checkPDFEnc()));
+    connect( mPDFViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ViewCMS()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -2824,6 +2826,52 @@ void DocSignerDlg::checkPDFEnc()
     mPDFVerifyBtn->setText( tr("Decrypt" ));
 }
 
+void DocSignerDlg::clickPDF_ViewCMS()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    BIN binCMS = {0,0};
+
+    CMSInfoDlg cmsInfo;
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( JS_PDF_isEncrypted( strSrcPath.toLocal8Bit().toStdString().c_str() ) )
+    {
+        berApplet->log( "Entrypted" );
+    }
+    else
+    {
+        berApplet->log( "Not Encrypted" );
+    }
+
+    ret = JS_PDF_getCMS( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+
+    cmsInfo.setCMS( &binCMS );
+    cmsInfo.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
+}
+
 void DocSignerDlg::clickPDF_Make()
 {
     if( mPDFSignCheck->isChecked() )
@@ -2832,7 +2880,7 @@ void DocSignerDlg::clickPDF_Make()
         clickPDF_Encrypt();
 }
 
-void DocSignerDlg::clickPDF_Sign()
+void DocSignerDlg::clickPDF_Verify()
 {
     if( mPDFSignCheck->isChecked() )
         clickPDF_VerifySign();
@@ -3033,6 +3081,8 @@ void DocSignerDlg::clickPDF_MakeSign()
 end :
     if( ret != JSR_OK )
     {
+        QDir dir;
+        dir.remove( strDstPath );
         berApplet->warningBox( tr( "PDF signing failed: %1" ).arg( JERR(ret)), this );
     }
 
@@ -3143,6 +3193,13 @@ void DocSignerDlg::clickPDF_Encrypt()
         return;
     }
 
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_enc.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
     try
     {
         QPDF pdf;
@@ -3160,6 +3217,7 @@ void DocSignerDlg::clickPDF_Encrypt()
             true );
 
 
+        writer.setLinearization(true);
         writer.write();
 
         std::cout << "PDF 암호화 완료\n";
@@ -3202,6 +3260,13 @@ void DocSignerDlg::clickPDF_Decrypt()
         return;
     }
 
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_dec.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
     try
     {
         QPDF pdf;
@@ -3214,7 +3279,7 @@ void DocSignerDlg::clickPDF_Decrypt()
 
         // 암호화 제거
         writer.setPreserveEncryption(false);
-
+        writer.setLinearization(true);
         writer.write();
 
         std::cout << "PDF 복호화 완료\n";

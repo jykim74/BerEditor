@@ -143,8 +143,9 @@ private slots:
     void clickPDF_Encrypt();
     void clickPDF_Decrypt();
 
+    void clickPDF_ViewCMS();
     void clickPDF_Make();
-    void clickPDF_Sign();
+    void clickPDF_Verify();
 
 private:
     void initUI();
