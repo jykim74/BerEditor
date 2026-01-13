@@ -1388,9 +1388,9 @@ void DocSignerDlg::clickCMSVerifySign()
     }
 
 #if 0
-    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, nFlags, &binData );
+    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, NULL, nFlags, &binData );
 #else
-    ret = JS_CMS_verifySignedData( &binSrc, &binCert, nFlags, &binData );
+    ret = JS_CMS_verifySignedData( &binSrc, &binCert, NULL, nFlags, &binData );
 #endif
 
     if( binData.nLen > 0 )
@@ -2849,7 +2849,7 @@ void DocSignerDlg::clickPDF_ViewCMS()
         return;
     }
 
-    if( JS_PDF_isEncrypted( strSrcPath.toLocal8Bit().toStdString().c_str() ) )
+    if( JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str() ) )
     {
         berApplet->log( "Entrypted" );
     }
@@ -2858,7 +2858,7 @@ void DocSignerDlg::clickPDF_ViewCMS()
         berApplet->log( "Not Encrypted" );
     }
 
-    ret = JS_PDF_getCMS( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
     if( ret != JSR_OK )
     {
         goto end;
@@ -2924,7 +2924,7 @@ void DocSignerDlg::clickPDF_GetInfo()
         }
     }
 
-    ret = JS_PDF_getInfo(
+    ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         &sInfo );
@@ -2936,29 +2936,50 @@ void DocSignerDlg::clickPDF_GetInfo()
     mPDFInfoTable->setRowCount(0);
 
     mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("FileName" )));
     mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( fileInfo.fileName() ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Version" )));
     mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.sVersion ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Pages" )));
     mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nPage ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Extension Level" )));
     mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nExtLevel ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Encrypted" )));
     mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nEncrypted ) ));
     i++;
+
+    mPDFInfoTable->insertRow(i);
+    mPDFInfoTable->setRowHeight(i,10);
+    mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("CMS" )));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nCMS ) ));
+    i++;
+
+    if( sInfo.nCMS == 1 )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nTSP ) ));
+        i++;
+    }
+
 
     /*
     ret = JS_PDF_isPDF( strSrcPath.toLocal8Bit().toStdString().c_str() );
@@ -2989,6 +3010,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binTSP = {0,0};
+    BIN binDst = {0,0};
 
     QString strHash = mHashCombo->currentText();
     int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_DETACHED;
@@ -3022,38 +3044,36 @@ void DocSignerDlg::clickPDF_MakeSign()
         }
     }
 
-
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
-        mDstPathText->setText( strDstPath );
-    }
-
-
-
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         now_t,
-        strDstPath.toLocal8Bit().toStdString().c_str() );
+        &binDst );
 
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_PDF_getByteRange( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    ret = JS_PDF_getByteRange( &binDst, &sRange );
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_PDF_getData( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
+    berApplet->log( QString( "Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    ret = JS_PDF_getData( &binDst, &sRange, &binData );
     if( ret != JSR_OK )
     {
         goto end;
     }
+
+    berApplet->log( QString( "PDF Data: %1").arg( getHexString( &binData )));
 
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
@@ -3070,7 +3090,26 @@ void DocSignerDlg::clickPDF_MakeSign()
         goto end;
     }
 
-    ret = JS_PDF_applyContentsCMS( strDstPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    berApplet->log( QString( "CMS: %1").arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_applyContentsCMS( &binDst, &binCMS );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    ret = JS_PDF_writeFile(
+        &binDst,
+        strDstPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL );
+
     if( ret != 0 )
     {
         goto end;
@@ -3091,6 +3130,7 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binTSP );
+    JS_BIN_reset( &binDst );
 }
 
 void DocSignerDlg::clickPDF_VerifySign()
@@ -3100,6 +3140,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     BIN binCert = {0,0};
     BIN binCMS = {0,0};
     BIN binData = {0,0};
+    BIN binOut = {0,0};
 
     JByteRange  sRange;
 
@@ -3122,32 +3163,42 @@ void DocSignerDlg::clickPDF_VerifySign()
         return;
     }
 
-    ret = getPubKey( &binCert );
+    ret = getCert( &binCert );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
         goto end;
     }
 
-    ret = JS_PDF_getByteRange( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    ret = JS_PDF_getByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_PDF_getCMS( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    berApplet->log( QString( "Verify Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_PDF_getData( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
+    berApplet->log( QString( "Verify CMS: %1").arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_getDataFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_CMS_verifySignedData( &binCMS, &binCert, nFlags, &binData );
+    berApplet->log( QString( "Verify PDF Data: %1").arg( getHexString( &binData )));
+
+    ret = JS_CMS_verifySignedData( &binCMS, &binCert, &binData, nFlags, &binOut );
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else
@@ -3157,6 +3208,7 @@ end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binOut );
 }
 
 void DocSignerDlg::clickPDF_ClearInfo()

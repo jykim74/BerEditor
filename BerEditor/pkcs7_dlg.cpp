@@ -636,7 +636,7 @@ void PKCS7Dlg::clickVerifyData()
 
 
 
-    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, nFlags, &binSrc );
+    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, NULL, nFlags, &binSrc );
     if( ret == JSR_VERIFY )
     {
         int nDataType = DATA_HEX;
