@@ -7745,7 +7745,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="1471"/>
         <source>Enveloped Data OK</source>
-        <translation>복화화된 데이타 성공</translation>
+        <translation>암호화된 데이타 성공</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="1475"/>

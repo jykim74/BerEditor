@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>793</height>
+    <height>613</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -141,7 +141,7 @@
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
      <item row="0" column="3">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="mHashLabel">
        <property name="text">
         <string>Hash</string>
        </property>

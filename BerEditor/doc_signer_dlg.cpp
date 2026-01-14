@@ -350,27 +350,34 @@ void DocSignerDlg::changeSignerTab()
 
     checkUseCertMan();
 
-    if( index == 0 )
+    if( index == kIndexCMS )
     {
-        mHashCombo->addItems( kHashList );
+        mHashLabel->setEnabled( true );
+        mHashCombo->setEnabled( true );
+        mHashCombo->addItems( kSHAHashList );
         mUseCertManCheck->setEnabled( false );
         mXMLTemplateCheck->setEnabled( false );
     }
-    else if( index == 1 )
+    else if( index == kIndexJSON )
     {
+        mHashLabel->setEnabled( true );
+        mHashCombo->setEnabled( true );
         mHashCombo->addItems( kSHA12HashList );
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( false );
     }
-    else if( index == 2 )
+    else if( index == kIndexXML )
     {
+        mHashLabel->setEnabled( true );
+        mHashCombo->setEnabled( true );
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( true );
         mHashCombo->addItems( kSHA12HashList );
     }
-    else if( index == 3 )
+    else if( index == kIndexPDF )
     {
-        mHashCombo->addItems( kHashList );
+        mHashLabel->setEnabled( false );
+        mHashCombo->setEnabled( false );
         mUseCertManCheck->setEnabled( false );
         mXMLTemplateCheck->setEnabled( false );
     }
@@ -1288,6 +1295,7 @@ void DocSignerDlg::clickCMSMakeSign()
     BIN binCert = {0,0};
     BIN binTSP = {0,0};
     BIN binSigned = {0,0};
+    BIN binSignedTSP = {0,0};
 
     QString strHash = mHashCombo->currentText();
     int nFlags = getCMSFlags();
@@ -1298,32 +1306,42 @@ void DocSignerDlg::clickCMSMakeSign()
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
-    if( mUseTSPCheck->isChecked() == true )
-    {
-        ret = getTSP( &binSrc, &binTSP );
-        if( ret != 0 ) goto end;
-    }
+
 
 #if 0
-    ret = JS_PKCS7_makeSignedDataWithTSP( strHash.toStdString().c_str(),
+    ret = JS_PKCS7_makeSignedData(
                                          &binSrc,
                                          &binPri,
                                          &binCert,
-                                         &binTSP,
                                          nFlags,
                                          &binSigned );
 #else
-    ret = JS_CMS_makeSignedDataWithTSP( strHash.toStdString().c_str(),
+    ret = JS_CMS_makeSignedData(
                                          &binSrc,
                                          &binPri,
                                          &binCert,
-                                         &binTSP,
                                          nFlags,
                                          &binSigned );
 #endif
 
-    if( ret == JSR_OK )
+    if( ret == JSR_OK && mUseTSPCheck->isChecked() == true )
     {
+        if( mUseTSPCheck->isChecked() == true )
+        {
+
+            ret = getTSP( &binSrc, &binTSP );
+            if( ret != 0 ) goto end;
+
+            ret = JS_CMS_makeSignedWithTSP( &binSigned, &binTSP, &binSignedTSP );
+            if( ret != 0 ) goto end;
+
+            JS_BIN_reset( &binSigned );
+            JS_BIN_copy( &binSigned, &binSignedTSP );
+        }
+    }
+
+    if( ret == JSR_OK )
+    {   
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
 
@@ -1353,17 +1371,18 @@ void DocSignerDlg::clickCMSMakeSign()
 
         berApplet->messageBox( tr( "Signed data creation success" ), this );
     }
-    else
+
+end:
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to make singed data: %1").arg( JERR( ret ) ), this );
     }
-
-end:
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binTSP );
     JS_BIN_reset( &binSigned );
+    JS_BIN_reset( &binSignedTSP );
 }
 
 void DocSignerDlg::clickCMSVerifySign()
@@ -1378,7 +1397,11 @@ void DocSignerDlg::clickCMSVerifySign()
     if( ret != 0 ) goto end;
 
     ret = getCert( &binCert );
-    if( ret != 0 ) goto end;
+    if( ret != 0 )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
+        if( bVal == false ) goto end;
+    }
 
     ret = JS_CMS_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_SIGNED )
@@ -1669,7 +1692,6 @@ void DocSignerDlg::clickCMSAddSign()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binSigned = {0,0};
-
     QString strHash = mHashCombo->currentText();
 
     ret = readCMSSrc( &binSrc );
@@ -2997,6 +3019,7 @@ void DocSignerDlg::clickPDF_TSP()
     tspDlg.exec();
 }
 
+
 void DocSignerDlg::clickPDF_MakeSign()
 {
     int ret = 0;
@@ -3010,11 +3033,12 @@ void DocSignerDlg::clickPDF_MakeSign()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binTSP = {0,0};
-    BIN binDst = {0,0};
 
     QString strHash = mHashCombo->currentText();
     int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_DETACHED;
     QString strPasswd;
+
+    BIN binSignedTSP = {0,0};
 
     memset( &sRange, 0x00, sizeof(sRange));
 
@@ -3033,6 +3057,13 @@ void DocSignerDlg::clickPDF_MakeSign()
         return;
     }
 
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
     if( mPDFEncryptedCheck->isChecked() )
     {
         strPasswd = mPDFPasswdText->text();
@@ -3044,18 +3075,18 @@ void DocSignerDlg::clickPDF_MakeSign()
         }
     }
 
-    ret = JS_PDF_makeUnsigned(
+    ret = JS_PDF_makeUnsignedFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         now_t,
-        &binDst );
+        strDstPath.toLocal8Bit().toStdString().c_str() );
 
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    ret = JS_PDF_getByteRange( &binDst, &sRange );
+    ret = JS_PDF_getByteRangeFile( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange );
     if( ret != JSR_OK )
     {
         goto end;
@@ -3067,53 +3098,54 @@ void DocSignerDlg::clickPDF_MakeSign()
                        .arg( sRange.nSecondStart )
                        .arg( sRange.nSecondLen ));
 
-    ret = JS_PDF_getData( &binDst, &sRange, &binData );
+    ret = JS_PDF_getDataFile( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
     if( ret != JSR_OK )
     {
         goto end;
     }
 
-    berApplet->log( QString( "PDF Data: %1").arg( getHexString( &binData )));
+    berApplet->log( QString( "PDF Data[Len:%1]: %2").arg( binData.nLen).arg( getHexString( &binData )));
 
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
-    if( mPDFUseTSPCheck->isChecked() == true )
-    {
-        ret = getTSP( &binData, &binTSP );
-        if( ret != 0 ) goto end;
-    }
-
+#if 0
     ret = JS_CMS_makeSignedDataWithTSP( strHash.toStdString().c_str(), &binData, &binPri, &binCert, &binTSP, nFlags, &binCMS );
     if( ret != JSR_OK )
     {
         goto end;
     }
+#else
+    ret = JS_PDF_makeCMS( &binData, &binPri, &binCert, &binCMS );
 
-    berApplet->log( QString( "CMS: %1").arg( getHexString( &binCMS )));
+    if( ret == JSR_OK && mPDFUseTSPCheck->isChecked() == true )
+    {
 
-    ret = JS_PDF_applyContentsCMS( &binDst, &binCMS );
+        ret = getTSP( &binData, &binTSP );
+        if( ret != 0 ) goto end;
+
+        ret = JS_CMS_makeSignedWithTSP( &binCMS, &binTSP, &binSignedTSP );
+        if( ret != 0 ) goto end;
+
+        JS_BIN_reset( &binCMS );
+        JS_BIN_copy( &binCMS, &binSignedTSP );
+    }
+#endif
+
+#ifdef QT_DEBUG
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, 1 );
+    berApplet->log( QString( "CMS Verify: %1").arg( ret ));
+#endif
+
+    berApplet->log( QString( "CMS[Len:%1]: %2").arg( binCMS.nLen).arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_applyContentsCMSFile( strDstPath.toLocal8Bit().toStdString().c_str(), &binCMS );
     if( ret != 0 )
     {
         goto end;
     }
 
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
-        mDstPathText->setText( strDstPath );
-    }
 
-    ret = JS_PDF_writeFile(
-        &binDst,
-        strDstPath.toLocal8Bit().toStdString().c_str(),
-        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL );
-
-    if( ret != 0 )
-    {
-        goto end;
-    }
 
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
@@ -3130,7 +3162,7 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binTSP );
-    JS_BIN_reset( &binDst );
+    JS_BIN_reset( &binSignedTSP );
 }
 
 void DocSignerDlg::clickPDF_VerifySign()
@@ -3144,7 +3176,7 @@ void DocSignerDlg::clickPDF_VerifySign()
 
     JByteRange  sRange;
 
-    int nFlags = JS_PKCS7_FLAG_BINARY | JS_PKCS7_FLAG_NOVERIFY;
+    int nVerifyChain = 0;
 
     memset( &sRange, 0x00, sizeof(sRange));
 
@@ -3188,7 +3220,7 @@ void DocSignerDlg::clickPDF_VerifySign()
         goto end;
     }
 
-    berApplet->log( QString( "Verify CMS: %1").arg( getHexString( &binCMS )));
+    berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
 
     ret = JS_PDF_getDataFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
     if( ret != JSR_OK )
@@ -3196,9 +3228,18 @@ void DocSignerDlg::clickPDF_VerifySign()
         goto end;
     }
 
-    berApplet->log( QString( "Verify PDF Data: %1").arg( getHexString( &binData )));
+    if( mPDFVerifyChainCheck->isChecked() )
+        nVerifyChain = 1;
+    else
+        nVerifyChain = 0;
 
+    berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
+#if 0
     ret = JS_CMS_verifySignedData( &binCMS, &binCert, &binData, nFlags, &binOut );
+#else
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, nVerifyChain );
+#endif
+
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else

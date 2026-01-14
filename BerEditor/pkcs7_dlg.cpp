@@ -443,7 +443,7 @@ void PKCS7Dlg::clickSignedData()
     }
 
 
-    ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, nFlags, &binOutput );
+    ret = JS_PKCS7_makeSignedData( &binSrc, &binPri, &binCert, nFlags, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Failed to create SignedData [%1]").arg( JERR(ret) ), this );
@@ -628,13 +628,17 @@ void PKCS7Dlg::clickVerifyData()
         certMan.setMode(ManModeSelCert);
         certMan.setTitle( tr( "Select a sign certificate") );
 
-        if( certMan.exec() != QDialog::Accepted )
-            return;
-
-        certMan.getCert( &binCert );
+        if( certMan.exec() == QDialog::Accepted )
+        {
+            certMan.exec();
+            certMan.getCert( &binCert );
+        }
+        else
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
+            if( bVal == false ) return;
+        }
     }
-
-
 
     ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, NULL, nFlags, &binSrc );
     if( ret == JSR_VERIFY )
@@ -1550,10 +1554,7 @@ void PKCS7Dlg::changeCmd()
         mCipherCombo->setEnabled( false );
     }
 
-    if( strCmd == kCmdSignedData
-        || strCmd == kCmdSignedAndEnveloped
-        || strCmd == kCmdAddSigned
-        || strCmd == kCmdDigest )
+    if( strCmd == kCmdAddSigned )
     {
         mHashCombo->setEnabled( true );
     }
@@ -1566,12 +1567,8 @@ void PKCS7Dlg::changeCmd()
 
     if( strCmd == kCmdSignedData
         || strCmd == kCmdVerifyData
-        || strCmd == kCmdAddSigned )
-    {
-        mCertGroup->setEnabled( true );
-    }
-
-    if( strCmd == kCmdEnvelopedData
+        || strCmd == kCmdAddSigned
+        || strCmd == kCmdEnvelopedData
         || strCmd == kCmdDevelopedData )
     {
         mCertGroup->setEnabled( true );

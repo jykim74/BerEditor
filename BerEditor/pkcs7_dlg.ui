@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>598</width>
+    <width>548</width>
     <height>589</height>
    </rect>
   </property>
@@ -610,9 +610,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mCmdCombo"/>
-     </item>
      <item row="0" column="3">
       <widget class="QComboBox" name="mCipherCombo">
        <property name="minimumSize">
@@ -652,6 +649,9 @@
         <string>Auto Detect</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mCmdCombo"/>
      </item>
     </layout>
    </item>
@@ -1004,7 +1004,6 @@
   <tabstop>mPasswdText</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mAutoDetectCheck</tabstop>
-  <tabstop>mHashCombo</tabstop>
   <tabstop>mCipherCombo</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
