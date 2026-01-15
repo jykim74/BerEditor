@@ -2846,6 +2846,9 @@ void DocSignerDlg::checkPDFEnc()
 {
     mPDFMakeBtn->setText( tr("Encrypt") );
     mPDFVerifyBtn->setText( tr("Decrypt" ));
+
+    mPDFEncryptedCheck->setChecked(true);
+    checkPDFEncrypted();
 }
 
 void DocSignerDlg::clickPDF_ViewCMS()
@@ -3293,33 +3296,9 @@ void DocSignerDlg::clickPDF_Encrypt()
         mDstPathText->setText( strDstPath );
     }
 
-    try
-    {
-        QPDF pdf;
-        pdf.processFile( strSrcPath.toLocal8Bit().toStdString().c_str() );
-
-        QPDFWriter writer(pdf, strDstPath.toLocal8Bit().toStdString().c_str() );
-
-
-        writer.setR2EncryptionParametersInsecure(
-            strPasswd.toStdString().c_str(),
-            strPasswd.toStdString().c_str(),
-            true,
-            true,
-            true,
-            true );
-
-
-        writer.setLinearization(true);
-        writer.write();
-
-        std::cout << "PDF 암호화 완료\n";
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "에러: " << e.what() << "\n";
-        return;
-    }
+    JS_PDF_encryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                       strPasswd.toStdString().c_str(),
+                       strDstPath.toLocal8Bit().toStdString().c_str() );
 
     return;
 }
@@ -3360,6 +3339,10 @@ void DocSignerDlg::clickPDF_Decrypt()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_PDF_decryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                       strPasswd.toStdString().c_str(),
+                       strDstPath.toLocal8Bit().toStdString().c_str() );
+#if 0
     try
     {
         QPDF pdf;
@@ -3382,6 +3365,6 @@ void DocSignerDlg::clickPDF_Decrypt()
         std::cerr << "에러: " << e.what() << "\n";
         return;
     }
-
+#endif
     return;
 }
