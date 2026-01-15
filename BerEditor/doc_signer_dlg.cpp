@@ -115,7 +115,6 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
-    connect( mPDFEncryptedCheck, SIGNAL(clicked()), this, SLOT(checkPDFEncrypted()));
     connect( mPDFGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickPDF_GetInfo()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
@@ -701,8 +700,6 @@ void DocSignerDlg::initialize()
 
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
     checkUseCertMan();
-
-    checkPDFEncrypted();
 }
 
 QStringList DocSignerDlg::getUsedURL()
@@ -2828,14 +2825,6 @@ end :
     JS_BIN_reset( &binXML );
 }
 
-void DocSignerDlg::checkPDFEncrypted()
-{
-    bool bVal = mPDFEncryptedCheck->isChecked();
-
-    mPDFPasswdLabel->setEnabled( bVal );
-    mPDFPasswdText->setEnabled( bVal );
-}
-
 void DocSignerDlg::checkPDFSign()
 {
     mPDFMakeBtn->setText( tr("Make") );
@@ -2846,9 +2835,6 @@ void DocSignerDlg::checkPDFEnc()
 {
     mPDFMakeBtn->setText( tr("Encrypt") );
     mPDFVerifyBtn->setText( tr("Decrypt" ));
-
-    mPDFEncryptedCheck->setChecked(true);
-    checkPDFEncrypted();
 }
 
 void DocSignerDlg::clickPDF_ViewCMS()
@@ -2919,7 +2905,7 @@ void DocSignerDlg::clickPDF_GetInfo()
     int i = 0;
     QString strSrcPath = mSrcPathText->text();
     JPDFInfo    sInfo;
-    QString strPasswd;
+    QString strPasswd = mPDFPasswdText->text();
 
     memset( &sInfo, 0x00, sizeof(sInfo));
 
@@ -2938,23 +2924,13 @@ void DocSignerDlg::clickPDF_GetInfo()
         return;
     }
 
-    if( mPDFEncryptedCheck->isChecked() )
-    {
-        strPasswd = mPDFPasswdText->text();
-        if( strPasswd.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a password"), this );
-            mPDFPasswdText->setFocus();
-            return;
-        }
-    }
-
     ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         &sInfo );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr( "failed to get PDF information: %d").arg(ret), this);
         return;
     }
 
@@ -2975,7 +2951,7 @@ void DocSignerDlg::clickPDF_GetInfo()
     mPDFInfoTable->insertRow(i);
     mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Pages" )));
-    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nPage ) ));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1 page").arg( sInfo.nPage ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
@@ -2987,13 +2963,13 @@ void DocSignerDlg::clickPDF_GetInfo()
     mPDFInfoTable->insertRow(i);
     mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Encrypted" )));
-    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nEncrypted ) ));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nEncrypted ? "YES" : "NO" ) ));
     i++;
 
     mPDFInfoTable->insertRow(i);
     mPDFInfoTable->setRowHeight(i,10);
     mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("CMS" )));
-    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nCMS ) ));
+    mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nCMS ? "YES" : "NO" ) ));
     i++;
 
     if( sInfo.nCMS == 1 )
@@ -3001,19 +2977,11 @@ void DocSignerDlg::clickPDF_GetInfo()
         mPDFInfoTable->insertRow(i);
         mPDFInfoTable->setRowHeight(i,10);
         mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP" )));
-        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nTSP ) ));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nTSP ? "YES" : "NO" ) ));
         i++;
     }
 
-
-    /*
-    ret = JS_PDF_isPDF( strSrcPath.toLocal8Bit().toStdString().c_str() );
-
-    if( ret == JSR_VALID )
-        berApplet->messageBox( tr( "Valid PDF") , this );
-    else
-        berApplet->warningBox( tr( "Invalid PDF: %1").arg( JERR(ret)), this);
-    */
+    berApplet->messageBox( tr("PDF information import complete"), this );
 }
 
 void DocSignerDlg::clickPDF_TSP()
@@ -3022,8 +2990,165 @@ void DocSignerDlg::clickPDF_TSP()
     tspDlg.exec();
 }
 
-
 void DocSignerDlg::clickPDF_MakeSign()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+    time_t now_t = time(NULL);
+
+    JByteRange sRange;
+    BIN binData = {0,0};
+    BIN binUnsigned = {0,0};
+    BIN binCMS = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binTSP = {0,0};
+
+    QString strHash = mHashCombo->currentText();
+    QString strPasswd;
+
+    BIN binSignedTSP = {0,0};
+    JPDFInfo sInfo;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+    memset( &sInfo, 0x00, sizeof(sInfo));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());
+
+    if( bEncrypted )
+    {
+        strPasswd = mPDFPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            mPDFPasswdText->setFocus();
+            return;
+        }
+    }
+
+    ret = JS_PDF_makeUnsigned(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        now_t,
+        &binUnsigned );
+
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_getByteRange( &binUnsigned, &sRange );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_applyByteRange( &binUnsigned, &sRange );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    berApplet->log( QString( "Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    ret = JS_PDF_getData( &binUnsigned, &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    berApplet->log( QString( "PDF Data[Len:%1]: %2").arg( binData.nLen).arg( getHexString( &binData )));
+
+    ret = getPriKeyCert( &binPri, &binCert );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_makeCMS( &binData, &binPri, &binCert, &binCMS );
+
+    if( ret == JSR_OK && mPDFUseTSPCheck->isChecked() == true )
+    {
+
+        ret = getTSP( &binData, &binTSP );
+        if( ret != 0 ) goto end;
+
+        ret = JS_CMS_makeSignedWithTSP( &binCMS, &binTSP, &binSignedTSP );
+        if( ret != 0 ) goto end;
+
+        JS_BIN_reset( &binCMS );
+        JS_BIN_copy( &binCMS, &binSignedTSP );
+    }
+
+#ifdef QT_DEBUG
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, 1 );
+    berApplet->log( QString( "CMS Verify: %1").arg( ret ));
+#endif
+
+    berApplet->log( QString( "CMS[Len:%1]: %2").arg( binCMS.nLen).arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_applyContentsCMS( &binUnsigned, &binCMS );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+    berApplet->messageBox( tr("PDF signing was successful"), this );
+
+end :
+    if( ret != JSR_OK )
+    {
+        QDir dir;
+        dir.remove( strDstPath );
+        berApplet->warningBox( tr( "PDF signing failed: %1" ).arg( JERR(ret)), this );
+    }
+
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binTSP );
+    JS_BIN_reset( &binSignedTSP );
+    JS_BIN_reset( &binUnsigned );
+}
+
+void DocSignerDlg::clickPDF_MakeSignFile()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
@@ -3067,7 +3192,22 @@ void DocSignerDlg::clickPDF_MakeSign()
         mDstPathText->setText( strDstPath );
     }
 
-    if( mPDFEncryptedCheck->isChecked() )
+
+
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
+
+    if( bEncrypted )
     {
         strPasswd = mPDFPasswdText->text();
         if( strPasswd.length() < 1 )
@@ -3090,6 +3230,12 @@ void DocSignerDlg::clickPDF_MakeSign()
     }
 
     ret = JS_PDF_getByteRangeFile( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PDF_applyByteRangeFile( strDstPath.toLocal8Bit().toStdString().c_str(), &sRange );
     if( ret != JSR_OK )
     {
         goto end;
@@ -3176,6 +3322,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     BIN binCMS = {0,0};
     BIN binData = {0,0};
     BIN binOut = {0,0};
+    QString strPasswd;
 
     JByteRange  sRange;
 
@@ -3196,6 +3343,19 @@ void DocSignerDlg::clickPDF_VerifySign()
         berApplet->warningBox( tr( "There is no file" ), this );
         mSrcPathText->setFocus();
         return;
+    }
+
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
+
+    if( bEncrypted )
+    {
+        strPasswd = mPDFPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            mPDFPasswdText->setFocus();
+            return;
+        }
     }
 
     ret = getCert( &binCert );
@@ -3289,6 +3449,13 @@ void DocSignerDlg::clickPDF_Encrypt()
         return;
     }
 
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
+    if( bEncrypted )
+    {
+        berApplet->warningBox( tr("It's already encrypted"), this );
+        return;
+    }
+
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
@@ -3296,9 +3463,29 @@ void DocSignerDlg::clickPDF_Encrypt()
         mDstPathText->setText( strDstPath );
     }
 
-    JS_PDF_encryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    ret = JS_PDF_encryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
                        strPasswd.toStdString().c_str(),
                        strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "PDF encryption successful"), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr("PDF encryption failed: %1").arg(JERR(ret)), this );
+    }
 
     return;
 }
@@ -3339,32 +3526,37 @@ void DocSignerDlg::clickPDF_Decrypt()
         mDstPathText->setText( strDstPath );
     }
 
-    JS_PDF_decryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                       strPasswd.toStdString().c_str(),
-                       strDstPath.toLocal8Bit().toStdString().c_str() );
-#if 0
-    try
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
     {
-        QPDF pdf;
-
-        // 비밀번호 전달
-        pdf.processFile( strSrcPath.toStdString().c_str(),
-                        strPasswd.toStdString().c_str() );
-
-        QPDFWriter writer(pdf, strDstPath.toStdString().c_str() );
-
-        // 암호화 제거
-        writer.setPreserveEncryption(false);
-        writer.setLinearization(true);
-        writer.write();
-
-        std::cout << "PDF 복호화 완료\n";
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
     }
-    catch (std::exception& e)
+
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
+    if( bEncrypted == false )
     {
-        std::cerr << "에러: " << e.what() << "\n";
+        berApplet->warningBox( tr("It is not encrypted"), this );
         return;
     }
-#endif
+
+    ret = JS_PDF_decryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                       strPasswd.toStdString().c_str(),
+                       strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "PDF decryption successful"), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr("PDF decryption failed: %1").arg(JERR(ret)), this );
+    }
+
+
     return;
 }

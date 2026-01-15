@@ -131,13 +131,13 @@ private slots:
     void changeXML_Data();
     void changeXML_Res();
 
-    void checkPDFEncrypted();
     void checkPDFSign();
     void checkPDFEnc();
 
     void clickPDF_GetInfo();
     void clickPDF_TSP();
     void clickPDF_MakeSign();
+    void clickPDF_MakeSignFile();
     void clickPDF_VerifySign();
     void clickPDF_ClearInfo();
     void clickPDF_Encrypt();
