@@ -238,7 +238,6 @@ if(WIN32)
     add_definitions( -DPDF_SIGN )
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
-        ../../lib/win64/qpdf/include
         ../../lib/win64/winsparkle/include )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
@@ -293,7 +292,6 @@ elseif(APPLE)
 
     include_directories( ../../PKILib
         ../../lib/mac/${OPENSSL}/include
-        /usr/local/lib/qpdf
         /usr/local/include )
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
