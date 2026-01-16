@@ -2930,7 +2930,7 @@ void DocSignerDlg::clickPDF_GetInfo()
         &sInfo );
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "failed to get PDF information: %d").arg(ret), this);
+        berApplet->warningBox( tr( "failed to get PDF information: %1").arg(JERR(ret)), this);
         return;
     }
 
@@ -3068,18 +3068,21 @@ void DocSignerDlg::clickPDF_MakeSign()
 
     if( ret != JSR_OK )
     {
+        berApplet->warningBox(tr("failed to make unsigned: %1").arg(JERR(ret)), this );
         goto end;
     }
 
     ret = JS_PDF_getByteRange( &binUnsigned, &sRange );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
         goto end;
     }
 
     ret = JS_PDF_applyByteRange( &binUnsigned, &sRange );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr( "failed to apply byte range: %1").arg( JERR(ret)), this );
         goto end;
     }
 
@@ -3092,6 +3095,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     ret = JS_PDF_getData( &binUnsigned, &sRange, &binData );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr( "failed to get body: %1").arg( JERR(ret)), this );
         goto end;
     }
 
@@ -3125,6 +3129,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     ret = JS_PDF_applyContentsCMS( &binUnsigned, &binCMS );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "failed to apply CMS: %1").arg( JERR(ret)), this );
         goto end;
     }
 
@@ -3132,13 +3137,6 @@ void DocSignerDlg::clickPDF_MakeSign()
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
 end :
-    if( ret != JSR_OK )
-    {
-        QDir dir;
-        dir.remove( strDstPath );
-        berApplet->warningBox( tr( "PDF signing failed: %1" ).arg( JERR(ret)), this );
-    }
-
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binPri );
@@ -3345,6 +3343,7 @@ void DocSignerDlg::clickPDF_VerifySign()
         return;
     }
 
+    /*
     bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
 
     if( bEncrypted )
@@ -3357,6 +3356,7 @@ void DocSignerDlg::clickPDF_VerifySign()
             return;
         }
     }
+    */
 
     ret = getCert( &binCert );
     if( ret != JSR_OK )
@@ -3368,6 +3368,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     ret = JS_PDF_getByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
         goto end;
     }
 
@@ -3380,6 +3381,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr("failed to get CMS: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -3388,6 +3390,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     ret = JS_PDF_getDataFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange, &binData );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
         goto end;
     }
 
