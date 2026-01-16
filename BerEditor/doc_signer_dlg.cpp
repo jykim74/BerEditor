@@ -1418,7 +1418,7 @@ void DocSignerDlg::clickCMSVerifySign()
 #if 0
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, NULL, nFlags, &binData );
 #else
-    ret = JS_CMS_verifySignedData( &binSrc, &binCert, NULL, nFlags, &binData );
+    ret = JS_CMS_verifySignedData( &binSrc, &binCert, NULL, nFlags, NULL, NULL, &binData );
 #endif
 
     if( binData.nLen > 0 )
@@ -3122,7 +3122,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     }
 
 #ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, 1 );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 1 );
     berApplet->log( QString( "CMS Verify: %1").arg( ret ));
 #endif
 
@@ -3282,7 +3282,7 @@ void DocSignerDlg::clickPDF_MakeSignFile()
 #endif
 
 #ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, 1 );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 1 );
     berApplet->log( QString( "CMS Verify: %1").arg( ret ));
 #endif
 
@@ -3405,7 +3405,7 @@ void DocSignerDlg::clickPDF_VerifySign()
 #if 0
     ret = JS_CMS_verifySignedData( &binCMS, &binCert, &binData, nFlags, &binOut );
 #else
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, nVerifyChain );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, nVerifyChain );
 #endif
 
     if( ret == JSR_VERIFY )

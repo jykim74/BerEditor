@@ -650,7 +650,7 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, &binMsg );
+    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, NULL, NULL, &binMsg );
 
     if( ret == JSR_VERIFY )
     {
