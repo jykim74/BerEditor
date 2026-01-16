@@ -11,9 +11,6 @@
 #include <QMimeData>
 #include <QDir>
 
-#include <qpdf/QPDF.hh>
-#include <qpdf/QPDFWriter.hh>
-
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
