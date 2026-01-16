@@ -18,6 +18,7 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions( -D_USE_LCN_SRV )
 
+
 set( OPENSSL "openssl35" )
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
@@ -234,6 +235,7 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 
 
 if(WIN32)
+    add_definitions( -DPDF_SIGN )
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
         ../../lib/win64/qpdf/include
@@ -272,6 +274,7 @@ if(WIN32)
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
 elseif(APPLE)
+    add_definitions( -DPDF_SIGN )
     set(CMAKE_MACOSX_BUNDLE ON)
     set(CMAKE_MACOSX_RPATH ON)
 

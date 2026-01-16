@@ -196,10 +196,11 @@ void AboutDlg::showCopyright()
     strCopyRight += "<br>- https://www.aleksey.com/xmlsec";
     strCopyRight += "<br>- <a href=https://github.com/lsh123/xmlsec/blob/master/Copyright>XMLSec Copyright</a>";
 
+#ifdef PDF_SIGN
     strCopyRight += "<br><br><b>QPDF</b>";
     strCopyRight += "<br>- https://github.com/qpdf/qpdf";
-    strCopyRight += "<br>- <a href=https://github.com/qpdf/qpdf?tab=Apache-2.0-1-ov-file>Apache 2.0 License"
-                    "</a>";
+    strCopyRight += "<br>- <a href=https://github.com/qpdf/qpdf?tab=Apache-2.0-1-ov-file>Apache 2.0 License</a>";
+#endif
 
     mCopyRightText->setText( strCopyRight );
 }

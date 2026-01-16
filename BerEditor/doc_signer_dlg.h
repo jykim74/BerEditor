@@ -131,6 +131,7 @@ private slots:
     void changeXML_Data();
     void changeXML_Res();
 
+#ifdef PDF_SIGN
     void checkPDFSign();
     void checkPDFEnc();
 
@@ -146,6 +147,7 @@ private slots:
     void clickPDF_ViewCMS();
     void clickPDF_Make();
     void clickPDF_Verify();
+#endif
 
 private:
     void initUI();

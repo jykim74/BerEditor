@@ -115,6 +115,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
+#ifdef PDF_SIGN
     connect( mPDFGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickPDF_GetInfo()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
@@ -123,6 +124,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mPDFSignCheck, SIGNAL(clicked()), this, SLOT(checkPDFSign()));
     connect( mPDFEncCheck, SIGNAL(clicked()), this, SLOT(checkPDFEnc()));
     connect( mPDFViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ViewCMS()));
+#else
+    mTabSigner->removeTab( kIndexPDF );
+#endif
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -270,8 +274,10 @@ void DocSignerDlg::clickClearAll()
     mXMLDataText->clear();
     mXMLResText->clear();
 
+#ifdef PDF_SIGN
     clickPDF_ClearInfo();
     mPDFPasswdText->clear();
+#endif
 }
 
 void DocSignerDlg::checkCMSEncode()
@@ -698,8 +704,10 @@ void DocSignerDlg::initialize()
     changeCMSCmd();
     checkUseTSP();
 
+#ifdef PDF_SIGN
     mPDFSignCheck->setChecked(true);
     checkPDFSign();
+#endif
 
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
     checkUseCertMan();
@@ -2828,6 +2836,9 @@ end :
     JS_BIN_reset( &binXML );
 }
 
+
+#ifdef PDF_SIGN
+
 void DocSignerDlg::checkPDFSign()
 {
     mPDFMakeBtn->setText( tr("Make") );
@@ -3557,3 +3568,4 @@ void DocSignerDlg::clickPDF_Decrypt()
 
     return;
 }
+#endif // PDF_SIGN
