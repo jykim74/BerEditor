@@ -198,7 +198,8 @@ void AboutDlg::showCopyright()
 
     strCopyRight += "<br><br><b>QPDF</b>";
     strCopyRight += "<br>- https://github.com/qpdf/qpdf";
-    strCopyRight += "<br>- <a href=https://github.com/qpdf/qpdf?tab=Apache-2.0-1-ov-file>Apache 2.0 License</a>";
+    strCopyRight += "<br>- <a href=https://github.com/qpdf/qpdf?tab=Apache-2.0-1-ov-file>Apache 2.0 License"
+                    "</a>";
 
     mCopyRightText->setText( strCopyRight );
 }
