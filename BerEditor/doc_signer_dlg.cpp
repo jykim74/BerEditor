@@ -269,6 +269,9 @@ void DocSignerDlg::clickClearAll()
     mXMLBodyText->clear();
     mXMLDataText->clear();
     mXMLResText->clear();
+
+    clickPDF_ClearInfo();
+    mPDFPasswdText->clear();
 }
 
 void DocSignerDlg::checkCMSEncode()
@@ -2860,21 +2863,12 @@ void DocSignerDlg::clickPDF_ViewCMS()
         return;
     }
 
-    if( JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str() ) )
-    {
-        berApplet->log( "Entrypted" );
-    }
-    else
-    {
-        berApplet->log( "Not Encrypted" );
-    }
-
     ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
     if( ret != JSR_OK )
     {
+        berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
         goto end;
     }
-
 
     cmsInfo.setCMS( &binCMS );
     cmsInfo.exec();

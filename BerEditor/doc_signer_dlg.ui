@@ -1959,8 +1959,16 @@
   <tabstop>mCMSSrcTypeBtn</tabstop>
   <tabstop>mUseTSPCheck</tabstop>
   <tabstop>mTSPBtn</tabstop>
-  <tabstop>mCMSSrcLenText</tabstop>
   <tabstop>mCMSSrcText</tabstop>
+  <tabstop>mCMSFlagGroup</tabstop>
+  <tabstop>mCMSFlagNOCERTSCheck</tabstop>
+  <tabstop>mCMSFlagNOSIGSCheck</tabstop>
+  <tabstop>mCMSFlagNOCHAINCheck</tabstop>
+  <tabstop>mCMSFlagNOINTERNCheck</tabstop>
+  <tabstop>mCMSFlagNOVERIFYCheck</tabstop>
+  <tabstop>mCMSFlagDETACHEDCheck</tabstop>
+  <tabstop>mCMSFlagBINARYCheck</tabstop>
+  <tabstop>mCMSFlagNOATTRCheck</tabstop>
   <tabstop>mCMSEncodeRadio</tabstop>
   <tabstop>mCMSDecodeRadio</tabstop>
   <tabstop>mCMSCmdCombo</tabstop>
@@ -1971,14 +1979,10 @@
   <tabstop>mCMSOutputDecodeBtn</tabstop>
   <tabstop>mCMSOutputViewBtn</tabstop>
   <tabstop>mCMSOutputTypeBtn</tabstop>
-  <tabstop>mCMSCmdNameText</tabstop>
   <tabstop>mCMSExportBtn</tabstop>
   <tabstop>mCMSOutputUpBtn</tabstop>
-  <tabstop>mCMSOutputLenText</tabstop>
-  <tabstop>mCMSOutputText</tabstop>
   <tabstop>mJSONPayloadClearBtn</tabstop>
   <tabstop>mJSONPayloadViewBtn</tabstop>
-  <tabstop>mJSONPayloadLenText</tabstop>
   <tabstop>mJSONPayloadText</tabstop>
   <tabstop>mJSONCheckObjectBtn</tabstop>
   <tabstop>mJSONComputeSignatureBtn</tabstop>
@@ -1987,13 +1991,9 @@
   <tabstop>mJSON_JWSViewBtn</tabstop>
   <tabstop>mJSON_ExportBtn</tabstop>
   <tabstop>mJSON_JWSUpBtn</tabstop>
-  <tabstop>mJSON_JWSLenText</tabstop>
-  <tabstop>mJSON_JWSText</tabstop>
   <tabstop>mXMLBodyClearBtn</tabstop>
-  <tabstop>mXMLBodyLenText</tabstop>
   <tabstop>mXMLBodyText</tabstop>
   <tabstop>mXMLDataText</tabstop>
-  <tabstop>mXMLDataLenText</tabstop>
   <tabstop>mXMLCheckBodyBtn</tabstop>
   <tabstop>mXMLSignCheck</tabstop>
   <tabstop>mXMLEncryptCheck</tabstop>
@@ -2002,8 +2002,19 @@
   <tabstop>mXMLResClearBtn</tabstop>
   <tabstop>mXMLExportBtn</tabstop>
   <tabstop>mXMLResUpBtn</tabstop>
-  <tabstop>mXMLResLenText</tabstop>
-  <tabstop>mXMLResText</tabstop>
+  <tabstop>mPDFInfoClearBtn</tabstop>
+  <tabstop>mPDFGetInfoBtn</tabstop>
+  <tabstop>mPDFInfoTable</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>mPDFPasswdText</tabstop>
+  <tabstop>mPDFUseTSPCheck</tabstop>
+  <tabstop>mPDF_TSPBtn</tabstop>
+  <tabstop>mPDFVerifyChainCheck</tabstop>
+  <tabstop>mPDFViewCMSBtn</tabstop>
+  <tabstop>mPDFSignCheck</tabstop>
+  <tabstop>mPDFEncCheck</tabstop>
+  <tabstop>mPDFMakeBtn</tabstop>
+  <tabstop>mPDFVerifyBtn</tabstop>
   <tabstop>mDstFileCheck</tabstop>
   <tabstop>mDstPathText</tabstop>
   <tabstop>mFindDstPathBtn</tabstop>

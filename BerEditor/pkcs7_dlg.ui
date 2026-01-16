@@ -987,7 +987,6 @@
   <tabstop>mSrcViewBtn</tabstop>
   <tabstop>mSrcTypeBtn</tabstop>
   <tabstop>mReadFileBtn</tabstop>
-  <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
   <tabstop>mCertGroup</tabstop>
   <tabstop>mCertPathText</tabstop>
@@ -1002,19 +1001,26 @@
   <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
+  <tabstop>mFlagGroup</tabstop>
+  <tabstop>mFlagNOCERTSCheck</tabstop>
+  <tabstop>mFlagNOSIGSCheck</tabstop>
+  <tabstop>mFlagNOCHAINCheck</tabstop>
+  <tabstop>mFlagNOINTERNCheck</tabstop>
+  <tabstop>mFlagNOVERIFYCheck</tabstop>
+  <tabstop>mFlagDETACHEDCheck</tabstop>
+  <tabstop>mFlagBINARYCheck</tabstop>
+  <tabstop>mFlagNOATTRCheck</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mAutoDetectCheck</tabstop>
+  <tabstop>mHashCombo</tabstop>
   <tabstop>mCipherCombo</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputDecodeBtn</tabstop>
   <tabstop>mOutputViewBtn</tabstop>
   <tabstop>mOutputTypeBtn</tabstop>
-  <tabstop>mOutputCmdText</tabstop>
   <tabstop>mExportBtn</tabstop>
   <tabstop>mOutputUpBtn</tabstop>
-  <tabstop>mOutputLenText</tabstop>
-  <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
