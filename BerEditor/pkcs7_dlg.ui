@@ -613,21 +613,21 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Certificate included in verification</string>
+        <string>CertMan certificate included in verification</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QCheckBox" name="mTrustListCheck">
        <property name="text">
-        <string>CertMan Trust List</string>
+        <string>Trust List</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
       <widget class="QCheckBox" name="mCAListCheck">
        <property name="text">
-        <string>CertMan CA List</string>
+        <string>CA List</string>
        </property>
       </widget>
      </item>
