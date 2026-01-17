@@ -1415,11 +1415,14 @@ void DocSignerDlg::clickCMSVerifySign()
         goto end;
     }
 
-#if 0
-    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, NULL, nFlags, &binData );
-#else
-    ret = JS_CMS_verifySignedData( &binSrc, &binCert, NULL, nFlags, NULL, NULL, &binData );
-#endif
+    ret = JS_CMS_verifySignedData(
+        &binSrc,
+        &binCert,
+        NULL,
+        nFlags,
+        mCMS_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        mCMSTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        &binData );
 
     if( binData.nLen > 0 )
     {
@@ -3402,11 +3405,15 @@ void DocSignerDlg::clickPDF_VerifySign()
         nVerifyChain = 0;
 
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
-#if 0
-    ret = JS_CMS_verifySignedData( &binCMS, &binCert, &binData, nFlags, &binOut );
-#else
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, nVerifyChain );
-#endif
+
+    ret = JS_PDF_verifyCMS(
+        &binData,
+        &binCert,
+        &binCMS,
+        mPDF_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        mPDFTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        nVerifyChain );
+
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );

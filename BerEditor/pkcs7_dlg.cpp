@@ -640,7 +640,15 @@ void PKCS7Dlg::clickVerifyData()
         }
     }
 
-    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, NULL, nFlags, NULL, NULL, &binSrc );
+    ret = JS_PKCS7_verifySignedData(
+        &binCMS,
+        &binCert,
+        NULL,
+        nFlags,
+        mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        &binSrc );
+
     if( ret == JSR_VERIFY )
     {
         int nDataType = DATA_HEX;
