@@ -3037,7 +3037,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_unsigned.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        strDstPath = QString( "%1/%2_signed.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
         mDstPathText->setText( strDstPath );
     }
 
