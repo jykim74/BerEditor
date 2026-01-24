@@ -3065,6 +3065,26 @@ void DocSignerDlg::clickPDF_MakeSign()
         }
     }
 
+    ret = JS_PDF_getInfoFile(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.toStdString().c_str(),
+        &sInfo );
+
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "Invalid PDF file: %1" ).arg(JERR(ret)), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( sInfo.nCMS == 1 )
+    {
+        berApplet->warningBox( tr("This PDF is already signed"), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
@@ -3138,7 +3158,18 @@ void DocSignerDlg::clickPDF_MakeSign()
         goto end;
     }
 
-    JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+    if( bEncrypted )
+    {
+        BIN binEnc = {0,0};
+        JS_PDF_encrypt2( &binUnsigned, strPasswd.toStdString().c_str(), &binEnc );
+        JS_BIN_fileWrite( &binEnc, strDstPath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_reset( &binEnc );
+    }
+    else
+    {
+        JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+    }
+
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
 end :
@@ -3317,7 +3348,7 @@ end :
     JS_BIN_reset( &binSignedTSP );
 }
 
-void DocSignerDlg::clickPDF_VerifySign()
+void DocSignerDlg::clickPDF_VerifySignFile()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
@@ -3348,7 +3379,7 @@ void DocSignerDlg::clickPDF_VerifySign()
         return;
     }
 
-    /*
+
     bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
 
     if( bEncrypted )
@@ -3361,7 +3392,7 @@ void DocSignerDlg::clickPDF_VerifySign()
             return;
         }
     }
-    */
+
 
     ret = getCert( &binCert );
     if( ret != JSR_OK )
@@ -3425,6 +3456,142 @@ end :
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binOut );
+}
+
+void DocSignerDlg::clickPDF_VerifySign()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    BIN binPDF = {0,0};
+    BIN binCert = {0,0};
+    BIN binCMS = {0,0};
+    BIN binData = {0,0};
+    BIN binOut = {0,0};
+    QString strPasswd;
+
+    JByteRange  sRange;
+    JPDFInfo    sInfo;
+
+    int nVerifyChain = 0;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+    memset( &sInfo, 0x00, sizeof(sInfo));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
+
+    if( bEncrypted )
+    {
+        strPasswd = mPDFPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            mPDFPasswdText->setFocus();
+            return;
+        }
+    }
+
+    ret = JS_PDF_getInfoFile(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.toStdString().c_str(),
+        &sInfo );
+
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "Invalid PDF file: %1" ).arg(JERR(ret)), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( sInfo.nCMS == 0 )
+    {
+        berApplet->warningBox( tr( "This PDF is not signed" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = getCert( &binCert );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PDF_readPlain(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.toStdString().c_str(),
+        &binPDF );
+
+    ret = JS_PDF_getByteRange( &binPDF, &sRange );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    ret = JS_PDF_getCMS( &binPDF, &binCMS );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get CMS: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_getData( &binPDF, &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    if( mPDFVerifyChainCheck->isChecked() )
+        nVerifyChain = 1;
+    else
+        nVerifyChain = 0;
+
+    berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
+
+    ret = JS_PDF_verifyCMS(
+        &binData,
+        &binCert,
+        &binCMS,
+        mPDF_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        mPDFTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        nVerifyChain );
+
+
+    if( ret == JSR_VERIFY )
+        berApplet->messageBox( tr("Verify OK" ), this );
+    else
+        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binOut );
+    JS_BIN_reset( &binPDF );
 }
 
 void DocSignerDlg::clickPDF_ClearInfo()
