@@ -3145,7 +3145,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     }
 
 #ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 1 );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0 );
     berApplet->log( QString( "CMS Verify: %1").arg( ret ));
 #endif
 
