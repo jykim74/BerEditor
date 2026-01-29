@@ -146,6 +146,7 @@ private slots:
     void clickPDF_Decrypt();
 
     void clickPDF_ViewCMS();
+    void clickPDF_ExportCMS();
     void clickPDF_Make();
     void clickPDF_Verify();
 #endif

@@ -24,6 +24,7 @@
 #include "common.h"
 #include "settings_mgr.h"
 #include "export_dlg.h"
+#include "data_input_dlg.h"
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
 
@@ -586,6 +587,7 @@ void PKCS7Dlg::clickVerifyData()
     BIN binCert = {0,0};
     BIN binCMS = {0,0};
     BIN binSrc = {0,0};
+    BIN binData = {0,0};
 
     QString strCMS = mSrcText->toPlainText();
     QString strSrcType = mSrcTypeCombo->currentText();
@@ -630,7 +632,6 @@ void PKCS7Dlg::clickVerifyData()
 
         if( certMan.exec() == QDialog::Accepted )
         {
-            certMan.exec();
             certMan.getCert( &binCert );
         }
         else
@@ -640,10 +641,17 @@ void PKCS7Dlg::clickVerifyData()
         }
     }
 
+    if( nFlags & JS_PKCS7_FLAG_DETACHED )
+    {
+        DataInputDlg dataInput;
+        if( dataInput.exec() == QDialog::Accepted )
+            dataInput.getData( &binData );
+    }
+
     ret = JS_PKCS7_verifySignedData(
         &binCMS,
         &binCert,
-        NULL,
+        binData.nLen > 0 ? &binData : NULL,
         nFlags,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
@@ -677,6 +685,7 @@ end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binData );
 }
 
 void PKCS7Dlg::clickDevelopedData()

@@ -24,6 +24,7 @@
 #include "cms_info_dlg.h"
 #include "time_stamp_dlg.h"
 #include "export_dlg.h"
+#include "data_input_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -121,6 +122,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mPDFSignCheck, SIGNAL(clicked()), this, SLOT(checkPDFSign()));
     connect( mPDFEncCheck, SIGNAL(clicked()), this, SLOT(checkPDFEnc()));
     connect( mPDFViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ViewCMS()));
+    connect( mPDFExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ExportCMS()));
 #else
     mTabSigner->removeTab( kIndexPDF );
 #endif
@@ -1396,6 +1398,7 @@ void DocSignerDlg::clickCMSVerifySign()
     BIN binCert = {0,0};
     BIN binSrc = {0,0};
     BIN binData = {0,0};
+    BIN binInput = {0,0};
     int nFlags = getCMSFlags();
 
     ret = readCMSSrc( &binSrc );
@@ -1415,10 +1418,17 @@ void DocSignerDlg::clickCMSVerifySign()
         goto end;
     }
 
+    if( nFlags & JS_PKCS7_FLAG_DETACHED )
+    {
+        DataInputDlg dataInput;
+        if( dataInput.exec() == QDialog::Accepted )
+            dataInput.getData( &binInput );
+    }
+
     ret = JS_CMS_verifySignedData(
         &binSrc,
         &binCert,
-        NULL,
+        binInput.nLen > 0 ? &binInput : NULL,
         nFlags,
         mCMS_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mCMSTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
@@ -1457,6 +1467,7 @@ end:
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binInput );
 }
 
 void DocSignerDlg::clickCMSEnvelopedData()
@@ -2888,6 +2899,44 @@ end :
     JS_BIN_reset( &binCMS );
 }
 
+void DocSignerDlg::clickPDF_ExportCMS()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    BIN binCMS = {0,0};
+
+    ExportDlg exportDlg;
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    exportDlg.setPKCS7( &binCMS );
+    exportDlg.setName( fileInfo.baseName() );
+    exportDlg.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
+}
+
 void DocSignerDlg::clickPDF_Make()
 {
     if( mPDFSignCheck->isChecked() )
@@ -2983,6 +3032,22 @@ void DocSignerDlg::clickPDF_GetInfo()
 
     if( sInfo.nCMS == 1 )
     {
+        ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+        if( ret == JSR_OK )
+        {
+            QString strRange = QString( "[ %1 %2 %3 %4 ]" )
+            .arg( sRange.nFirstStart)
+                .arg( sRange.nFirstLen )
+                .arg( sRange.nSecondStart )
+                .arg( sRange.nSecondLen );
+
+            mPDFInfoTable->insertRow(i);
+            mPDFInfoTable->setRowHeight(i,10);
+            mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("ByteRange" )));
+            mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( strRange ));
+            i++;
+        }
+
         mPDFInfoTable->insertRow(i);
         mPDFInfoTable->setRowHeight(i,10);
         mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP" )));
@@ -2990,21 +3055,6 @@ void DocSignerDlg::clickPDF_GetInfo()
         i++;
     }
 
-    ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
-    if( ret == JSR_OK )
-    {
-        QString strRange = QString( "[ %1 %2 %3 %4 ]" )
-                               .arg( sRange.nFirstStart)
-                               .arg( sRange.nFirstLen )
-                               .arg( sRange.nSecondStart )
-                               .arg( sRange.nSecondLen );
-
-        mPDFInfoTable->insertRow(i);
-        mPDFInfoTable->setRowHeight(i,10);
-        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("ByteRange" )));
-        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( strRange ));
-        i++;
-    }
 
     berApplet->messageBox( tr("PDF information import complete"), this );
 }
@@ -3178,18 +3228,7 @@ void DocSignerDlg::clickPDF_MakeSign()
         goto end;
     }
 
-    if( bEncrypted )
-    {
-        BIN binEnc = {0,0};
-        JS_PDF_encrypt2( &binUnsigned, strPasswd.toStdString().c_str(), &binEnc );
-        JS_BIN_fileWrite( &binEnc, strDstPath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_reset( &binEnc );
-    }
-    else
-    {
-        JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
-    }
-
+    JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
 end :
@@ -3487,7 +3526,6 @@ void DocSignerDlg::clickPDF_VerifySign()
     BIN binCMS = {0,0};
     BIN binData = {0,0};
     BIN binOut = {0,0};
-    QString strPasswd;
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
@@ -3512,22 +3550,9 @@ void DocSignerDlg::clickPDF_VerifySign()
         return;
     }
 
-    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
-
-    if( bEncrypted )
-    {
-        strPasswd = mPDFPasswdText->text();
-        if( strPasswd.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a password"), this );
-            mPDFPasswdText->setFocus();
-            return;
-        }
-    }
-
     ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
-        strPasswd.toStdString().c_str(),
+        NULL,
         &sInfo );
 
     if( ret < 0 )
@@ -3553,10 +3578,11 @@ void DocSignerDlg::clickPDF_VerifySign()
 
     ret = JS_PDF_readPlain(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
-        strPasswd.toStdString().c_str(),
+        NULL,
         &binPDF );
 
-    ret = JS_PDF_getByteRange( &binPDF, &sRange );
+ //   ret = JS_PDF_getByteRange( &binPDF, &sRange );
+    ret = JS_PDF_findByteRange( &binPDF, &sRange );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );

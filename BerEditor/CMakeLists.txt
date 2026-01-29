@@ -227,6 +227,7 @@ add_executable(${PROJECT_NAME}
     time_stamp_dlg.h time_stamp_dlg.cpp time_stamp_dlg.ui
     ber_check_dlg.h ber_check_dlg.cpp ber_check_dlg.ui
     thread_work_dlg.h thread_work_dlg.cpp thread_work_dlg.ui
+    data_input_dlg.h data_input_dlg.cpp data_input_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

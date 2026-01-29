@@ -3772,6 +3772,10 @@ void MainWindow::save()
         {
             berApplet->messageBox( tr( "Saved to file [%1]").arg( file_path_ ), this);
         }
+        else
+        {
+            berApplet->warningBox( tr( "failed to save file: %1").arg( JERR(ret)), this );
+        }
     }
 }
 

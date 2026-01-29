@@ -1773,17 +1773,17 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="3">
-          <widget class="QCheckBox" name="mPDFVerifyChainCheck">
-           <property name="text">
-            <string>Verify Chain</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="mPDF_TSPBtn">
            <property name="text">
             <string>TSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mPDFVerifyChainCheck">
+           <property name="text">
+            <string>Verify Chain</string>
            </property>
           </widget>
          </item>
@@ -1811,6 +1811,13 @@
           <widget class="QPushButton" name="mPDFViewCMSBtn">
            <property name="text">
             <string>View CMS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mPDFExportCMSBtn">
+           <property name="text">
+            <string>Export CMS</string>
            </property>
           </widget>
          </item>
