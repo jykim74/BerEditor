@@ -2911,8 +2911,10 @@ void DocSignerDlg::clickPDF_GetInfo()
     QString strSrcPath = mSrcPathText->text();
     JPDFInfo    sInfo;
     QString strPasswd = mPDFPasswdText->text();
+    JByteRange sRange;
 
     memset( &sInfo, 0x00, sizeof(sInfo));
+    memset( &sRange, 0x00, sizeof(sRange));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2938,6 +2940,8 @@ void DocSignerDlg::clickPDF_GetInfo()
         berApplet->warningBox( tr( "failed to get PDF information: %1").arg(JERR(ret)), this);
         return;
     }
+
+
 
     mPDFInfoTable->setRowCount(0);
 
@@ -2983,6 +2987,22 @@ void DocSignerDlg::clickPDF_GetInfo()
         mPDFInfoTable->setRowHeight(i,10);
         mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP" )));
         mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nTSP ? "YES" : "NO" ) ));
+        i++;
+    }
+
+    ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+    if( ret == JSR_OK )
+    {
+        QString strRange = QString( "[ %1 %2 %3 %4 ]" )
+                               .arg( sRange.nFirstStart)
+                               .arg( sRange.nFirstLen )
+                               .arg( sRange.nSecondStart )
+                               .arg( sRange.nSecondLen );
+
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("ByteRange" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( strRange ));
         i++;
     }
 

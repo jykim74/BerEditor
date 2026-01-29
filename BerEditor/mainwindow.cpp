@@ -3729,52 +3729,72 @@ void MainWindow::viewSetDefault()
 
 void MainWindow::save()
 {
+    int ret = 0;
     if( file_path_.isEmpty() || file_path_ == "" )
     {
         saveAs();
     }
     else
     {
+        QFileInfo fileInfo( file_path_ );
+
+
         if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
         {
-            QString strFileName = ttlv_model_->saveNode();
-            if( strFileName.length() > 0 )
+            if( fileInfo.exists() == true )
             {
-                file_path_ = strFileName;
-                setTitle( file_path_ );
+                if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as TTLV file?").arg(file_path_), this ) == 0)
+                {
+                    return;
+                }
             }
+
+            const BIN& binTTLV = ttlv_model_->getTTLV();
+            ret = JS_BIN_fileWrite( &binTTLV, file_path_.toLocal8Bit().toStdString().c_str() );
+            setTitle( file_path_ );
         }
         else
         {
-            if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
+            if( fileInfo.exists() == true )
             {
-                return;
+                if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
+                {
+                    return;
+                }
             }
 
             const BIN& binBer = ber_model_->getBER();
-            JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
             setTitle( file_path_ );
+        }
+
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Saved to file [%1]").arg( file_path_ ), this);
         }
     }
 }
 
 void MainWindow::saveAs()
 {
+    QString strPath;
     QString strFileName;
+    int nType = JS_FILE_TYPE_BER;
 
     if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        strFileName = ttlv_model_->saveNode();
+        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     }
     else
     {
-        strFileName = ber_model_->SaveNode();
+        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
     }
 
     if( strFileName.length() > 0 )
     {
         file_path_ = strFileName;
         setTitle( file_path_ );
+        save();
     }
 }
 
