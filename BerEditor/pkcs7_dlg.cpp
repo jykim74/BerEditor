@@ -641,7 +641,7 @@ void PKCS7Dlg::clickVerifyData()
         }
     }
 
-    if( nFlags & JS_PKCS7_FLAG_DETACHED )
+    if( mFlagGroup->isChecked() && (nFlags & JS_PKCS7_FLAG_DETACHED) )
     {
         DataInputDlg dataInput;
         if( dataInput.exec() == QDialog::Accepted )

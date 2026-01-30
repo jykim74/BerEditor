@@ -118,23 +118,24 @@ void DataInputDlg::changeData()
     int nType = DATA_STRING;
     QString strData = mDataText->toPlainText();
 
-    if( strData.length() < 1 )
+    if( mHexCheck->isChecked() )
     {
-        if( mHexCheck->isChecked() )
-        {
-            nType = DATA_HEX;
+        nType = DATA_HEX;
+        if( strData.length() < 1 )
             mDataText->setPlaceholderText( tr( "Hex value" ));
-        }
-        else if( mBase64Check->isChecked() )
-        {
-            nType = DATA_BASE64;
-            mDataText->setPlaceholderText( tr( "Base64 or PEM value" ));
-        }
-        else if( mStringCheck->isChecked() )
-        {
-            nType = DATA_STRING;
+    }
+    else if( mBase64Check->isChecked() )
+    {
+        nType = DATA_BASE64;
+
+        if( strData.length() < 1 )
+            mDataText->setPlaceholderText( tr( "Base64 value" ));
+    }
+    else if( mStringCheck->isChecked() )
+    {
+        nType = DATA_STRING;
+        if( strData.length() < 1 )
             mDataText->setPlaceholderText( tr( "String value" ));
-        }
     }
 
     QString strLen = getDataLenString( nType, strData );

@@ -1418,7 +1418,7 @@ void DocSignerDlg::clickCMSVerifySign()
         goto end;
     }
 
-    if( nFlags & JS_PKCS7_FLAG_DETACHED )
+    if( mCMSFlagGroup->isChecked() && (nFlags & JS_PKCS7_FLAG_DETACHED) )
     {
         DataInputDlg dataInput;
         if( dataInput.exec() == QDialog::Accepted )
