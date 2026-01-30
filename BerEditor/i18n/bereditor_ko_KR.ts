@@ -7616,8 +7616,8 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="2970"/>
         <location filename="../doc_signer_dlg.cpp" line="3094"/>
         <location filename="../doc_signer_dlg.cpp" line="3264"/>
-        <location filename="../doc_signer_dlg.cpp" line="3380"/>
-        <location filename="../doc_signer_dlg.cpp" line="3450"/>
+        <location filename="../doc_signer_dlg.cpp" line="3384"/>
+        <location filename="../doc_signer_dlg.cpp" line="3469"/>
         <source>find a source pdf</source>
         <translation>소스 PDF를 찾으세요</translation>
     </message>
@@ -7627,8 +7627,8 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="2978"/>
         <location filename="../doc_signer_dlg.cpp" line="3102"/>
         <location filename="../doc_signer_dlg.cpp" line="3272"/>
-        <location filename="../doc_signer_dlg.cpp" line="3388"/>
-        <location filename="../doc_signer_dlg.cpp" line="3458"/>
+        <location filename="../doc_signer_dlg.cpp" line="3392"/>
+        <location filename="../doc_signer_dlg.cpp" line="3477"/>
         <source>There is no file</source>
         <translation>파일이 없습니다</translation>
     </message>
@@ -7643,15 +7643,15 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3117"/>
-        <location filename="../doc_signer_dlg.cpp" line="3418"/>
-        <location filename="../doc_signer_dlg.cpp" line="3481"/>
+        <location filename="../doc_signer_dlg.cpp" line="3434"/>
+        <location filename="../doc_signer_dlg.cpp" line="3500"/>
         <source>The target file already exists. Do you want to continue?</source>
         <translation>대상 파일이 이미 존재 합니다. 계속 하겠습니까?</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3132"/>
-        <location filename="../doc_signer_dlg.cpp" line="3396"/>
-        <location filename="../doc_signer_dlg.cpp" line="3466"/>
+        <location filename="../doc_signer_dlg.cpp" line="3400"/>
+        <location filename="../doc_signer_dlg.cpp" line="3485"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
@@ -7661,32 +7661,48 @@ mailto : jykim74@gmail.com</translation>
         <translation>이 PDF 는 서명 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3404"/>
+        <location filename="../doc_signer_dlg.cpp" line="3408"/>
+        <location filename="../doc_signer_dlg.cpp" line="3511"/>
+        <source> failed to get PDF information: %1</source>
+        <translation>PDF 정보 가져오기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="3414"/>
         <source>It&apos;s already encrypted</source>
         <translation>이미 암호화 되어 있습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3432"/>
+        <location filename="../doc_signer_dlg.cpp" line="3420"/>
+        <source>There is an electronic signature. Encryption will result in a signature mismatch. Would you like to continue?</source>
+        <translation>전자서명이 있습니다. 암호화는 서명 값이 맞지 않게 됩니다. 계속 하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="3448"/>
         <source>PDF encryption successful</source>
         <translation>PDF 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3436"/>
+        <location filename="../doc_signer_dlg.cpp" line="3452"/>
         <source>PDF encryption failed: %1</source>
         <translation>PDF 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3492"/>
+        <location filename="../doc_signer_dlg.cpp" line="3517"/>
         <source>It is not encrypted</source>
         <translation>암호화 되어 있지 않습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3502"/>
+        <location filename="../doc_signer_dlg.cpp" line="3523"/>
+        <source>There is an electronic signature. Decryption will result in a signature mismatch. Would you like to continue?</source>
+        <translation>전자서명이 있습니다. 복호화는 서명 값이 맞지 않게 됩니다. 계속 하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="3533"/>
         <source>PDF decryption successful</source>
         <translation>PDF 복호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3506"/>
+        <location filename="../doc_signer_dlg.cpp" line="3537"/>
         <source>PDF decryption failed: %1</source>
         <translation>PDF 복호화 실패: %1</translation>
     </message>

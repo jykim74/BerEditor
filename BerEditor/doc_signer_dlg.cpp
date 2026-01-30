@@ -3375,6 +3375,10 @@ void DocSignerDlg::clickPDF_Encrypt()
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
 
+    JPDFInfo sInfo;
+
+    memset( &sInfo, 0x00, sizeof(sInfo));
+
     if( strSrcPath.length() < 1 )
     {
         berApplet->warningBox( tr( "find a source pdf" ), this );
@@ -3398,11 +3402,23 @@ void DocSignerDlg::clickPDF_Encrypt()
         return;
     }
 
-    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
-    if( bEncrypted )
+    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo );
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr(" failed to get PDF information: %1").arg( JERR(ret)), this );
+        return;
+    }
+
+    if( sInfo.nEncrypted )
     {
         berApplet->warningBox( tr("It's already encrypted"), this );
         return;
+    }
+
+    if( sInfo.nCMS )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("There is an electronic signature. Encryption will result in a signature mismatch. Would you like to continue?"), this, false );
+        if( bVal == false ) return;
     }
 
     if( strDstPath.length() < 1 )
@@ -3444,6 +3460,9 @@ void DocSignerDlg::clickPDF_Decrypt()
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
+    JPDFInfo sInfo;
+
+    memset( &sInfo, 0x00, sizeof(sInfo));
 
     if( strSrcPath.length() < 1 )
     {
@@ -3486,11 +3505,23 @@ void DocSignerDlg::clickPDF_Decrypt()
         }
     }
 
-    bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());;
-    if( bEncrypted == false )
+    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo );
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr(" failed to get PDF information: %1").arg( JERR(ret)), this );
+        return;
+    }
+
+    if( sInfo.nEncrypted == false )
     {
         berApplet->warningBox( tr("It is not encrypted"), this );
         return;
+    }
+
+    if( sInfo.nCMS )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("There is an electronic signature. Decryption will result in a signature mismatch. Would you like to continue?"), this, false );
+        if( bVal == false ) return;
     }
 
     ret = JS_PDF_decryptFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
