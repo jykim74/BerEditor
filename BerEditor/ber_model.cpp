@@ -10,6 +10,7 @@
 #include <QTreeView>
 #include <QWidget>
 #include <QHeaderView>
+#include <QStandardItemModel>
 
 
 #include "ber_item.h"
@@ -19,12 +20,20 @@
 #include "ber_applet.h"
 #include "common.h"
 #include "js_pki.h"
+#include "js_pki_tools.h"
 #include "mainwindow.h"
 #include "ber_tree_view.h"
 #include "edit_value_dlg.h"
 #include "make_ber_dlg.h"
 
-#include <QStandardItemModel>
+#include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
+#include "csr_info_dlg.h"
+#include "pri_key_info_dlg.h"
+#include "cms_info_dlg.h"
+#include "passwd_dlg.h"
+
+
 
 BerModel::BerModel( QObject *parent )
     : QStandardItemModel (parent)
@@ -984,6 +993,97 @@ void BerModel::InsertBER()
 
 end:
     JS_BIN_reset( &binData );
+}
+
+void BerModel::ViewBER()
+{
+    int ret = 0;
+    BIN binNode = {0,0};
+
+    BerItem* item = tree_view_->currentItem();
+    if( item->isConstructed() == false ) return;
+
+    item->getNodeBin( &binBer_, &binNode );
+
+    ret = JS_PKI_getBERFormat( &binNode );
+    if( ret < 0 ) goto end;
+
+    if( ret == JS_PKI_BER_TYPE_CERTIFICATE )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binNode );
+        certInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_CRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binNode );
+        crlInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_CSR )
+    {
+        CSRInfoDlg csrInfo;
+        csrInfo.setReqBIN( &binNode );
+        csrInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_PUB_KEY )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binNode );
+        priKeyInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_PRI_KEY )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPrivateKey( &binNode );
+        priKeyInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_PRI_KEY_INFO )
+    {
+        BIN binPri = {0,0};
+        JS_PKI_decodePrivateKeyInfo( &binNode, &binPri );
+
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPrivateKey( &binPri );
+        priKeyInfo.exec();
+        JS_BIN_reset( &binPri );
+    }
+    else if( ret == JS_PKI_BER_TYPE_ENC_PRI_KEY )
+    {
+        PasswdDlg passDlg;
+        QString strPass;
+        BIN binPri = {0,0};
+        PriKeyInfoDlg priKeyInfo;
+
+        if( passDlg.exec() != QDialog::Accepted )
+            goto end;
+
+        strPass = passDlg.mPasswdText->text();
+
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binNode, NULL, &binPri );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key: %1").arg(ret), tree_view_);
+            goto end;
+        }
+
+        priKeyInfo.setPrivateKey( &binPri );
+        priKeyInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_CMS || ret == JS_PKI_BER_TYPE_PKCS7)
+    {
+        CMSInfoDlg cmsInfo;
+        cmsInfo.setCMS( &binNode );
+        cmsInfo.exec();
+    }
+
+    ret = JSR_OK;
+
+end :
+    if( ret < 0 )
+        berApplet->warningBox( tr( "Node does not support view: %1" ).arg(JERR(ret)), tree_view_ );
+
+    JS_BIN_reset( &binNode );
 }
 
 void BerModel::DeleteBER()

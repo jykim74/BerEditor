@@ -51,6 +51,7 @@ public slots:
     void EditValue();
     void InsertBER();
     void DeleteBER();
+    void ViewBER();
 
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );

@@ -741,10 +741,12 @@ void BerTreeView::ShowContextMenu(QPoint point)
         QAction *pInsertAct = NULL;
         QAction *pEditAct = NULL;
         QAction *pDeleteAct = NULL;
+        QAction *pViewAct = NULL;
 
         if( item->isConstructed() )
         {
             pInsertAct = menu.addAction( tr( "Insert node" ), tree_model, SLOT(InsertBER()));
+            pInsertAct = menu.addAction( tr( "View node"), tree_model, SLOT(ViewBER()));
         }
         else
         {
@@ -757,6 +759,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         if( berApplet->isLicense() == false )
         {
             if( pInsertAct != NULL ) pInsertAct->setEnabled( false );
+            if( pViewAct != NULL ) pViewAct->setEnabled( false );
             if( pEditAct != NULL ) pEditAct->setEnabled( false );
             if( pDeleteAct != NULL ) pDeleteAct->setEnabled( false );
         }

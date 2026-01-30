@@ -1444,50 +1444,60 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">BER 구조</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="846"/>
-        <location filename="../ber_model.cpp" line="866"/>
-        <location filename="../ber_model.cpp" line="885"/>
+        <location filename="../ber_model.cpp" line="855"/>
+        <location filename="../ber_model.cpp" line="875"/>
+        <location filename="../ber_model.cpp" line="894"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="937"/>
-        <location filename="../ber_model.cpp" line="998"/>
+        <location filename="../ber_model.cpp" line="946"/>
+        <location filename="../ber_model.cpp" line="1098"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="942"/>
+        <location filename="../ber_model.cpp" line="951"/>
         <source>Edit BER</source>
         <translation>BER 편집</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="956"/>
+        <location filename="../ber_model.cpp" line="965"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="962"/>
+        <location filename="../ber_model.cpp" line="971"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="981"/>
+        <location filename="../ber_model.cpp" line="990"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1004"/>
+        <location filename="../ber_model.cpp" line="1066"/>
+        <source>fail to decrypt private key: %1</source>
+        <translation>개인키 복호화 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1084"/>
+        <source>Node does not support view: %1</source>
+        <translation>이 노드는 보기를 지원 하지 않습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1104"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1008"/>
+        <location filename="../ber_model.cpp" line="1108"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1026"/>
+        <location filename="../ber_model.cpp" line="1126"/>
         <source>failed to delete: %1</source>
         <translation>삭제에 실패 했습니다: %1</translation>
     </message>
@@ -1529,22 +1539,27 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="747"/>
+        <location filename="../ber_tree_view.cpp" line="748"/>
         <source>Insert node</source>
         <translation>노드 입력</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="751"/>
+        <location filename="../ber_tree_view.cpp" line="749"/>
+        <source>View node</source>
+        <translation>노드 보기</translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="753"/>
         <source>Edit node</source>
         <translation>노드 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="755"/>
+        <location filename="../ber_tree_view.cpp" line="757"/>
         <source>Delete node</source>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="767"/>
+        <location filename="../ber_tree_view.cpp" line="770"/>
         <source>Expand node</source>
         <translation>노드 확장</translation>
     </message>
@@ -1565,7 +1580,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="836"/>
+        <location filename="../ber_tree_view.cpp" line="839"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
@@ -6846,17 +6861,21 @@ mailto : jykim74@gmail.com</translation>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../data_input_dlg.cpp" line="126"/>
+        <location filename="../data_input_dlg.cpp" line="125"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../data_input_dlg.cpp" line="131"/>
-        <source>Base64 or PEM value</source>
-        <translation>Base64 또는 PEM 값</translation>
+        <location filename="../data_input_dlg.cpp" line="132"/>
+        <source>Base64 value</source>
+        <translation>베이스64 값</translation>
     </message>
     <message>
-        <location filename="../data_input_dlg.cpp" line="136"/>
+        <source>Base64 or PEM value</source>
+        <translation type="vanished">Base64 또는 PEM 값</translation>
+    </message>
+    <message>
+        <location filename="../data_input_dlg.cpp" line="138"/>
         <source>String value</source>
         <translation>문자 값</translation>
     </message>
@@ -7559,8 +7578,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="2122"/>
-        <location filename="../doc_signer_dlg.cpp" line="3459"/>
-        <location filename="../doc_signer_dlg.cpp" line="3575"/>
+        <location filename="../doc_signer_dlg.cpp" line="3299"/>
         <source>failed to get public key: %1</source>
         <translation>공개키 가져오기 실패: %1</translation>
     </message>
@@ -7597,11 +7615,9 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="2912"/>
         <location filename="../doc_signer_dlg.cpp" line="2970"/>
         <location filename="../doc_signer_dlg.cpp" line="3094"/>
-        <location filename="../doc_signer_dlg.cpp" line="3268"/>
-        <location filename="../doc_signer_dlg.cpp" line="3428"/>
-        <location filename="../doc_signer_dlg.cpp" line="3540"/>
-        <location filename="../doc_signer_dlg.cpp" line="3656"/>
-        <location filename="../doc_signer_dlg.cpp" line="3726"/>
+        <location filename="../doc_signer_dlg.cpp" line="3264"/>
+        <location filename="../doc_signer_dlg.cpp" line="3380"/>
+        <location filename="../doc_signer_dlg.cpp" line="3450"/>
         <source>find a source pdf</source>
         <translation>소스 PDF를 찾으세요</translation>
     </message>
@@ -7610,11 +7626,9 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="2920"/>
         <location filename="../doc_signer_dlg.cpp" line="2978"/>
         <location filename="../doc_signer_dlg.cpp" line="3102"/>
-        <location filename="../doc_signer_dlg.cpp" line="3276"/>
-        <location filename="../doc_signer_dlg.cpp" line="3436"/>
-        <location filename="../doc_signer_dlg.cpp" line="3548"/>
-        <location filename="../doc_signer_dlg.cpp" line="3664"/>
-        <location filename="../doc_signer_dlg.cpp" line="3734"/>
+        <location filename="../doc_signer_dlg.cpp" line="3272"/>
+        <location filename="../doc_signer_dlg.cpp" line="3388"/>
+        <location filename="../doc_signer_dlg.cpp" line="3458"/>
         <source>There is no file</source>
         <translation>파일이 없습니다</translation>
     </message>
@@ -7629,53 +7643,50 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3117"/>
-        <location filename="../doc_signer_dlg.cpp" line="3293"/>
-        <location filename="../doc_signer_dlg.cpp" line="3694"/>
-        <location filename="../doc_signer_dlg.cpp" line="3757"/>
+        <location filename="../doc_signer_dlg.cpp" line="3418"/>
+        <location filename="../doc_signer_dlg.cpp" line="3481"/>
         <source>The target file already exists. Do you want to continue?</source>
         <translation>대상 파일이 이미 존재 합니다. 계속 하겠습니까?</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3132"/>
-        <location filename="../doc_signer_dlg.cpp" line="3308"/>
-        <location filename="../doc_signer_dlg.cpp" line="3449"/>
-        <location filename="../doc_signer_dlg.cpp" line="3672"/>
-        <location filename="../doc_signer_dlg.cpp" line="3742"/>
+        <location filename="../doc_signer_dlg.cpp" line="3396"/>
+        <location filename="../doc_signer_dlg.cpp" line="3466"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3567"/>
+        <location filename="../doc_signer_dlg.cpp" line="3291"/>
         <source>This PDF is not signed</source>
         <translation>이 PDF 는 서명 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3680"/>
+        <location filename="../doc_signer_dlg.cpp" line="3404"/>
         <source>It&apos;s already encrypted</source>
         <translation>이미 암호화 되어 있습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3708"/>
+        <location filename="../doc_signer_dlg.cpp" line="3432"/>
         <source>PDF encryption successful</source>
         <translation>PDF 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3712"/>
+        <location filename="../doc_signer_dlg.cpp" line="3436"/>
         <source>PDF encryption failed: %1</source>
         <translation>PDF 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3768"/>
+        <location filename="../doc_signer_dlg.cpp" line="3492"/>
         <source>It is not encrypted</source>
         <translation>암호화 되어 있지 않습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3778"/>
+        <location filename="../doc_signer_dlg.cpp" line="3502"/>
         <source>PDF decryption successful</source>
         <translation>PDF 복호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3782"/>
+        <location filename="../doc_signer_dlg.cpp" line="3506"/>
         <source>PDF decryption failed: %1</source>
         <translation>PDF 복호화 실패: %1</translation>
     </message>
@@ -7717,7 +7728,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3145"/>
-        <location filename="../doc_signer_dlg.cpp" line="3560"/>
+        <location filename="../doc_signer_dlg.cpp" line="3284"/>
         <source>Invalid PDF file: %1</source>
         <translation>유효하지 않는 PDF 파일: %1</translation>
     </message>
@@ -7733,8 +7744,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3173"/>
-        <location filename="../doc_signer_dlg.cpp" line="3466"/>
-        <location filename="../doc_signer_dlg.cpp" line="3588"/>
+        <location filename="../doc_signer_dlg.cpp" line="3312"/>
         <source>failed to get byte range: %1</source>
         <translation>바이트 범위 얻기 실패: %1</translation>
     </message>
@@ -7745,8 +7755,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3193"/>
-        <location filename="../doc_signer_dlg.cpp" line="3488"/>
-        <location filename="../doc_signer_dlg.cpp" line="3610"/>
+        <location filename="../doc_signer_dlg.cpp" line="3334"/>
         <source>failed to get body: %1</source>
         <translation>바디 가져오기 실패: %1</translation>
     </message>
@@ -7757,24 +7766,20 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="3232"/>
-        <location filename="../doc_signer_dlg.cpp" line="3392"/>
         <source>PDF signing was successful</source>
         <translation>PDF 서명에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3399"/>
         <source>PDF signing failed: %1</source>
-        <translation>PDF 서명 실패: %1</translation>
+        <translation type="vanished">PDF 서명 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3479"/>
-        <location filename="../doc_signer_dlg.cpp" line="3601"/>
+        <location filename="../doc_signer_dlg.cpp" line="3325"/>
         <source>failed to get CMS: %1</source>
         <translation>CMS 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="3511"/>
-        <location filename="../doc_signer_dlg.cpp" line="3633"/>
+        <location filename="../doc_signer_dlg.cpp" line="3357"/>
         <source>failed to verify CMS: %1</source>
         <translation>CMS 검증 실패: %1</translation>
     </message>
@@ -7816,8 +7821,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="1459"/>
         <location filename="../doc_signer_dlg.cpp" line="2142"/>
-        <location filename="../doc_signer_dlg.cpp" line="3509"/>
-        <location filename="../doc_signer_dlg.cpp" line="3631"/>
+        <location filename="../doc_signer_dlg.cpp" line="3355"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>

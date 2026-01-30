@@ -62,6 +62,7 @@ public:
     int changeLength( int nNewLen, int *pnDiffLen );
     int getHeaderBin( BIN *pHeader );
     int getValueBin( const BIN *pBer, BIN *pValue );
+    int getNodeBin( const BIN *pBer, BIN *pNode );
 
 
 public:

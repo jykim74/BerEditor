@@ -475,6 +475,14 @@ int BerItem::getValueBin( const BIN *pBer, BIN *pValue )
     return 0;
 }
 
+int BerItem::getNodeBin( const BIN *pBer, BIN *pNode )
+{
+    if( pBer == NULL || pNode == NULL ) return -1;
+
+    JS_BIN_set( pNode, pBer->pVal + offset_, header_size_ + length_ );
+    return 0;
+}
+
 bool BerItem::isConstructed()
 {
     BYTE cTag = header_[0];
