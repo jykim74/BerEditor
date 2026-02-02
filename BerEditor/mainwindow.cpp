@@ -3738,31 +3738,14 @@ void MainWindow::save()
     {
         QFileInfo fileInfo( file_path_ );
 
-
         if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
         {
-            if( fileInfo.exists() == true )
-            {
-                if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as TTLV file?").arg(file_path_), this ) == 0)
-                {
-                    return;
-                }
-            }
-
             const BIN& binTTLV = ttlv_model_->getTTLV();
             ret = JS_BIN_fileWrite( &binTTLV, file_path_.toLocal8Bit().toStdString().c_str() );
             setTitle( file_path_ );
         }
         else
         {
-            if( fileInfo.exists() == true )
-            {
-                if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
-                {
-                    return;
-                }
-            }
-
             const BIN& binBer = ber_model_->getBER();
             ret = JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
             setTitle( file_path_ );
@@ -3796,6 +3779,15 @@ void MainWindow::saveAs()
 
     if( strFileName.length() > 0 )
     {
+        QFileInfo fileInfo( strFileName );
+        if( fileInfo.exists() == true )
+        {
+            if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 file?").arg(strFileName), this ) == false )
+            {
+                return;
+            }
+        }
+
         file_path_ = strFileName;
         setTitle( file_path_ );
         save();
