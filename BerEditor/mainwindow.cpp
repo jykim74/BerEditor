@@ -3747,7 +3747,8 @@ void MainWindow::save()
         else
         {
             const BIN& binBer = ber_model_->getBER();
-            ret = JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+//            ret = JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileUpdateBER( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
             setTitle( file_path_ );
         }
 
@@ -3764,23 +3765,26 @@ void MainWindow::save()
 
 void MainWindow::saveAs()
 {
-    QString strPath;
+    int ret = 0;
+
     QString strFileName;
     int nType = JS_FILE_TYPE_BER;
 
     if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, file_path_ );
     }
     else
     {
-        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+        strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, file_path_ );
     }
 
     if( strFileName.length() > 0 )
     {
         QFileInfo fileInfo( strFileName );
-        if( fileInfo.exists() == true )
+        bool bExist = fileInfo.exists();
+
+        if( bExist == true )
         {
             if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 file?").arg(strFileName), this ) == false )
             {
@@ -3788,9 +3792,31 @@ void MainWindow::saveAs()
             }
         }
 
-        file_path_ = strFileName;
-        setTitle( file_path_ );
-        save();
+        if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
+        {
+            const BIN& binTTLV = ttlv_model_->getTTLV();
+
+            ret = JS_BIN_fileWrite( &binTTLV, strFileName.toLocal8Bit().toStdString().c_str() );
+        }
+        else
+        {
+            const BIN& binBer = ber_model_->getBER();
+            if( file_path_ == strFileName )
+                ret = JS_BIN_fileUpdateBER( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+            else
+                ret = JS_BIN_fileWrite( &binBer, strFileName.toLocal8Bit().toStdString().c_str() );
+        }
+
+        if( ret > 0 )
+        {
+            file_path_ = strFileName;
+            setTitle( strFileName );
+            berApplet->messageBox( tr( "Saved to file [%1]").arg( strFileName ), this);
+        }
+        else
+        {
+            berApplet->warningBox( tr( "failed to save file: %1").arg( JERR(ret)), this );
+        }
     }
 }
 
