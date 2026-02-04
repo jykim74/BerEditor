@@ -26,6 +26,7 @@ public:
 
 private slots:
     void clickGet();
+    void clickFree();
     void clickUpdate();
     void clickRemove();
     void checkUseFile();
@@ -36,6 +37,7 @@ private:
     QString getLicenseURI();
     void initialize();
     int getLCN( const QString& strEmail, const QString& strKey, BIN *pLCN, QString& strError );
+    int getFreeLCN( const QString& strEmail, BIN *pLCN, QString& strError );
     int updateLCN( const QString strEmail, const QString strKey, BIN *pLCN, QString& strError );
     void settingsLCN( const QString strSID, const BIN *pLCN );
 
