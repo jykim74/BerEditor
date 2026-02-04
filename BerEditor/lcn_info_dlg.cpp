@@ -42,7 +42,6 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     mMessageTab->layout()->setMargin(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-    mLCNRequestBtn->setDefault(true);
 }
 
 LCNInfoDlg::~LCNInfoDlg()
