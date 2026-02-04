@@ -521,15 +521,16 @@ void LCNInfoDlg::clickFree()
 
     memset( &sInfo, 0x00, sizeof(sInfo));
 
-    bool bVal = berApplet->yesOrCancelBox( tr("Would you like to request a free license?"), this, true );
-    if( bVal == false ) return;
-
     if( strEmail.length() <= 0 )
     {
-        berApplet->warningBox( tr( "Enter a email" ), this );
+        berApplet->warningBox( tr( "An email address is required to issue a free license." ), this );
         mEmailText->setFocus();
         return;
     }
+
+    bool bVal = berApplet->yesOrCancelBox( tr("Would you like to request a free license?"), this, true );
+    if( bVal == false ) return;
+
 
     ret = getFreeLCN( strEmail, &binLCN, strErr );
     if( ret != 0 )
