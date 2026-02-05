@@ -1051,6 +1051,8 @@ void PKCS7Dlg::clickSrcView()
 
     int nCMSType = -1;
     QString strCMS = mSrcText->toPlainText();
+    QString strType = mSrcTypeCombo->currentText();
+
     CMSInfoDlg cmsInfo;
 //    cmsInfo.setPKCS7();
 
@@ -1061,7 +1063,7 @@ void PKCS7Dlg::clickSrcView()
         return;
     }
 
-    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, strType, strCMS );
     FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
@@ -1101,6 +1103,7 @@ void PKCS7Dlg::clickSrcType()
 
     int nCMSType = -1;
     QString strCMS = mSrcText->toPlainText();
+    QString strType = mSrcTypeCombo->currentText();
 
     if( strCMS.isEmpty() )
     {
@@ -1109,7 +1112,7 @@ void PKCS7Dlg::clickSrcType()
         return;
     }
 
-    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, strType, strCMS );
     FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
