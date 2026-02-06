@@ -3089,8 +3089,11 @@ void DocSignerDlg::clickPDF_MakeSign()
     BIN binSignedTSP = {0,0};
     JPDFInfo sInfo;
 
+    JCertInfo sCertInfo;
+
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
     if( strSrcPath.length() < 1 )
     {
@@ -3157,11 +3160,16 @@ void DocSignerDlg::clickPDF_MakeSign()
         return;
     }
 
+    ret = getPriKeyCert( &binPri, &binCert );
+    if( ret != 0 ) goto end;
+
+    JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
 
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         now_t,
+        sCertInfo.pSubjectName,
         &binUnsigned );
 
     if( ret != JSR_OK )
@@ -3199,8 +3207,7 @@ void DocSignerDlg::clickPDF_MakeSign()
 
     berApplet->log( QString( "PDF Data[Len:%1]: %2").arg( binData.nLen).arg( getHexString( &binData )));
 
-    ret = getPriKeyCert( &binPri, &binCert );
-    if( ret != 0 ) goto end;
+
 
     ret = JS_PDF_makeCMS( &binData, &binPri, &binCert, &binCMS );
 
@@ -3242,6 +3249,7 @@ end :
     JS_BIN_reset( &binTSP );
     JS_BIN_reset( &binSignedTSP );
     JS_BIN_reset( &binUnsigned );
+    JS_PKI_resetCertInfo( &sCertInfo );
 }
 
 void DocSignerDlg::clickPDF_VerifySign()
