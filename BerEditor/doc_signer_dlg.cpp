@@ -200,7 +200,7 @@ void DocSignerDlg::dropEvent(QDropEvent *event)
             {
                 int index = mTabSigner->currentIndex();
 
-                if( index == 0 ) // For CMS
+                if( index == kIndexCMS ) // For CMS
                 {
                     if( mCMSDecodeRadio->isChecked() == true )
                     {
@@ -221,7 +221,7 @@ void DocSignerDlg::dropEvent(QDropEvent *event)
                     mCMSSrcTypeCombo->setCurrentText( kDataHex );
                     mCMSSrcText->setPlainText( getHexString( &binData) );
                 }
-                else if( index == 1 ) // For JWS
+                else if( index == kIndexJSON ) // For JWS
                 {
                     JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
                     JS_BIN_string( &binData, &pString );
@@ -235,7 +235,7 @@ void DocSignerDlg::dropEvent(QDropEvent *event)
 
                     mJSONPayloadText->setPlainText( pString );
                 }
-                else if( index == 2 ) // For XML
+                else if( index == kIndexXML ) // For XML
                 {
                     JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
                     if( JS_XML_isValidXML( &binData ) != 1 )
@@ -246,6 +246,10 @@ void DocSignerDlg::dropEvent(QDropEvent *event)
 
                     JS_BIN_string( &binData, &pString );
                     mXMLBodyText->setPlainText( pString );
+                }
+                else if( index == kIndexPDF )
+                {
+                    mSrcPathText->setText( url.toLocalFile() );
                 }
             }
 
