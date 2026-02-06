@@ -612,32 +612,35 @@ void PKCS7Dlg::clickVerifyData()
         goto end;
     }
 
-    if( mCertGroup->isChecked() == true )
+    if( mCertCheck->isChecked() == true )
     {
-        QString strSignCertPath = mCertPathText->text();
-        if( strSignCertPath.isEmpty() )
+        if( mCertGroup->isChecked() == true )
         {
-            berApplet->warningBox(tr("Select a certificate" ), this );
-            mCertPathText->setFocus();
-            return;
-        }
+            QString strSignCertPath = mCertPathText->text();
+            if( strSignCertPath.isEmpty() )
+            {
+                berApplet->warningBox(tr("Select a certificate" ), this );
+                mCertPathText->setFocus();
+                return;
+            }
 
-        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a sign certificate") );
-
-        if( certMan.exec() == QDialog::Accepted )
-        {
-            certMan.getCert( &binCert );
+            JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
         }
         else
         {
-            bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
-            if( bVal == false ) return;
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a sign certificate") );
+
+            if( certMan.exec() == QDialog::Accepted )
+            {
+                certMan.getCert( &binCert );
+            }
+            else
+            {
+                bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
+                if( bVal == false ) return;
+            }
         }
     }
 

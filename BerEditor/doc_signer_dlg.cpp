@@ -1404,11 +1404,14 @@ void DocSignerDlg::clickCMSVerifySign()
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
 
-    ret = getCert( &binCert );
-    if( ret != 0 )
+    if( mCMS_CertCheck->isChecked() == true )
     {
-        bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
-        if( bVal == false ) goto end;
+        ret = getCert( &binCert );
+        if( ret != 0 )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("Would you like to continue without specifying a certificate?"), this, true );
+            if( bVal == false ) goto end;
+        }
     }
 
     ret = JS_CMS_getType( &binSrc );
@@ -3293,11 +3296,14 @@ void DocSignerDlg::clickPDF_VerifySign()
         return;
     }
 
-    ret = getCert( &binCert );
-    if( ret != JSR_OK )
+    if( mPDF_CertListCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
-        goto end;
+        ret = getCert( &binCert );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+            goto end;
+        }
     }
 
     ret = JS_PDF_readPlain(

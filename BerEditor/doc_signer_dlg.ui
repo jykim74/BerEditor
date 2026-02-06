@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>845</height>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,7 +178,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -505,27 +505,6 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mCMS_CAListCheck">
-           <property name="text">
-            <string>CA List</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QCheckBox" name="mCMSTrustListCheck">
-           <property name="text">
-            <string>TrustList</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>CertMan certificate included in verification</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_16">
            <property name="orientation">
@@ -538,6 +517,34 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mCMS_CAListCheck">
+           <property name="text">
+            <string>CA List</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>CertMan certificate included in verification</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QCheckBox" name="mCMSTrustListCheck">
+           <property name="text">
+            <string>TrustList</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mCMS_CertCheck">
+           <property name="text">
+            <string>Certificate</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1875,17 +1882,17 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mPDF_CAListCheck">
+         <item row="0" column="4">
+          <widget class="QCheckBox" name="mPDFTrustListCheck">
            <property name="text">
-            <string>CA List</string>
+            <string>TrustList</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QCheckBox" name="mPDFTrustListCheck">
+          <widget class="QCheckBox" name="mPDF_CAListCheck">
            <property name="text">
-            <string>TrustList</string>
+            <string>CA List</string>
            </property>
           </widget>
          </item>
@@ -1908,6 +1915,13 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mPDF_CertListCheck">
+           <property name="text">
+            <string>Certificate</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
