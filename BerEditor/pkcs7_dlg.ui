@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>628</width>
-    <height>791</height>
+    <height>626</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1065,6 +1065,9 @@
   <tabstop>mFlagDETACHEDCheck</tabstop>
   <tabstop>mFlagBINARYCheck</tabstop>
   <tabstop>mFlagNOATTRCheck</tabstop>
+  <tabstop>mCertCheck</tabstop>
+  <tabstop>mCAListCheck</tabstop>
+  <tabstop>mTrustListCheck</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mAutoDetectCheck</tabstop>
   <tabstop>mHashCombo</tabstop>

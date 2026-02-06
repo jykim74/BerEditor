@@ -390,6 +390,8 @@ void DocSignerDlg::changeSignerTab()
     }
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash());
+    mDstPathText->clear();
+
     checkSrcFile();
     checkDstFile();
 }
