@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>650</height>
+    <height>865</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,7 +178,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -501,52 +501,59 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_23">
-         <property name="topMargin">
-          <number>0</number>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>CertMan certificate included in verification</string>
          </property>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_16">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="3">
-          <widget class="QCheckBox" name="mCMS_CAListCheck">
-           <property name="text">
-            <string>CA List</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>CertMan certificate included in verification</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QCheckBox" name="mCMSTrustListCheck">
-           <property name="text">
-            <string>TrustList</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mCMS_CertCheck">
-           <property name="text">
-            <string>Certificate</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <layout class="QGridLayout" name="gridLayout_24">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="mCMS_CertCheck">
+            <property name="text">
+             <string>Certificate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="mCMSTrustListCheck">
+            <property name="text">
+             <string>TrustList</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="mCMS_CAListCheck">
+            <property name="text">
+             <string>CA List</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_16">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_10">
@@ -1685,6 +1692,60 @@
        <string>PDF</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="gridLayout_20">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mPDFPasswdText">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="mPDFPasswdLabel">
+           <property name="text">
+            <string>Source PDF Password</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/passwd.png</normaloff>:/images/passwd.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="Line" name="line_13">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QTableWidget" name="mPDFInfoTable">
          <attribute name="horizontalHeaderHighlightSections">
@@ -1761,15 +1822,123 @@
          </item>
         </layout>
        </item>
-       <item row="7" column="0">
-        <widget class="Line" name="line_11">
+       <item row="3" column="0">
+        <widget class="Line" name="line_12">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="Line" name="line_13">
+       <item row="4" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>CertMan certificate included in verification</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_22">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item row="0" column="2">
+           <widget class="QCheckBox" name="mPDFTrustListCheck">
+            <property name="text">
+             <string>TrustList</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="mPDF_CertListCheck">
+            <property name="text">
+             <string>Certificate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="mPDF_CAListCheck">
+            <property name="text">
+             <string>CA List</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_17">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_19">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mPDFInfoClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Source PDF Information</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mPDFGetInfoBtn">
+           <property name="text">
+            <string>Get PDF Information</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="0">
+        <widget class="Line" name="line_11">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -1829,161 +1998,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-       <item row="2" column="0">
-        <layout class="QGridLayout" name="gridLayout_20">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="mPDFPasswdText">
-           <property name="echoMode">
-            <enum>QLineEdit::Password</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="mPDFPasswdLabel">
-           <property name="text">
-            <string>Source PDF Password</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="minimumSize">
-            <size>
-             <width>16</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="bereditor.qrc">
-             <normaloff>:/images/passwd.png</normaloff>:/images/passwd.png</iconset>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="4" column="0">
-        <layout class="QGridLayout" name="gridLayout_24">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="4">
-          <widget class="QCheckBox" name="mPDFTrustListCheck">
-           <property name="text">
-            <string>TrustList</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QCheckBox" name="mPDF_CAListCheck">
-           <property name="text">
-            <string>CA List</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>CertMan certificate included in verification</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_17">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mPDF_CertListCheck">
-           <property name="text">
-            <string>Certificate</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="gridLayout_19">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_12">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mPDFInfoClearBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>C</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Source PDF Information</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QPushButton" name="mPDFGetInfoBtn">
-           <property name="text">
-            <string>Get PDF Information</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="3" column="0">
-        <widget class="Line" name="line_12">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
@@ -2086,9 +2100,6 @@
   <tabstop>mCMSFlagDETACHEDCheck</tabstop>
   <tabstop>mCMSFlagBINARYCheck</tabstop>
   <tabstop>mCMSFlagNOATTRCheck</tabstop>
-  <tabstop>mCMS_CertCheck</tabstop>
-  <tabstop>mCMS_CAListCheck</tabstop>
-  <tabstop>mCMSTrustListCheck</tabstop>
   <tabstop>mCMSEncodeRadio</tabstop>
   <tabstop>mCMSDecodeRadio</tabstop>
   <tabstop>mCMSCmdCombo</tabstop>
@@ -2127,9 +2138,6 @@
   <tabstop>mPDFInfoTable</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>mPDFPasswdText</tabstop>
-  <tabstop>mPDF_CertListCheck</tabstop>
-  <tabstop>mPDF_CAListCheck</tabstop>
-  <tabstop>mPDFTrustListCheck</tabstop>
   <tabstop>mPDFUseTSPCheck</tabstop>
   <tabstop>mPDF_TSPBtn</tabstop>
   <tabstop>mPDFVerifyChainCheck</tabstop>
