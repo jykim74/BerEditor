@@ -1072,6 +1072,9 @@
   <tabstop>mFlagDETACHEDCheck</tabstop>
   <tabstop>mFlagBINARYCheck</tabstop>
   <tabstop>mFlagNOATTRCheck</tabstop>
+  <tabstop>mCertCheck</tabstop>
+  <tabstop>mCAListCheck</tabstop>
+  <tabstop>mTrustListCheck</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mAutoDetectCheck</tabstop>
   <tabstop>mHashCombo</tabstop>

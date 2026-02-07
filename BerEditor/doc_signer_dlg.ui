@@ -178,7 +178,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -2100,6 +2100,9 @@
   <tabstop>mCMSFlagDETACHEDCheck</tabstop>
   <tabstop>mCMSFlagBINARYCheck</tabstop>
   <tabstop>mCMSFlagNOATTRCheck</tabstop>
+  <tabstop>mCMS_CertCheck</tabstop>
+  <tabstop>mCMS_CAListCheck</tabstop>
+  <tabstop>mCMSTrustListCheck</tabstop>
   <tabstop>mCMSEncodeRadio</tabstop>
   <tabstop>mCMSDecodeRadio</tabstop>
   <tabstop>mCMSCmdCombo</tabstop>
@@ -2138,6 +2141,9 @@
   <tabstop>mPDFInfoTable</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>mPDFPasswdText</tabstop>
+  <tabstop>mPDF_CertListCheck</tabstop>
+  <tabstop>mPDF_CAListCheck</tabstop>
+  <tabstop>mPDFTrustListCheck</tabstop>
   <tabstop>mPDFUseTSPCheck</tabstop>
   <tabstop>mPDF_TSPBtn</tabstop>
   <tabstop>mPDFVerifyChainCheck</tabstop>
