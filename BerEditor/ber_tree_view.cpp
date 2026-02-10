@@ -889,7 +889,7 @@ void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
     {
         if( strName == "CONTEXT" )
         {
-            addEdit( level, QString("CONTEXT_%1 {\n").arg( item->GetTag() ) );
+            addEdit( level, QString("CONTEXT_%1 {\n").arg( item->GetType() ) );
         }
         else
         {
@@ -945,7 +945,7 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
     {
         if( strName == "CONTEXT" )
         {
-            addEdit( level, QString( "<CONTEXT_%1>\n" ).arg(item->GetTag()) );
+            addEdit( level, QString( "<CONTEXT_%1>\n" ).arg(item->GetType()) );
         }
         else
         {
@@ -1029,7 +1029,7 @@ void BerTreeView::setItemJSON( int level, BerItem* item, bool bNext, BerItem* se
     {
         if( strName == "CONTEXT" )
         {
-            addEdit( level, QString( "\"CONTEXT_%1\": {\n" ).arg( item->GetTag() ));
+            addEdit( level, QString( "\"CONTEXT_%1\": {\n" ).arg( item->GetType() ));
         }
         else
         {
