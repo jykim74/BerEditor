@@ -127,7 +127,8 @@ SOURCES += \
     time_stamp_dlg.cpp \
     ber_check_dlg.cpp \
     thread_work_dlg.cpp \
-    data_input_dlg.cpp
+    data_input_dlg.cpp \
+    make_pri_key_dlg.cpp
 
 
 HEADERS += \
@@ -220,7 +221,8 @@ HEADERS += \
     time_stamp_dlg.h \
     ber_check_dlg.h \
     thread_work_dlg.h \
-    data_input_dlg.h
+    data_input_dlg.h \
+    make_pri_key_dlg.h
 
 
 
@@ -365,7 +367,8 @@ FORMS += \
         time_stamp_dlg.ui \
         ber_check_dlg.ui \
         thread_work_dlg.ui \
-        data_input_dlg.ui
+        data_input_dlg.ui \
+        make_pri_key_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

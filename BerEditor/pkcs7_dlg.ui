@@ -624,13 +624,6 @@
        <number>5</number>
       </property>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="mCAListCheck">
-        <property name="text">
-         <string>CA List</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
        <widget class="QCheckBox" name="mCertCheck">
         <property name="text">
          <string>Certificate</string>
@@ -638,13 +631,20 @@
        </widget>
       </item>
       <item row="0" column="2">
+       <widget class="QCheckBox" name="mCAListCheck">
+        <property name="text">
+         <string>CA List</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
        <widget class="QCheckBox" name="mTrustListCheck">
         <property name="text">
          <string>Trust List</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
+      <item row="0" column="0">
        <spacer name="horizontalSpacer_6">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

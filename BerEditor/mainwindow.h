@@ -152,6 +152,7 @@ public:
     void viewCryptOTPGen( bool bChecked );
     void viewCryptVID( bool bChecked );
     void viewCryptBNCalc( bool bChecked );
+    void viewCryptMakePri( bool bChecked );
 
     void viewServiceKeyPairMan( bool bChecked );
     void viewServiceCertMan( bool bChecked );
@@ -215,6 +216,7 @@ private slots:
     void hash();
     void mac();
 
+    void makePriKey();
     void keyAgree();
     void oidInfo();
     void encDec();
@@ -399,6 +401,7 @@ private:
     QAction* gen_otp_act_;
     QAction* vid_act_;
     QAction* calc_act_;
+    QAction* make_pri_act_;
 
     QToolBar* service_tool_;
     QAction* key_pair_man_act_;

@@ -60,6 +60,7 @@
 #include "x509_compare_dlg.h"
 #include "doc_signer_dlg.h"
 #include "ber_check_dlg.h"
+#include "make_pri_key_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -588,6 +589,13 @@ void MainWindow::createViewActions()
     connect( cryptBNCalcAct, &QAction::triggered, this, &MainWindow::viewCryptBNCalc );
     cryptMenu->addAction( cryptBNCalcAct );
 
+    QAction *cryptMakePriAct = new QAction( tr( "Make PrivateKey"), this );
+    bVal = isView( ACT_CRYPT_MAKE_PRI );
+    cryptMakePriAct->setCheckable(true);
+    cryptMakePriAct->setChecked(bVal);
+    connect( cryptMakePriAct, &QAction::triggered, this, &MainWindow::viewCryptMakePri );
+    cryptMenu->addAction( cryptMakePriAct );
+
     QAction *serviceKeyPairManAct = new QAction( tr( "KeyPair Manage"), this );
     bVal = isView( ACT_SERVICE_KEY_PAIR_MAN );
     serviceKeyPairManAct->setCheckable(true);
@@ -1049,6 +1057,7 @@ void MainWindow::createCryptographyActions()
     crypt_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
     crypt_tool_->layout()->setSpacing(0);
 
+
     const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
     key_man_act_ = new QAction( keyIcon, tr("&Key Manage"), this );
     key_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_K));
@@ -1154,6 +1163,14 @@ void MainWindow::createCryptographyActions()
     cryptMenu->addAction( calc_act_ );
     if( isView( ACT_CRYPT_BN_CALC ) ) crypt_tool_->addAction( calc_act_ );
 
+    const QIcon makePriIcon = QIcon::fromTheme("Make PriKey", QIcon(":/images/make_pri.png"));
+    make_pri_act_ = new QAction( makePriIcon, tr("&Make PrivateKey"), this );
+    make_pri_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_U));
+    connect( make_pri_act_, &QAction::triggered, this, &MainWindow::makePriKey );
+    make_pri_act_->setStatusTip(tr("Make PrivateKey" ));
+    cryptMenu->addAction( make_pri_act_ );
+    if( isView( ACT_CRYPT_MAKE_PRI ) ) crypt_tool_->addAction( make_pri_act_ );
+
     if( berApplet->isLicense() == false )
     {
         key_man_act_->setEnabled( false );
@@ -1169,6 +1186,7 @@ void MainWindow::createCryptographyActions()
         gen_otp_act_->setEnabled( false );
         vid_act_->setEnabled( false );
         calc_act_->setEnabled( false );
+        make_pri_act_->setEnabled( false );
     }
 }
 
@@ -2453,6 +2471,12 @@ void MainWindow::mac2( const QString strKey, const QString strIV )
     gen_mac_dlg_->activateWindow();
 }
 
+void MainWindow::makePriKey()
+{
+    MakePriKeyDlg makePriKey;
+    makePriKey.exec();
+}
+
 void MainWindow::keyAgree()
 {
     if( key_agree_dlg_ == nullptr )
@@ -3409,6 +3433,20 @@ void MainWindow::viewCryptBNCalc( bool bChecked )
     {
         crypt_tool_->removeAction( calc_act_ );
         unsetView( ACT_CRYPT_BN_CALC );
+    }
+}
+
+void MainWindow::viewCryptMakePri( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( make_pri_act_ );
+        setView( ACT_CRYPT_MAKE_PRI );
+    }
+    else
+    {
+        crypt_tool_->removeAction( make_pri_act_ );
+        unsetView( ACT_CRYPT_MAKE_PRI );
     }
 }
 
