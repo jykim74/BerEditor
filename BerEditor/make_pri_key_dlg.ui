@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>544</height>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,76 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_17">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mMakeBtn">
+       <property name="text">
+        <string>Make</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mExponentLabel">
+       <property name="text">
+        <string>Exponent</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgCombo"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mParamCombo">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer_14">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mExponentText">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_13">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="minimumSize">
       <size>
@@ -74,7 +144,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabRSA">
       <attribute name="title">
@@ -105,7 +175,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="mRSA_EText"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_2">
@@ -129,7 +199,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="mRSA_ELenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -169,10 +239,10 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_3"/>
+          <widget class="QLineEdit" name="mRSA_PText"/>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="lineEdit_4">
+          <widget class="QLineEdit" name="mRSA_PLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -212,10 +282,10 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="mRSA_QText"/>
          </item>
          <item row="2" column="2">
-          <widget class="QLineEdit" name="lineEdit_6">
+          <widget class="QLineEdit" name="mRSA_QLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -255,10 +325,10 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QLineEdit" name="lineEdit_7"/>
+          <widget class="QLineEdit" name="mRSA_DMP1Text"/>
          </item>
          <item row="3" column="2">
-          <widget class="QLineEdit" name="lineEdit_8">
+          <widget class="QLineEdit" name="mRSA_DMP1LenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -298,10 +368,10 @@
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_9"/>
+          <widget class="QLineEdit" name="mRSA_DMQ1Text"/>
          </item>
          <item row="4" column="2">
-          <widget class="QLineEdit" name="lineEdit_10">
+          <widget class="QLineEdit" name="mRSA_DMQ1LenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -341,10 +411,10 @@
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QLineEdit" name="lineEdit_11"/>
+          <widget class="QLineEdit" name="mRSA_IQMPText"/>
          </item>
          <item row="5" column="2">
-          <widget class="QLineEdit" name="lineEdit_12">
+          <widget class="QLineEdit" name="mRSA_IQMPLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -395,7 +465,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_13">
+          <widget class="QLineEdit" name="mRSA_NLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -457,7 +527,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit"/>
+        <widget class="QPlainTextEdit" name="mRSA_NText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_4">
@@ -476,7 +550,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_14">
+          <widget class="QLineEdit" name="mRSA_DLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -531,7 +605,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_2"/>
+        <widget class="QPlainTextEdit" name="mRSA_DText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -543,7 +621,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit_15">
+          <widget class="QLineEdit" name="mECC_CurveOIDText">
            <property name="readOnly">
             <bool>false</bool>
            </property>
@@ -557,7 +635,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_16">
+          <widget class="QLineEdit" name="mECC_CurveSNText">
            <property name="maximumSize">
             <size>
              <width>120</width>
@@ -615,7 +693,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_17">
+          <widget class="QLineEdit" name="mECC_PrivateLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -670,7 +748,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
+        <widget class="QPlainTextEdit" name="mECC_PrivateText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_6">
@@ -689,7 +771,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_18">
+          <widget class="QLineEdit" name="mECC_PubXLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -744,7 +826,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_4"/>
+        <widget class="QPlainTextEdit" name="mECC_PubXText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_7">
@@ -756,7 +842,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_19">
+          <widget class="QLineEdit" name="mECC_PubYLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -818,7 +904,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_5"/>
+        <widget class="QPlainTextEdit" name="mECC_PubYText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -830,7 +920,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_10">
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit_20"/>
+          <widget class="QLineEdit" name="mDSA_QText"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_14">
@@ -840,7 +930,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_21"/>
+          <widget class="QLineEdit" name="mDSA_PrivateText"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_13">
@@ -850,7 +940,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_22">
+          <widget class="QLineEdit" name="mDSA_QLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -890,7 +980,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="lineEdit_23">
+          <widget class="QLineEdit" name="mDSA_PrivateLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -948,7 +1038,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_24">
+          <widget class="QLineEdit" name="mDSA_GLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -1003,7 +1093,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_6"/>
+        <widget class="QPlainTextEdit" name="mDSA_GText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_9">
@@ -1022,7 +1116,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_25">
+          <widget class="QLineEdit" name="mDSA_PLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -1077,7 +1171,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_7"/>
+        <widget class="QPlainTextEdit" name="mDSA_PText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_10">
@@ -1096,7 +1194,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_26">
+          <widget class="QLineEdit" name="mDSA_PublicLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -1151,7 +1249,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_8"/>
+        <widget class="QPlainTextEdit" name="mDSA_PublicText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1177,7 +1279,7 @@
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QLineEdit" name="lineEdit_28">
+          <widget class="QLineEdit" name="mRawParamText">
            <property name="palette">
             <palette>
              <active>
@@ -1211,7 +1313,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit_27">
+          <widget class="QLineEdit" name="mRawNameText">
            <property name="palette">
             <palette>
              <active>
@@ -1276,7 +1378,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_29">
+          <widget class="QLineEdit" name="mRawPrivateLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -1331,7 +1433,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_9"/>
+        <widget class="QPlainTextEdit" name="mRawPrivateText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line_12">
@@ -1343,7 +1449,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_16">
          <item row="0" column="2">
-          <widget class="QLineEdit" name="lineEdit_30">
+          <widget class="QLineEdit" name="mRawPublicLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -1405,7 +1511,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit_10"/>
+        <widget class="QPlainTextEdit" name="mRawPublicText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1421,20 +1531,6 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mExportBtn">
-       <property name="text">
-        <string>Export</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1446,6 +1542,27 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mExportBtn">
+       <property name="text">
+        <string>Export</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mClearAllBtn">
+       <property name="text">
+        <string>Clear All</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

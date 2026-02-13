@@ -3,6 +3,12 @@
 
 #include <QDialog>
 #include "ui_make_pri_key_dlg.h"
+#include "js_bin.h"
+
+const int RSA_IDX = 0;
+const int ECC_IDX = 1;
+const int DSA_IDX = 2;
+const int RAW_IDX = 3;
 
 namespace Ui {
 class MakePriKeyDlg;
@@ -16,8 +22,49 @@ public:
     explicit MakePriKeyDlg(QWidget *parent = nullptr);
     ~MakePriKeyDlg();
 
-private:
+private slots:
+    void changeRSA_N();
+    void changeRSA_E( const QString& text );
+    void changeRSA_D();
+    void changeRSA_P( const QString& text );
+    void changeRSA_Q( const QString& text );
+    void changeRSA_DMP1( const QString& text );
+    void changeRSA_DMQ1( const QString& text );
+    void changeRSA_IQMP( const QString& text );
 
+    void changeECC_PubX();
+    void changeECC_PubY();
+    void changeECC_Private();
+
+    void changeDSA_G();
+    void changeDSA_P();
+    void changeDSA_Q( const QString& text );
+    void changeDSA_Public();
+    void changeDSA_Private( const QString& text );
+
+    void changeRawPublic();
+    void changeRawPrivate();
+
+    void clickExport();
+    void clickMake();
+    void clickClearAll();
+
+    void changeTab( int index );
+    void changeAlg( int index );
+
+private:
+    void initUI();
+    void initialize();
+
+    void clearRSA();
+    void clearECC();
+    void clearDSA();
+    void clearRaw();
+
+    int getRSA( BIN *pRSA );
+    int getECC( BIN *pECC );
+    int getDSA( BIN *pDSA );
+    int getRaw( BIN *pRaw );
 };
 
 #endif // MAKE_PRI_KEY_DLG_H

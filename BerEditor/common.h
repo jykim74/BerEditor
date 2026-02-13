@@ -86,6 +86,14 @@ const QString kAlgECDSA = "ECDSA";
 const QString kAlgSM2 = "SM2";
 const QString kAlgDSA = "DSA";
 const QString kAlgEdDSA = "EdDSA";
+const QString kAlgMLKEM = "ML KEM";
+const QString kAlgMLDSA = "ML DSA";
+const QString kAlgSLHDSA = "SLH DSA";
+
+const QStringList kAsymAlgList = {
+    kAlgRSA, kAlgECDSA, kAlgSM2, kAlgDSA,
+    kAlgEdDSA, kAlgMLKEM, kAlgMLDSA, kAlgSLHDSA
+};
 
 static QString kSelectStyle =
     "QTableWidget::item:selected { "
