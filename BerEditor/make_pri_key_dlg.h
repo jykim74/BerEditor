@@ -61,10 +61,10 @@ private:
     void clearDSA();
     void clearRaw();
 
-    int getRSA( BIN *pRSA );
-    int getECC( BIN *pECC );
-    int getDSA( BIN *pDSA );
-    int getRaw( BIN *pRaw );
+    int getRSA( BIN *pRSA, bool bPri = false );
+    int getECC( BIN *pECC, bool bPri = false );
+    int getDSA( BIN *pDSA, bool bPri = false );
+    int getRaw( BIN *pRaw, bool bPri = false );
 };
 
 #endif // MAKE_PRI_KEY_DLG_H

@@ -206,22 +206,23 @@ void MakePriKeyDlg::clickExport()
     int nIndex = mTabWidget->currentIndex();
     BIN binPri = {0,0};
     ExportDlg exportDlg;
+    bool bPri = true;
 
     if( nIndex == RSA_IDX )
     {
-        ret = getRSA( &binPri );
+        ret = getRSA( &binPri, bPri );
     }
     else if( nIndex == ECC_IDX )
     {
-        ret = getECC( &binPri );
+        ret = getECC( &binPri, bPri );
     }
     else if( nIndex == DSA_IDX )
     {
-        ret = getDSA( &binPri );
+        ret = getDSA( &binPri, bPri );
     }
     else
     {
-        ret = getRaw( &binPri );
+        ret = getRaw( &binPri, bPri );
     }
 
     if( ret != CKR_OK )
@@ -231,6 +232,7 @@ void MakePriKeyDlg::clickExport()
     }
 
     exportDlg.setName( "PrivateKey" );
+    exportDlg.setPrivateKey( &binPri );
     exportDlg.exec();
 
 end :
@@ -483,7 +485,7 @@ void MakePriKeyDlg::clickClearAll()
     clearRaw();
 }
 
-int MakePriKeyDlg::getRSA( BIN *pRSA )
+int MakePriKeyDlg::getRSA( BIN *pRSA, bool bPri )
 {
     int ret = 0;
     JRSAKeyVal sKeyVal;
@@ -533,6 +535,13 @@ int MakePriKeyDlg::getRSA( BIN *pRSA )
                         binDMQ1.nLen > 0 ? getHexString( &binDMQ1 ).toStdString().c_str() : NULL,
                         binIQMP.nLen > 0 ? getHexString( &binIQMP ).toStdString().c_str() : NULL );
 
+    if( ret != CKR_OK ) goto end;
+
+    if( bPri == true )
+        ret = JS_PKI_encodeRSAPrivateKey( &sKeyVal, pRSA );
+    else
+        ret = JS_PKI_encodeRSAPublicKey( &sKeyVal, pRSA );
+
 end :
     JS_PKI_resetRSAKeyVal( &sKeyVal );
     JS_BIN_reset( &binN );
@@ -547,7 +556,7 @@ end :
     return ret;
 }
 
-int MakePriKeyDlg::getECC( BIN *pECC )
+int MakePriKeyDlg::getECC( BIN *pECC, bool bPri )
 {
     int ret = 0;
     JECKeyVal sKeyVal;
@@ -575,6 +584,13 @@ int MakePriKeyDlg::getECC( BIN *pECC )
                              binPubY.nLen > 0 ? getHexString( &binPubY ).toStdString().c_str() : NULL,
                              binPri.nLen > 0 ? getHexString( &binPri ).toStdString().c_str() : NULL );
 
+    if( ret != CKR_OK ) goto end;
+
+    if( bPri == true )
+        ret = JS_PKI_encodeECPrivateKey( &sKeyVal, pECC );
+    else
+        ret = JS_PKI_encodeECPublicKey( &sKeyVal, pECC );
+
 end :
     JS_PKI_resetECKeyVal( &sKeyVal );
     JS_BIN_reset( &binPri );
@@ -584,7 +600,7 @@ end :
     return ret;
 }
 
-int MakePriKeyDlg::getDSA( BIN *pDSA )
+int MakePriKeyDlg::getDSA( BIN *pDSA, bool bPri )
 {
     int ret = 0;
     JDSAKeyVal sKeyVal;
@@ -619,6 +635,13 @@ int MakePriKeyDlg::getDSA( BIN *pDSA )
                                 binPub.nLen > 0 ? getHexString( &binPub ).toStdString().c_str() : NULL,
                                 binPri.nLen > 0 ? getHexString( &binPri ).toStdString().c_str() : NULL );
 
+    if( ret != CKR_OK ) goto end;
+
+    if( bPri == true )
+        ret = JS_PKI_encodeDSAPrivateKey( &sKeyVal, pDSA );
+    else
+        ret = JS_PKI_encodeDSAPublicKey( &sKeyVal, pDSA );
+
 end :
     JS_PKI_resetDSAKeyVal( &sKeyVal );
     JS_BIN_reset( &binG );
@@ -630,7 +653,7 @@ end :
     return ret;
 }
 
-int MakePriKeyDlg::getRaw( BIN *pRaw )
+int MakePriKeyDlg::getRaw( BIN *pRaw, bool bPri )
 {
     int ret = 0;
     JRawKeyVal sKeyVal;
@@ -647,6 +670,13 @@ int MakePriKeyDlg::getRaw( BIN *pRaw )
                               strParam.toStdString().c_str(),
                               binPub.nLen > 0 ? getHexString( &binPub ).toStdString().c_str() : NULL,
                               binPri.nLen > 0 ? getHexString( &binPri ).toStdString().c_str() : NULL );
+
+    if( ret != CKR_OK ) goto end;
+
+    if( bPri == true )
+        ret = JS_PKI_encodeRawPrivateKey( &sKeyVal, pRaw );
+    else
+        ret = JS_PKI_encodeRawPublicKey( &sKeyVal, pRaw );
 
 end :
     JS_PKI_resetRawKeyVal( &sKeyVal );

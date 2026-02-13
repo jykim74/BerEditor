@@ -410,6 +410,7 @@ void ExportDlg::setPrivateKey( const BIN *pPriKey )
     JS_BIN_copy( &data_, pPriKey );
     key_type_ = JS_PKI_getPriKeyType( &data_ );
     mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
+    mNameText->setText( "private_key" );
 
     mTitleLabel->setText( tr( "Private Key Export" ));
 
@@ -431,6 +432,7 @@ void ExportDlg::setPublicKey( const BIN *pPubKey )
     mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "Public Key Export" ));
+    mNameText->setText( "public_key" );
 
     mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
     mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
@@ -444,6 +446,7 @@ void ExportDlg::setCert( const BIN *pCert )
     mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "Certificate Export" ));
+    mNameText->setText( "certificate" );
 
     mFormatCombo->addItem( getFormatName( ExportCertPEM ), ExportCertPEM );
     mFormatCombo->addItem( getFormatName( ExportCertDER ), ExportCertDER);
@@ -459,6 +462,7 @@ void ExportDlg::setCRL( const BIN *pCRL )
     mAlgText->setText( "CRL" );
 
     mTitleLabel->setText( tr( "CRL Export" ));
+    mNameText->setText( "crl" );
 
     mFormatCombo->addItem( getFormatName( ExportCRL_PEM ), ExportCRL_PEM );
     mFormatCombo->addItem( getFormatName( ExportCRL_DER ), ExportCRL_DER);
@@ -472,6 +476,7 @@ void ExportDlg::setCSR( const BIN *pCSR )
     mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "CSR Export" ));
+    mNameText->setText( "csr" );
 
     mFormatCombo->addItem( getFormatName( ExportCSR_PEM ), ExportCSR_PEM );
     mFormatCombo->addItem( getFormatName( ExportCSR_DER ), ExportCSR_DER);
@@ -487,6 +492,7 @@ void ExportDlg::setDHParam( const BIN *pParam )
     mAlgText->setText( "DH" );
     JS_BIN_copy( &data_, pParam );
     mTitleLabel->setText( tr( "DH Parameter Export" ));
+    mNameText->setText( "dh_param" );
 
     mFormatCombo->addItem( getFormatName( ExportDH_PEM ), ExportDH_PEM );
     mFormatCombo->addItem( getFormatName( ExportDH_DER ), ExportDH_DER );
@@ -502,6 +508,7 @@ void ExportDlg::setPKCS7( const BIN *pPKCS7 )
     mAlgText->setText( "PKCS7" );
     JS_BIN_copy( &data_, pPKCS7 );
     mTitleLabel->setText( tr( "PKCS7 Export" ));
+    mNameText->setText( "CMS" );
 
     mFormatCombo->addItem( getFormatName( ExportPKCS7_PEM ), ExportPKCS7_PEM );
     mFormatCombo->addItem( getFormatName( ExportPKCS7_DER ), ExportPKCS7_DER );
@@ -544,6 +551,7 @@ void ExportDlg::setJSON( const BIN *pJSON )
     mAlgText->setText( "JSON" );
     JS_BIN_copy( &data_, pJSON );
     mTitleLabel->setText( tr( "JSON Export") );
+    mNameText->setText( "json_data" );
 
     mFormatCombo->addItem( getFormatName( ExportJSON ), ExportJSON );
 }
@@ -556,6 +564,7 @@ void ExportDlg::setXML( const BIN *pXML )
     mAlgText->setText( "XML" );
     JS_BIN_copy( &data_, pXML );
     mTitleLabel->setText( tr( "XML Export") );
+    mNameText->setText( "xml_data" );
 
     mFormatCombo->addItem( getFormatName( ExportXML ), ExportXML );
     mViewBtn->hide();
@@ -569,6 +578,7 @@ void ExportDlg::setBIN( const BIN *pBIN )
     mAlgText->setText( "Binary" );
     JS_BIN_copy( &data_, pBIN );
     mTitleLabel->setText( tr( "Binary Export") );
+    mNameText->setText( "binary_data" );
 
     mFormatCombo->addItem( getFormatName( ExportBIN ), ExportBIN );
     mViewBtn->hide();
