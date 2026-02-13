@@ -51,10 +51,33 @@ private slots:
 
     void changeTab( int index );
     void changeAlg( int index );
+    void checkPublicKey();
 
 private:
     void initUI();
     void initialize();
+
+    void setEnableRSA_N( bool bVal );
+    void setEnableRSA_E( bool bVal );
+    void setEnableRSA_D( bool bVal );
+    void setEnableRSA_P( bool bVal );
+    void setEnableRSA_Q( bool bVal );
+    void setEnableRSA_DMP1( bool bVal );
+    void setEnableRSA_DMQ1( bool bVal );
+    void setEnableRSA_IQMP( bool bVal );
+
+    void setEnableECC_Private( bool bVal );
+    void setEnableECC_PubX( bool bVal );
+    void setEnableECC_PubY( bool bVal );
+
+    void setEnableDSA_P( bool bVal );
+    void setEnableDSA_Q( bool bVal );
+    void setEnableDSA_G( bool bVal );
+    void setEnableDSA_Private( bool bVal );
+    void setEnableDSA_Public( bool bVal );
+
+    void setEnableRawPublic( bool bVal );
+    void setEnableRawPrivate( bool bVal );
 
     void clearRSA();
     void clearECC();

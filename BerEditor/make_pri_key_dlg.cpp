@@ -17,6 +17,7 @@ MakePriKeyDlg::MakePriKeyDlg(QWidget *parent)
     initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mPublicKeyCheck, SIGNAL(clicked()), this, SLOT(checkPublicKey()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
@@ -207,6 +208,13 @@ void MakePriKeyDlg::clickExport()
     BIN binPri = {0,0};
     ExportDlg exportDlg;
     bool bPri = true;
+    QString strName = "PrivateKey";
+
+    if( mPublicKeyCheck->isChecked() == true )
+    {
+        bPri = false;
+        strName = "PublicKey";
+    }
 
     if( nIndex == RSA_IDX )
     {
@@ -231,7 +239,7 @@ void MakePriKeyDlg::clickExport()
         goto end;
     }
 
-    exportDlg.setName( "PrivateKey" );
+    exportDlg.setName( strName );
     exportDlg.setPrivateKey( &binPri );
     exportDlg.exec();
 
@@ -269,14 +277,14 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRSAKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mRSA_DText->setPlainText( sKeyVal.pD );
-        mRSA_NText->setPlainText( sKeyVal.pN );
-        mRSA_EText->setText( sKeyVal.pE );
-        mRSA_PText->setText( sKeyVal.pP );
-        mRSA_QText->setText( sKeyVal.pQ );
-        mRSA_DMP1Text->setText( sKeyVal.pDMP1 );
-        mRSA_DMQ1Text->setText( sKeyVal.pDMQ1 );
-        mRSA_IQMPText->setText( sKeyVal.pIQMP );
+        if( mRSA_DText->isEnabled() ) mRSA_DText->setPlainText( sKeyVal.pD );
+        if( mRSA_NText->isEnabled() ) mRSA_NText->setPlainText( sKeyVal.pN );
+        if( mRSA_EText->isEnabled() ) mRSA_EText->setText( sKeyVal.pE );
+        if( mRSA_PText->isEnabled() ) mRSA_PText->setText( sKeyVal.pP );
+        if( mRSA_QText->isEnabled() ) mRSA_QText->setText( sKeyVal.pQ );
+        if( mRSA_DMP1Text->isEnabled() ) mRSA_DMP1Text->setText( sKeyVal.pDMP1 );
+        if( mRSA_DMQ1Text->isEnabled() ) mRSA_DMQ1Text->setText( sKeyVal.pDMQ1 );
+        if( mRSA_IQMPText->isEnabled() ) mRSA_IQMPText->setText( sKeyVal.pIQMP );
 
         JS_PKI_resetRSAKeyVal( &sKeyVal );
     }
@@ -294,10 +302,10 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mECC_CurveOIDText->setText( sKeyVal.pCurveOID );
-        mECC_PrivateText->setPlainText( sKeyVal.pPrivate );
-        mECC_PubXText->setPlainText( sKeyVal.pPubX );
-        mECC_PubYText->setPlainText( sKeyVal.pPubY );
+        if( mECC_CurveOIDText->isEnabled() ) mECC_CurveOIDText->setText( sKeyVal.pCurveOID );
+        if( mECC_PrivateText->isEnabled() ) mECC_PrivateText->setPlainText( sKeyVal.pPrivate );
+        if( mECC_PubXText->isEnabled() ) mECC_PubXText->setPlainText( sKeyVal.pPubX );
+        if( mECC_PubYText->isEnabled() ) mECC_PubYText->setPlainText( sKeyVal.pPubY );
 
         JS_PKI_resetECKeyVal( &sKeyVal );
     }
@@ -317,11 +325,11 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getDSAKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mDSA_GText->setPlainText( sKeyVal.pG );
-        mDSA_PText->setPlainText( sKeyVal.pP );
-        mDSA_QText->setText( sKeyVal.pQ );
-        mDSA_PublicText->setPlainText( sKeyVal.pPublic );
-        mDSA_PrivateText->setText( sKeyVal.pPrivate );
+        if( mDSA_GText->isEnabled() ) mDSA_GText->setPlainText( sKeyVal.pG );
+        if( mDSA_PText->isEnabled() ) mDSA_PText->setPlainText( sKeyVal.pP );
+        if( mDSA_QText->isEnabled() ) mDSA_QText->setText( sKeyVal.pQ );
+        if( mDSA_PublicText->isEnabled() ) mDSA_PublicText->setPlainText( sKeyVal.pPublic );
+        if( mDSA_PrivateText->isEnabled() ) mDSA_PrivateText->setText( sKeyVal.pPrivate );
 
         JS_PKI_resetDSAKeyVal( &sKeyVal );
     }
@@ -345,10 +353,10 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mRawNameText->setText( sKeyVal.pAlg );
-        mRawParamText->setText( sKeyVal.pParam );
-        mRawPrivateText->setPlainText( sKeyVal.pPri );
-        mRawPublicText->setPlainText( sKeyVal.pPub );
+        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
+        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
+        if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
         JS_PKI_resetRawKeyVal( &sKeyVal );
     }
@@ -368,10 +376,10 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mRawNameText->setText( sKeyVal.pAlg );
-        mRawParamText->setText( sKeyVal.pParam );
-        mRawPrivateText->setPlainText( sKeyVal.pPri );
-        mRawPublicText->setPlainText( sKeyVal.pPub );
+        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
+        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
+        if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
         JS_PKI_resetRawKeyVal( &sKeyVal );
     }
@@ -390,10 +398,10 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mRawNameText->setText( sKeyVal.pAlg );
-        mRawParamText->setText( sKeyVal.pParam );
-        mRawPrivateText->setPlainText( sKeyVal.pPri );
-        mRawPublicText->setPlainText( sKeyVal.pPub );
+        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
+        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
+        if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
         JS_PKI_resetRawKeyVal( &sKeyVal );
     }
@@ -412,10 +420,10 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        mRawNameText->setText( sKeyVal.pAlg );
-        mRawParamText->setText( sKeyVal.pParam );
-        mRawPrivateText->setPlainText( sKeyVal.pPri );
-        mRawPublicText->setPlainText( sKeyVal.pPub );
+        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
+        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
+        if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
         JS_PKI_resetRawKeyVal( &sKeyVal );
     }
@@ -504,25 +512,25 @@ int MakePriKeyDlg::getRSA( BIN *pRSA, bool bPri )
     ret = getBINFromString( &binN, DATA_HEX, mRSA_NText->toPlainText() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_EText->text() );
+    ret = getBINFromString( &binE, DATA_HEX, mRSA_EText->text() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_DText->toPlainText() );
+    ret = getBINFromString( &binD, DATA_HEX, mRSA_DText->toPlainText() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_PText->text() );
+    ret = getBINFromString( &binP, DATA_HEX, mRSA_PText->text() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_QText->text() );
+    ret = getBINFromString( &binQ, DATA_HEX, mRSA_QText->text() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_DMP1Text->text() );
+    ret = getBINFromString( &binDMP1, DATA_HEX, mRSA_DMP1Text->text() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_DMQ1Text->text() );
+    ret = getBINFromString( &binDMQ1, DATA_HEX, mRSA_DMQ1Text->text() );
     FORMAT_WARN_RET(ret);
 
-    ret = getBINFromString( &binN, DATA_HEX, mRSA_IQMPText->text() );
+    ret = getBINFromString( &binIQMP, DATA_HEX, mRSA_IQMPText->text() );
     FORMAT_WARN_RET(ret);
 
     ret = JS_PKI_setRSAKeyVal( &sKeyVal,
@@ -762,4 +770,148 @@ void MakePriKeyDlg::changeAlg( int index )
         mExponentLabel->setEnabled( false );
         mExponentText->setEnabled( false );
     }
+}
+
+void MakePriKeyDlg::checkPublicKey()
+{
+    bool bVal = mPublicKeyCheck->isChecked();
+
+    setEnableRSA_D( !bVal );
+    setEnableRSA_P( !bVal );
+    setEnableRSA_Q( !bVal );
+    setEnableRSA_DMP1( !bVal );
+    setEnableRSA_DMQ1( !bVal );
+    setEnableRSA_IQMP( !bVal );
+
+    setEnableECC_Private( !bVal );
+
+    setEnableDSA_Private( !bVal );
+
+    setEnableRawPrivate( !bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_N( bool bVal )
+{
+    mRSA_NLabel->setEnabled( bVal );
+    mRSA_NText->setEnabled( bVal );
+    mRSA_NLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_E( bool bVal )
+{
+    mRSA_ELabel->setEnabled( bVal );
+    mRSA_EText->setEnabled( bVal );
+    mRSA_ELenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_D( bool bVal )
+{
+    mRSA_DLabel->setEnabled( bVal );
+    mRSA_DText->setEnabled( bVal );
+    mRSA_DLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_P( bool bVal )
+{
+    mRSA_PLabel->setEnabled( bVal );
+    mRSA_PText->setEnabled( bVal );
+    mRSA_PLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_Q( bool bVal )
+{
+    mRSA_QLabel->setEnabled( bVal );
+    mRSA_QText->setEnabled( bVal );
+    mRSA_QLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_DMP1( bool bVal )
+{
+    mRSA_DMP1Label->setEnabled( bVal );
+    mRSA_DMP1Text->setEnabled( bVal );
+    mRSA_DMP1LenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_DMQ1( bool bVal )
+{
+    mRSA_DMQ1Label->setEnabled( bVal );
+    mRSA_DMQ1Text->setEnabled( bVal );
+    mRSA_DMQ1LenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRSA_IQMP( bool bVal )
+{
+    mRSA_IQMPLabel->setEnabled( bVal );
+    mRSA_IQMPText->setEnabled( bVal );
+    mRSA_IQMPLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableECC_Private( bool bVal )
+{
+    mECC_PrivateLabel->setEnabled( bVal );
+    mECC_PrivateText->setEnabled( bVal );
+    mECC_PrivateLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableECC_PubX( bool bVal )
+{
+    mECC_PubXLabel->setEnabled( bVal );
+    mECC_PubXText->setEnabled( bVal );
+    mECC_PubXLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableECC_PubY( bool bVal )
+{
+    mECC_PubYLabel->setEnabled( bVal );
+    mECC_PubYText->setEnabled( bVal );
+    mECC_PubYLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableDSA_P( bool bVal )
+{
+    mDSA_PLabel->setEnabled( bVal );
+    mDSA_PText->setEnabled( bVal );
+    mDSA_PLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableDSA_Q( bool bVal )
+{
+    mDSA_QLabel->setEnabled( bVal );
+    mDSA_QText->setEnabled( bVal );
+    mDSA_QLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableDSA_G( bool bVal )
+{
+    mDSA_GLabel->setEnabled( bVal );
+    mDSA_GText->setEnabled( bVal );
+    mDSA_GLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableDSA_Private( bool bVal )
+{
+    mDSA_PrivateLabel->setEnabled( bVal );
+    mDSA_PrivateText->setEnabled( bVal );
+    mDSA_PrivateLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableDSA_Public( bool bVal )
+{
+    mDSA_PublicLabel->setEnabled( bVal );
+    mDSA_PublicText->setEnabled( bVal );
+    mDSA_PLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRawPublic( bool bVal )
+{
+    mRawPublicLabel->setEnabled( bVal );
+    mRawPublicText->setEnabled( bVal );
+    mRawPublicLenText->setEnabled( bVal );
+}
+
+void MakePriKeyDlg::setEnableRawPrivate( bool bVal )
+{
+    mRawPrivateLabel->setEnabled( bVal );
+    mRawPrivateText->setEnabled( bVal );
+    mRawPrivateLenText->setEnabled( bVal );
 }
