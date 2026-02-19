@@ -95,6 +95,10 @@ const QStringList kAsymAlgList = {
     kAlgEdDSA, kAlgMLKEM, kAlgMLDSA, kAlgSLHDSA
 };
 
+const QStringList kRawAlgList = {
+    kAlgEdDSA, kAlgMLKEM, kAlgMLDSA, kAlgSLHDSA
+};
+
 static QString kSelectStyle =
     "QTableWidget::item:selected { "
     "background-color: #9370db; "

@@ -1,4 +1,5 @@
 #include <QElapsedTimer>
+#include <QRegExpValidator>
 
 #include "make_pri_key_dlg.h"
 #include "common.h"
@@ -9,6 +10,7 @@
 
 #include "js_pki.h"
 #include "js_pki_key.h"
+#include "js_pki_tools.h"
 
 MakePriKeyDlg::MakePriKeyDlg(QWidget *parent)
     : QDialog(parent)
@@ -37,6 +39,7 @@ MakePriKeyDlg::MakePriKeyDlg(QWidget *parent)
     connect( mECC_PubXText, SIGNAL(textChanged()), this, SLOT(changeECC_PubX()));
     connect( mECC_PubYText, SIGNAL(textChanged()), this, SLOT(changeECC_PubY()));
     connect( mECC_PrivateText, SIGNAL(textChanged()), this, SLOT(changeECC_Private()));
+    connect( mECC_CurveSNCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECC_CurveSN()));
 
     connect( mDSA_GText, SIGNAL(textChanged()), this, SLOT(changeDSA_G()));
     connect( mDSA_PText, SIGNAL(textChanged()), this, SLOT(changeDSA_P()));
@@ -46,6 +49,11 @@ MakePriKeyDlg::MakePriKeyDlg(QWidget *parent)
 
     connect( mRawPublicText, SIGNAL(textChanged()), this, SLOT(changeRawPublic()));
     connect( mRawPrivateText, SIGNAL(textChanged()), this, SLOT(changeRawPrivate()));
+    connect( mRawNameCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeRawName()));
+
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
+    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
+    connect( mCheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickCheckPubKey()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -70,12 +78,44 @@ MakePriKeyDlg::~MakePriKeyDlg()
 
 void MakePriKeyDlg::initUI()
 {
+    mRSA_DText->setPlaceholderText( tr("Hex value" ));
+    mRSA_NText->setPlaceholderText( tr( "Hex value" ));
+    mRSA_EText->setPlaceholderText( tr( "Hex value" ));
+    mRSA_PText->setPlaceholderText( tr( "Hex value" ));
+    mRSA_QText->setPlaceholderText( tr( "Hex value" ));
+    mRSA_DMP1Text->setPlaceholderText( tr( "Hex value" ));
+    mRSA_DMQ1Text->setPlaceholderText( tr( "Hex value" ));
+    mRSA_IQMPText->setPlaceholderText( tr( "Hex value" ));
+
+    mECC_PrivateText->setPlaceholderText( tr("Hex value" ));
+    mECC_PubXText->setPlaceholderText( tr("Hex value" ));
+    mECC_PubYText->setPlaceholderText( tr( "Hex value" ));
+
+    mDSA_GText->setPlaceholderText( tr("Hex value"));
+    mDSA_PText->setPlaceholderText( tr("Hex value"));
+    mDSA_QText->setPlaceholderText( tr("Hex value"));
+    mDSA_PublicText->setPlaceholderText( tr("Hex value"));
+    mDSA_PrivateText->setPlaceholderText( tr("Hex value"));
+
+    mRawPrivateText->setPlaceholderText( tr("Hex value" ));
+    mRawPublicText->setPlaceholderText( tr("Hex value"));
+
     mAlgCombo->addItems( kAsymAlgList );
     mParamCombo->addItems( kRSAOptionList );
     mParamCombo->setCurrentText( "2048" );
+
+    QRegExp regExp("^[0-9-]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mExponentText->setValidator( regVal );
     mExponentText->setText( "65537" );
+    mExponentText->setPlaceholderText( tr("Decimal value"));
 
     mTabWidget->setCurrentIndex( RSA_IDX );
+    mECC_CurveSNCombo->addItems( kECDSAOptionList );
+    changeECC_CurveSN();
+
+    mRawNameCombo->addItems( kRawAlgList );
+    changeRawName();
 }
 
 void MakePriKeyDlg::initialize()
@@ -154,6 +194,17 @@ void MakePriKeyDlg::changeECC_Private()
     mECC_PrivateLenText->setText( QString("%1").arg(strLen));
 }
 
+void MakePriKeyDlg::changeECC_CurveSN()
+{
+    char sOID[1024];
+    QString strSN = mECC_CurveSNCombo->currentText();
+
+    memset( sOID, 0x00, sizeof(sOID));
+
+    JS_PKI_getOIDFromSN( strSN.toStdString().c_str(), sOID );
+    mECC_CurveOIDText->setText( sOID );
+}
+
 void MakePriKeyDlg::changeDSA_G()
 {
     QString strG = mDSA_GText->toPlainText();
@@ -199,6 +250,30 @@ void MakePriKeyDlg::changeRawPrivate()
     QString strRawPrivte = mRawPrivateText->toPlainText();
     QString strLen = getDataLenString( DATA_HEX, strRawPrivte );
     mRawPrivateLenText->setText( QString("%1").arg(strLen));
+}
+
+void MakePriKeyDlg::changeRawName()
+{
+    QString strAlg = mRawNameCombo->currentText();
+
+    mRawParamCombo->clear();
+
+    if( strAlg == kAlgEdDSA )
+    {
+        mRawParamCombo->addItems( kEdDSAOptionList );
+    }
+    else if( strAlg == kAlgMLDSA )
+    {
+        mRawParamCombo->addItems( kML_DSAOptionList );
+    }
+    else if( strAlg == kAlgMLKEM )
+    {
+        mRawParamCombo->addItems( kML_KEMOptionList );
+    }
+    else if( strAlg == kAlgSLHDSA )
+    {
+        mRawParamCombo->addItems( kSLH_DSAOptionList );
+    }
 }
 
 void MakePriKeyDlg::clickExport()
@@ -265,6 +340,8 @@ void MakePriKeyDlg::clickMake()
         JRSAKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
+        mTabWidget->setCurrentIndex( RSA_IDX );
+
         int nKeySize = strParam.toInt();
         int nExponent = strExponent.toInt();
 
@@ -293,6 +370,8 @@ void MakePriKeyDlg::clickMake()
         JECKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
+        mTabWidget->setCurrentIndex( ECC_IDX );
+
         timer.start();
         ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
         us = timer.nsecsElapsed() / 1000;
@@ -302,6 +381,7 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
+        mECC_CurveSNCombo->setCurrentText( strParam );
         if( mECC_CurveOIDText->isEnabled() ) mECC_CurveOIDText->setText( sKeyVal.pCurveOID );
         if( mECC_PrivateText->isEnabled() ) mECC_PrivateText->setPlainText( sKeyVal.pPrivate );
         if( mECC_PubXText->isEnabled() ) mECC_PubXText->setPlainText( sKeyVal.pPubX );
@@ -313,6 +393,8 @@ void MakePriKeyDlg::clickMake()
     {
         JDSAKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+        mTabWidget->setCurrentIndex( DSA_IDX );
 
         int nKeySize = strParam.toInt();
 
@@ -339,6 +421,8 @@ void MakePriKeyDlg::clickMake()
         JRawKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
+        mTabWidget->setCurrentIndex( RAW_IDX );
+
         if( strParam == "Ed25519" )
             nParam = JS_EDDSA_PARAM_25519;
         else
@@ -353,8 +437,9 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
-        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+
+        if( mRawNameCombo->isEnabled() ) mRawNameCombo->setCurrentText( strAlg );
+        if( mRawParamCombo->isEnabled() ) mRawParamCombo->setCurrentText( strParam );
         if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
         if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
@@ -364,6 +449,8 @@ void MakePriKeyDlg::clickMake()
     {
         JRawKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+        mTabWidget->setCurrentIndex( RAW_IDX );
 
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
 
@@ -376,8 +463,8 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
-        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawNameCombo->isEnabled() ) mRawNameCombo->setCurrentText( strAlg );
+        if( mRawParamCombo->isEnabled() ) mRawParamCombo->setCurrentText( strParam );
         if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
         if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
@@ -387,6 +474,8 @@ void MakePriKeyDlg::clickMake()
     {
         JRawKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+        mTabWidget->setCurrentIndex( RAW_IDX );
+
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
 
         timer.start();
@@ -398,8 +487,8 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
-        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawNameCombo->isEnabled() ) mRawNameCombo->setCurrentText( strAlg );
+        if( mRawParamCombo->isEnabled() ) mRawParamCombo->setCurrentText( strParam );
         if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
         if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
@@ -409,6 +498,8 @@ void MakePriKeyDlg::clickMake()
     {
         JRawKeyVal sKeyVal;
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+        mTabWidget->setCurrentIndex( RAW_IDX );
+
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
 
         timer.start();
@@ -420,8 +511,8 @@ void MakePriKeyDlg::clickMake()
         ret = JS_PKI_getRawKeyVal( &binPri, &sKeyVal );
         if( ret != CKR_OK ) goto end;
 
-        if( mRawNameText->isEnabled() ) mRawNameText->setText( sKeyVal.pAlg );
-        if( mRawParamText->isEnabled() ) mRawParamText->setText( sKeyVal.pParam );
+        if( mRawNameCombo->isEnabled() ) mRawNameCombo->setCurrentText( strAlg );
+        if( mRawParamCombo->isEnabled() ) mRawParamCombo->setCurrentText( strParam );
         if( mRawPrivateText->isEnabled() ) mRawPrivateText->setPlainText( sKeyVal.pPri );
         if( mRawPublicText->isEnabled() ) mRawPublicText->setPlainText( sKeyVal.pPub );
 
@@ -462,7 +553,6 @@ void MakePriKeyDlg::clearRSA()
 void MakePriKeyDlg::clearECC()
 {
     mECC_CurveOIDText->clear();
-    mECC_CurveSNText->clear();
     mECC_PrivateText->clear();
     mECC_PubXText->clear();
     mECC_PubYText->clear();
@@ -479,8 +569,6 @@ void MakePriKeyDlg::clearDSA()
 
 void MakePriKeyDlg::clearRaw()
 {
-    mRawNameText->clear();
-    mRawParamText->clear();
     mRawPrivateText->clear();
     mRawPublicText->clear();
 }
@@ -665,8 +753,8 @@ int MakePriKeyDlg::getRaw( BIN *pRaw, bool bPri )
 {
     int ret = 0;
     JRawKeyVal sKeyVal;
-    QString strAlg = mRawNameText->text();
-    QString strParam = mRawParamText->text();
+    QString strAlg = mRawNameCombo->currentText();
+    QString strParam = mRawParamCombo->currentText();
 
     BIN binPub = {0,0};
     BIN binPri = {0,0};
@@ -776,6 +864,11 @@ void MakePriKeyDlg::checkPublicKey()
 {
     bool bVal = mPublicKeyCheck->isChecked();
 
+    if( bVal == true )
+        mHeadLabel->setText( tr( "Make a private key" ));
+    else
+        mHeadLabel->setText( tr( "Make a public key" ));
+
     setEnableRSA_D( !bVal );
     setEnableRSA_P( !bVal );
     setEnableRSA_Q( !bVal );
@@ -788,6 +881,160 @@ void MakePriKeyDlg::checkPublicKey()
     setEnableDSA_Private( !bVal );
 
     setEnableRawPrivate( !bVal );
+
+    mCheckKeyPairBtn->setEnabled( !bVal );
+}
+
+void MakePriKeyDlg::clickDecode()
+{
+    int ret = 0;
+    int nIndex = mTabWidget->currentIndex();
+    BIN binPri = {0,0};
+    bool bPri = true;
+
+
+    if( mPublicKeyCheck->isChecked() == true )
+    {
+        bPri = false;
+    }
+
+    if( nIndex == RSA_IDX )
+    {
+        ret = getRSA( &binPri, bPri );
+    }
+    else if( nIndex == ECC_IDX )
+    {
+        ret = getECC( &binPri, bPri );
+    }
+    else if( nIndex == DSA_IDX )
+    {
+        ret = getDSA( &binPri, bPri );
+    }
+    else
+    {
+        ret = getRaw( &binPri, bPri );
+    }
+
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr("Export failed: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->decodeData( &binPri );
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
+void MakePriKeyDlg::clickCheckKeyPair()
+{
+    int ret = 0;
+    int nIndex = mTabWidget->currentIndex();
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    bool bPri = true;
+
+    if( mPublicKeyCheck->isChecked() == true )
+    {
+        return;
+    }
+
+    if( nIndex == RSA_IDX )
+    {
+        ret = getRSA( &binPri, bPri );
+    }
+    else if( nIndex == ECC_IDX )
+    {
+        ret = getECC( &binPri, bPri );
+    }
+    else if( nIndex == DSA_IDX )
+    {
+        ret = getDSA( &binPri, bPri );
+    }
+    else
+    {
+        ret = getRaw( &binPri, bPri );
+    }
+
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr("Export failed: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_PKI_getPubKeyFromPri( &binPri, &binPub );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
+    if( ret == 1 )
+        ret = JSR_VALID;
+
+    if( ret == JSR_VALID )
+        berApplet->messageBox( tr( "KeyPair is matched" ), this );
+    else
+        berApplet->warningBox( tr( "KeyPais is not matched" ), this );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+}
+
+void MakePriKeyDlg::clickCheckPubKey()
+{
+    int ret = 0;
+    int nIndex = mTabWidget->currentIndex();
+    BIN binPri = {0,0};
+    bool bPri = true;
+
+
+    if( mPublicKeyCheck->isChecked() == true )
+    {
+        bPri = false;
+    }
+
+    if( nIndex == RSA_IDX )
+    {
+        ret = getRSA( &binPri, bPri );
+    }
+    else if( nIndex == ECC_IDX )
+    {
+        ret = getECC( &binPri, bPri );
+    }
+    else if( nIndex == DSA_IDX )
+    {
+        ret = getDSA( &binPri, bPri );
+    }
+    else
+    {
+        ret = getRaw( &binPri, bPri );
+    }
+
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr("Export failed: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    if( bPri == false )
+    {
+        ret = JS_PKI_checkPublicKey( &binPri );
+    }
+    else
+    {
+        BIN binPub = {0,0};
+        JS_PKI_getPubKeyFromPriKey( &binPri, &binPub );
+        ret = JS_PKI_checkPublicKey( &binPub );
+        JS_BIN_reset( &binPub );
+    }
+
+    if( ret == JSR_VALID )
+        berApplet->messageBox( tr( "PublicKey is valid" ), this );
+    else
+        berApplet->warningBox( tr( "PublicKey is invalid" ), this );
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void MakePriKeyDlg::setEnableRSA_N( bool bVal )

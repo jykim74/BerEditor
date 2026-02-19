@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>585</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -130,6 +130,9 @@
          <width>80</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="maxLength">
+        <number>10</number>
        </property>
       </widget>
      </item>
@@ -627,13 +630,6 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mECC_CurveOIDText">
-           <property name="readOnly">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="mECC_CurveOIDLabel">
            <property name="text">
@@ -642,13 +638,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="mECC_CurveSNText">
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16777215</height>
-            </size>
-           </property>
+          <widget class="QLineEdit" name="mECC_CurveOIDText">
            <property name="palette">
             <palette>
              <active>
@@ -680,6 +670,9 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mECC_CurveSNCombo"/>
          </item>
         </layout>
        </item>
@@ -1285,74 +1278,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLineEdit" name="mRawParamText">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mRawNameText">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_11">
            <property name="orientation">
@@ -1365,6 +1290,19 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mRawNameCombo"/>
+         </item>
+         <item row="0" column="4">
+          <widget class="QComboBox" name="mRawParamCombo">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1529,6 +1467,47 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_18">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCheckPubKeyBtn">
+       <property name="text">
+        <string>Check PublicKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mDecodeBtn">
+       <property name="text">
+        <string>Decode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_15">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1575,6 +1554,61 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>mPublicKeyCheck</tabstop>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mParamCombo</tabstop>
+  <tabstop>mExponentText</tabstop>
+  <tabstop>mMakeBtn</tabstop>
+  <tabstop>mTabWidget</tabstop>
+  <tabstop>mRSA_EText</tabstop>
+  <tabstop>mRSA_ELenText</tabstop>
+  <tabstop>mRSA_PText</tabstop>
+  <tabstop>mRSA_PLenText</tabstop>
+  <tabstop>mRSA_QText</tabstop>
+  <tabstop>mRSA_QLenText</tabstop>
+  <tabstop>mRSA_DMP1Text</tabstop>
+  <tabstop>mRSA_DMP1LenText</tabstop>
+  <tabstop>mRSA_DMQ1Text</tabstop>
+  <tabstop>mRSA_DMQ1LenText</tabstop>
+  <tabstop>mRSA_IQMPText</tabstop>
+  <tabstop>mRSA_IQMPLenText</tabstop>
+  <tabstop>mRSA_NLenText</tabstop>
+  <tabstop>mRSA_NText</tabstop>
+  <tabstop>mRSA_DLenText</tabstop>
+  <tabstop>mRSA_DText</tabstop>
+  <tabstop>mECC_CurveSNCombo</tabstop>
+  <tabstop>mECC_CurveOIDText</tabstop>
+  <tabstop>mECC_PrivateLenText</tabstop>
+  <tabstop>mECC_PrivateText</tabstop>
+  <tabstop>mECC_PubXLenText</tabstop>
+  <tabstop>mECC_PubXText</tabstop>
+  <tabstop>mECC_PubYLenText</tabstop>
+  <tabstop>mECC_PubYText</tabstop>
+  <tabstop>mDSA_QText</tabstop>
+  <tabstop>mDSA_QLenText</tabstop>
+  <tabstop>mDSA_PrivateText</tabstop>
+  <tabstop>mDSA_PrivateLenText</tabstop>
+  <tabstop>mDSA_GLenText</tabstop>
+  <tabstop>mDSA_GText</tabstop>
+  <tabstop>mDSA_PLenText</tabstop>
+  <tabstop>mDSA_PText</tabstop>
+  <tabstop>mDSA_PublicLenText</tabstop>
+  <tabstop>mDSA_PublicText</tabstop>
+  <tabstop>mRawNameCombo</tabstop>
+  <tabstop>mRawParamCombo</tabstop>
+  <tabstop>mRawPrivateLenText</tabstop>
+  <tabstop>mRawPrivateText</tabstop>
+  <tabstop>mRawPublicLenText</tabstop>
+  <tabstop>mRawPublicText</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mCheckPubKeyBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>

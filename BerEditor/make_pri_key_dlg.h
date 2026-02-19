@@ -35,6 +35,7 @@ private slots:
     void changeECC_PubX();
     void changeECC_PubY();
     void changeECC_Private();
+    void changeECC_CurveSN();
 
     void changeDSA_G();
     void changeDSA_P();
@@ -44,6 +45,7 @@ private slots:
 
     void changeRawPublic();
     void changeRawPrivate();
+    void changeRawName();
 
     void clickExport();
     void clickMake();
@@ -52,6 +54,10 @@ private slots:
     void changeTab( int index );
     void changeAlg( int index );
     void checkPublicKey();
+
+    void clickDecode();
+    void clickCheckKeyPair();
+    void clickCheckPubKey();
 
 private:
     void initUI();
