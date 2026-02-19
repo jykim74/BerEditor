@@ -339,7 +339,7 @@ void GenKeyPairDlg::clickOK()
     }
     else if( mML_KEMRadio->isChecked() )
     {
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         strKeyType = JS_PKI_KEY_NAME_ML_KEM;
 
@@ -349,7 +349,7 @@ void GenKeyPairDlg::clickOK()
     }
     else if( mML_DSARadio->isChecked() )
     {
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         strKeyType = JS_PKI_KEY_NAME_ML_DSA;
 
@@ -359,7 +359,7 @@ void GenKeyPairDlg::clickOK()
     }
     else if( mSLH_DSARadio->isChecked() )
     {
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         strKeyType = JS_PKI_KEY_NAME_SLH_DSA;
 

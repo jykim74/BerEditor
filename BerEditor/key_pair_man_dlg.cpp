@@ -25,6 +25,7 @@
 #include "js_error.h"
 #include "js_pqc.h"
 
+
 static QString sKeyTypeAll = "ALL";
 
 static QStringList kKeyTypeList = {
@@ -410,11 +411,11 @@ void KeyPairManDlg:: loadKeyPairList()
         }
         else if( nAlg == JS_PKI_KEY_TYPE_EDDSA )
         {
-            strOption = JS_EDDSA_getParamName( nOption );
+            strOption = JS_RAW_getParamName( nOption );
         }
         else if( nAlg == JS_PKI_KEY_TYPE_ML_KEM || nAlg == JS_PKI_KEY_TYPE_ML_DSA || nAlg == JS_PKI_KEY_TYPE_SLH_DSA )
         {
-            strOption = JS_PQC_paramName( nOption );
+            strOption = JS_RAW_getParamName( nOption );
         }
         else
         {

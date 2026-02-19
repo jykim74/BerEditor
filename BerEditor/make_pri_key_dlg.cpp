@@ -452,7 +452,7 @@ void MakePriKeyDlg::clickMake()
 
         mTabWidget->setCurrentIndex( RAW_IDX );
 
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         timer.start();
         ret = JS_ML_DSA_genKeyPair( nParam, &binPub, &binPri );
@@ -476,7 +476,7 @@ void MakePriKeyDlg::clickMake()
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
         mTabWidget->setCurrentIndex( RAW_IDX );
 
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         timer.start();
         ret = JS_ML_KEM_genKeyPair( nParam, &binPub, &binPri );
@@ -500,7 +500,7 @@ void MakePriKeyDlg::clickMake()
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
         mTabWidget->setCurrentIndex( RAW_IDX );
 
-        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        int nParam = JS_RAW_getParam( strParam.toStdString().c_str() );
 
         timer.start();
         ret = JS_SLH_DSA_genKeyPair( nParam, &binPub, &binPri );
@@ -598,28 +598,28 @@ int MakePriKeyDlg::getRSA( BIN *pRSA, bool bPri )
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     ret = getBINFromString( &binN, DATA_HEX, mRSA_NText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binE, DATA_HEX, mRSA_EText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binD, DATA_HEX, mRSA_DText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binP, DATA_HEX, mRSA_PText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binQ, DATA_HEX, mRSA_QText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binDMP1, DATA_HEX, mRSA_DMP1Text->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binDMQ1, DATA_HEX, mRSA_DMQ1Text->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binIQMP, DATA_HEX, mRSA_IQMPText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_setRSAKeyVal( &sKeyVal,
                         binN.nLen > 0 ? getHexString( &binN ).toStdString().c_str() : NULL,
@@ -666,13 +666,13 @@ int MakePriKeyDlg::getECC( BIN *pECC, bool bPri )
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     ret = getBINFromString( &binPri, DATA_HEX, mECC_PrivateText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binPubX, DATA_HEX, mECC_PubXText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binPubY, DATA_HEX, mECC_PubYText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_setECKeyVal( &sKeyVal,
                              strOID.toStdString().c_str(),
@@ -710,19 +710,19 @@ int MakePriKeyDlg::getDSA( BIN *pDSA, bool bPri )
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     ret = getBINFromString( &binG, DATA_HEX, mDSA_GText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binP, DATA_HEX, mDSA_PText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binQ, DATA_HEX, mDSA_QText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binPub, DATA_HEX, mDSA_PublicText->toPlainText() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = getBINFromString( &binPri, DATA_HEX, mDSA_PrivateText->text() );
-    FORMAT_WARN_RET(ret);
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_setDSAKeyVal( &sKeyVal,
                                 binG.nLen > 0 ? getHexString( &binG ).toStdString().c_str() : NULL,
@@ -760,6 +760,12 @@ int MakePriKeyDlg::getRaw( BIN *pRaw, bool bPri )
     BIN binPri = {0,0};
 
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+    ret = getBINFromString( &binPri, DATA_HEX, mRawPrivateText->toPlainText() );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binPub, DATA_HEX, mRawPublicText->toPlainText() );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_setRawKeyVal( &sKeyVal,
                               strAlg.toStdString().c_str(),
