@@ -58,6 +58,7 @@ private slots:
     void clickDecode();
     void clickCheckKeyPair();
     void clickCheckPubKey();
+    void clickSaveToKeyPairMan();
 
 private:
     void initUI();

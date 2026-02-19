@@ -37,8 +37,7 @@ static QStringList kPQCKeyTypeList = {
     JS_PKI_KEY_NAME_ML_KEM, JS_PKI_KEY_NAME_ML_DSA, JS_PKI_KEY_NAME_SLH_DSA
 };
 
-static QString kPrivateFile = "private.pem";
-static QString kPublicFile = "public.pem";
+
 
 KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     QDialog(parent)

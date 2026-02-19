@@ -1485,10 +1485,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mSaveToKeyPairManBtn">
        <property name="text">
-        <string>Check KeyPair</string>
+        <string>Save to KeyPairMan</string>
        </property>
       </widget>
      </item>
@@ -1504,6 +1504,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -1603,8 +1610,9 @@
   <tabstop>mRawPublicLenText</tabstop>
   <tabstop>mRawPublicText</tabstop>
   <tabstop>mDecodeBtn</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mCheckPubKeyBtn</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mSaveToKeyPairManBtn</tabstop>
   <tabstop>mExportBtn</tabstop>
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

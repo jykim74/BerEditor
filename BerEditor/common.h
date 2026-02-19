@@ -355,6 +355,9 @@ const QString kTableStyle = "QHeaderView::section {background-color:#404040;colo
 const QString kReadOnlyStyle = "background-color:#ddddff";
 const QString kDisableStyle = "background-color:#cccccc";
 
+static QString kPrivateFile = "private.pem";
+static QString kPublicFile = "public.pem";
+
 const QString GetSystemID();
 
 int setOIDList( const QString& strOIDPath );

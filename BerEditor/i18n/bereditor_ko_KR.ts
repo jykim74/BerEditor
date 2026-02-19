@@ -15387,98 +15387,128 @@ Use %2</source>
     </message>
     <message>
         <location filename="../make_pri_key_dlg.ui" line="1491"/>
+        <source>Save to KeyPairMan</source>
+        <translation>KeyPairMan 저장</translation>
+    </message>
+    <message>
+        <location filename="../make_pri_key_dlg.ui" line="1511"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.ui" line="1535"/>
+        <location filename="../make_pri_key_dlg.ui" line="1542"/>
         <source>Export</source>
         <translation>내보내기</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.ui" line="1542"/>
+        <location filename="../make_pri_key_dlg.ui" line="1549"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.ui" line="1549"/>
+        <location filename="../make_pri_key_dlg.ui" line="1556"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="81"/>
-        <location filename="../make_pri_key_dlg.cpp" line="82"/>
-        <location filename="../make_pri_key_dlg.cpp" line="83"/>
         <location filename="../make_pri_key_dlg.cpp" line="84"/>
         <location filename="../make_pri_key_dlg.cpp" line="85"/>
         <location filename="../make_pri_key_dlg.cpp" line="86"/>
         <location filename="../make_pri_key_dlg.cpp" line="87"/>
         <location filename="../make_pri_key_dlg.cpp" line="88"/>
+        <location filename="../make_pri_key_dlg.cpp" line="89"/>
         <location filename="../make_pri_key_dlg.cpp" line="90"/>
         <location filename="../make_pri_key_dlg.cpp" line="91"/>
-        <location filename="../make_pri_key_dlg.cpp" line="92"/>
+        <location filename="../make_pri_key_dlg.cpp" line="93"/>
         <location filename="../make_pri_key_dlg.cpp" line="94"/>
         <location filename="../make_pri_key_dlg.cpp" line="95"/>
-        <location filename="../make_pri_key_dlg.cpp" line="96"/>
         <location filename="../make_pri_key_dlg.cpp" line="97"/>
         <location filename="../make_pri_key_dlg.cpp" line="98"/>
+        <location filename="../make_pri_key_dlg.cpp" line="99"/>
         <location filename="../make_pri_key_dlg.cpp" line="100"/>
         <location filename="../make_pri_key_dlg.cpp" line="101"/>
+        <location filename="../make_pri_key_dlg.cpp" line="103"/>
+        <location filename="../make_pri_key_dlg.cpp" line="104"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="111"/>
+        <location filename="../make_pri_key_dlg.cpp" line="114"/>
         <source>Decimal value</source>
         <translation>10진수 값</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="313"/>
-        <location filename="../make_pri_key_dlg.cpp" line="920"/>
-        <location filename="../make_pri_key_dlg.cpp" line="962"/>
-        <location filename="../make_pri_key_dlg.cpp" line="1015"/>
+        <location filename="../make_pri_key_dlg.cpp" line="316"/>
+        <location filename="../make_pri_key_dlg.cpp" line="930"/>
+        <location filename="../make_pri_key_dlg.cpp" line="972"/>
+        <location filename="../make_pri_key_dlg.cpp" line="1025"/>
+        <location filename="../make_pri_key_dlg.cpp" line="1084"/>
         <source>Export failed: %1</source>
         <translation>내보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="525"/>
+        <location filename="../make_pri_key_dlg.cpp" line="528"/>
         <source>failed to generate key pair: %1</source>
         <translation>키 쌍 생성 실패: %1</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="534"/>
+        <location filename="../make_pri_key_dlg.cpp" line="537"/>
         <source>%1 private key generated</source>
         <translation>%1 개인키가 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="868"/>
+        <location filename="../make_pri_key_dlg.cpp" line="877"/>
         <source>Make a private key</source>
         <translation>개인키 만들기</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="870"/>
+        <location filename="../make_pri_key_dlg.cpp" line="879"/>
         <source>Make a public key</source>
         <translation>공개키 만들기</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="974"/>
+        <location filename="../make_pri_key_dlg.cpp" line="984"/>
         <source>KeyPair is matched</source>
         <translation>키 쌍이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="976"/>
+        <location filename="../make_pri_key_dlg.cpp" line="986"/>
         <source>KeyPais is not matched</source>
         <translation>키 쌍이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="1032"/>
+        <location filename="../make_pri_key_dlg.cpp" line="1043"/>
         <source>PublicKey is valid</source>
         <translation>유효한 공개키 입니다</translation>
     </message>
     <message>
-        <location filename="../make_pri_key_dlg.cpp" line="1034"/>
+        <location filename="../make_pri_key_dlg.cpp" line="1045"/>
+        <source>PublicKey is invalid: %1</source>
+        <translation>유효한 공개키가 아닙니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../make_pri_key_dlg.cpp" line="1103"/>
+        <source>The folder(%1) is already existed</source>
+        <translation>해당 폴더(%1)이 이미 존재 합니다</translation>
+    </message>
+    <message>
+        <location filename="../make_pri_key_dlg.cpp" line="1117"/>
+        <source>fail to write private key</source>
+        <translation>개인키 파일 쓰기 실패</translation>
+    </message>
+    <message>
+        <location filename="../make_pri_key_dlg.cpp" line="1125"/>
+        <source>fail to write public key</source>
+        <translation>공개키 파일 쓰기 실패</translation>
+    </message>
+    <message>
+        <location filename="../make_pri_key_dlg.cpp" line="1130"/>
+        <source>Key pair saving was successful</source>
+        <translation>키 쌍 저장에 성공하였습니다</translation>
+    </message>
+    <message>
         <source>PublicKey is invalid</source>
-        <translation>유효한 공개키가 아닙니다</translation>
+        <translation type="vanished">유효한 공개키가 아닙니다</translation>
     </message>
 </context>
 <context>

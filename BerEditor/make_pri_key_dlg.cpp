@@ -1,5 +1,6 @@
 #include <QElapsedTimer>
 #include <QRegExpValidator>
+#include <QDir>
 
 #include "make_pri_key_dlg.h"
 #include "common.h"
@@ -7,6 +8,7 @@
 #include "settings_mgr.h"
 #include "mainwindow.h"
 #include "export_dlg.h"
+#include "name_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -54,6 +56,7 @@ MakePriKeyDlg::MakePriKeyDlg(QWidget *parent)
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mCheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickCheckPubKey()));
+    connect( mSaveToKeyPairManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToKeyPairMan()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -889,6 +892,7 @@ void MakePriKeyDlg::checkPublicKey()
     setEnableRawPrivate( !bVal );
 
     mCheckKeyPairBtn->setEnabled( !bVal );
+    mSaveToKeyPairManBtn->setEnabled( !bVal );
 }
 
 void MakePriKeyDlg::clickDecode()
@@ -1029,7 +1033,8 @@ void MakePriKeyDlg::clickCheckPubKey()
     else
     {
         BIN binPub = {0,0};
-        JS_PKI_getPubKeyFromPriKey( &binPri, &binPub );
+        ret = JS_PKI_getPubKeyFromPriKey( &binPri, &binPub );
+        if( ret != JSR_OK ) goto end;
         ret = JS_PKI_checkPublicKey( &binPub );
         JS_BIN_reset( &binPub );
     }
@@ -1037,10 +1042,98 @@ void MakePriKeyDlg::clickCheckPubKey()
     if( ret == JSR_VALID )
         berApplet->messageBox( tr( "PublicKey is valid" ), this );
     else
-        berApplet->warningBox( tr( "PublicKey is invalid" ), this );
+        berApplet->warningBox( tr( "PublicKey is invalid: %1" ).arg(JERR(ret)), this );
 
 end :
     JS_BIN_reset( &binPri );
+}
+
+void MakePriKeyDlg::clickSaveToKeyPairMan()
+{
+    int ret = 0;
+    int nIndex = mTabWidget->currentIndex();
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    bool bPri = true;
+    NameDlg nameDlg;
+
+    if( mPublicKeyCheck->isChecked() == true )
+    {
+        return;
+    }
+
+    if( nIndex == RSA_IDX )
+    {
+        ret = getRSA( &binPri, bPri );
+    }
+    else if( nIndex == ECC_IDX )
+    {
+        ret = getECC( &binPri, bPri );
+    }
+    else if( nIndex == DSA_IDX )
+    {
+        ret = getDSA( &binPri, bPri );
+    }
+    else
+    {
+        ret = getRaw( &binPri, bPri );
+    }
+
+    if( ret != CKR_OK )
+    {
+        berApplet->warningBox( tr("Export failed: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_PKI_getPubKeyFromPri( &binPri, &binPub );
+    if( ret != 0 ) goto end;
+
+
+
+    if( nameDlg.exec() == QDialog::Accepted )
+    {
+        QDir dir;
+
+        QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
+        QString strName = nameDlg.mNameText->text();
+
+        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+        if( dir.exists( fullPath ) )
+        {
+            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            goto end;
+        }
+        else
+        {
+            dir.mkdir( fullPath );
+        }
+
+        QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
+        QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
+
+        ret = writePriKeyPEM( &binPri, strPriSavePath );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write private key"), this );
+            dir.rmdir( fullPath );
+            goto end;
+        }
+
+        ret = writePubKeyPEM( &binPub, strPubSavePath );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write public key"), this );
+            dir.rmdir( fullPath );
+            goto end;
+        }
+
+        berApplet->messageLog( tr( "Key pair saving was successful"), this );
+    }
+
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
 }
 
 void MakePriKeyDlg::setEnableRSA_N( bool bVal )
