@@ -245,6 +245,17 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
         }
 
         berApplet->info( strVal );
+
+        if( pItem->isType( JS_UTCTIME) || pItem->isType( JS_GENERALIZEDTIME ) )
+        {
+            char sDateTime[64];
+            memset( sDateTime, 0x00, sizeof(sDateTime));
+            if( JS_BER_getLocalTime( &binVal, sDateTime ) == JSR_OK )
+            {
+                berApplet->info( QString( " [Local: %1]" ).arg(sDateTime));
+            }
+        }
+
         berApplet->info( "\n" );
 
         berApplet->line();

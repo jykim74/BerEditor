@@ -62,9 +62,8 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mEditModeCheck, SIGNAL(clicked()), this, SLOT(checkEditMode()));
 
-    initialize();
-    mCloseBtn->setDefault(true);
 
+    mCloseBtn->setDefault(true);
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
@@ -80,6 +79,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     tabRaw->layout()->setMargin(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+    initialize();
 }
 
 PriKeyInfoDlg::~PriKeyInfoDlg()
