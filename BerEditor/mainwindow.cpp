@@ -61,6 +61,7 @@
 #include "doc_signer_dlg.h"
 #include "ber_check_dlg.h"
 #include "make_pri_key_dlg.h"
+#include "ber_compare_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -496,6 +497,13 @@ void MainWindow::createViewActions()
     toolGetURIAct->setChecked(bVal);
     connect( toolGetURIAct, &QAction::triggered, this, &MainWindow::viewToolGetURI );
     toolMenu->addAction( toolGetURIAct );
+
+    QAction *toolBERCompareAct = new QAction( tr( "BER Compare"), this );
+    bVal = isView( ACT_TOOL_BER_COMPARE );
+    toolBERCompareAct->setCheckable(true);
+    toolBERCompareAct->setChecked(bVal);
+    connect( toolBERCompareAct, &QAction::triggered, this, &MainWindow::viewToolBERCompare );
+    toolMenu->addAction( toolBERCompareAct );
 
 
     QAction *cryptKeyManAct = new QAction( tr( "KeyManage"), this );
@@ -1041,12 +1049,21 @@ void MainWindow::createToolActions()
     toolMenu->addAction( get_uri_act_ );
     if( isView( ACT_TOOL_GET_URI ) ) tool_tool_->addAction( get_uri_act_ );
 
+    const QIcon berCompIcon = QIcon::fromTheme("BER compare", QIcon(":/images/ber_compare.png"));
+    ber_compare_act_ = new QAction(berCompIcon, tr("&BER Compare"), this);
+    ber_compare_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
+    connect( ber_compare_act_, &QAction::triggered, this, &MainWindow::BERCompare );
+    ber_compare_act_->setStatusTip(tr("BER compare"));
+    toolMenu->addAction( ber_compare_act_ );
+    if( isView( ACT_TOOL_BER_COMPARE ) ) tool_tool_->addAction( ber_compare_act_ );
+
     menuBar()->addSeparator();
 
     if( berApplet->isLicense() == false )
     {
         make_ber_act_->setEnabled( false );
         ber_check_act_->setEnabled( false );
+        ber_compare_act_->setEnabled( false );
     }
 }
 
@@ -2503,6 +2520,12 @@ void MainWindow::encDec()
     enc_dec_dlg_->activateWindow();
 }
 
+void MainWindow::BERCompare()
+{
+    BERCompareDlg berCompare;
+    berCompare.exec();
+}
+
 void MainWindow::encDec2( const QString strKey, const QString strIV )
 {
     if( enc_dec_dlg_ == nullptr )
@@ -3244,13 +3267,27 @@ void MainWindow::viewToolGetURI( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( get_uri_act_ );
+        tool_tool_->insertAction( ber_compare_act_, get_uri_act_ );
         setView( ACT_TOOL_GET_URI );
     }
     else
     {
         tool_tool_->removeAction( get_uri_act_ );
         unsetView( ACT_TOOL_GET_URI );
+    }
+}
+
+void MainWindow::viewToolBERCompare( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( ber_compare_act_ );
+        setView( ACT_TOOL_BER_COMPARE );
+    }
+    else
+    {
+        tool_tool_->removeAction( ber_compare_act_ );
+        unsetView( ACT_TOOL_BER_COMPARE );
     }
 }
 
@@ -3426,7 +3463,7 @@ void MainWindow::viewCryptBNCalc( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( calc_act_ );
+        crypt_tool_->insertAction( make_pri_act_, calc_act_ );
         setView( ACT_CRYPT_BN_CALC );
     }
     else

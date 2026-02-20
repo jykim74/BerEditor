@@ -120,5 +120,6 @@
         <file>images/log_en.png</file>
         <file>images/timer.png</file>
         <file>images/make_pri.png</file>
+        <file>images/ber_compare.png</file>
     </qresource>
 </RCC>

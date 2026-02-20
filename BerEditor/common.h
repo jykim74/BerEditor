@@ -153,6 +153,7 @@ const int kFileMax = 1048576; // 1024 * 1024
 #define ACT_TOOL_MAKE_BER           VIEW_TOOL | 0x00000010
 #define ACT_TOOL_BER_CHECK          VIEW_TOOL | 0x00000020
 #define ACT_TOOL_GET_URI            VIEW_TOOL | 0x00000040
+#define ACT_TOOL_BER_COMPARE        VIEW_TOOL | 0x00000080
 
 #define ACT_CRYPT_KEY_MAN           VIEW_CRYPT | 0x00000001
 #define ACT_CRYPT_HASH              VIEW_CRYPT | 0x00000002

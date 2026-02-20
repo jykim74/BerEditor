@@ -138,6 +138,7 @@ public:
     void viewToolBERCheck( bool bChecked );
     void viewToolDecodeData( bool bChecked );
     void viewToolGetURI( bool bChecked );
+    void viewToolBERCompare( bool bChecked );
 
     void viewCryptKeyMan( bool bChecked );
     void viewCryptHash( bool bChecked );
@@ -220,6 +221,7 @@ private slots:
     void keyAgree();
     void oidInfo();
     void encDec();
+    void BERCompare();
 
     void signVerify();
     void pubEncDec();
@@ -386,6 +388,7 @@ private:
     QAction* ber_check_act_;
     QAction* decode_data_act_;
     QAction* get_uri_act_;
+    QAction* ber_compare_act_;
 
     QToolBar* crypt_tool_;
     QAction* key_man_act_;
