@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>TextLabel</string>
+        <string>A BER and B BER compare</string>
        </property>
       </widget>
      </item>
@@ -44,11 +44,26 @@
       <number>0</number>
      </property>
      <item row="1" column="1">
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="mAGroup">
        <property name="title">
         <string>GroupBox</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
         <item>
          <layout class="QGridLayout" name="gridLayout_4">
           <property name="topMargin">
@@ -57,24 +72,24 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>TextLabel</string>
+             <string>A File</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QLineEdit" name="mAPathText"/>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="mAFindBtn">
             <property name="text">
-             <string>PushButton</string>
+             <string>Find</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTreeWidget" name="treeWidget">
+         <widget class="QTreeWidget" name="mATreeView">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -89,7 +104,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget">
+         <widget class="QTableWidget" name="mATable">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -102,11 +117,26 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QGroupBox" name="mBGroup">
        <property name="title">
         <string>GroupBox</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
         <item>
          <layout class="QGridLayout" name="gridLayout_5">
           <property name="topMargin">
@@ -115,24 +145,24 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>TextLabel</string>
+             <string>B File</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit_2"/>
+           <widget class="QLineEdit" name="mBPathText"/>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="mBFindBtn">
             <property name="text">
-             <string>PushButton</string>
+             <string>Find</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTreeWidget" name="treeWidget_2">
+         <widget class="QTreeWidget" name="mBTreeView">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -147,7 +177,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget_2">
+         <widget class="QTableWidget" name="mBTable">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -173,21 +203,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -199,6 +215,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
