@@ -3,15 +3,13 @@
 #include "settings_mgr.h"
 #include "mainwindow.h"
 #include "ber_model.h"
+#include "ber_item.h"
 
 BERCompareDlg::BERCompareDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
     initUI();
-
-    memset( &binA, 0x00, sizeof(BIN));
-    memset( &binB, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
@@ -30,8 +28,7 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
 
 BERCompareDlg::~BERCompareDlg()
 {
-    JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
+
 }
 
 void BERCompareDlg::initUI()
@@ -73,6 +70,6 @@ void BERCompareDlg::clickClear()
 
 void BERCompareDlg::clickCompare()
 {
-    JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
+    BerItem *berItem = new BerItem;
+    berItem->setText( "Text" );
 }

@@ -5,6 +5,7 @@
 #include "ui_ber_compare_dlg.h"
 #include "ber_model.h"
 #include "js_bin.h"
+#include "comp_model.h"
 
 namespace Ui {
 class BERCompareDlg;
@@ -28,9 +29,8 @@ private:
     void initUI();
     void initialize();
 
-
-    BIN binA;
-    BIN binB;
+    CompModel modelA_;
+    CompModel modelB_;
 };
 
 #endif // BER_COMPARE_DLG_H

@@ -230,6 +230,8 @@ add_executable(${PROJECT_NAME}
     data_input_dlg.h data_input_dlg.cpp data_input_dlg.ui
     make_pri_key_dlg.h make_pri_key_dlg.cpp make_pri_key_dlg.ui
     ber_compare_dlg.h ber_compare_dlg.cpp ber_compare_dlg.ui
+    comp_tree.h comp_tree.cpp
+    comp_model.h comp_model.cpp
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
