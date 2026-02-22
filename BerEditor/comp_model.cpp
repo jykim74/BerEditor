@@ -152,7 +152,7 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
             break;
         }
 
-        if( bSETSort == true )
+        if( bSETSort == true && pItem->isType( JS_SET) == true )
         {
             // Need to work
             int nCount = pItem->rowCount();
@@ -343,4 +343,39 @@ int CompModel::IsPrev( BerItem *pA, BerItem *pB )
     JS_BIN_reset( &binB );
 
     return ret;
+}
+
+const QStringList CompModel::getPositon( BerItem *pItem )
+{
+    QStringList listPos;
+
+    const BerItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (BerItem *)pCurrent->parent();
+    }
+
+    return listPos;
+}
+
+BerItem* CompModel::findItemByPostion( const QStringList listPos )
+{
+    BerItem* item = nullptr;
+    QModelIndex ri = index(0,0);
+    item = (BerItem *)itemFromIndex( ri );
+
+    if( listPos.at(0) != 0 )
+        return nullptr;
+
+    for( int i = 1; i < listPos.size(); i++ )
+    {
+        QString strPos = listPos.at(i);
+
+    }
+
+    return item;
 }

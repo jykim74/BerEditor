@@ -24,6 +24,9 @@ public:
     BerItem* getCurrentItem();
     void getValue( BIN *pValue );
 
+    const QStringList getPositon( BerItem *pItem );
+    BerItem* findItemByPostion( const QStringList listPos );
+
 public slots:
 
 private:

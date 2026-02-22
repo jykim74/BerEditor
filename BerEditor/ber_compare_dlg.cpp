@@ -121,6 +121,14 @@ void BERCompareDlg::clickNodeA()
 
     mAText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );
+
+    QStringList listPos = modelA_->getPositon( item );
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        QString strPos = listPos.at(i);
+        mAText->appendPlainText( QString( "Pos: %1").arg( strPos ));
+    }
 }
 
 void BERCompareDlg::clickNodeB()
@@ -133,4 +141,6 @@ void BERCompareDlg::clickNodeB()
 
     mBText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );
+
+    mBText->appendPlainText( QString( "Row: %1 Level: %2").arg( item->row()).arg( item->GetLevel() ));
 }
