@@ -285,10 +285,17 @@ BerItem* CompModel::getCurrentItem()
     return (BerItem *)itemFromIndex( idx );
 }
 
-void CompModel::getValue( BIN *pValue )
+void CompModel::getCurrentValue( BIN *pValue )
 {
     BerItem* item = getCurrentItem();
 
+    if( item == nullptr ) return;
+
+    item->getValueBin( &binBER_, pValue );
+}
+
+void CompModel::getValue( BerItem *item, BIN *pValue )
+{
     if( item == nullptr ) return;
 
     item->getValueBin( &binBER_, pValue );

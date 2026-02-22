@@ -57,8 +57,11 @@ void BERCompareDlg::initialize()
 
 }
 
-int BERCompareDlg::compare( const BerItem *pA, const BerItem *pB )
+int BERCompareDlg::compare( BerItem *pA, BerItem *pB )
 {
+    BIN binA = {0,0};
+    BIN binB = {0,0};
+
     if( pA == NULL && pB == NULL )
         return BER_IS_SAME;
 
@@ -74,7 +77,23 @@ int BERCompareDlg::compare( const BerItem *pA, const BerItem *pB )
     if( memcmp( pA->header_, pB->header_, pA->header_size_ ) != 0 )
         return BER_HEAD_DIFF;
 
-    return BER_IS_SAME;
+    if( pA->length_ != pB->length_ )
+        return BER_VALUE_DIFF;
+
+    modelA_->getValue( pA, &binA );
+    modelB_->getValue( pB, &binB );
+
+    if( JS_BIN_cmp( &binA, &binB ) == 0 )
+    {
+        JS_BIN_reset( &binA );
+        JS_BIN_reset( &binB );
+        return BER_IS_SAME;
+    }
+
+    JS_BIN_reset( &binA );
+    JS_BIN_reset( &binB );
+
+    return BER_NOT_SAME;
 }
 
 void BERCompareDlg::clickFindA()
@@ -137,7 +156,7 @@ void BERCompareDlg::clickNodeA()
 
     BIN binVal = {0,0};
     BerItem *item = modelA_->getCurrentItem();
-    modelA_->getValue( &binVal );
+    modelA_->getCurrentValue( &binVal );
 
     mAText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );
@@ -169,7 +188,7 @@ void BERCompareDlg::clickNodeB()
 
     BIN binVal = {0,0};
     BerItem *item = modelB_->getCurrentItem();
-    modelB_->getValue( &binVal );
+    modelB_->getCurrentValue( &binVal );
 
     mBText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );

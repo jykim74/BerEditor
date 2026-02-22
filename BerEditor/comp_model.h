@@ -22,7 +22,8 @@ public:
     int makeTree( bool bSETSort, bool bExpand );
 
     BerItem* getCurrentItem();
-    void getValue( BIN *pValue );
+    void getCurrentValue( BIN *pValue );
+    void getValue( BerItem *item, BIN *pValue );
     void setSelectItem( const BerItem *pItem );
 
     const QStringList getPositon( BerItem *pItem );

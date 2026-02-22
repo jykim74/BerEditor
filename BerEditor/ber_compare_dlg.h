@@ -44,7 +44,7 @@ private:
     void initUI();
     void initialize();
 
-    int compare( const BerItem *pA, const BerItem *pB );
+    int compare( BerItem *pA, BerItem *pB );
 
     CompModel* modelA_ = nullptr;
     CompModel* modelB_ = nullptr;
