@@ -16,8 +16,6 @@ public:
     BerItem* getNext( BerItem *pItem );
     BerItem* getPrev( BerItem *pItem );
 
-private slots:
-
 public slots:
 
 private:

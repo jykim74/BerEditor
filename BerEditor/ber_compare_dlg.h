@@ -7,6 +7,15 @@
 #include "js_bin.h"
 #include "comp_model.h"
 
+enum {
+    BER_IS_SAME = 0,
+    BER_TAG_DIFF,
+    BER_HEAD_DIFF,
+    BER_DEPTH_DIFF,
+    BER_VALUE_DIFF,
+    BER_NOT_SAME
+};
+
 namespace Ui {
 class BERCompareDlg;
 }
@@ -34,6 +43,8 @@ public slots:
 private:
     void initUI();
     void initialize();
+
+    int compare( const BerItem *pA, const BerItem *pB );
 
     CompModel* modelA_ = nullptr;
     CompModel* modelB_ = nullptr;

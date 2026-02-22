@@ -294,6 +294,14 @@ void CompModel::getValue( BIN *pValue )
     item->getValueBin( &binBER_, pValue );
 }
 
+void CompModel::setSelectItem( const BerItem *pItem )
+{
+    if( pItem == nullptr ) return;
+
+    QModelIndex idx = pItem->index();
+    tree_view_->setCurrentIndex( idx );
+}
+
 int CompModel::IsPrev( BerItem *pA, BerItem *pB )
 {
     int ret = 0;
@@ -366,15 +374,31 @@ BerItem* CompModel::findItemByPostion( const QStringList listPos )
 {
     BerItem* item = nullptr;
     QModelIndex ri = index(0,0);
-    item = (BerItem *)itemFromIndex( ri );
+    BerItem* root = (BerItem *)itemFromIndex( ri );
 
-    if( listPos.at(0) != 0 )
+    if( listPos.at(0) != "0" )
         return nullptr;
 
-    for( int i = 1; i < listPos.size(); i++ )
+    if( root->hasChildren() == false )
+        return nullptr;
+
+    item = root;
+
+    for( int i = 0; i < listPos.size(); i++ )
     {
         QString strPos = listPos.at(i);
 
+        if( item->row() != strPos.toInt() )
+            return nullptr;
+
+        if( i < ( listPos.size() - 1 ) )
+        {
+            QString strNext = listPos.at( i + 1 );
+            if( item->hasChildren() == false )
+                return nullptr;
+
+            item = (BerItem *)item->child( strNext.toInt(), 0 );
+        }
     }
 
     return item;

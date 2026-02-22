@@ -57,6 +57,26 @@ void BERCompareDlg::initialize()
 
 }
 
+int BERCompareDlg::compare( const BerItem *pA, const BerItem *pB )
+{
+    if( pA == NULL && pB == NULL )
+        return BER_IS_SAME;
+
+    if( pA == NULL || pB == NULL )
+        return BER_NOT_SAME;
+
+    if( pA->header_[0] != pB->header_[0] )
+        return BER_TAG_DIFF;
+
+    if( pA->level_ != pB->level_ )
+        return BER_DEPTH_DIFF;
+
+    if( memcmp( pA->header_, pB->header_, pA->header_size_ ) != 0 )
+        return BER_HEAD_DIFF;
+
+    return BER_IS_SAME;
+}
+
 void BERCompareDlg::clickFindA()
 {
     QString strPath = mAPathText->text();
@@ -128,6 +148,18 @@ void BERCompareDlg::clickNodeA()
     {
         QString strPos = listPos.at(i);
         mAText->appendPlainText( QString( "Pos: %1").arg( strPos ));
+    }
+
+    BerItem *find = modelB_->findItemByPostion( listPos );
+
+    if( find )
+    {
+        mAText->appendPlainText( "Find" );
+        modelB_->setSelectItem( find );
+    }
+    else
+    {
+        mAText->appendPlainText( "No item" );
     }
 }
 

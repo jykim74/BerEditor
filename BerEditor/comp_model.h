@@ -23,6 +23,7 @@ public:
 
     BerItem* getCurrentItem();
     void getValue( BIN *pValue );
+    void setSelectItem( const BerItem *pItem );
 
     const QStringList getPositon( BerItem *pItem );
     BerItem* findItemByPostion( const QStringList listPos );
