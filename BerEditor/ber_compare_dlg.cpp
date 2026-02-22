@@ -33,7 +33,16 @@ BERCompareDlg::~BERCompareDlg()
 
 void BERCompareDlg::initUI()
 {
+    // GroupBox Layout 설정
+    mAGroup->setMinimumHeight( 300 );
 
+    QVBoxLayout *ALayout = new QVBoxLayout();
+    ALayout->addWidget( modelA_.getTreeView() );
+    mAGroup->setLayout(ALayout);
+
+    QVBoxLayout *BLayout = new QVBoxLayout();
+    BLayout->addWidget( modelB_.getTreeView() );
+    mBGroup->setLayout(BLayout);
 }
 
 void BERCompareDlg::initialize()
@@ -46,6 +55,7 @@ void BERCompareDlg::clickFindA()
     QString strPath = mAPathText->text();
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.isEmpty() ) return;
+
 
     mAPathText->setText( fileName );
 }
@@ -64,8 +74,6 @@ void BERCompareDlg::clickClear()
 {
     mAText->clear();
     mBText->clear();
-    mATreeView->clear();
-    mBTreeView->clear();
 }
 
 void BERCompareDlg::clickCompare()

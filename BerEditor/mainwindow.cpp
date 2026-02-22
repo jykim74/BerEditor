@@ -155,6 +155,7 @@ MainWindow::~MainWindow()
     delete key_list_dlg_;
     delete x509_comp_dlg_;
     delete doc_signer_dlg_;
+    delete ber_comp_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -2522,8 +2523,12 @@ void MainWindow::encDec()
 
 void MainWindow::BERCompare()
 {
-    BERCompareDlg berCompare;
-    berCompare.exec();
+    if( ber_comp_dlg_ == nullptr )
+        ber_comp_dlg_ = new BERCompareDlg;
+
+    ber_comp_dlg_->show();
+    ber_comp_dlg_->raise();
+    ber_comp_dlg_->activateWindow();
 }
 
 void MainWindow::encDec2( const QString strKey, const QString strIV )

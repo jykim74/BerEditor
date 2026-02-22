@@ -13,6 +13,8 @@ public:
     CompModel(QObject *parent = 0);
     ~CompModel();
 
+    CompTree* getTreeView() { return tree_view_; };
+
 public slots:
 
 private:

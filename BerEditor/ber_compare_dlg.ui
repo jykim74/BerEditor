@@ -39,6 +39,47 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>20</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mAFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mAPathText"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>A File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>B File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mBPathText"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mBFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
@@ -48,65 +89,6 @@
        <property name="title">
         <string>A BER Information</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>5</number>
-        </property>
-        <property name="leftMargin">
-         <number>5</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
-         <number>5</number>
-        </property>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>A File</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="mAPathText"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="mAFindBtn">
-            <property name="text">
-             <string>Find</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTreeWidget" name="mATreeView">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>300</height>
-           </size>
-          </property>
-          <column>
-           <property name="text">
-            <string notr="true">1</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPlainTextEdit" name="mAText"/>
-        </item>
-       </layout>
       </widget>
      </item>
      <item row="1" column="2">
@@ -114,68 +96,27 @@
        <property name="title">
         <string>B BER Information</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>5</number>
-        </property>
-        <property name="leftMargin">
-         <number>5</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
-         <number>5</number>
-        </property>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_5">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>B File</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="mBPathText"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="mBFindBtn">
-            <property name="text">
-             <string>Find</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTreeWidget" name="mBTreeView">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>300</height>
-           </size>
-          </property>
-          <column>
-           <property name="text">
-            <string notr="true">1</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPlainTextEdit" name="mBText"/>
-        </item>
-       </layout>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget">
+     <widget class="QWidget" name="dockWidgetContents">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QPlainTextEdit" name="mAText"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPlainTextEdit" name="mBText"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">
