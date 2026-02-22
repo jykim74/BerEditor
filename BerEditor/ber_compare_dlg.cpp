@@ -65,13 +65,14 @@ void BERCompareDlg::clickFindA()
 
 
     mAPathText->setText( fileName );
+    bool bSET = mSETSortCheck->isChecked();
 
     BIN binBER = {0,0};
     int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
     if( ret > 0 )
     {
         modelA_->setBER( &binBER );
-        modelA_->makeTree( false, false );
+        modelA_->makeTree( bSET, false );
     }
 
     JS_BIN_reset( &binBER );
@@ -85,13 +86,14 @@ void BERCompareDlg::clickFindB()
     if( fileName.isEmpty() ) return;
 
     mBPathText->setText( fileName );
+    bool bSET = mSETSortCheck->isChecked();
 
     BIN binBER = {0,0};
     int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
     if( ret > 0 )
     {
         modelB_->setBER( &binBER );
-        modelB_->makeTree( false, false );
+        modelB_->makeTree( bSET, false );
     }
 
     JS_BIN_reset( &binBER );

@@ -155,6 +155,16 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
         if( bSETSort == true )
         {
             // Need to work
+            int nCount = pItem->rowCount();
+            for( int i = 0; i < nCount; i++ )
+            {
+                BerItem* pOther = (BerItem *)pItem->child( nCount -1 -i, 0 );
+                if( IsPrev( pOther, pChild) == 0 )
+                {
+                    pItem->insertRow( i, pChild );
+                    break;
+                }
+            }
         }
         else
         {
