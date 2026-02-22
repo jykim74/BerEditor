@@ -1,3 +1,7 @@
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "ber_compare_dlg.h"
 #include "ber_applet.h"
 #include "settings_mgr.h"
@@ -9,6 +13,8 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops( true );
+
     initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -35,6 +41,41 @@ BERCompareDlg::~BERCompareDlg()
 {
     if( modelA_ ) delete modelA_;
     if( modelB_ ) delete modelB_;
+}
+
+void BERCompareDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void BERCompareDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            if( mAPathText->text().length() < 1 )
+            {
+                mAPathText->setText( url.toLocalFile() );
+                break;
+            }
+
+            if( mBPathText->text().length() < 1 )
+            {
+                mBPathText->setText( url.toLocalFile() );
+                break;
+            }
+
+            berApplet->warningBox( tr( "Both files A and B already exist"), this );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
 }
 
 void BERCompareDlg::initUI()

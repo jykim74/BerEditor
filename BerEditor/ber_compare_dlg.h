@@ -29,6 +29,9 @@ public:
     ~BERCompareDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void clickFindA();
     void clickFindB();
     void clickDecodeA();

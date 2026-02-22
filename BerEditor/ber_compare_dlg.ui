@@ -188,6 +188,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -221,6 +224,9 @@
              </inactive>
              <disabled/>
             </palette>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
