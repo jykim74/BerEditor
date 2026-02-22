@@ -31,6 +31,8 @@ public:
 private slots:
     void clickFindA();
     void clickFindB();
+    void clickDecodeA();
+    void clickDecodeB();
     void clickClear();
     void clickCompare();
 
@@ -45,6 +47,8 @@ private:
     void initialize();
 
     int compare( BerItem *pA, BerItem *pB );
+    void logA( const QString strLog, QColor cr );
+    void logB( const QString strLog, QColor cr );
 
     CompModel* modelA_ = nullptr;
     CompModel* modelB_ = nullptr;

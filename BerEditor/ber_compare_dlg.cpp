@@ -15,11 +15,16 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
     connect( mAFindBtn, SIGNAL(clicked()), this, SLOT(clickFindA()));
     connect( mBFindBtn, SIGNAL(clicked()), this, SLOT(clickFindB()));
+    connect( mADecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecodeA()));
+    connect( mBDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecodeB()));
     connect( mCompareBtn, SIGNAL(clicked()), this, SLOT(clickCompare()));
 
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mADecodeBtn->setFixedWidth(34);
+    mBDecodeBtn->setFixedWidth(34);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -138,6 +143,44 @@ void BERCompareDlg::clickFindB()
     JS_BIN_reset( &binBER );
 }
 
+void BERCompareDlg::clickDecodeA()
+{
+    BIN binBER = {0,0};
+
+    QString strPath = mAPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find A file"), this );
+        mAPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binBER );
+
+    berApplet->decodeData( &binBER, strPath );
+    JS_BIN_reset( &binBER );
+}
+
+void BERCompareDlg::clickDecodeB()
+{
+    BIN binBER = {0,0};
+
+    QString strPath = mBPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find B file"), this );
+        mBPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binBER );
+
+    berApplet->decodeData( &binBER, strPath );
+    JS_BIN_reset( &binBER );
+}
+
 void BERCompareDlg::clickClear()
 {
     mAText->clear();
@@ -152,16 +195,14 @@ void BERCompareDlg::clickCompare()
 
 void BERCompareDlg::clickNodeA()
 {
-    mAText->setPlainText( "ClickA" );
-
     BIN binVal = {0,0};
-    BerItem *item = modelA_->getCurrentItem();
+    BerItem *itemA = modelA_->getCurrentItem();
     modelA_->getCurrentValue( &binVal );
 
     mAText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );
 
-    QStringList listPos = modelA_->getPositon( item );
+    QStringList listPos = modelA_->getPositon( itemA );
 
     for( int i = 0; i < listPos.size(); i++ )
     {
@@ -169,29 +210,83 @@ void BERCompareDlg::clickNodeA()
         mAText->appendPlainText( QString( "Pos: %1").arg( strPos ));
     }
 
-    BerItem *find = modelB_->findItemByPostion( listPos );
+    BerItem *itemB = modelB_->findItemByPostion( listPos );
 
-    if( find )
+    if( itemB )
     {
         mAText->appendPlainText( "Find" );
-        modelB_->setSelectItem( find );
+        modelB_->setSelectItem( itemB );
     }
     else
     {
         mAText->appendPlainText( "No item" );
     }
+
+    int ret = compare( itemA, itemB );
+    mAText->appendPlainText( QString( "Compare: %1").arg(ret));
 }
 
 void BERCompareDlg::clickNodeB()
 {
-    mBText->setPlainText( "ClickB" );
-
     BIN binVal = {0,0};
-    BerItem *item = modelB_->getCurrentItem();
+    BerItem *itemB = modelB_->getCurrentItem();
     modelB_->getCurrentValue( &binVal );
 
     mBText->appendPlainText( getHexString( &binVal) );
     JS_BIN_reset( &binVal );
 
-    mBText->appendPlainText( QString( "Row: %1 Level: %2").arg( item->row()).arg( item->GetLevel() ));
+    QStringList listPos = modelB_->getPositon( itemB );
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        QString strPos = listPos.at(i);
+        mBText->appendPlainText( QString( "Pos: %1").arg( strPos ));
+    }
+
+    BerItem *itemA = modelA_->findItemByPostion( listPos );
+
+    if( itemA )
+    {
+        mBText->appendPlainText( "Find" );
+        modelA_->setSelectItem( itemB );
+    }
+    else
+    {
+        mBText->appendPlainText( "No item" );
+    }
+
+    int ret = compare( itemA, itemB );
+    mBText->appendPlainText( QString( "Compare: %1").arg(ret));
+}
+
+void BERCompareDlg::logA( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = mAText->textCursor();
+    //    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+    //cursor.insertText( "\n" );
+
+    mAText->setTextCursor( cursor );
+    mAText->repaint();
+}
+
+void BERCompareDlg::logB( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = mBText->textCursor();
+    //    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+    //cursor.insertText( "\n" );
+
+    mBText->setTextCursor( cursor );
+    mBText->repaint();
 }
