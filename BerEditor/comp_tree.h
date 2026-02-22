@@ -13,6 +13,9 @@ public:
     CompTree( QWidget* parent = 0);
     ~CompTree();
 
+    BerItem* getNext( BerItem *pItem );
+    BerItem* getPrev( BerItem *pItem );
+
 private slots:
 
 public slots:

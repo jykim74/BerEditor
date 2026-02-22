@@ -121,5 +121,6 @@
         <file>images/timer.png</file>
         <file>images/make_pri.png</file>
         <file>images/ber_compare.png</file>
+        <file>comptree.qss</file>
     </qresource>
 </RCC>

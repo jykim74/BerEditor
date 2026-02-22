@@ -28,20 +28,27 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
 
 BERCompareDlg::~BERCompareDlg()
 {
-
+    if( modelA_ ) delete modelA_;
+    if( modelB_ ) delete modelB_;
 }
 
 void BERCompareDlg::initUI()
 {
     // GroupBox Layout 설정
+    modelA_ = new CompModel(this);
+    modelB_ = new CompModel(this);
+
+    connect( modelA_->getTreeView(), SIGNAL(clicked(QModelIndex)), this, SLOT(clickNodeA()));
+    connect( modelB_->getTreeView(), SIGNAL(clicked(QModelIndex)), this, SLOT(clickNodeB()));
+
     mAGroup->setMinimumHeight( 300 );
 
     QVBoxLayout *ALayout = new QVBoxLayout();
-    ALayout->addWidget( modelA_.getTreeView() );
+    ALayout->addWidget( modelA_->getTreeView() );
     mAGroup->setLayout(ALayout);
 
     QVBoxLayout *BLayout = new QVBoxLayout();
-    BLayout->addWidget( modelB_.getTreeView() );
+    BLayout->addWidget( modelB_->getTreeView() );
     mBGroup->setLayout(BLayout);
 }
 
@@ -58,6 +65,16 @@ void BERCompareDlg::clickFindA()
 
 
     mAPathText->setText( fileName );
+
+    BIN binBER = {0,0};
+    int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
+    if( ret > 0 )
+    {
+        modelA_->setBER( &binBER );
+        modelA_->makeTree( false, false );
+    }
+
+    JS_BIN_reset( &binBER );
 }
 
 
@@ -68,6 +85,16 @@ void BERCompareDlg::clickFindB()
     if( fileName.isEmpty() ) return;
 
     mBPathText->setText( fileName );
+
+    BIN binBER = {0,0};
+    int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
+    if( ret > 0 )
+    {
+        modelB_->setBER( &binBER );
+        modelB_->makeTree( false, false );
+    }
+
+    JS_BIN_reset( &binBER );
 }
 
 void BERCompareDlg::clickClear()
@@ -80,4 +107,28 @@ void BERCompareDlg::clickCompare()
 {
     BerItem *berItem = new BerItem;
     berItem->setText( "Text" );
+}
+
+void BERCompareDlg::clickNodeA()
+{
+    mAText->setPlainText( "ClickA" );
+
+    BIN binVal = {0,0};
+    BerItem *item = modelA_->getCurrentItem();
+    modelA_->getValue( &binVal );
+
+    mAText->appendPlainText( getHexString( &binVal) );
+    JS_BIN_reset( &binVal );
+}
+
+void BERCompareDlg::clickNodeB()
+{
+    mBText->setPlainText( "ClickB" );
+
+    BIN binVal = {0,0};
+    BerItem *item = modelB_->getCurrentItem();
+    modelB_->getValue( &binVal );
+
+    mBText->appendPlainText( getHexString( &binVal) );
+    JS_BIN_reset( &binVal );
 }

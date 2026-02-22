@@ -25,12 +25,18 @@ private slots:
     void clickClear();
     void clickCompare();
 
+    void clickNodeA();
+    void clickNodeB();
+
+public slots:
+
+
 private:
     void initUI();
     void initialize();
 
-    CompModel modelA_;
-    CompModel modelB_;
+    CompModel* modelA_ = nullptr;
+    CompModel* modelB_ = nullptr;
 };
 
 #endif // BER_COMPARE_DLG_H

@@ -14,10 +14,20 @@ public:
     ~CompModel();
 
     CompTree* getTreeView() { return tree_view_; };
+    void setBER( const BIN *pBER );
+
+    int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
+    int getItemInfo( int nOffset, BerItem *pItem );
+    int getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSETSort, bool bExpand );
+    int makeTree( bool bSETSort, bool bExpand );
+
+    BerItem* getCurrentItem();
+    void getValue( BIN *pValue );
 
 public slots:
 
 private:
+    int IsPrev( BerItem *pA, BerItem *pB );
 
     BIN binBER_;
     CompTree* tree_view_;
