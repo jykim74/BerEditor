@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
-    <height>702</height>
+    <width>704</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/ber_compare.png</normaloff>:/images/ber_compare.png</iconset>
        </property>
        <property name="flat">
@@ -69,7 +69,7 @@
     <widget class="Line" name="line_2">
      <property name="minimumSize">
       <size>
-       <width>600</width>
+       <width>640</width>
        <height>0</height>
       </size>
      </property>
@@ -174,7 +174,13 @@
     </layout>
    </item>
    <item>
-    <widget class="QDockWidget" name="dockWidget">
+    <widget class="QDockWidget" name="mInfoDock">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
      <widget class="QWidget" name="dockWidgetContents">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
@@ -290,7 +296,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/info.png</normaloff>:/images/info.png</iconset>
        </property>
        <property name="flat">
@@ -363,6 +369,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

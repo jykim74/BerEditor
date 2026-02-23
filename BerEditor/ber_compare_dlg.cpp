@@ -29,8 +29,17 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
+    mAGroup->layout()->setSpacing(5);
+    mAGroup->layout()->setMargin(5);
+
+    mBGroup->layout()->setSpacing(5);
+    mBGroup->layout()->setMargin(5);
+
     mADecodeBtn->setFixedWidth(34);
     mBDecodeBtn->setFixedWidth(34);
+
+    mInfoDock->layout()->setSpacing(5);
+    mInfoDock->layout()->setMargin(5);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -354,18 +363,23 @@ void BERCompareDlg::clickNodeA()
         cr = Qt::blue;
     }
 
-    logA( QString( "TL : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
-    logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
+    logA( QString( "TL    : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+    logA( QString( "-------------------------------------\n"), cr );
+    logValA( &binValA, cr );
 
     mBText->clear();
     modelB_->clearSelection();
 
     if( itemB )
     {
-        modelB_->setSelectItem( itemB );
-        modelB_->getValue( itemB, &binValB );
-        logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
-        logB( QString( "Value : %1").arg( getHexString( &binValB)), cr );
+        if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
+        {
+            modelB_->setSelectItem( itemB );
+            modelB_->getValue( itemB, &binValB );
+            logB( QString( "TL    : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+            logB( QString( "-------------------------------------\n"), cr );
+            logValB( &binValB, cr );
+        }
     }
 
     JS_BIN_reset( &binValA );
@@ -403,18 +417,23 @@ void BERCompareDlg::clickNodeB()
         cr = Qt::blue;
     }
 
-    logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
-    logB( QString( "Value : %1").arg( getHexString( &binValB)), cr );
+    logB( QString( "TL    : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+    logB( QString( "-------------------------------------\n"), cr );
+    logValB( &binValB, cr );
 
     mAText->clear();
     modelA_->clearSelection();
 
     if( itemA )
     {
-        modelA_->setSelectItem( itemA );
-        modelA_->getValue( itemA, &binValA );
-        logA( QString( "TL : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
-        logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
+        if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
+        {
+            modelA_->setSelectItem( itemA );
+            modelA_->getValue( itemA, &binValA );
+            logA( QString( "TL    : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+            logA( QString( "-------------------------------------\n"), cr );
+            logValA( &binValA, cr );
+        }
     }
 
     JS_BIN_reset( &binValA );
@@ -451,6 +470,64 @@ void BERCompareDlg::logB( const QString strLog, QColor cr )
 
     mBText->setTextCursor( cursor );
     mBText->repaint();
+}
+
+void BERCompareDlg::logValA( const BIN *pVal, QColor cr )
+{
+    if( pVal == NULL || pVal->nLen <= 0 ) return;
+
+    int nLeft = pVal->nLen;
+    int nWidth = 16;
+    int nBlock = 0;
+    int nPos = 0;
+
+    BIN binPart = {0,0};
+
+    while( nLeft > 0 )
+    {
+        if( nLeft > nWidth )
+            nBlock = nWidth;
+        else
+            nBlock = nLeft;
+
+        binPart.pVal = pVal->pVal + nPos;
+        binPart.nLen = nBlock;
+
+
+        logA( QString( "%1\n").arg( getHexString( &binPart )), cr );
+
+        nPos += nBlock;
+        nLeft -= nBlock;
+    }
+}
+
+void BERCompareDlg::logValB( const BIN *pVal, QColor cr )
+{
+    if( pVal == NULL || pVal->nLen <= 0 ) return;
+
+    int nLeft = pVal->nLen;
+    int nWidth = 16;
+    int nBlock = 0;
+    int nPos = 0;
+
+    BIN binPart = {0,0};
+
+    while( nLeft > 0 )
+    {
+        if( nLeft > nWidth )
+            nBlock = nWidth;
+        else
+            nBlock = nLeft;
+
+        binPart.pVal = pVal->pVal + nPos;
+        binPart.nLen = nBlock;
+
+
+        logB( QString( "%1\n").arg( getHexString( &binPart )), cr );
+
+        nPos += nBlock;
+        nLeft -= nBlock;
+    }
 }
 
 BerItem* BERCompareDlg::findItemB( QList<BerItem *> itemAList )
