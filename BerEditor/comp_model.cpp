@@ -361,6 +361,23 @@ const QStringList CompModel::getPositon( BerItem *pItem )
     return listPos;
 }
 
+QList<BerItem *> CompModel::getParentList( BerItem *pItem )
+{
+    QList<BerItem *> listParent;
+
+    const BerItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listParent.insert( 0, (BerItem *)pCurrent );
+
+        pCurrent = (BerItem *)pCurrent->parent();
+    }
+
+    return listParent;
+}
+
 BerItem* CompModel::findItemByPostion( const QStringList listPos )
 {
     BerItem* item = nullptr;

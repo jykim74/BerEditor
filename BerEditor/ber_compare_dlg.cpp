@@ -282,8 +282,16 @@ void BERCompareDlg::clickCompare()
             itemA = modelA_->getNext( itemA );
             if( itemA )
             {
-                QStringList listPos = modelA_->getPositon( itemA );
-                itemB = modelB_->findItemByPostion( listPos );
+                if( mSETSortCheck->isChecked() == true )
+                {
+                    QList<BerItem *> listParent = modelA_->getParentList( itemA );
+                    itemB = findItemB( listParent );
+                }
+                else
+                {
+                    QStringList listPos = modelA_->getPositon( itemA );
+                    itemB = modelB_->findItemByPostion( listPos );
+                }
             }
         }
     }
@@ -291,6 +299,7 @@ void BERCompareDlg::clickCompare()
 
 void BERCompareDlg::clickNodeA()
 {
+    int ret = 0;
     BIN binValA = {0,0};
     BIN binValB = {0,0};
 
@@ -301,10 +310,19 @@ void BERCompareDlg::clickNodeA()
     mAText->clear();
     modelA_->getCurrentValue( &binValA );
 
-    QStringList listPos = modelA_->getPositon( itemA );
-    itemB = modelB_->findItemByPostion( listPos );
 
-    int ret = compare( itemA, itemB );
+    if( mSETSortCheck->isChecked() == true )
+    {
+        QList<BerItem *> listParent = modelA_->getParentList( itemA );
+        itemB = findItemB( listParent );
+    }
+    else
+    {
+        QStringList listPos = modelA_->getPositon( itemA );
+        itemB = modelB_->findItemByPostion( listPos );
+    }
+
+    ret = compare( itemA, itemB );
 
     if( ret == BER_IS_SAME )
     {
@@ -329,6 +347,7 @@ void BERCompareDlg::clickNodeA()
 
 void BERCompareDlg::clickNodeB()
 {
+    int ret = 0;
     BIN binValA = {0,0};
     BIN binValB = {0,0};
 
@@ -339,10 +358,18 @@ void BERCompareDlg::clickNodeB()
     mBText->clear();
     modelB_->getCurrentValue( &binValB );
 
-    QStringList listPos = modelB_->getPositon( itemB );
-    itemA = modelA_->findItemByPostion( listPos );
+    if( mSETSortCheck->isChecked() == true )
+    {
+        QList<BerItem *> listParent = modelB_->getParentList( itemB );
+        itemA = findItemA( listParent );
+    }
+    else
+    {
+        QStringList listPos = modelB_->getPositon( itemB );
+        itemA = modelA_->findItemByPostion( listPos );
+    }
 
-    int ret = compare( itemA, itemB );
+    ret = compare( itemA, itemB );
 
     if( ret == BER_IS_SAME )
     {
@@ -395,4 +422,104 @@ void BERCompareDlg::logB( const QString strLog, QColor cr )
 
     mBText->setTextCursor( cursor );
     mBText->repaint();
+}
+
+BerItem* BERCompareDlg::findItemB( QList<BerItem *> itemAList )
+{
+    int ret = 0;
+    BerItem *itemA = nullptr;
+    BerItem *itemB = modelB_->getNext( NULL );
+    BerItem *parent = nullptr;
+
+    for( int i = 0; i < itemAList.size(); i++ )
+    {
+        itemA = itemAList.at(i);
+        if( itemB == nullptr ) return nullptr;
+
+        if( parent )
+        {
+            if( parent->isType( JS_SET ) )
+            {
+                int nChildCnt = parent->rowCount();
+                for( int k = 0; k < nChildCnt; k++ )
+                {
+                    itemB = (BerItem *)parent->child( k, 0 );
+
+                    ret = compare( itemA, itemB );
+                    if( ret == BER_IS_SAME )
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                itemB = (BerItem *)parent->child( itemA->row(), 0 );
+                ret = compare( itemA, itemB );
+            }
+        }
+        else
+        {
+            ret = compare( itemA, itemB );
+        }
+
+        if( ret != BER_IS_SAME && ret != BER_VALUE_DIFF )
+            return nullptr;
+
+        parent = itemB;
+    }
+
+end :
+
+    return itemB;
+}
+
+BerItem* BERCompareDlg::findItemA( QList<BerItem *> itemBList )
+{
+    int ret = 0;
+    BerItem *itemB = nullptr;
+    BerItem *itemA = modelA_->getNext( NULL );
+    BerItem *parent = nullptr;
+
+    for( int i = 0; i < itemBList.size(); i++ )
+    {
+        itemB = itemBList.at(i);
+        if( itemA == nullptr ) return nullptr;
+
+        if( parent )
+        {
+            if( parent->isType( JS_SET ) )
+            {
+                int nChildCnt = parent->rowCount();
+                for( int k = 0; k < nChildCnt; k++ )
+                {
+                    itemA = (BerItem *)parent->child( k, 0 );
+
+                    ret = compare( itemA, itemB );
+                    if( ret == BER_IS_SAME )
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                itemA = (BerItem *)parent->child( itemB->row(), 0 );
+                ret = compare( itemA, itemB );
+            }
+        }
+        else
+        {
+            ret = compare( itemA, itemB );
+        }
+
+        if( ret != BER_IS_SAME && ret != BER_VALUE_DIFF )
+            return nullptr;
+
+        parent = itemA;
+    }
+
+end :
+
+    return itemA;
 }

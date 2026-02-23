@@ -28,6 +28,8 @@ public:
     void setSelectItem( const BerItem *pItem );
 
     const QStringList getPositon( BerItem *pItem );
+    QList<BerItem *> getParentList( BerItem *pItem );
+
     BerItem* findItemByPostion( const QStringList listPos );
 
     BerItem* getNext( BerItem *pItem );

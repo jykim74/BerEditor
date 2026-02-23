@@ -53,6 +53,9 @@ private:
     void logA( const QString strLog, QColor cr );
     void logB( const QString strLog, QColor cr );
 
+    BerItem* findItemB( QList<BerItem *> itemAList );
+    BerItem* findItemA( QList<BerItem *> itemBList );
+
     CompModel* modelA_ = nullptr;
     CompModel* modelB_ = nullptr;
 };
