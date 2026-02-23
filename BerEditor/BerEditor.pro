@@ -128,7 +128,8 @@ SOURCES += \
     ber_check_dlg.cpp \
     thread_work_dlg.cpp \
     data_input_dlg.cpp \
-    make_pri_key_dlg.cpp
+    make_pri_key_dlg.cpp \
+    ber_compare_dlg.cpp
 
 
 HEADERS += \
@@ -222,7 +223,8 @@ HEADERS += \
     ber_check_dlg.h \
     thread_work_dlg.h \
     data_input_dlg.h \
-    make_pri_key_dlg.h
+    make_pri_key_dlg.h \
+    ber_compare_dlg.h
 
 
 
@@ -368,7 +370,8 @@ FORMS += \
         ber_check_dlg.ui \
         thread_work_dlg.ui \
         data_input_dlg.ui \
-        make_pri_key_dlg.ui
+        make_pri_key_dlg.ui \
+        ber_compare_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

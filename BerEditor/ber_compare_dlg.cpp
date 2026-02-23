@@ -159,7 +159,7 @@ void BERCompareDlg::clickFindA()
         modelA_->setBER( &binBER );
         modelA_->makeTree( berApplet->settingsMgr()->autoExpand() );
 
-        mStatusLabel->setText( tr( "A and B status" ));
+        mStatusLabel->setText( tr( "Compare A and B" ));
     }
 
     JS_BIN_reset( &binBER );
@@ -182,7 +182,7 @@ void BERCompareDlg::clickFindB()
         modelB_->setBER( &binBER );
         modelB_->makeTree( berApplet->settingsMgr()->autoExpand() );
 
-        mStatusLabel->setText( tr( "A and B status" ));
+        mStatusLabel->setText( tr( "Compare A and B" ));
     }
 
     JS_BIN_reset( &binBER );
@@ -228,6 +228,12 @@ void BERCompareDlg::clickDecodeB()
 
 void BERCompareDlg::clickClear()
 {
+    mAPathText->clear();
+    mBPathText->clear();
+
+    modelA_->clearView();
+    modelB_->clearView();
+
     mAText->clear();
     mBText->clear();
 }

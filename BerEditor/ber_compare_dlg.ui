@@ -55,7 +55,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/ber_compare.png</normaloff>:/images/ber_compare.png</iconset>
        </property>
        <property name="flat">
@@ -274,7 +274,7 @@
      <item row="0" column="1">
       <widget class="QLabel" name="mStatusLabel">
        <property name="text">
-        <string>A and B Status</string>
+        <string>Compare A and B</string>
        </property>
       </widget>
      </item>
@@ -290,7 +290,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/info.png</normaloff>:/images/info.png</iconset>
        </property>
        <property name="flat">
@@ -363,8 +363,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
