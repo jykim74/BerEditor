@@ -157,7 +157,7 @@ void BERCompareDlg::clickFindA()
     if( ret > 0 )
     {
         modelA_->setBER( &binBER );
-        modelA_->makeTree( bSET, false );
+        modelA_->makeTree( false );
     }
 
     JS_BIN_reset( &binBER );
@@ -178,7 +178,7 @@ void BERCompareDlg::clickFindB()
     if( ret > 0 )
     {
         modelB_->setBER( &binBER );
-        modelB_->makeTree( bSET, false );
+        modelB_->makeTree( false );
     }
 
     JS_BIN_reset( &binBER );

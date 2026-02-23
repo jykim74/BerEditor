@@ -122,7 +122,7 @@ int CompModel::getItemInfo( int nOffset, BerItem *pItem )
     return getItemInfo( &binBER_, nOffset, pItem );
 }
 
-int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSETSort, bool bExpand )
+int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExpand )
 {
     int nRet = 0;
 
@@ -153,24 +153,7 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
             break;
         }
 
-        if( bSETSort == true && pItem->isType( JS_SET) == true )
-        {
-            // Need to work
-            int nCount = pItem->rowCount();
-            for( int i = 0; i < nCount; i++ )
-            {
-                BerItem* pOther = (BerItem *)pItem->child( nCount -1 -i, 0 );
-                if( IsPrev( pOther, pChild) == 0 )
-                {
-                    pItem->insertRow( i, pChild );
-                    break;
-                }
-            }
-        }
-        else
-        {
-            pItem->appendRow( pChild );
-        }
+        pItem->appendRow( pChild );
 
         if( pChild->isConstructed() == true )
             bConstructed = true;
@@ -179,7 +162,7 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
 
         if( bConstructed == true )
         {
-            nRet = getConstructedItemInfo( pBER, pChild, bSETSort, bExpand );
+            nRet = getConstructedItemInfo( pBER, pChild, bExpand );
             if( nRet != JSR_OK ) return nRet;
         }
         else
@@ -199,7 +182,7 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
 
                     if( JS_BER_isExpandable( &binBER_.pVal[nChildStart], nChildLen ) == 1 )
                     {
-                        nRet = getConstructedItemInfo( pBER, pChild, bSETSort, bExpand );
+                        nRet = getConstructedItemInfo( pBER, pChild, bExpand );
                     }
                 }
             }
@@ -231,7 +214,7 @@ int CompModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSE
     return nRet;
 }
 
-int CompModel::makeTree( bool bSETSort, bool bExpand )
+int CompModel::makeTree( bool bExpand )
 {
     int ret = 0;
     int offset = 0;
@@ -251,7 +234,7 @@ int CompModel::makeTree( bool bSETSort, bool bExpand )
     insertRow( 0, pRootItem );
     if( pRootItem->isConstructed() == true )
     {
-        ret = getConstructedItemInfo( &binBER_, pRootItem, bSETSort, bExpand );
+        ret = getConstructedItemInfo( &binBER_, pRootItem, bExpand );
         if( ret != JSR_OK ) return ret;
     }
 
@@ -270,7 +253,7 @@ int CompModel::makeTree( bool bSETSort, bool bExpand )
 
             if( JS_BER_isExpandable( &binBER_.pVal[nChildStart], nChildLen ) == 1 )
             {
-                ret = getConstructedItemInfo( &binBER_, pRootItem, bSETSort, bExpand );
+                ret = getConstructedItemInfo( &binBER_, pRootItem, bExpand );
                 if( ret != JSR_OK ) return ret;
             }
         }

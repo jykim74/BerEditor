@@ -19,8 +19,8 @@ public:
 
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
-    int getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bSETSort, bool bExpand );
-    int makeTree( bool bSETSort, bool bExpand );
+    int getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExpand );
+    int makeTree( bool bExpand );
 
     BerItem* getCurrentItem();
     void getCurrentValue( BIN *pValue );
