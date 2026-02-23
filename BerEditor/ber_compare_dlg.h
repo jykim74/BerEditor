@@ -10,7 +10,6 @@
 enum {
     BER_IS_SAME = 0,
     BER_TAG_DIFF,
-    BER_HEAD_DIFF,
     BER_DEPTH_DIFF,
     BER_VALUE_DIFF,
     BER_NOT_SAME

@@ -26,6 +26,7 @@ public:
     void getCurrentValue( BIN *pValue );
     void getValue( BerItem *item, BIN *pValue );
     void setSelectItem( const BerItem *pItem );
+    void clearSelection();
 
     const QStringList getPositon( BerItem *pItem );
     QList<BerItem *> getParentList( BerItem *pItem );

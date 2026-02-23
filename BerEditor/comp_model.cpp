@@ -293,6 +293,11 @@ void CompModel::setSelectItem( const BerItem *pItem )
     tree_view_->setCurrentIndex( idx );
 }
 
+void CompModel::clearSelection()
+{
+    tree_view_->clearSelection();
+}
+
 int CompModel::IsPrev( BerItem *pA, BerItem *pB )
 {
     int ret = 0;

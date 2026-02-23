@@ -120,8 +120,8 @@ int BERCompareDlg::compare( BerItem *pA, BerItem *pB )
     if( pA->level_ != pB->level_ )
         return BER_DEPTH_DIFF;
 
-    if( memcmp( pA->header_, pB->header_, pA->header_size_ ) != 0 )
-        return BER_HEAD_DIFF;
+//    if( memcmp( pA->header_, pB->header_, pA->header_size_ ) != 0 )
+//        return BER_HEAD_DIFF;
 
     if( pA->length_ != pB->length_ )
         return BER_VALUE_DIFF;
@@ -157,7 +157,9 @@ void BERCompareDlg::clickFindA()
     if( ret > 0 )
     {
         modelA_->setBER( &binBER );
-        modelA_->makeTree( false );
+        modelA_->makeTree( berApplet->settingsMgr()->autoExpand() );
+
+        mStatusLabel->setText( tr( "A and B status" ));
     }
 
     JS_BIN_reset( &binBER );
@@ -178,7 +180,9 @@ void BERCompareDlg::clickFindB()
     if( ret > 0 )
     {
         modelB_->setBER( &binBER );
-        modelB_->makeTree( false );
+        modelB_->makeTree( berApplet->settingsMgr()->autoExpand() );
+
+        mStatusLabel->setText( tr( "A and B status" ));
     }
 
     JS_BIN_reset( &binBER );
@@ -237,6 +241,8 @@ void BERCompareDlg::clickCompare()
     BIN binA = {0,0};
     BIN binB = {0,0};
 
+    bool bSame = true;
+
     binA = modelA_->getBER();
     binB = modelB_->getBER();
 
@@ -262,8 +268,6 @@ void BERCompareDlg::clickCompare()
 
     if( JS_BIN_cmp( &binA, &binB ) == 0 )
     {
-        mStatusLabel->setText( tr("A and B are the same") );
-
         modelA_->setAllColor( Qt::blue );
         modelB_->setAllColor( Qt::blue );
     }
@@ -277,6 +281,10 @@ void BERCompareDlg::clickCompare()
             {
                 if( itemA ) modelA_->setItemColor( itemA, Qt::blue );
                 if( itemB ) modelA_->setItemColor( itemB, Qt::blue );
+            }
+            else
+            {
+                bSame = false;
             }
 
             itemA = modelA_->getNext( itemA );
@@ -294,6 +302,17 @@ void BERCompareDlg::clickCompare()
                 }
             }
         }
+    }
+
+    if( bSame == true )
+    {
+        mStatusLabel->setStyleSheet( "QLabel { color : blue; }" );
+        mStatusLabel->setText( tr("A and B are the same") );
+    }
+    else
+    {
+        mStatusLabel->setStyleSheet( "QLabel { color : darkRed; }" );
+        mStatusLabel->setText( tr( "A and B are different" ) );
     }
 }
 
@@ -329,12 +348,14 @@ void BERCompareDlg::clickNodeA()
         cr = Qt::blue;
     }
 
-    logA( QString( "TL : %1").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+    logA( QString( "TL : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
     logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
+
+    mBText->clear();
+    modelB_->clearSelection();
 
     if( itemB )
     {
-        mBText->clear();
         modelB_->setSelectItem( itemB );
         modelB_->getValue( itemB, &binValB );
         logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
@@ -379,12 +400,14 @@ void BERCompareDlg::clickNodeB()
     logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
     logB( QString( "Value : %1").arg( getHexString( &binValB)), cr );
 
+    mAText->clear();
+    modelA_->clearSelection();
+
     if( itemA )
     {
-        mAText->clear();
         modelA_->setSelectItem( itemA );
         modelA_->getValue( itemA, &binValA );
-        logA( QString( "TL : %1").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+        logA( QString( "TL : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
         logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
     }
 
@@ -446,7 +469,7 @@ BerItem* BERCompareDlg::findItemB( QList<BerItem *> itemAList )
                     itemB = (BerItem *)parent->child( k, 0 );
 
                     ret = compare( itemA, itemB );
-                    if( ret == BER_IS_SAME )
+                    if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
                     {
                         break;
                     }
@@ -496,7 +519,7 @@ BerItem* BERCompareDlg::findItemA( QList<BerItem *> itemBList )
                     itemA = (BerItem *)parent->child( k, 0 );
 
                     ret = compare( itemA, itemB );
-                    if( ret == BER_IS_SAME )
+                    if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
                     {
                         break;
                     }
