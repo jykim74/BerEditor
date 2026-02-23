@@ -15,6 +15,7 @@ public:
 
     CompTree* getTreeView() { return tree_view_; };
     void setBER( const BIN *pBER );
+    const BIN& getBER() { return binBER_; };
 
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
@@ -28,6 +29,12 @@ public:
 
     const QStringList getPositon( BerItem *pItem );
     BerItem* findItemByPostion( const QStringList listPos );
+
+    BerItem* getNext( BerItem *pItem );
+    BerItem* getPrev( BerItem *pItem );
+    void setItemColor( BerItem *pItem, QColor cr );
+    void setAllColor( QColor cr );
+    void clearView();
 
 public slots:
 

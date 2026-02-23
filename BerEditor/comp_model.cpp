@@ -27,6 +27,7 @@ CompModel::~CompModel()
 
 void CompModel::setBER( const BIN *pBER )
 {
+    clearView();
     JS_BIN_reset( &binBER_ );
     JS_BIN_copy( &binBER_, pBER );
 }
@@ -383,6 +384,8 @@ BerItem* CompModel::findItemByPostion( const QStringList listPos )
     QModelIndex ri = index(0,0);
     BerItem* root = (BerItem *)itemFromIndex( ri );
 
+    if( root == nullptr ) return nullptr;
+
     if( listPos.at(0) != "0" )
         return nullptr;
 
@@ -405,8 +408,48 @@ BerItem* CompModel::findItemByPostion( const QStringList listPos )
                 return nullptr;
 
             item = (BerItem *)item->child( strNext.toInt(), 0 );
+            if( item == nullptr ) return nullptr;
         }
     }
 
     return item;
+}
+
+BerItem* CompModel::getNext( BerItem *pItem )
+{
+    if( tree_view_ == nullptr ) return nullptr;
+
+    return tree_view_->getNext( pItem );
+}
+
+BerItem* CompModel::getPrev( BerItem *pItem )
+{
+    if( tree_view_ == nullptr ) return nullptr;
+
+    return tree_view_->getNext( pItem );
+}
+
+void CompModel::setItemColor( BerItem *pItem, QColor cr )
+{
+    if( tree_view_ == nullptr ) return;
+
+    tree_view_->setItemColor( pItem, cr );
+}
+
+void CompModel::setAllColor( QColor cr )
+{
+    BerItem* item = getNext( NULL );
+
+    while( item )
+    {
+        setItemColor( item, cr );
+        item = getNext( item );
+    }
+}
+
+void CompModel::clearView()
+{
+    if( tree_view_ == nullptr ) return;
+
+    clear();
 }

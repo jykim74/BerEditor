@@ -230,74 +230,139 @@ void BERCompareDlg::clickClear()
 
 void BERCompareDlg::clickCompare()
 {
+    int ret = 0;
     BerItem *berItem = new BerItem;
     berItem->setText( "Text" );
+
+    BIN binA = {0,0};
+    BIN binB = {0,0};
+
+    binA = modelA_->getBER();
+    binB = modelB_->getBER();
+
+    if( binA.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "Find A file" ), this );
+        mAPathText->setFocus();
+        return;
+    }
+
+    if( binB.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "Find B file" ), this );
+        mBPathText->setFocus();
+        return;
+    }
+
+    BerItem* itemA = modelA_->getNext( NULL );
+    BerItem* itemB = modelB_->getNext( NULL );
+
+    modelA_->setAllColor( Qt::darkRed );
+    modelB_->setAllColor( Qt::darkRed );
+
+    if( JS_BIN_cmp( &binA, &binB ) == 0 )
+    {
+        mStatusLabel->setText( tr("A and B are the same") );
+
+        modelA_->setAllColor( Qt::blue );
+        modelB_->setAllColor( Qt::blue );
+    }
+    else
+    {
+        while( itemA != nullptr )
+        {
+            ret = compare( itemA, itemB );
+
+            if( ret == BER_IS_SAME )
+            {
+                if( itemA ) modelA_->setItemColor( itemA, Qt::blue );
+                if( itemB ) modelA_->setItemColor( itemB, Qt::blue );
+            }
+
+            itemA = modelA_->getNext( itemA );
+            if( itemA )
+            {
+                QStringList listPos = modelA_->getPositon( itemA );
+                itemB = modelB_->findItemByPostion( listPos );
+            }
+        }
+    }
 }
 
 void BERCompareDlg::clickNodeA()
 {
-    BIN binVal = {0,0};
-    BerItem *itemA = modelA_->getCurrentItem();
-    modelA_->getCurrentValue( &binVal );
+    BIN binValA = {0,0};
+    BIN binValB = {0,0};
 
-    mAText->appendPlainText( getHexString( &binVal) );
-    JS_BIN_reset( &binVal );
+    BerItem *itemA = modelA_->getCurrentItem();
+    BerItem *itemB = nullptr;
+    QColor cr = Qt::darkRed;
+
+    mAText->clear();
+    modelA_->getCurrentValue( &binValA );
 
     QStringList listPos = modelA_->getPositon( itemA );
+    itemB = modelB_->findItemByPostion( listPos );
 
-    for( int i = 0; i < listPos.size(); i++ )
+    int ret = compare( itemA, itemB );
+
+    if( ret == BER_IS_SAME )
     {
-        QString strPos = listPos.at(i);
-        mAText->appendPlainText( QString( "Pos: %1").arg( strPos ));
+        cr = Qt::blue;
     }
 
-    BerItem *itemB = modelB_->findItemByPostion( listPos );
+    logA( QString( "TL : %1").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+    logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
 
     if( itemB )
     {
-        mAText->appendPlainText( "Find" );
+        mBText->clear();
         modelB_->setSelectItem( itemB );
-    }
-    else
-    {
-        mAText->appendPlainText( "No item" );
+        modelB_->getValue( itemB, &binValB );
+        logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+        logB( QString( "Value : %1").arg( getHexString( &binValB)), cr );
     }
 
-    int ret = compare( itemA, itemB );
-    mAText->appendPlainText( QString( "Compare: %1").arg(ret));
+    JS_BIN_reset( &binValA );
+    JS_BIN_reset( &binValB );
 }
 
 void BERCompareDlg::clickNodeB()
 {
-    BIN binVal = {0,0};
-    BerItem *itemB = modelB_->getCurrentItem();
-    modelB_->getCurrentValue( &binVal );
+    BIN binValA = {0,0};
+    BIN binValB = {0,0};
 
-    mBText->appendPlainText( getHexString( &binVal) );
-    JS_BIN_reset( &binVal );
+    BerItem *itemB = modelB_->getCurrentItem();
+    BerItem *itemA = nullptr;
+    QColor cr = Qt::darkRed;
+
+    mBText->clear();
+    modelB_->getCurrentValue( &binValB );
 
     QStringList listPos = modelB_->getPositon( itemB );
+    itemA = modelA_->findItemByPostion( listPos );
 
-    for( int i = 0; i < listPos.size(); i++ )
+    int ret = compare( itemA, itemB );
+
+    if( ret == BER_IS_SAME )
     {
-        QString strPos = listPos.at(i);
-        mBText->appendPlainText( QString( "Pos: %1").arg( strPos ));
+        cr = Qt::blue;
     }
 
-    BerItem *itemA = modelA_->findItemByPostion( listPos );
+    logB( QString( "TL : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+    logB( QString( "Value : %1").arg( getHexString( &binValB)), cr );
 
     if( itemA )
     {
-        mBText->appendPlainText( "Find" );
-        modelA_->setSelectItem( itemB );
-    }
-    else
-    {
-        mBText->appendPlainText( "No item" );
+        mAText->clear();
+        modelA_->setSelectItem( itemA );
+        modelA_->getValue( itemA, &binValA );
+        logA( QString( "TL : %1").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+        logA( QString( "Value : %1").arg( getHexString( &binValA)), cr );
     }
 
-    int ret = compare( itemA, itemB );
-    mBText->appendPlainText( QString( "Compare: %1").arg(ret));
+    JS_BIN_reset( &binValA );
+    JS_BIN_reset( &binValB );
 }
 
 void BERCompareDlg::logA( const QString strLog, QColor cr )

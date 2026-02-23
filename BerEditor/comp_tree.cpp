@@ -98,3 +98,9 @@ BerItem* CompTree::getPrev( BerItem *pItem )
 
     return nullptr;
 }
+
+void CompTree::setItemColor( BerItem *pItem, QColor cr )
+{
+    if( pItem == nullptr ) return;
+    pItem->setData(QBrush(cr), Qt::ForegroundRole );
+}

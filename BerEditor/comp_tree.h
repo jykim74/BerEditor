@@ -15,6 +15,7 @@ public:
 
     BerItem* getNext( BerItem *pItem );
     BerItem* getPrev( BerItem *pItem );
+    void setItemColor( BerItem *pItem, QColor cr );
 
 public slots:
 
