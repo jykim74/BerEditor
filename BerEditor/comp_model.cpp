@@ -394,8 +394,8 @@ BerItem* CompModel::findItemByPostion( const QStringList listPos )
     if( listPos.at(0) != "0" )
         return nullptr;
 
-    if( root->hasChildren() == false )
-        return nullptr;
+//    if( root->hasChildren() == false )
+//        return nullptr;
 
     item = root;
 

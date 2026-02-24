@@ -144,11 +144,13 @@ int BERCompareDlg::compare( BerItem *pA, BerItem *pB )
         JS_BIN_reset( &binB );
         return BER_IS_SAME;
     }
+    else
+    {
+        JS_BIN_reset( &binA );
+        JS_BIN_reset( &binB );
 
-    JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
-
-    return BER_NOT_SAME;
+        return BER_VALUE_DIFF;
+    }
 }
 
 void BERCompareDlg::clickFindA()
