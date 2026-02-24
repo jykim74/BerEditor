@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>704</width>
-    <height>392</height>
+    <height>469</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -69,7 +69,7 @@
     <widget class="Line" name="line_2">
      <property name="minimumSize">
       <size>
-       <width>640</width>
+       <width>680</width>
        <height>0</height>
       </size>
      </property>
@@ -245,7 +245,7 @@
     <widget class="QDockWidget" name="mInfoDock">
      <property name="minimumSize">
       <size>
-       <width>168</width>
+       <width>184</width>
        <height>160</height>
       </size>
      </property>
