@@ -205,6 +205,7 @@ void BERCompareDlg::makeTreeA( const BIN *pBER )
     modelA_->makeTree( berApplet->settingsMgr()->autoExpand() );
 
     mStatusLabel->setText( tr( "Compare A and B" ));
+    mAText->clear();
 }
 
 void BERCompareDlg::makeTreeB( const BIN *pBER )
@@ -216,6 +217,7 @@ void BERCompareDlg::makeTreeB( const BIN *pBER )
     modelB_->makeTree( berApplet->settingsMgr()->autoExpand() );
 
     mStatusLabel->setText( tr( "Compare A and B" ));
+    mBText->clear();
 }
 
 void BERCompareDlg::clickDecodeA()
@@ -359,6 +361,7 @@ void BERCompareDlg::clickNodeA()
     BIN binValB = {0,0};
 
     int nLenWidth = -9;
+    int nAdd = 0;
 
     BerItem *itemA = modelA_->getCurrentItem();
     BerItem *itemB = nullptr;
@@ -386,9 +389,13 @@ void BERCompareDlg::clickNodeA()
         cr = Qt::blue;
     }
 
+    modelA_->setItemColor( itemA, cr );
+
+    if( itemA->GetLevel() >= 10 ) nAdd = 1;
+
     logA( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
              .arg( getHexString( itemA->header_, 1 ))
-             .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth )
+             .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth + nAdd )
              .arg( itemA->GetLevel() ), cr);
 
     logA( QString( "======================================\n"), cr );
@@ -402,11 +409,12 @@ void BERCompareDlg::clickNodeA()
     {
         if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
         {
+            modelB_->setItemColor( itemB, cr );
             modelB_->setSelectItem( itemB );
             modelB_->getValue( itemB, &binValB );
             logB( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
                      .arg( getHexString( itemB->header_, 1 ))
-                     .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth )
+                     .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth + nAdd )
                      .arg( itemB->GetLevel()), cr);
             logB( QString( "======================================\n"), cr );
             logValB( &binValB, cr );
@@ -424,6 +432,7 @@ void BERCompareDlg::clickNodeB()
 {
     int ret = 0;
     int nLenWidth = -9;
+    int nAdd = 0;
     BIN binValA = {0,0};
     BIN binValB = {0,0};
 
@@ -452,9 +461,13 @@ void BERCompareDlg::clickNodeB()
         cr = Qt::blue;
     }
 
+    modelB_->setItemColor( itemB, cr );
+
+    if( itemB->GetLevel() >= 10 ) nAdd = 1;
+
     logB( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
              .arg( getHexString( itemB->header_, 1 ))
-             .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth )
+             .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth + nAdd )
              .arg( itemB->GetLevel()), cr);
 
     logB( QString( "======================================\n"), cr );
@@ -467,11 +480,12 @@ void BERCompareDlg::clickNodeB()
     {
         if( ret == BER_IS_SAME || ret == BER_VALUE_DIFF )
         {
+            modelA_->setItemColor( itemA, cr );
             modelA_->setSelectItem( itemA );
             modelA_->getValue( itemA, &binValA );
             logA( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
                      .arg( getHexString( itemA->header_, 1 ))
-                     .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth )
+                     .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth + nAdd )
                      .arg( itemA->GetLevel()), cr);
 
             logA( QString( "======================================\n"), cr );
