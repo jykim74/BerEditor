@@ -1052,7 +1052,7 @@ void MainWindow::createToolActions()
 
     const QIcon berCompIcon = QIcon::fromTheme("BER compare", QIcon(":/images/ber_compare.png"));
     ber_compare_act_ = new QAction(berCompIcon, tr("&BER Compare"), this);
-    ber_compare_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
+    ber_compare_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Z));
     connect( ber_compare_act_, &QAction::triggered, this, &MainWindow::BERCompare );
     ber_compare_act_->setStatusTip(tr("BER compare"));
     toolMenu->addAction( ber_compare_act_ );
