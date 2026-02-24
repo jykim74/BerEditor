@@ -858,9 +858,13 @@ mailto : jykim74@gmail.com</translation>
         <translation>A BER 과 B BER 비교하기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="42"/>
         <source>SET Sort</source>
-        <translation>SET 정렬</translation>
+        <translation type="vanished">SET 정렬</translation>
+    </message>
+    <message>
+        <location filename="../ber_compare_dlg.ui" line="42"/>
+        <source>SET order support</source>
+        <translation>SET 순서 지원</translation>
     </message>
     <message>
         <location filename="../ber_compare_dlg.ui" line="95"/>
@@ -902,7 +906,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_compare_dlg.ui" line="387"/>
         <location filename="../ber_compare_dlg.cpp" line="207"/>
-        <location filename="../ber_compare_dlg.cpp" line="218"/>
+        <location filename="../ber_compare_dlg.cpp" line="219"/>
         <source>Compare A and B</source>
         <translation>A 와 B 비교하기</translation>
     </message>
@@ -936,24 +940,24 @@ mailto : jykim74@gmail.com</translation>
         <translation>A 파일과 B파일이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="229"/>
-        <location filename="../ber_compare_dlg.cpp" line="287"/>
+        <location filename="../ber_compare_dlg.cpp" line="231"/>
+        <location filename="../ber_compare_dlg.cpp" line="289"/>
         <source>Find A file</source>
         <translation>A 파일 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="248"/>
-        <location filename="../ber_compare_dlg.cpp" line="294"/>
+        <location filename="../ber_compare_dlg.cpp" line="250"/>
+        <location filename="../ber_compare_dlg.cpp" line="296"/>
         <source>Find B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="346"/>
+        <location filename="../ber_compare_dlg.cpp" line="348"/>
         <source>A and B are the same</source>
         <translation>A 와 B는 동일 합니다</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="351"/>
+        <location filename="../ber_compare_dlg.cpp" line="353"/>
         <source>A and B are different</source>
         <translation>A 와 B는 다릅니다</translation>
     </message>

@@ -328,7 +328,7 @@ void BERCompareDlg::clickCompare()
             itemA = modelA_->getNext( itemA );
             if( itemA )
             {
-                if( mSETSortCheck->isChecked() == true )
+                if( mSETOrderCheck->isChecked() == true )
                 {
                     QList<BerItem *> listParent = modelA_->getParentList( itemA );
                     itemB = findItemB( listParent );
@@ -371,7 +371,7 @@ void BERCompareDlg::clickNodeA()
     modelA_->getCurrentValue( &binValA );
 
 
-    if( mSETSortCheck->isChecked() == true )
+    if( mSETOrderCheck->isChecked() == true )
     {
         QList<BerItem *> listParent = modelA_->getParentList( itemA );
         itemB = findItemB( listParent );
@@ -443,7 +443,7 @@ void BERCompareDlg::clickNodeB()
     mBText->clear();
     modelB_->getCurrentValue( &binValB );
 
-    if( mSETSortCheck->isChecked() == true )
+    if( mSETOrderCheck->isChecked() == true )
     {
         QList<BerItem *> listParent = modelB_->getParentList( itemB );
         itemA = findItemA( listParent );

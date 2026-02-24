@@ -37,9 +37,9 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QCheckBox" name="mSETSortCheck">
+      <widget class="QCheckBox" name="mSETOrderCheck">
        <property name="text">
-        <string>SET Sort</string>
+        <string>SET order support</string>
        </property>
       </widget>
      </item>
@@ -448,7 +448,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mSETSortCheck</tabstop>
+  <tabstop>mSETOrderCheck</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>mAPathText</tabstop>
   <tabstop>mAFindBtn</tabstop>
