@@ -54,6 +54,7 @@ class FindDlg;
 class KeyListDlg;
 class X509CompareDlg;
 class DocSignerDlg;
+class MakePriKeyDlg;
 class BERCompareDlg;
 
 namespace Ui {
@@ -354,6 +355,7 @@ private:
     KeyListDlg      *key_list_dlg_ = nullptr;
     X509CompareDlg  *x509_comp_dlg_ = nullptr;
     DocSignerDlg    *doc_signer_dlg_ = nullptr;
+    MakePriKeyDlg   *make_pri_key_dlg_ = nullptr;
     BERCompareDlg   *ber_comp_dlg_ = nullptr;
 
     QToolBar* file_tool_;

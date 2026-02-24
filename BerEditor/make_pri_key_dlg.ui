@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>617</height>
+    <width>553</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,6 +53,9 @@
        <property name="icon">
         <iconset resource="bereditor.qrc">
          <normaloff>:/images/make_pri.png</normaloff>:/images/make_pri.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

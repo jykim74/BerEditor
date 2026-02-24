@@ -126,36 +126,37 @@ MainWindow::~MainWindow()
     delete log_text_;
     delete info_text_;
 
-    delete key_man_dlg_;
-    delete gen_hash_dlg_;
-    delete gen_mac_dlg_;
-    delete enc_dec_dlg_;
-    delete sign_verify_dlg_;
-    delete pub_enc_dec_dlg_;
-    delete key_agree_dlg_;
-    delete pkcs7_dlg_;
-    delete sss_dlg_;
-    delete cert_pvd_dlg_;
-    delete gen_otp_dlg_;
-    delete cavp_dlg_;
-    delete ssl_check_dlg_;
-    delete vid_dlg_;
-    delete bn_calc_dlg_;
-    delete key_pair_man_dlg_;
-    delete ocsp_client_dlg_;
-    delete tsp_client_dlg_;
-    delete cmp_client_dlg_;
-    delete scep_client_dlg_;
-    delete acme_client_dlg_;
-    delete cert_man_dlg_;
-    delete ttlv_encoder_dlg_;
-    delete ttlv_client_dlg_;
-    delete content_;
-    delete find_dlg_;
-    delete key_list_dlg_;
-    delete x509_comp_dlg_;
-    delete doc_signer_dlg_;
-    delete ber_comp_dlg_;
+    if( key_man_dlg_ ) delete key_man_dlg_;
+    if( gen_hash_dlg_ ) delete gen_hash_dlg_;
+    if( gen_mac_dlg_ ) delete gen_mac_dlg_;
+    if( enc_dec_dlg_ ) delete enc_dec_dlg_;
+    if( sign_verify_dlg_ ) delete sign_verify_dlg_;
+    if( pub_enc_dec_dlg_ ) delete pub_enc_dec_dlg_;
+    if( key_agree_dlg_ ) delete key_agree_dlg_;
+    if( pkcs7_dlg_ ) delete pkcs7_dlg_;
+    if( sss_dlg_ ) delete sss_dlg_;
+    if( cert_pvd_dlg_ ) delete cert_pvd_dlg_;
+    if( gen_otp_dlg_ ) delete gen_otp_dlg_;
+    if( cavp_dlg_ ) delete cavp_dlg_;
+    if( ssl_check_dlg_ ) delete ssl_check_dlg_;
+    if( vid_dlg_ ) delete vid_dlg_;
+    if( bn_calc_dlg_ ) delete bn_calc_dlg_;
+    if( key_pair_man_dlg_ ) delete key_pair_man_dlg_;
+    if( ocsp_client_dlg_ ) delete ocsp_client_dlg_;
+    if( tsp_client_dlg_ ) delete tsp_client_dlg_;
+    if( cmp_client_dlg_ ) delete cmp_client_dlg_;
+    if( scep_client_dlg_ ) delete scep_client_dlg_;
+    if( acme_client_dlg_ ) delete acme_client_dlg_;
+    if( cert_man_dlg_ ) delete cert_man_dlg_;
+    if( ttlv_encoder_dlg_ ) delete ttlv_encoder_dlg_;
+    if( ttlv_client_dlg_ ) delete ttlv_client_dlg_;
+    if( content_ ) delete content_;
+    if( find_dlg_ ) delete find_dlg_;
+    if( key_list_dlg_ ) delete key_list_dlg_;
+    if( x509_comp_dlg_ ) delete x509_comp_dlg_;
+    if( doc_signer_dlg_ ) delete doc_signer_dlg_;
+    if( make_pri_key_dlg_ ) delete make_pri_key_dlg_;
+    if( ber_comp_dlg_ ) delete ber_comp_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -2491,8 +2492,12 @@ void MainWindow::mac2( const QString strKey, const QString strIV )
 
 void MainWindow::makePriKey()
 {
-    MakePriKeyDlg makePriKey;
-    makePriKey.exec();
+    if( make_pri_key_dlg_ == nullptr )
+        make_pri_key_dlg_ = new MakePriKeyDlg;
+
+    make_pri_key_dlg_->show();
+    make_pri_key_dlg_->raise();
+    make_pri_key_dlg_->activateWindow();
 }
 
 void MainWindow::keyAgree()

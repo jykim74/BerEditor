@@ -57,7 +57,7 @@
       <widget class="QPushButton" name="pushButton">
        <property name="minimumSize">
         <size>
-         <width>16</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
