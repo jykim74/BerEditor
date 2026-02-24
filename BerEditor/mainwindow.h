@@ -112,6 +112,7 @@ public:
 
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );
     void runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath );
+    void runBERCompare( const BIN *pA, const BIN *pB );
 
     void viewFileNew( bool bChecked );
     void viewFileOpen( bool bChecked );

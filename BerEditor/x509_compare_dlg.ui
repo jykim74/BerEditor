@@ -429,7 +429,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="2">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -442,10 +442,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCloseBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mShowInfoBtn">
        <property name="text">
-        <string>Close</string>
+        <string>Show Information</string>
        </property>
       </widget>
      </item>
@@ -456,10 +456,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mShowInfoBtn">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
-        <string>Show Information</string>
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mBERCompareBtn">
+       <property name="text">
+        <string>BER Compare</string>
        </property>
       </widget>
      </item>
@@ -484,10 +491,9 @@
   <tabstop>mAutoDetectCheck</tabstop>
   <tabstop>mCompareBtn</tabstop>
   <tabstop>mCompareTable</tabstop>
-  <tabstop>mAInfoText</tabstop>
-  <tabstop>mBInfoText</tabstop>
   <tabstop>mClearBtn</tabstop>
   <tabstop>mShowInfoBtn</tabstop>
+  <tabstop>mBERCompareBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources>

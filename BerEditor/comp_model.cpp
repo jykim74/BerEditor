@@ -456,5 +456,6 @@ void CompModel::clearView()
 {
     if( tree_view_ == nullptr ) return;
 
+    JS_BIN_reset( &binBER_ );
     clear();
 }

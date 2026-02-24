@@ -40,6 +40,7 @@ private slots:
 
     void clickViewB();
     void clickDecodeB();
+    void clickBERCompare();
 
 private:
     void initUI();

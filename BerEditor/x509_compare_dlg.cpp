@@ -52,6 +52,8 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     connect( mBViewBtn, SIGNAL(clicked()), this, SLOT(clickViewB()));
     connect( mBDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecodeB()));
 
+    connect( mBERCompareBtn, SIGNAL(clicked()), this, SLOT(clickBERCompare()));
+
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -1671,4 +1673,15 @@ void X509CompareDlg::clickDecodeB()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void X509CompareDlg::clickBERCompare()
+{
+    if( A_bin_.nLen <= 0 || B_bin_.nLen <= 0 )
+    {
+        berApplet->warningBox( tr("There is no comparison data"), this );
+        return;
+    }
+
+    berApplet->mainWindow()->runBERCompare( &A_bin_, &B_bin_ );
 }

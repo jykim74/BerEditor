@@ -27,6 +27,9 @@ public:
     explicit BERCompareDlg(QWidget *parent = nullptr);
     ~BERCompareDlg();
 
+    void makeTreeA( const BIN *pBER );
+    void makeTreeB( const BIN *pBER );
+
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
@@ -41,12 +44,16 @@ private slots:
     void clickNodeA();
     void clickNodeB();
 
+    void clickShowData();
+
 public slots:
 
 
 private:
     void initUI();
     void initialize();
+
+
 
     int compare( BerItem *pA, BerItem *pB );
     void logA( const QString strLog, QColor cr );

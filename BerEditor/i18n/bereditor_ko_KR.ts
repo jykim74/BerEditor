@@ -863,83 +863,88 @@ mailto : jykim74@gmail.com</translation>
         <translation>SET 정렬</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="89"/>
+        <location filename="../ber_compare_dlg.ui" line="95"/>
         <source>A File</source>
         <translation>A 파일</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="99"/>
-        <location filename="../ber_compare_dlg.ui" line="106"/>
+        <location filename="../ber_compare_dlg.ui" line="136"/>
+        <location filename="../ber_compare_dlg.ui" line="143"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="116"/>
+        <location filename="../ber_compare_dlg.ui" line="184"/>
         <source>B File</source>
         <translation>B 파일</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="129"/>
-        <location filename="../ber_compare_dlg.ui" line="142"/>
+        <location filename="../ber_compare_dlg.ui" line="197"/>
+        <location filename="../ber_compare_dlg.ui" line="210"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="163"/>
+        <location filename="../ber_compare_dlg.ui" line="231"/>
         <source>A BER Information</source>
         <translation>A BER 정보</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="170"/>
+        <location filename="../ber_compare_dlg.ui" line="238"/>
         <source>B BER Information</source>
         <translation>B BER 정보</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="277"/>
-        <location filename="../ber_compare_dlg.cpp" line="162"/>
-        <location filename="../ber_compare_dlg.cpp" line="185"/>
+        <location filename="../ber_compare_dlg.ui" line="384"/>
+        <location filename="../ber_compare_dlg.cpp" line="207"/>
+        <location filename="../ber_compare_dlg.cpp" line="218"/>
         <source>Compare A and B</source>
         <translation>A 와 B 비교하기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="344"/>
+        <location filename="../ber_compare_dlg.ui" line="412"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="351"/>
+        <location filename="../ber_compare_dlg.ui" line="432"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="358"/>
+        <location filename="../ber_compare_dlg.ui" line="439"/>
+        <source>Show Data</source>
+        <translation>데이타 보여주기</translation>
+    </message>
+    <message>
+        <location filename="../ber_compare_dlg.ui" line="391"/>
         <source>Compare</source>
         <translation>비교하기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="73"/>
+        <location filename="../ber_compare_dlg.cpp" line="91"/>
         <source>Both files A and B already exist</source>
         <translation>A 파일과 B파일이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="199"/>
-        <location filename="../ber_compare_dlg.cpp" line="257"/>
+        <location filename="../ber_compare_dlg.cpp" line="229"/>
+        <location filename="../ber_compare_dlg.cpp" line="287"/>
         <source>Find A file</source>
         <translation>A 파일 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="218"/>
-        <location filename="../ber_compare_dlg.cpp" line="264"/>
+        <location filename="../ber_compare_dlg.cpp" line="248"/>
+        <location filename="../ber_compare_dlg.cpp" line="294"/>
         <source>Find B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="316"/>
+        <location filename="../ber_compare_dlg.cpp" line="346"/>
         <source>A and B are the same</source>
         <translation>A 와 B는 동일 합니다</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.cpp" line="321"/>
+        <location filename="../ber_compare_dlg.cpp" line="351"/>
         <source>A and B are different</source>
         <translation>A 와 B는 다릅니다</translation>
     </message>
@@ -14036,17 +14041,17 @@ Use %2</source>
         <translation type="vanished">이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2790"/>
+        <location filename="../mainwindow.cpp" line="2803"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3792"/>
+        <location filename="../mainwindow.cpp" line="3805"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3804"/>
+        <location filename="../mainwindow.cpp" line="3817"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
@@ -14055,34 +14060,34 @@ Use %2</source>
         <translation type="vanished">이 파일을 TTLV 파일로 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3837"/>
-        <location filename="../mainwindow.cpp" line="3894"/>
+        <location filename="../mainwindow.cpp" line="3850"/>
+        <location filename="../mainwindow.cpp" line="3907"/>
         <source>Saved to file [%1]</source>
         <translation>파일에 저장 되었습니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3841"/>
-        <location filename="../mainwindow.cpp" line="3898"/>
+        <location filename="../mainwindow.cpp" line="3854"/>
+        <location filename="../mainwindow.cpp" line="3911"/>
         <source>failed to save file: %1</source>
         <translation>파일 저장에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3869"/>
+        <location filename="../mainwindow.cpp" line="3882"/>
         <source>Do you want to overwrite %1 file?</source>
         <translation>파일(%1)을 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3916"/>
+        <location filename="../mainwindow.cpp" line="3929"/>
         <source>Start logging</source>
         <translation>로그 기록 시작</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3923"/>
+        <location filename="../mainwindow.cpp" line="3936"/>
         <source>Stop logging</source>
         <translation>로그 기록 중지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4015"/>
+        <location filename="../mainwindow.cpp" line="4028"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -14180,7 +14185,7 @@ Use %2</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2739"/>
+        <location filename="../mainwindow.cpp" line="2752"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -14414,17 +14419,17 @@ Use %2</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2802"/>
+        <location filename="../mainwindow.cpp" line="2815"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2805"/>
+        <location filename="../mainwindow.cpp" line="2818"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2808"/>
+        <location filename="../mainwindow.cpp" line="2821"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -14433,9 +14438,9 @@ Use %2</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3970"/>
-        <location filename="../mainwindow.cpp" line="3995"/>
-        <location filename="../mainwindow.cpp" line="4009"/>
+        <location filename="../mainwindow.cpp" line="3983"/>
+        <location filename="../mainwindow.cpp" line="4008"/>
+        <location filename="../mainwindow.cpp" line="4022"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -14641,7 +14646,7 @@ Use %2</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4048"/>
+        <location filename="../mainwindow.cpp" line="4061"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -22810,6 +22815,11 @@ Use %2</source>
         <translation>비교 대상</translation>
     </message>
     <message>
+        <location filename="../x509_compare_dlg.ui" line="469"/>
+        <source>BER Compare</source>
+        <translation>BER 비교하기</translation>
+    </message>
+    <message>
         <source>Select X509 A and B files</source>
         <translation type="vanished">X509 A 와 B 파일을 선택하세요</translation>
     </message>
@@ -22846,7 +22856,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="250"/>
-        <location filename="../x509_compare_dlg.cpp" line="295"/>
+        <location filename="../x509_compare_dlg.cpp" line="297"/>
         <source>Not Compared</source>
         <translation>비교 안됨</translation>
     </message>
@@ -22863,7 +22873,7 @@ Use %2</source>
         <translation type="vanished">동일</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="448"/>
+        <location filename="../x509_compare_dlg.ui" line="462"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -22883,7 +22893,7 @@ Use %2</source>
         <translation>B 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="462"/>
+        <location filename="../x509_compare_dlg.ui" line="448"/>
         <source>Show Information</source>
         <translation>정보 보이기</translation>
     </message>
@@ -22898,27 +22908,27 @@ Use %2</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="130"/>
+        <location filename="../x509_compare_dlg.cpp" line="132"/>
         <source>%1 comparision</source>
         <translation>%1 비교</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="132"/>
+        <location filename="../x509_compare_dlg.cpp" line="134"/>
         <source>A %1 Path</source>
         <translation>A %1 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="133"/>
+        <location filename="../x509_compare_dlg.cpp" line="135"/>
         <source>B %1 Path</source>
         <translation>B %1 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="135"/>
+        <location filename="../x509_compare_dlg.cpp" line="137"/>
         <source>A %1 value</source>
         <translation>A %1 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="136"/>
+        <location filename="../x509_compare_dlg.cpp" line="138"/>
         <source>B %1 value</source>
         <translation>B %1 값</translation>
     </message>
@@ -22939,225 +22949,230 @@ Use %2</source>
         <translation type="vanished">CSR</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="148"/>
+        <location filename="../x509_compare_dlg.cpp" line="150"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="148"/>
+        <location filename="../x509_compare_dlg.cpp" line="150"/>
         <source>A Certificate value</source>
         <translation>A 인증서 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="148"/>
+        <location filename="../x509_compare_dlg.cpp" line="150"/>
         <source>B Certificate value</source>
         <translation>B 인증서 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="168"/>
+        <location filename="../x509_compare_dlg.cpp" line="170"/>
         <source>Find file A</source>
         <translation>A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="169"/>
+        <location filename="../x509_compare_dlg.cpp" line="171"/>
         <source>Find file B</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="170"/>
+        <location filename="../x509_compare_dlg.cpp" line="172"/>
         <source>A field value</source>
         <translation>A 필드 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="171"/>
+        <location filename="../x509_compare_dlg.cpp" line="173"/>
         <source>B field value</source>
         <translation>B 필드 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="462"/>
+        <location filename="../x509_compare_dlg.cpp" line="464"/>
         <source>File A is not a certificate</source>
         <translation>A 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="469"/>
+        <location filename="../x509_compare_dlg.cpp" line="471"/>
         <source>File B is not a certificate</source>
         <translation>B 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="504"/>
-        <location filename="../x509_compare_dlg.cpp" line="801"/>
-        <location filename="../x509_compare_dlg.cpp" line="1039"/>
+        <location filename="../x509_compare_dlg.cpp" line="506"/>
+        <location filename="../x509_compare_dlg.cpp" line="803"/>
+        <location filename="../x509_compare_dlg.cpp" line="1041"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="526"/>
+        <location filename="../x509_compare_dlg.cpp" line="528"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="550"/>
+        <location filename="../x509_compare_dlg.cpp" line="552"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="573"/>
+        <location filename="../x509_compare_dlg.cpp" line="575"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="621"/>
-        <location filename="../x509_compare_dlg.cpp" line="1064"/>
+        <location filename="../x509_compare_dlg.cpp" line="623"/>
+        <location filename="../x509_compare_dlg.cpp" line="1066"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="646"/>
-        <location filename="../x509_compare_dlg.cpp" line="1087"/>
+        <location filename="../x509_compare_dlg.cpp" line="648"/>
+        <location filename="../x509_compare_dlg.cpp" line="1089"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="595"/>
-        <location filename="../x509_compare_dlg.cpp" line="823"/>
+        <location filename="../x509_compare_dlg.cpp" line="597"/>
+        <location filename="../x509_compare_dlg.cpp" line="825"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="101"/>
+        <location filename="../x509_compare_dlg.cpp" line="103"/>
         <source>Both files A and B already exist</source>
         <translation>A 파일과 B파일이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="484"/>
-        <location filename="../x509_compare_dlg.cpp" line="1019"/>
+        <location filename="../x509_compare_dlg.cpp" line="486"/>
+        <location filename="../x509_compare_dlg.cpp" line="1021"/>
         <source>KID</source>
         <translation>KID</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="672"/>
-        <location filename="../x509_compare_dlg.cpp" line="1110"/>
+        <location filename="../x509_compare_dlg.cpp" line="674"/>
+        <location filename="../x509_compare_dlg.cpp" line="1112"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="695"/>
-        <location filename="../x509_compare_dlg.cpp" line="912"/>
-        <location filename="../x509_compare_dlg.cpp" line="1133"/>
+        <location filename="../x509_compare_dlg.cpp" line="697"/>
+        <location filename="../x509_compare_dlg.cpp" line="914"/>
+        <location filename="../x509_compare_dlg.cpp" line="1135"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="716"/>
-        <location filename="../x509_compare_dlg.cpp" line="933"/>
-        <location filename="../x509_compare_dlg.cpp" line="1200"/>
+        <location filename="../x509_compare_dlg.cpp" line="718"/>
+        <location filename="../x509_compare_dlg.cpp" line="935"/>
+        <location filename="../x509_compare_dlg.cpp" line="1202"/>
         <source>FingerPrint</source>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="724"/>
-        <location filename="../x509_compare_dlg.cpp" line="941"/>
-        <location filename="../x509_compare_dlg.cpp" line="1208"/>
+        <location filename="../x509_compare_dlg.cpp" line="726"/>
+        <location filename="../x509_compare_dlg.cpp" line="943"/>
+        <location filename="../x509_compare_dlg.cpp" line="1210"/>
         <source>A and B %1 are the same</source>
         <translation>A 와 B %1 은 같습니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="730"/>
-        <location filename="../x509_compare_dlg.cpp" line="947"/>
-        <location filename="../x509_compare_dlg.cpp" line="1214"/>
+        <location filename="../x509_compare_dlg.cpp" line="732"/>
+        <location filename="../x509_compare_dlg.cpp" line="949"/>
+        <location filename="../x509_compare_dlg.cpp" line="1216"/>
         <source>A and B %1 are different</source>
         <translation>A 와 B %1 은 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="785"/>
+        <location filename="../x509_compare_dlg.cpp" line="787"/>
         <source>File A is not a CRL</source>
         <translation>A 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="792"/>
+        <location filename="../x509_compare_dlg.cpp" line="794"/>
         <source>File B is not a CRL</source>
         <translation>B 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="847"/>
+        <location filename="../x509_compare_dlg.cpp" line="849"/>
         <source>ThisUpdate</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="869"/>
+        <location filename="../x509_compare_dlg.cpp" line="871"/>
         <source>NextUpdate</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="890"/>
+        <location filename="../x509_compare_dlg.cpp" line="892"/>
         <source>SignAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="997"/>
+        <location filename="../x509_compare_dlg.cpp" line="999"/>
         <source>File A is not a CSR</source>
         <translation>A 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1004"/>
+        <location filename="../x509_compare_dlg.cpp" line="1006"/>
         <source>File B is not a CSR</source>
         <translation>B 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1156"/>
+        <location filename="../x509_compare_dlg.cpp" line="1158"/>
         <source>Challenge</source>
         <translation>Challenge</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1179"/>
+        <location filename="../x509_compare_dlg.cpp" line="1181"/>
         <source>UnstructuredName</source>
         <translation>UnstructuredName</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1274"/>
-        <location filename="../x509_compare_dlg.cpp" line="1284"/>
+        <location filename="../x509_compare_dlg.cpp" line="1276"/>
+        <location filename="../x509_compare_dlg.cpp" line="1286"/>
         <source>find a A file</source>
         <translation>A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1299"/>
-        <location filename="../x509_compare_dlg.cpp" line="1350"/>
+        <location filename="../x509_compare_dlg.cpp" line="1301"/>
+        <location filename="../x509_compare_dlg.cpp" line="1352"/>
         <source>Selected in CertMan</source>
         <translation>CertMan에서 선택 됨</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1309"/>
+        <location filename="../x509_compare_dlg.cpp" line="1311"/>
         <source>This A file(%1) is not X509 format</source>
         <translation>이 A파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1322"/>
+        <location filename="../x509_compare_dlg.cpp" line="1324"/>
         <source>This A file is not %1</source>
         <translation>이 A 파일은 %1이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1335"/>
+        <location filename="../x509_compare_dlg.cpp" line="1337"/>
         <source>find a B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1358"/>
+        <location filename="../x509_compare_dlg.cpp" line="1360"/>
         <source>This B file(%1) is not X509 format</source>
         <translation>이 B파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1365"/>
+        <location filename="../x509_compare_dlg.cpp" line="1367"/>
         <source>The X509 types of files A(%1) and B(%2) are different</source>
         <translation>X509 파일 A(%1)와 B(%2)가 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1547"/>
-        <location filename="../x509_compare_dlg.cpp" line="1621"/>
+        <location filename="../x509_compare_dlg.cpp" line="1549"/>
+        <location filename="../x509_compare_dlg.cpp" line="1623"/>
         <source>This file is not X509 format</source>
         <translation>이 파일은 X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1288"/>
+        <location filename="../x509_compare_dlg.cpp" line="1682"/>
+        <source>There is no comparison data</source>
+        <translation>비교 데이타가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../x509_compare_dlg.cpp" line="1290"/>
         <source>Select a A %1</source>
         <translation>A %1을 선택 하세요</translation>
     </message>
@@ -23166,7 +23181,7 @@ Use %2</source>
         <translation type="vanished">A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1339"/>
+        <location filename="../x509_compare_dlg.cpp" line="1341"/>
         <source>Select a B %1</source>
         <translation>B %1을 선택 하세요</translation>
     </message>
@@ -23175,16 +23190,16 @@ Use %2</source>
         <translation type="vanished">B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1537"/>
-        <location filename="../x509_compare_dlg.cpp" line="1584"/>
-        <location filename="../x509_compare_dlg.cpp" line="1611"/>
-        <location filename="../x509_compare_dlg.cpp" line="1658"/>
+        <location filename="../x509_compare_dlg.cpp" line="1539"/>
+        <location filename="../x509_compare_dlg.cpp" line="1586"/>
+        <location filename="../x509_compare_dlg.cpp" line="1613"/>
+        <location filename="../x509_compare_dlg.cpp" line="1660"/>
         <source>Select a %1</source>
         <translation>%1을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1593"/>
-        <location filename="../x509_compare_dlg.cpp" line="1667"/>
+        <location filename="../x509_compare_dlg.cpp" line="1595"/>
+        <location filename="../x509_compare_dlg.cpp" line="1669"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>

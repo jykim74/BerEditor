@@ -24,6 +24,7 @@ BERCompareDlg::BERCompareDlg(QWidget *parent)
     connect( mADecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecodeA()));
     connect( mBDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecodeB()));
     connect( mCompareBtn, SIGNAL(clicked()), this, SLOT(clickCompare()));
+    connect( mShowDataBtn, SIGNAL(clicked()), this, SLOT(clickShowData()));
 
 
 #if defined(Q_OS_MAC)
@@ -66,16 +67,24 @@ void BERCompareDlg::dropEvent(QDropEvent *event)
 
         for (const QUrl &url : urls)
         {
+            BIN binBER = {0,0};
+
             berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
             if( mAPathText->text().length() < 1 )
             {
                 mAPathText->setText( url.toLocalFile() );
+                JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binBER );
+                makeTreeA( &binBER );
+                JS_BIN_reset( &binBER );
                 break;
             }
 
             if( mBPathText->text().length() < 1 )
             {
                 mBPathText->setText( url.toLocalFile() );
+                JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binBER );
+                makeTreeB( &binBER );
+                JS_BIN_reset( &binBER );
                 break;
             }
 
@@ -85,6 +94,11 @@ void BERCompareDlg::dropEvent(QDropEvent *event)
     } else if (event->mimeData()->hasText()) {
 
     }
+}
+
+void BERCompareDlg::clickShowData()
+{
+    mInfoDock->show();
 }
 
 void BERCompareDlg::initUI()
@@ -155,48 +169,53 @@ int BERCompareDlg::compare( BerItem *pA, BerItem *pB )
 
 void BERCompareDlg::clickFindA()
 {
+    BIN binBER = {0,0};
     QString strPath = mAPathText->text();
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.isEmpty() ) return;
 
-
     mAPathText->setText( fileName );
-    bool bSET = mSETSortCheck->isChecked();
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
 
-    BIN binBER = {0,0};
-    int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
-    if( ret > 0 )
-    {
-        modelA_->setBER( &binBER );
-        modelA_->makeTree( berApplet->settingsMgr()->autoExpand() );
-
-        mStatusLabel->setText( tr( "Compare A and B" ));
-    }
-
+    makeTreeA( &binBER );
     JS_BIN_reset( &binBER );
 }
 
 
 void BERCompareDlg::clickFindB()
 {
+    BIN binBER = {0,0};
     QString strPath = mBPathText->text();
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.isEmpty() ) return;
 
     mBPathText->setText( fileName );
-    bool bSET = mSETSortCheck->isChecked();
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
 
-    BIN binBER = {0,0};
-    int ret = JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binBER );
-    if( ret > 0 )
-    {
-        modelB_->setBER( &binBER );
-        modelB_->makeTree( berApplet->settingsMgr()->autoExpand() );
-
-        mStatusLabel->setText( tr( "Compare A and B" ));
-    }
-
+    makeTreeB( &binBER );
     JS_BIN_reset( &binBER );
+}
+
+void BERCompareDlg::makeTreeA( const BIN *pBER )
+{
+    if( pBER == NULL || pBER->nLen < 1 )
+        return;
+
+    modelA_->setBER( pBER );
+    modelA_->makeTree( berApplet->settingsMgr()->autoExpand() );
+
+    mStatusLabel->setText( tr( "Compare A and B" ));
+}
+
+void BERCompareDlg::makeTreeB( const BIN *pBER )
+{
+    if( pBER == NULL || pBER->nLen < 1 )
+        return;
+
+    modelB_->setBER( pBER );
+    modelB_->makeTree( berApplet->settingsMgr()->autoExpand() );
+
+    mStatusLabel->setText( tr( "Compare A and B" ));
 }
 
 void BERCompareDlg::clickDecodeA()
@@ -365,7 +384,11 @@ void BERCompareDlg::clickNodeA()
         cr = Qt::blue;
     }
 
-    logA( QString( "TL    : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+    logA( QString( "Tag: %1 Length: %2 Depth: %3\n")
+             .arg( getHexString( itemA->header_, 1 ))
+             .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1))
+             .arg( itemA->GetLevel()), cr);
+
     logA( QString( "-------------------------------------\n"), cr );
     logValA( &binValA, cr );
 
@@ -378,7 +401,10 @@ void BERCompareDlg::clickNodeA()
         {
             modelB_->setSelectItem( itemB );
             modelB_->getValue( itemB, &binValB );
-            logB( QString( "TL    : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+            logB( QString( "Tag: %1 Length: %2 Depth: %3\n")
+                     .arg( getHexString( itemB->header_, 1 ))
+                     .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1))
+                     .arg( itemB->GetLevel()), cr);
             logB( QString( "-------------------------------------\n"), cr );
             logValB( &binValB, cr );
         }
@@ -419,7 +445,11 @@ void BERCompareDlg::clickNodeB()
         cr = Qt::blue;
     }
 
-    logB( QString( "TL    : %1\n").arg( getHexString( itemB->header_, itemB->header_size_ )), cr);
+    logB( QString( "Tag: %1 Length: %2 Depth: %3\n")
+             .arg( getHexString( itemB->header_, 1 ))
+             .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1))
+             .arg( itemB->GetLevel()), cr);
+
     logB( QString( "-------------------------------------\n"), cr );
     logValB( &binValB, cr );
 
@@ -432,7 +462,11 @@ void BERCompareDlg::clickNodeB()
         {
             modelA_->setSelectItem( itemA );
             modelA_->getValue( itemA, &binValA );
-            logA( QString( "TL    : %1\n").arg( getHexString( itemA->header_, itemA->header_size_ )), cr);
+            logA( QString( "Tag: %1 Length: %2 Depth: %3\n")
+                     .arg( getHexString( itemA->header_, 1 ))
+                     .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1))
+                     .arg( itemA->GetLevel()), cr);
+
             logA( QString( "-------------------------------------\n"), cr );
             logValA( &binValA, cr );
         }

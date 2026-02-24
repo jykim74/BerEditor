@@ -2531,6 +2531,19 @@ void MainWindow::BERCompare()
     ber_comp_dlg_->activateWindow();
 }
 
+void MainWindow::runBERCompare( const BIN *pA, const BIN *pB )
+{
+    if( ber_comp_dlg_ == nullptr )
+        ber_comp_dlg_ = new BERCompareDlg;
+
+    ber_comp_dlg_->makeTreeA( pA );
+    ber_comp_dlg_->makeTreeB( pB );
+
+    ber_comp_dlg_->show();
+    ber_comp_dlg_->raise();
+    ber_comp_dlg_->activateWindow();
+}
+
 void MainWindow::encDec2( const QString strKey, const QString strIV )
 {
     if( enc_dec_dlg_ == nullptr )

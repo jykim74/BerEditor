@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>704</width>
-    <height>652</height>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,13 +85,50 @@
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>A File</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="mAPathText"/>
+      <widget class="QLineEdit" name="mAPathText">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mAFindBtn">
@@ -108,7 +145,38 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="mBPathText"/>
+      <widget class="QLineEdit" name="mBPathText">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
@@ -177,8 +245,8 @@
     <widget class="QDockWidget" name="mInfoDock">
      <property name="minimumSize">
       <size>
-       <width>0</width>
-       <height>200</height>
+       <width>168</width>
+       <height>160</height>
       </size>
      </property>
      <widget class="QWidget" name="dockWidgetContents">
@@ -277,12 +345,18 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QLabel" name="mStatusLabel">
-       <property name="text">
-        <string>Compare A and B</string>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-      </widget>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="pushButton_2">
@@ -304,18 +378,19 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="1">
+      <widget class="QLabel" name="mStatusLabel">
+       <property name="text">
+        <string>Compare A and B</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCompareBtn">
+       <property name="text">
+        <string>Compare</string>
        </property>
-      </spacer>
+      </widget>
      </item>
     </layout>
    </item>
@@ -331,7 +406,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -344,13 +426,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mClearBtn">
        <property name="text">
@@ -358,10 +433,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCompareBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mShowDataBtn">
        <property name="text">
-        <string>Compare</string>
+        <string>Show Data</string>
        </property>
       </widget>
      </item>
@@ -369,6 +444,23 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSETSortCheck</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mAPathText</tabstop>
+  <tabstop>mAFindBtn</tabstop>
+  <tabstop>mBFindBtn</tabstop>
+  <tabstop>mBPathText</tabstop>
+  <tabstop>mADecodeBtn</tabstop>
+  <tabstop>mBDecodeBtn</tabstop>
+  <tabstop>mAText</tabstop>
+  <tabstop>mBText</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>mCompareBtn</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mShowDataBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>
