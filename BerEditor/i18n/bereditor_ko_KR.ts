@@ -895,29 +895,38 @@ mailto : jykim74@gmail.com</translation>
         <translation>B BER 정보</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="384"/>
+        <location filename="../ber_compare_dlg.ui" line="253"/>
+        <source>BER A and B value</source>
+        <translation>BER A 와 B 값</translation>
+    </message>
+    <message>
+        <location filename="../ber_compare_dlg.ui" line="387"/>
         <location filename="../ber_compare_dlg.cpp" line="207"/>
         <location filename="../ber_compare_dlg.cpp" line="218"/>
         <source>Compare A and B</source>
         <translation>A 와 B 비교하기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="412"/>
+        <location filename="../ber_compare_dlg.ui" line="415"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="432"/>
+        <location filename="../ber_compare_dlg.ui" line="435"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="439"/>
-        <source>Show Data</source>
-        <translation>데이타 보여주기</translation>
+        <location filename="../ber_compare_dlg.ui" line="442"/>
+        <source>Show Value</source>
+        <translation>값 보이기</translation>
     </message>
     <message>
-        <location filename="../ber_compare_dlg.ui" line="391"/>
+        <source>Show Data</source>
+        <translation type="vanished">데이타 보여주기</translation>
+    </message>
+    <message>
+        <location filename="../ber_compare_dlg.ui" line="394"/>
         <source>Compare</source>
         <translation>비교하기</translation>
     </message>
@@ -22815,6 +22824,11 @@ Use %2</source>
         <translation>비교 대상</translation>
     </message>
     <message>
+        <location filename="../x509_compare_dlg.ui" line="448"/>
+        <source>Show Value</source>
+        <translation>값 보이기</translation>
+    </message>
+    <message>
         <location filename="../x509_compare_dlg.ui" line="469"/>
         <source>BER Compare</source>
         <translation>BER 비교하기</translation>
@@ -22893,9 +22907,8 @@ Use %2</source>
         <translation>B 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="448"/>
         <source>Show Information</source>
-        <translation>정보 보이기</translation>
+        <translation type="vanished">정보 보이기</translation>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="335"/>

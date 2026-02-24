@@ -11,6 +11,7 @@ enum {
     BER_IS_SAME = 0,
     BER_TAG_DIFF,
     BER_DEPTH_DIFF,
+    BER_INDEFINITE_DIFF,
     BER_VALUE_DIFF,
     BER_NOT_SAME
 };
@@ -44,7 +45,7 @@ private slots:
     void clickNodeA();
     void clickNodeB();
 
-    void clickShowData();
+    void clickShowValue();
 
 public slots:
 

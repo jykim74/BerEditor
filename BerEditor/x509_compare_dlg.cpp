@@ -37,7 +37,7 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
     connect( mAutoDetectCheck, SIGNAL(clicked()), this, SLOT(checkAutoDetect()));
 
-    connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
+    connect( mShowValueBtn, SIGNAL(clicked()), this, SLOT(clickShowValue()));
     connect( mCompareTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickCompareTable(QModelIndex)));
     connect( mCompareTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(dblClickTable()));
 
@@ -1394,7 +1394,7 @@ end :
     return;
 }
 
-void X509CompareDlg::clickShowInfo()
+void X509CompareDlg::clickShowValue()
 {
     mInfoDock->show();
 }
