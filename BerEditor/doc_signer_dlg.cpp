@@ -10,6 +10,7 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QDir>
+#include <QDateTime>
 
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
@@ -114,6 +115,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
 #ifdef PDF_SIGN
+    connect( mPDF_NameSubjectDNCheck, SIGNAL(clicked()), this, SLOT(checkPDFNameSubjectDN()));
     connect( mPDFGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickPDF_GetInfo()));
     connect( mPDF_TSPBtn, SIGNAL(clicked()), this, SLOT(clickPDF_TSP()));
     connect( mPDFInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickPDF_ClearInfo()));
@@ -710,6 +712,8 @@ void DocSignerDlg::initialize()
     checkUseTSP();
 
 #ifdef PDF_SIGN
+    QDateTime dateTime = QDateTime::currentDateTime();
+    mPDF_DataTime->setDateTime( dateTime );
     mPDFSignCheck->setChecked(true);
     checkPDFSign();
 #endif
@@ -2871,6 +2875,12 @@ void DocSignerDlg::checkPDFEnc()
     mPDFVerifyBtn->setText( tr("Decrypt" ));
 }
 
+void DocSignerDlg::checkPDFNameSubjectDN()
+{
+    bool bVal = mPDF_NameSubjectDNCheck->isChecked();
+    mPDF_NameText->setEnabled( !bVal );
+}
+
 void DocSignerDlg::clickPDF_ViewCMS()
 {
     int ret = 0;
@@ -3067,6 +3077,49 @@ void DocSignerDlg::clickPDF_GetInfo()
         i++;
     }
 
+    if( sSignLabel.pName )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Name" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( sSignLabel.pName ));
+        i++;
+    }
+
+    if( sSignLabel.pMakeTime )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("MakeTime" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( sSignLabel.pMakeTime ));
+        i++;
+    }
+
+    if( sSignLabel.pReason )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Reason" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( sSignLabel.pReason ));
+        i++;
+    }
+
+    if( sSignLabel.pLocation )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("Location" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( sSignLabel.pLocation ));
+        i++;
+    }
+    if( sSignLabel.pContactInfo )
+    {
+        mPDFInfoTable->insertRow(i);
+        mPDFInfoTable->setRowHeight(i,10);
+        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("ContactInfo" )));
+        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( sSignLabel.pContactInfo ));
+        i++;
+    }
 
     berApplet->messageBox( tr("PDF information import complete"), this );
 
@@ -3084,7 +3137,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
-    time_t now_t = time(NULL);
+    time_t now_t = mPDF_DataTime->dateTime().toTime_t();
 
     JByteRange sRange;
     BIN binData = {0,0};
@@ -3104,6 +3157,11 @@ void DocSignerDlg::clickPDF_MakeSign()
     JSignLabel sSignLabel;
 
     char sUTCTime[32];
+
+    QString strName = mPDF_NameText->text();
+    QString strReason = mPDF_ReasonText->text();
+    QString strLocation = mPDF_LocationText->text();
+    QString strContactInfo = mPDF_ContactInfoText->text();
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
@@ -3182,7 +3240,16 @@ void DocSignerDlg::clickPDF_MakeSign()
 
     JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
 
-    JS_PDF_setSignLabel( &sSignLabel, sUTCTime, sCertInfo.pSubjectName, NULL, NULL, NULL );
+
+    if( mPDF_NameSubjectDNCheck->isChecked() )
+        strName = sCertInfo.pSubjectName;
+
+    JS_PDF_setSignLabel( &sSignLabel,
+                        sUTCTime,
+                        strName.length() > 0 ? strName.toStdString().c_str() : NULL,
+                        strReason.length() > 0 ? strReason.toStdString().c_str() : NULL,
+                        strLocation.length() > 0 ? strLocation.toStdString().c_str() : NULL,
+                        strContactInfo.length() > 0 ? strContactInfo.toStdString().c_str() : NULL );
 
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
@@ -3572,7 +3639,6 @@ void DocSignerDlg::clickPDF_Decrypt()
     {
         berApplet->warningBox( tr("PDF decryption failed: %1").arg(JERR(ret)), this );
     }
-
 
     return;
 }

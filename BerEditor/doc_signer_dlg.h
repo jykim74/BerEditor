@@ -134,6 +134,7 @@ private slots:
 #ifdef PDF_SIGN
     void checkPDFSign();
     void checkPDFEnc();
+    void checkPDFNameSubjectDN();
 
     void clickPDF_GetInfo();
     void clickPDF_TSP();
