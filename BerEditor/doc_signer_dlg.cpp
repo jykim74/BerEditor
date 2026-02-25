@@ -2970,9 +2970,11 @@ void DocSignerDlg::clickPDF_GetInfo()
     JPDFInfo    sInfo;
     QString strPasswd = mPDFPasswdText->text();
     JByteRange sRange;
+    JSignLabel  sSignLabel;
 
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sRange, 0x00, sizeof(sRange));
+    memset( &sSignLabel, 0x00, sizeof(sSignLabel));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2992,7 +2994,8 @@ void DocSignerDlg::clickPDF_GetInfo()
     ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-        &sInfo );
+        &sInfo, &sSignLabel );
+
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get PDF information: %1").arg(JERR(ret)), this);
@@ -3066,6 +3069,8 @@ void DocSignerDlg::clickPDF_GetInfo()
 
 
     berApplet->messageBox( tr("PDF information import complete"), this );
+
+    JS_PDF_resetSignLabel( &sSignLabel );
 }
 
 void DocSignerDlg::clickPDF_TSP()
@@ -3096,10 +3101,14 @@ void DocSignerDlg::clickPDF_MakeSign()
     JPDFInfo sInfo;
 
     JCertInfo sCertInfo;
+    JSignLabel sSignLabel;
+
+    char sUTCTime[32];
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    memset( &sSignLabel, 0x00, sizeof(sSignLabel));
 
     if( strSrcPath.length() < 1 )
     {
@@ -3122,6 +3131,8 @@ void DocSignerDlg::clickPDF_MakeSign()
         strDstPath = QString( "%1/%2_signed.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
         mDstPathText->setText( strDstPath );
     }
+
+    JS_PDF_getUTCTime( now_t, sUTCTime, sizeof(sUTCTime));
 
     QFileInfo dstInfo( strDstPath );
     if( dstInfo.exists() )
@@ -3150,7 +3161,7 @@ void DocSignerDlg::clickPDF_MakeSign()
     ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.toStdString().c_str(),
-        &sInfo );
+        &sInfo, NULL );
 
     if( ret < 0 )
     {
@@ -3171,11 +3182,12 @@ void DocSignerDlg::clickPDF_MakeSign()
 
     JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
 
+    JS_PDF_setSignLabel( &sSignLabel, sUTCTime, sCertInfo.pSubjectName, NULL, NULL, NULL );
+
     ret = JS_PDF_makeUnsigned(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-        now_t,
-        sCertInfo.pSubjectName,
+        &sSignLabel,
         &binUnsigned );
 
     if( ret != JSR_OK )
@@ -3256,6 +3268,7 @@ end :
     JS_BIN_reset( &binSignedTSP );
     JS_BIN_reset( &binUnsigned );
     JS_PKI_resetCertInfo( &sCertInfo );
+    JS_PDF_resetSignLabel( &sSignLabel );
 }
 
 void DocSignerDlg::clickPDF_VerifySign()
@@ -3272,9 +3285,11 @@ void DocSignerDlg::clickPDF_VerifySign()
     JPDFInfo    sInfo;
 
     int nVerifyChain = 0;
+    JSignLabel  sSignLabel;
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
+    memset( &sSignLabel, 0x00, sizeof(sSignLabel));
 
     if( strSrcPath.length() < 1 )
     {
@@ -3294,7 +3309,7 @@ void DocSignerDlg::clickPDF_VerifySign()
     ret = JS_PDF_getInfoFile(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         NULL,
-        &sInfo );
+        &sInfo, &sSignLabel );
 
     if( ret < 0 )
     {
@@ -3382,6 +3397,7 @@ end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binPDF );
+    JS_PDF_resetSignLabel( &sSignLabel );
 }
 
 void DocSignerDlg::clickPDF_ClearInfo()
@@ -3422,7 +3438,7 @@ void DocSignerDlg::clickPDF_Encrypt()
         return;
     }
 
-    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo );
+    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo, NULL );
     if( ret != CKR_OK )
     {
         berApplet->warningBox( tr(" failed to get PDF information: %1").arg( JERR(ret)), this );
@@ -3525,7 +3541,7 @@ void DocSignerDlg::clickPDF_Decrypt()
         }
     }
 
-    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo );
+    ret = JS_PDF_getInfoFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &sInfo, NULL );
     if( ret != CKR_OK )
     {
         berApplet->warningBox( tr(" failed to get PDF information: %1").arg( JERR(ret)), this );
