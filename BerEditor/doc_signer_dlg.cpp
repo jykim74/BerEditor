@@ -2904,7 +2904,8 @@ void DocSignerDlg::clickPDF_ViewCMS()
         return;
     }
 
-    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+//    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &binCMS );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
@@ -2941,7 +2942,8 @@ void DocSignerDlg::clickPDF_ExportCMS()
         return;
     }
 
-    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+//    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &binCMS );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
@@ -3054,7 +3056,11 @@ void DocSignerDlg::clickPDF_GetInfo()
 
     if( sInfo.nCMS == 1 )
     {
-        ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+        //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
+        ret = JS_PDF_findByteRangeFile(
+            strSrcPath.toLocal8Bit().toStdString().c_str(),
+            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+            &sRange );
         if( ret == JSR_OK )
         {
             QString strRange = QString( "[ %1 %2 %3 %4 ]" )
@@ -3069,12 +3075,6 @@ void DocSignerDlg::clickPDF_GetInfo()
             mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( strRange ));
             i++;
         }
-
-        mPDFInfoTable->insertRow(i);
-        mPDFInfoTable->setRowHeight(i,10);
-        mPDFInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP" )));
-        mPDFInfoTable->setItem( i, 1, new QTableWidgetItem( QString("%1").arg( sInfo.nTSP ? "YES" : "NO" ) ));
-        i++;
     }
 
     if( sSignLabel.pName )
@@ -3342,6 +3342,7 @@ void DocSignerDlg::clickPDF_VerifySign()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPDFPasswdText->text();
     BIN binPDF = {0,0};
     BIN binCert = {0,0};
     BIN binCMS = {0,0};
@@ -3408,7 +3409,10 @@ void DocSignerDlg::clickPDF_VerifySign()
         &binPDF );
 
  //   ret = JS_PDF_getByteRange( &binPDF, &sRange );
-    ret = JS_PDF_findByteRange( &binPDF, &sRange );
+    ret = JS_PDF_findByteRange2(
+        &binPDF,
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        &sRange );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
@@ -3421,7 +3425,10 @@ void DocSignerDlg::clickPDF_VerifySign()
                        .arg( sRange.nSecondStart )
                        .arg( sRange.nSecondLen ));
 
-    ret = JS_PDF_getCMS( &binPDF, &binCMS );
+//    ret = JS_PDF_getCMS( &binPDF, &binCMS );
+    ret = JS_PDF_getContents( &binPDF,
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("failed to get CMS: %1").arg(JERR(ret)), this );
