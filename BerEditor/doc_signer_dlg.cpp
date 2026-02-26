@@ -3414,7 +3414,7 @@ void DocSignerDlg::clickPDF_VerifySign()
         &binPDF );
 
  //   ret = JS_PDF_getByteRange( &binPDF, &sRange );
-    ret = JS_PDF_findByteRange2(
+    ret = JS_PDF_findByteRange(
         &binPDF,
         strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
         &sRange );
