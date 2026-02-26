@@ -488,13 +488,15 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mSETOrderCheck</tabstop>
   <tabstop>pushButton</tabstop>
+  <tabstop>mSETOrderCheck</tabstop>
+  <tabstop>pushButton_3</tabstop>
   <tabstop>mAPathText</tabstop>
   <tabstop>mAFindBtn</tabstop>
-  <tabstop>mBFindBtn</tabstop>
-  <tabstop>mBPathText</tabstop>
   <tabstop>mADecodeBtn</tabstop>
+  <tabstop>pushButton_4</tabstop>
+  <tabstop>mBPathText</tabstop>
+  <tabstop>mBFindBtn</tabstop>
   <tabstop>mBDecodeBtn</tabstop>
   <tabstop>mAText</tabstop>
   <tabstop>mBText</tabstop>

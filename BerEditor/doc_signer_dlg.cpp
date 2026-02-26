@@ -693,6 +693,11 @@ void DocSignerDlg::initUI()
     mPDFInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mPDFInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    mPDF_NameText->setPlaceholderText( tr("String value" ));
+    mPDF_ReasonText->setPlaceholderText( tr( "String value" ));
+    mPDF_LocationText->setPlaceholderText( tr("String value" ));
+    mPDF_ContactInfoText->setPlaceholderText( tr("String value" ));
+
 
     checkCMSEncode();
     checkSrcFile();

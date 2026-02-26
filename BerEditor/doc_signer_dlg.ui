@@ -2069,6 +2069,12 @@
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="label_5">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Location</string>
               </property>
@@ -2086,6 +2092,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
                <string>Reason</string>
               </property>
@@ -2255,6 +2267,12 @@
   <tabstop>mPDF_CertListCheck</tabstop>
   <tabstop>mPDF_CAListCheck</tabstop>
   <tabstop>mPDFTrustListCheck</tabstop>
+  <tabstop>mPDF_NameText</tabstop>
+  <tabstop>mPDF_NameSubjectDNCheck</tabstop>
+  <tabstop>mPDF_ReasonText</tabstop>
+  <tabstop>mPDF_LocationText</tabstop>
+  <tabstop>mPDF_ContactInfoText</tabstop>
+  <tabstop>mPDF_DataTime</tabstop>
   <tabstop>mPDFUseTSPCheck</tabstop>
   <tabstop>mPDF_TSPBtn</tabstop>
   <tabstop>mPDFVerifyChainCheck</tabstop>
