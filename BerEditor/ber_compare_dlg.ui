@@ -83,7 +83,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
@@ -96,7 +96,34 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="1" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>B File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mBFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mADecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <widget class="QLineEdit" name="mAPathText">
        <property name="palette">
         <palette>
@@ -130,21 +157,20 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mAFindBtn">
+     <item row="1" column="4">
+      <widget class="QPushButton" name="mBDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Find</string>
+        <string>D</string>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="mBFindBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
       <widget class="QLineEdit" name="mBPathText">
        <property name="palette">
         <palette>
@@ -178,36 +204,50 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>B File</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mADecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="mAFindBtn">
        <property name="text">
-        <string>D</string>
+        <string>Find</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mBDecodeBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_3">
        <property name="maximumSize">
         <size>
-         <width>20</width>
-         <height>16777215</height>
+         <width>16</width>
+         <height>16</height>
         </size>
        </property>
        <property name="text">
-        <string>D</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/ber.png</normaloff>:/images/ber.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/ber.png</normaloff>:/images/ber.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
