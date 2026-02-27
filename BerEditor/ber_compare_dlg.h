@@ -59,6 +59,8 @@ private:
     int compare( BerItem *pA, BerItem *pB );
     void logA( const QString strLog, QColor cr );
     void logB( const QString strLog, QColor cr );
+    void logHeadA( BerItem *pItem, QColor cr );
+    void logHeadB( BerItem *pItem, QColor cr );
     void logValA( const BIN *pVal, QColor cr );
     void logValB( const BIN *pVal, QColor cr );
 

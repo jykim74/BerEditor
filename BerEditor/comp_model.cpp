@@ -349,7 +349,7 @@ int CompModel::IsPrev( BerItem *pA, BerItem *pB )
     return ret;
 }
 
-const QStringList CompModel::getPositon( BerItem *pItem )
+const QStringList CompModel::getPosition( BerItem *pItem )
 {
     QStringList listPos;
 
@@ -364,6 +364,31 @@ const QStringList CompModel::getPositon( BerItem *pItem )
     }
 
     return listPos;
+}
+
+int CompModel::getPosition( BerItem *pItem, QString& strPostion )
+{
+    QStringList listPos;
+
+    const BerItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (BerItem *)pCurrent->parent();
+    }
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        if( i == 0 )
+            strPostion += QString( "%1" ).arg( listPos.at(i) );
+        else
+            strPostion += QString( "-%1" ).arg( listPos.at(i) );
+    }
+
+    return listPos.size();
 }
 
 QList<BerItem *> CompModel::getParentList( BerItem *pItem )

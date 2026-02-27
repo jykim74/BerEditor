@@ -335,7 +335,7 @@ void BERCompareDlg::clickCompare()
                 }
                 else
                 {
-                    QStringList listPos = modelA_->getPositon( itemA );
+                    QStringList listPos = modelA_->getPosition( itemA );
                     itemB = modelB_->findItemByPostion( listPos );
                 }
             }
@@ -378,7 +378,7 @@ void BERCompareDlg::clickNodeA()
     }
     else
     {
-        QStringList listPos = modelA_->getPositon( itemA );
+        QStringList listPos = modelA_->getPosition( itemA );
         itemB = modelB_->findItemByPostion( listPos );
     }
 
@@ -393,12 +393,7 @@ void BERCompareDlg::clickNodeA()
 
     if( itemA->GetLevel() >= 10 ) nAdd = 1;
 
-    logA( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
-             .arg( getHexString( itemA->header_, 1 ))
-             .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth + nAdd )
-             .arg( itemA->GetLevel() ), cr);
-
-    logA( QString( "======================================\n"), cr );
+    logHeadA( itemA, cr );
     logValA( &binValA, cr );
 
 
@@ -412,11 +407,7 @@ void BERCompareDlg::clickNodeA()
             modelB_->setItemColor( itemB, cr );
             modelB_->setSelectItem( itemB );
             modelB_->getValue( itemB, &binValB );
-            logB( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
-                     .arg( getHexString( itemB->header_, 1 ))
-                     .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth + nAdd )
-                     .arg( itemB->GetLevel()), cr);
-            logB( QString( "======================================\n"), cr );
+            logHeadB( itemB, cr );
             logValB( &binValB, cr );
         }
     }
@@ -450,7 +441,7 @@ void BERCompareDlg::clickNodeB()
     }
     else
     {
-        QStringList listPos = modelB_->getPositon( itemB );
+        QStringList listPos = modelB_->getPosition( itemB );
         itemA = modelA_->findItemByPostion( listPos );
     }
 
@@ -465,12 +456,7 @@ void BERCompareDlg::clickNodeB()
 
     if( itemB->GetLevel() >= 10 ) nAdd = 1;
 
-    logB( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
-             .arg( getHexString( itemB->header_, 1 ))
-             .arg( getHexString( &itemB->header_[1], itemB->header_size_ - 1), nLenWidth + nAdd )
-             .arg( itemB->GetLevel()), cr);
-
-    logB( QString( "======================================\n"), cr );
+    logHeadB( itemB, cr );
     logValB( &binValB, cr );
 
     mAText->clear();
@@ -483,12 +469,7 @@ void BERCompareDlg::clickNodeB()
             modelA_->setItemColor( itemA, cr );
             modelA_->setSelectItem( itemA );
             modelA_->getValue( itemA, &binValA );
-            logA( QString( "Tag: 0x%1 Length: 0x%2 Depth: %3\n")
-                     .arg( getHexString( itemA->header_, 1 ))
-                     .arg( getHexString( &itemA->header_[1], itemA->header_size_ - 1), nLenWidth + nAdd )
-                     .arg( itemA->GetLevel()), cr);
-
-            logA( QString( "======================================\n"), cr );
+            logHeadA( itemA, cr );
             logValA( &binValA, cr );
         }
     }
@@ -530,6 +511,50 @@ void BERCompareDlg::logB( const QString strLog, QColor cr )
 
     mBText->setTextCursor( cursor );
     mBText->repaint();
+}
+
+void BERCompareDlg::logHeadA( BerItem *pItem, QColor cr )
+{
+    QString strPos;
+    QString strPos2;
+    QString strTL;
+    int nWidth = 37;
+    int nLeft = 0;
+
+    if( pItem == NULL ) return;
+
+
+    int nCount = modelA_->getPosition( pItem, strPos );
+
+    strTL = QString( "TL: %1" ).arg( getHexString( pItem->header_, pItem->header_size_ ));
+    strPos2 = QString( "[%1]" ).arg( strPos );
+
+    nLeft = strTL.length();
+
+    logA( QString( "%1 %2\n" ).arg( strTL ).arg( strPos2, nWidth - nLeft ), cr );
+    logA( QString( "======================================\n"), cr );
+}
+
+void BERCompareDlg::logHeadB( BerItem *pItem, QColor cr )
+{
+    QString strPos;
+    QString strPos2;
+    QString strTL;
+    int nWidth = 37;
+    int nLeft = 0;
+
+    if( pItem == NULL ) return;
+
+
+    int nCount = modelB_->getPosition( pItem, strPos );
+
+    strTL = QString( "TL: %1" ).arg( getHexString( pItem->header_, pItem->header_size_ ));
+    strPos2 = QString( "[%1]" ).arg( strPos );
+
+    nLeft = strTL.length();
+
+    logB( QString( "%1 %2\n" ).arg( strTL ).arg( strPos2, nWidth - nLeft ), cr );
+    logB( QString( "======================================\n"), cr );
 }
 
 void BERCompareDlg::logValA( const BIN *pVal, QColor cr )
