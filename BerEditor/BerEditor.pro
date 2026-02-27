@@ -129,7 +129,9 @@ SOURCES += \
     thread_work_dlg.cpp \
     data_input_dlg.cpp \
     make_pri_key_dlg.cpp \
-    ber_compare_dlg.cpp
+    ber_compare_dlg.cpp \
+    comp_model.cpp \
+    comp_tree.cpp
 
 
 HEADERS += \
@@ -224,7 +226,9 @@ HEADERS += \
     thread_work_dlg.h \
     data_input_dlg.h \
     make_pri_key_dlg.h \
-    ber_compare_dlg.h
+    ber_compare_dlg.h \
+    comp_tree.h \
+    comp_model.h
 
 
 
