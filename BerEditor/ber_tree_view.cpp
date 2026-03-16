@@ -753,11 +753,15 @@ void BerTreeView::ShowContextMenu(QPoint point)
         QAction *pEditAct = NULL;
         QAction *pDeleteAct = NULL;
         QAction *pViewAct = NULL;
+        QAction *pChangeDefinite = NULL;
 
         if( item->isConstructed() )
         {
             pInsertAct = menu.addAction( tr( "Insert node" ), tree_model, SLOT(InsertBER()));
             pInsertAct = menu.addAction( tr( "View node"), tree_model, SLOT(ViewBER()));
+
+            if( item->indefinite_ == true )
+                pChangeDefinite = menu.addAction( tr( "Change to definite length" ), tree_model, SLOT(ChangeDefinite()));
         }
         else
         {
@@ -773,6 +777,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
             if( pViewAct != NULL ) pViewAct->setEnabled( false );
             if( pEditAct != NULL ) pEditAct->setEnabled( false );
             if( pDeleteAct != NULL ) pDeleteAct->setEnabled( false );
+            if( pChangeDefinite != NULL ) pChangeDefinite->setEnabled( false );
         }
 
         if( item->isType( JS_OCTETSTRING ) || item->isType( JS_BITSTRING ) )

@@ -32,6 +32,7 @@ public:
     const BerItem* addItem( BerItem* pParentItem, bool bFirst, const BIN *pData );
     int removeItem( BerItem *pItem );
     int modifyItem( BerItem *pItem, const BIN *pValue );
+    int changeDefinteItem( BerItem *pItem );
     const BerItem* findItemByOffset( BerItem* pParentItem, int nOffset );
 
     const BerItem* findNextItemByValue( const BerItem* pItem, const BIN *pValue, bool bMatched = false );
@@ -52,6 +53,7 @@ public slots:
     void InsertBER();
     void DeleteBER();
     void ViewBER();
+    void ChangeDefinite();
 
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );

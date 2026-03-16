@@ -1559,60 +1559,76 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">BER 구조</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="855"/>
-        <location filename="../ber_model.cpp" line="875"/>
-        <location filename="../ber_model.cpp" line="894"/>
+        <location filename="../ber_model.cpp" line="966"/>
+        <location filename="../ber_model.cpp" line="986"/>
+        <location filename="../ber_model.cpp" line="1005"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="946"/>
-        <location filename="../ber_model.cpp" line="1098"/>
+        <location filename="../ber_model.cpp" line="1057"/>
+        <location filename="../ber_model.cpp" line="1074"/>
+        <location filename="../ber_model.cpp" line="1236"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="951"/>
+        <location filename="../ber_model.cpp" line="1062"/>
         <source>Edit BER</source>
         <translation>BER 편집</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="965"/>
+        <location filename="../ber_model.cpp" line="1079"/>
+        <source>Are you sure you want to change to definte length?</source>
+        <translation>정말로 특정(Definite) 길이로 변경 하겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1086"/>
+        <source>Changed to a definite length.</source>
+        <translation>특정(Definite) 길이로 변경 하였습니다</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1090"/>
+        <source>Failed to change the definite length: %1</source>
+        <translation>특정(Definite) 길이 변경에 실패 하였습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1103"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="971"/>
+        <location filename="../ber_model.cpp" line="1109"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="990"/>
+        <location filename="../ber_model.cpp" line="1128"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1066"/>
+        <location filename="../ber_model.cpp" line="1204"/>
         <source>fail to decrypt private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1084"/>
+        <location filename="../ber_model.cpp" line="1222"/>
         <source>Node does not support view: %1</source>
         <translation>이 노드는 보기를 지원 하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1104"/>
+        <location filename="../ber_model.cpp" line="1242"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1108"/>
+        <location filename="../ber_model.cpp" line="1246"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1126"/>
+        <location filename="../ber_model.cpp" line="1264"/>
         <source>failed to delete: %1</source>
         <translation>삭제에 실패 했습니다: %1</translation>
     </message>
@@ -1654,27 +1670,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="759"/>
+        <location filename="../ber_tree_view.cpp" line="760"/>
         <source>Insert node</source>
         <translation>노드 입력</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="760"/>
+        <location filename="../ber_tree_view.cpp" line="761"/>
         <source>View node</source>
         <translation>노드 보기</translation>
     </message>
     <message>
         <location filename="../ber_tree_view.cpp" line="764"/>
+        <source>Change to definite length</source>
+        <translation>특정 길이 변경</translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="768"/>
         <source>Edit node</source>
         <translation>노드 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="768"/>
+        <location filename="../ber_tree_view.cpp" line="772"/>
         <source>Delete node</source>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="781"/>
+        <location filename="../ber_tree_view.cpp" line="786"/>
         <source>Expand node</source>
         <translation>노드 확장</translation>
     </message>
@@ -1695,7 +1716,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="850"/>
+        <location filename="../ber_tree_view.cpp" line="855"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>

@@ -536,6 +536,117 @@ end :
     return ret;
 }
 
+int BerModel::changeDefinteItem( BerItem *pItem )
+{
+    int ret = 0;
+    BIN binMod = {0,0};
+    BIN binHeader = {0,0};
+    BIN binChange = {0,0};
+
+    BYTE    header[16];
+    int     header_size = 0;
+
+    int     nModSize = 0;
+    BerItem *pParent = NULL;
+
+    memset( header, 0x00, sizeof(header));
+
+    if( pItem == NULL || pItem->isConstructed() == false )
+        return JSR_ERR;
+
+    if( pItem->indefinite_ == false )
+        return JSR_OK;
+
+    int nCount = pItem->rowCount();
+    BerItem *pChild = (BerItem *)pItem->child( nCount - 1 );
+    if( pChild == NULL ) return JSR_ERR2;
+
+    if( pChild->isEOC() == false ) return JSR_ERR3;
+
+    JS_BIN_copy( &binMod, &binBer_ );
+
+    /* To Remove 00 00 Item */
+    ret = JS_BIN_removeBin( &binMod, pChild->GetOffset(), 2 );
+    if( ret != 0 ) goto end;
+
+    nModSize = -2;
+
+    header[0] = pItem->header_[0];
+    binChange.pVal = header;
+
+    if( pItem->length_ <= 127 )
+    {
+        header_size = 2;
+        header[1] = pItem->length_;
+    }
+    else if( pItem->length_ <= 255 )
+    {
+        header_size = 3;
+        header[1] = 0x81;
+        header[2] = pItem->length_ & 0xFF;
+        nModSize += 1;
+    }
+    else if( pItem->length_ <= 65535 )
+    {
+        header_size = 4;
+        header[1] = 0x82;
+        header[2] = (pItem->length_ >> 8) & 0xFF;
+        header[3] = pItem->length_ & 0xFF;
+
+        nModSize += 2;
+    }
+    else if( pItem->length_ <= 1677215 )
+    {
+        header_size = 5;
+        header[1] = 0x83;
+        header[2] = (pItem->length_ >> 16) & 0xFF;
+        header[3] = (pItem->length_ >> 8) & 0xFF;
+        header[4] = pItem->length_ & 0xFF;
+
+        nModSize += 3;
+    }
+    else if( pItem->length_ <= 2147483647 )
+    {
+        header_size = 6;
+        header[1] = 0x84;
+        header[2] = (pItem->length_ >> 24) & 0xFF;
+        header[3] = (pItem->length_ >> 16) & 0xFF;
+        header[4] = (pItem->length_ >> 8) & 0xFF;
+        header[5] = pItem->length_ & 0xFF;
+
+        nModSize += 4;
+    }
+    else
+    {
+        ret = JSR_ERR4;
+        goto end;
+    }
+
+    binChange.pVal = header;
+    binChange.nLen = header_size;
+
+    ret = JS_BIN_changeBin( &binMod, pItem->GetOffset(), 2, &binChange );
+    if( ret != 0 ) goto end;
+
+    pParent = (BerItem *)pItem->parent();
+    if( pParent )
+    {
+        resizeHeadToTop( &binMod, pParent, nModSize );
+    }
+
+    pItem->indefinite_ = false;
+    pItem->header_size_ = header_size;
+    memcpy( pItem->header_, header, header_size );
+    pItem->removeRow( nCount - 1);
+
+    setBER( &binMod );
+    ret = JSR_OK;
+
+end :
+    JS_BIN_reset( &binMod );
+    return ret;
+}
+
 void BerModel::setCurrentItem( const BerItem *pItem )
 {
     if( pItem == NULL ) return;
@@ -951,6 +1062,33 @@ void BerModel::EditValue()
     editValueDlg.setHeadLabel( tr("Edit BER") );
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();
+}
+
+void BerModel::ChangeDefinite()
+{
+    int ret = 0;
+
+    BerItem* item = tree_view_->currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), tree_view_ );
+        return;
+    }
+
+    if( item->isConstructed() == false || item->indefinite_ == false ) return;
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to change to definte length?" ), tree_view_, false );
+    if( bVal == false ) return;
+
+    ret = changeDefinteItem( item );
+    if( ret == JSR_OK )
+    {
+        setCurrentItem( item );
+        berApplet->messageBox( tr("Changed to a definite length."), tree_view_ );
+    }
+    else
+    {
+        berApplet->warningBox( tr("Failed to change the definite length: %1").arg( JERR(ret)), tree_view_ );
+    }
 }
 
 void BerModel::InsertBER()
