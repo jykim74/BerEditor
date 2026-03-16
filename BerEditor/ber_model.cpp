@@ -545,6 +545,7 @@ int BerModel::changeDefinteItem( BerItem *pItem )
 
     BYTE    header[16];
     int     header_size = 0;
+    int     length = 0;
 
     int     nModSize = 0;
     BerItem *pParent = NULL;
@@ -573,46 +574,47 @@ int BerModel::changeDefinteItem( BerItem *pItem )
 
     header[0] = pItem->header_[0];
     binChange.pVal = header;
+    length = pItem->length_ - 2;
 
-    if( pItem->length_ <= 127 )
+    if( length <= 127 )
     {
         header_size = 2;
-        header[1] = pItem->length_;
+        header[1] = length;
     }
-    else if( pItem->length_ <= 255 )
+    else if( length <= 255 )
     {
         header_size = 3;
         header[1] = 0x81;
-        header[2] = pItem->length_ & 0xFF;
+        header[2] = length & 0xFF;
         nModSize += 1;
     }
-    else if( pItem->length_ <= 65535 )
+    else if( length <= 65535 )
     {
         header_size = 4;
         header[1] = 0x82;
-        header[2] = (pItem->length_ >> 8) & 0xFF;
-        header[3] = pItem->length_ & 0xFF;
+        header[2] = (length >> 8) & 0xFF;
+        header[3] = length & 0xFF;
 
         nModSize += 2;
     }
-    else if( pItem->length_ <= 1677215 )
+    else if( length <= 1677215 )
     {
         header_size = 5;
         header[1] = 0x83;
-        header[2] = (pItem->length_ >> 16) & 0xFF;
-        header[3] = (pItem->length_ >> 8) & 0xFF;
-        header[4] = pItem->length_ & 0xFF;
+        header[2] = (length >> 16) & 0xFF;
+        header[3] = (length >> 8) & 0xFF;
+        header[4] = length & 0xFF;
 
         nModSize += 3;
     }
-    else if( pItem->length_ <= 2147483647 )
+    else if( length <= 2147483647 )
     {
         header_size = 6;
         header[1] = 0x84;
-        header[2] = (pItem->length_ >> 24) & 0xFF;
-        header[3] = (pItem->length_ >> 16) & 0xFF;
-        header[4] = (pItem->length_ >> 8) & 0xFF;
-        header[5] = pItem->length_ & 0xFF;
+        header[2] = (length >> 24) & 0xFF;
+        header[3] = (length >> 16) & 0xFF;
+        header[4] = (length >> 8) & 0xFF;
+        header[5] = length & 0xFF;
 
         nModSize += 4;
     }
@@ -636,6 +638,7 @@ int BerModel::changeDefinteItem( BerItem *pItem )
 
     pItem->indefinite_ = false;
     pItem->header_size_ = header_size;
+    pItem->length_ = length;
     memcpy( pItem->header_, header, header_size );
     pItem->removeRow( nCount - 1);
 
@@ -1082,7 +1085,11 @@ void BerModel::ChangeDefinite()
     ret = changeDefinteItem( item );
     if( ret == JSR_OK )
     {
-        setCurrentItem( item );
+        int nOffset = item->GetOffset();
+        berApplet->mainWindow()->reloadData();
+        const BerItem *findItem = findItemByOffset( nullptr, nOffset );
+        if( findItem ) setCurrentItem( findItem );
+
         berApplet->messageBox( tr("Changed to a definite length."), tree_view_ );
     }
     else
