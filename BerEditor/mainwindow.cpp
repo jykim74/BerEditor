@@ -2797,6 +2797,7 @@ void MainWindow::dropEvent(QDropEvent *event)
         file_path_ = fileName;
 
         setTitle( fileName );
+        berApplet->setBERPath( fileName );
         return;
     }
 }
