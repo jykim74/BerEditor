@@ -37,6 +37,10 @@ public:
 
     void selectValue( TTLVTreeItem *pItem, const BIN *pValue, bool bPart = false );
 
+    const QStringList getPosition( TTLVTreeItem *pItem );
+    int getPosition( TTLVTreeItem *pItem, QString& strPostion  );
+    TTLVTreeItem* findItemByPostion( const QStringList listPos );
+
 public slots:
     void CopyAsHex();
     void CopyAsBase64();

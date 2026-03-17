@@ -136,6 +136,7 @@ void EditTTLVDlg::clickModify()
     int     ret = 0;
 
     BIN     binValue = {0,0};
+    QStringList listPos;
 
     TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvModel()->currentItem();
     if( pItem == NULL )
@@ -156,14 +157,14 @@ void EditTTLVDlg::clickModify()
         return;
     }
 
+    listPos = pModel->getPosition( pItem );
     ret = pModel->modifyItem( pItem, &binValue );
     JS_BIN_reset( &binValue );
 
     if( ret == JSR_OK )
     {
-        int nOffset = pItem->offset_;
         berApplet->mainWindow()->reloadTTLV();
-        const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
+        const TTLVTreeItem *findItem = pModel->findItemByPostion( listPos );
         if( findItem ) pModel->setCurrentItem( findItem );
 
         QDialog::accept();
@@ -208,9 +209,9 @@ void EditTTLVDlg::clickAdd()
 
     if( pAddItem )
     {
-        int nOffset = pAddItem->offset_;
+        QStringList listPos = pModel->getPosition( (TTLVTreeItem *)pAddItem );
         berApplet->mainWindow()->reloadTTLV();
-        const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
+        const TTLVTreeItem *findItem = pModel->findItemByPostion( listPos );
         if( findItem ) pModel->setCurrentItem( findItem );
 
         QDialog::accept();

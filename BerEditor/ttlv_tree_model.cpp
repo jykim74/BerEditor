@@ -608,6 +608,82 @@ void TTLVTreeModel::selectValue( TTLVTreeItem *pItem, const BIN *pValue, bool bP
     }
 }
 
+const QStringList TTLVTreeModel::getPosition( TTLVTreeItem *pItem )
+{
+    QStringList listPos;
+
+    const TTLVTreeItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (TTLVTreeItem *)pCurrent->parent();
+    }
+
+    return listPos;
+}
+
+int TTLVTreeModel::getPosition( TTLVTreeItem *pItem, QString& strPostion )
+{
+    QStringList listPos;
+
+    const TTLVTreeItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (TTLVTreeItem *)pCurrent->parent();
+    }
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        if( i == 0 )
+            strPostion += QString( "%1" ).arg( listPos.at(i) );
+        else
+            strPostion += QString( "-%1" ).arg( listPos.at(i) );
+    }
+
+    return listPos.size();
+}
+
+TTLVTreeItem* TTLVTreeModel::findItemByPostion( const QStringList listPos )
+{
+    TTLVTreeItem* item = nullptr;
+    QModelIndex ri = index(0,0);
+    TTLVTreeItem* root = (TTLVTreeItem *)itemFromIndex( ri );
+
+    if( root == nullptr ) return nullptr;
+
+    if( listPos.at(0) != "0" )
+        return nullptr;
+
+    item = root;
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        QString strPos = listPos.at(i);
+
+        if( item->row() != strPos.toInt() )
+            return nullptr;
+
+        if( i < ( listPos.size() - 1 ) )
+        {
+            QString strNext = listPos.at( i + 1 );
+            if( item->hasChildren() == false )
+                return nullptr;
+
+            item = (TTLVTreeItem *)item->child( strNext.toInt(), 0 );
+            if( item == nullptr ) return nullptr;
+        }
+    }
+
+    return item;
+}
+
 void TTLVTreeModel::CopyAsHex()
 {
     char *pHex = NULL;
@@ -697,9 +773,9 @@ void TTLVTreeModel::insertNode()
 
         if( pAddItem )
         {
-            int nOffset = pAddItem->offset_;
+            QStringList listPos = getPosition( (TTLVTreeItem *)pAddItem );
             berApplet->mainWindow()->reloadTTLV();
-            const TTLVTreeItem *findItem = findItemByOffset( nullptr, nOffset );
+            const TTLVTreeItem *findItem = findItemByPostion( listPos );
             if( findItem ) setCurrentItem( findItem );
         }
         else
@@ -753,10 +829,10 @@ void TTLVTreeModel::deleteNode()
     ret = removeItem( pItem );
     if( ret == JSR_OK )
     {
-        int nOffset = pParent->offset_;
+        QStringList listPos = getPosition( (TTLVTreeItem *)pParent );
         berApplet->mainWindow()->reloadTTLV();
 
-        const TTLVTreeItem *findItem = findItemByOffset( nullptr, nOffset );
+        const TTLVTreeItem *findItem = findItemByPostion( listPos );
         if( findItem ) setCurrentItem( findItem );
     }
     else

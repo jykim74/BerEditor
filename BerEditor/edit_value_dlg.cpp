@@ -234,6 +234,7 @@ void EditValueDlg::runChange()
     BIN binNewVal = {0,0};
     QString strValue = mValueText->toPlainText();
     BerModel *ber_model = (BerModel *)ber_item_->model();
+    QStringList listPos;
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to modify it?" ), this, false );
     if( bVal == false ) return;
@@ -260,14 +261,14 @@ void EditValueDlg::runChange()
         }
     }
 
+    listPos = ber_model->getPosition( ber_item_ );
+
     ret = ber_model->modifyItem( ber_item_, &binNewVal );
 
     if( ret == JSR_OK )
     {
-        int nOffset = ber_item_->GetOffset();
-
         berApplet->mainWindow()->reloadData();
-        const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
+        const BerItem *findItem = ber_model->findItemByPostion( listPos );
         if( findItem ) ber_model->setCurrentItem( findItem );
     }
     else
@@ -344,10 +345,10 @@ void EditValueDlg::runAdd()
     child = ber_model->addItem( parentItem, bFirst, &binData );
     if( child )
     {
-        int nOffset = child->offset_;
+        QStringList listPos = ber_model->getPosition( (BerItem *)child );
         berApplet->mainWindow()->reloadData();
 
-        const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
+        const BerItem *findItem = ber_model->findItemByPostion( listPos );
         if( findItem ) ber_model->setCurrentItem( findItem );
     }
     else

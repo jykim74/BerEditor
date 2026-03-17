@@ -960,6 +960,83 @@ void BerModel::selectValue( BerItem *pItem, const BIN *pValue, bool bPart )
     }
 }
 
+const QStringList BerModel::getPosition( BerItem *pItem )
+{
+    QStringList listPos;
+
+    const BerItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (BerItem *)pCurrent->parent();
+    }
+
+    return listPos;
+}
+
+int BerModel::getPosition( BerItem *pItem, QString& strPostion )
+{
+    QStringList listPos;
+
+    const BerItem *pCurrent = nullptr;
+    pCurrent = pItem;
+
+    while( pCurrent )
+    {
+        listPos.insert(0, QString("%1").arg( pCurrent->row() ) );
+
+        pCurrent = (BerItem *)pCurrent->parent();
+    }
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        if( i == 0 )
+            strPostion += QString( "%1" ).arg( listPos.at(i) );
+        else
+            strPostion += QString( "-%1" ).arg( listPos.at(i) );
+    }
+
+    return listPos.size();
+}
+
+BerItem* BerModel::findItemByPostion( const QStringList listPos )
+{
+    BerItem* item = nullptr;
+    QModelIndex ri = index(0,0);
+    BerItem* root = (BerItem *)itemFromIndex( ri );
+
+    if( root == nullptr ) return nullptr;
+
+    if( listPos.at(0) != "0" )
+        return nullptr;
+
+    item = root;
+
+    for( int i = 0; i < listPos.size(); i++ )
+    {
+        QString strPos = listPos.at(i);
+
+        if( item->row() != strPos.toInt() )
+            return nullptr;
+
+        if( i < ( listPos.size() - 1 ) )
+        {
+            QString strNext = listPos.at( i + 1 );
+            if( item->hasChildren() == false )
+                return nullptr;
+
+            item = (BerItem *)item->child( strNext.toInt(), 0 );
+            if( item == nullptr ) return nullptr;
+        }
+    }
+
+    return item;
+}
+
+
 void BerModel::CopyAsHex()
 {
     char *pHex = NULL;
@@ -1070,6 +1147,7 @@ void BerModel::EditValue()
 void BerModel::ChangeDefinite()
 {
     int ret = 0;
+    QStringList listPos;
 
     BerItem* item = tree_view_->currentItem();
     if( item == NULL )
@@ -1082,12 +1160,14 @@ void BerModel::ChangeDefinite()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to change to definte length?" ), tree_view_, false );
     if( bVal == false ) return;
 
+    listPos = getPosition( item );
+
     ret = changeDefinteItem( item );
     if( ret == JSR_OK )
     {
-        int nOffset = item->GetOffset();
         berApplet->mainWindow()->reloadData();
-        const BerItem *findItem = findItemByOffset( nullptr, nOffset );
+        const BerItem *findItem = findItemByPostion( listPos );
+
         if( findItem ) setCurrentItem( findItem );
 
         berApplet->messageBox( tr("Changed to a definite length."), tree_view_ );
@@ -1124,10 +1204,9 @@ void BerModel::InsertBER()
         const BerItem* newItem = addItem( item, bFirst, &binData );
         if( newItem )
         {
-            int nOffset = newItem->offset_;
-
+            QStringList listPos = getPosition( (BerItem *)newItem );
             berApplet->mainWindow()->reloadData();
-            const BerItem *findItem = findItemByOffset( nullptr, nOffset );
+            const BerItem *findItem = findItemByPostion( listPos );
             if( findItem ) setCurrentItem( findItem );
         }
         else
@@ -1260,9 +1339,11 @@ void BerModel::DeleteBER()
         {
             int nOffset = parent->GetOffset();
 
+            QStringList listPos;
             berApplet->mainWindow()->reloadData();
 
-            const BerItem *findItem = findItemByOffset( nullptr, nOffset );
+            listPos = getPosition( parent );
+            const BerItem *findItem = findItemByPostion( listPos );
             if( findItem ) setCurrentItem( findItem );
         }
     }

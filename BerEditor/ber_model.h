@@ -42,6 +42,10 @@ public:
 
     void selectValue( BerItem *pItem, const BIN *pValue, bool bPart = false );
 
+    const QStringList getPosition( BerItem *pItem );
+    int getPosition( BerItem *pItem, QString& strPostion  );
+    BerItem* findItemByPostion( const QStringList listPos );
+
 public slots:
     void CopyAsHex();
     void CopyAsBase64();
