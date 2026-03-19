@@ -263,7 +263,7 @@ void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
                 if( ret == 0 )
                     berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
                 else
-                    berApplet->warnLog( tr( "failed to save private key and certificate" ), this );
+                    berApplet->warnLog( tr( "failed to save the private key and certificate" ), this );
             }
         }
 

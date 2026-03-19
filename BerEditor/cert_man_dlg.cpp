@@ -470,7 +470,7 @@ const QString CertManDlg::getModeName( int nMode )
 void CertManDlg::initUI()
 {
     mTLCheckKeyPairBtn->setToolTip( tr( "Check if the private key and public key in the certificate match" ) );
-    mTLEncryptPFXBtn->setToolTip( tr( "Create a PFX of a private key and certificate" ));
+    mTLEncryptPFXBtn->setToolTip( tr( "Create a PFX of the private key and certificate" ));
     mTLDecryptPFXBtn->setToolTip( tr( "Extract private key and certificate files from PFX file" ));
     mTLViewPubKeyBtn->setToolTip( tr( "View certificate public key" ));
     mTLSavePFXBtn->setToolTip( tr( "Store PFX certificate and private key in End Entity list" ) );
@@ -1943,7 +1943,7 @@ void CertManDlg::clickImport()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to write private key and certificate: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to write the private key and certificate: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -3652,7 +3652,7 @@ void CertManDlg::clickTLSavePFX()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to write private and certificate: %1" ).arg( JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to write the private and certificate: %1" ).arg( JERR(ret)), this );
     }
 
 end :

@@ -289,9 +289,8 @@
         <translation>개인키와 인증서를 저장하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1572"/>
         <source>failed to save private key and certificate</source>
-        <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
+        <translation type="vanished">개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
         <source>Click on the directory</source>
@@ -539,6 +538,11 @@
         <location filename="../acme_client_dlg.cpp" line="1535"/>
         <source>ACME message sent</source>
         <translation>ACME 메세지 보냈습니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1572"/>
+        <source>failed to save the private key and certificate</source>
+        <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1586"/>
@@ -2872,8 +2876,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키와 인증서를 저장하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../cmp_client_dlg.cpp" line="266"/>
         <source>failed to save private key and certificate</source>
+        <translation type="vanished">개인키와 인증서 저장에 실패 하였습니다</translation>
+    </message>
+    <message>
+        <location filename="../cmp_client_dlg.cpp" line="266"/>
+        <source>failed to save the private key and certificate</source>
         <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
@@ -5694,9 +5702,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1946"/>
         <source>failed to write private key and certificate: %1</source>
-        <translation>개인키와 인증서 쓰기 실패: %1</translation>
+        <translation type="vanished">개인키와 인증서 쓰기 실패: %1</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="1989"/>
@@ -5759,9 +5766,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키 암호를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="3655"/>
         <source>failed to write private and certificate: %1</source>
-        <translation>개인키와 인증서 쓰기 실패: %1</translation>
+        <translation type="vanished">개인키와 인증서 쓰기 실패: %1</translation>
     </message>
     <message>
         <source>fail to read encrypted private key: %1</source>
@@ -5920,9 +5926,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키와 인증서에 있는 공개키가 맞는지 체크</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="473"/>
         <source>Create a PFX of a private key and certificate</source>
-        <translation>개인키와 인증서에 대한 PFX 생성</translation>
+        <translation type="vanished">개인키와 인증서에 대한 PFX 생성</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="474"/>
@@ -6040,6 +6045,16 @@ mailto : jykim74@gmail.com</translation>
         <translation>암호화된 개인키 읽기 실패: %1</translation>
     </message>
     <message>
+        <location filename="../cert_man_dlg.cpp" line="473"/>
+        <source>Create a PFX of the private key and certificate</source>
+        <translation>개인키와 인증서에 대한 PFX 생성</translation>
+    </message>
+    <message>
+        <location filename="../cert_man_dlg.cpp" line="1946"/>
+        <source>failed to write the private key and certificate: %1</source>
+        <translation>개인키와 인증서 쓰기 실패: %1</translation>
+    </message>
+    <message>
         <location filename="../cert_man_dlg.cpp" line="3324"/>
         <location filename="../cert_man_dlg.cpp" line="3447"/>
         <source>failed to read private key: %1</source>
@@ -6080,6 +6095,11 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_man_dlg.cpp" line="3626"/>
         <source>failed to read PFX: %1</source>
         <translation>PFX 읽기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../cert_man_dlg.cpp" line="3655"/>
+        <source>failed to write the private and certificate: %1</source>
+        <translation>개인키와 인증서 쓰기 실패: %1</translation>
     </message>
     <message>
         <source>fail to write private and certificate: %1</source>
@@ -19301,6 +19321,11 @@ Only RSA is supported.</source>
         <translation type="vanished">개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
+        <location filename="../scep_client_dlg.cpp" line="310"/>
+        <source>failed to save the private key and certificate</source>
+        <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
+    </message>
+    <message>
         <location filename="../scep_client_dlg.cpp" line="360"/>
         <location filename="../scep_client_dlg.cpp" line="480"/>
         <location filename="../scep_client_dlg.cpp" line="684"/>
@@ -19437,9 +19462,8 @@ Only RSA is supported.</source>
         <translation>개인키와 인증서를 저장하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../scep_client_dlg.cpp" line="310"/>
         <source>failed to save private key and certificate</source>
-        <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
+        <translation type="vanished">개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
         <location filename="../scep_client_dlg.cpp" line="558"/>
