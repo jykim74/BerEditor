@@ -99,7 +99,7 @@ void EncDecThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            fprintf( stderr, "fail to read file: %d\n", nRead );
+            fprintf( stderr, "failed to read file: %d\n", nRead );
             goto end;
         }
 
@@ -142,7 +142,7 @@ void EncDecThread::run()
             ret = JS_BIN_fileAppend( &binDst, dst_file_.toLocal8Bit().toStdString().c_str() );
             if( ret != binDst.nLen )
             {
-                fprintf( stderr, "fail to append file: %d\n", ret );
+                fprintf( stderr, "failed to append file: %d\n", ret );
                 goto end;
             }
 

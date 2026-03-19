@@ -593,7 +593,7 @@ void KeyPairManDlg::clickLGenKeyPair()
 
             if( dir.exists( QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName ) ))
             {
-                berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+                berApplet->warningBox( tr( "The folder(%1) already exists" ).arg( strName ), this );
                 return;
             }
         }
@@ -665,7 +665,7 @@ void KeyPairManDlg::clickLDelete()
 
     if( dir.rmdir( strPath ) == false )
     {
-        berApplet->warningBox( tr( "fail to delete[%1:%2]" ).arg( bPub ).arg( bPri ), this );
+        berApplet->warningBox( tr( "failed to delete[%1:%2]" ).arg( bPub ).arg( bPri ), this );
         return;
     }
 
@@ -706,7 +706,7 @@ void KeyPairManDlg::clickLRename()
 
     if( dir.rename( strPath, strNewPath ) == false )
     {
-        berApplet->warningBox( tr( "fail to rename" ), this );
+        berApplet->warningBox( tr( "failed to rename" ), this );
         return;
     }
 
@@ -1048,7 +1048,7 @@ void KeyPairManDlg::clickSaveToList()
         QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
         if( dir.exists( fullPath ) )
         {
-            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            berApplet->warningBox( tr( "The folder(%1) already exists" ).arg( strName ), this );
             goto end;
         }
         else
@@ -1062,7 +1062,7 @@ void KeyPairManDlg::clickSaveToList()
         ret = writePriKeyPEM( &binPri, strPriSavePath );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write private key"), this );
+            berApplet->warningBox( tr( "failed to write private key"), this );
             dir.rmdir( fullPath );
             goto end;
         }
@@ -1070,7 +1070,7 @@ void KeyPairManDlg::clickSaveToList()
         ret = writePubKeyPEM( &binPub, strPubSavePath );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write public key"), this );
+            berApplet->warningBox( tr( "failed to write public key"), this );
             dir.rmdir( fullPath );
             goto end;
         }
@@ -1111,7 +1111,7 @@ void KeyPairManDlg::clickMakeCSR()
         ret = Save( now_t, TypeCSR, strCSRHex );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
+            berApplet->warningBox( tr( "failed to write: %1" ).arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -1206,21 +1206,21 @@ void KeyPairManDlg::clickEncrypt()
     ret = JS_PKI_encryptPrivateKey( nPBE, strPasswd.toStdString().c_str(), &binData, &binInfo, &binEnc );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg(JERR(ret)), this);
+        berApplet->warnLog( tr( "failed to encrypt private key: %1").arg(JERR(ret)), this);
         goto end;
     }
 
     ret = Save( now_t, TypePriInfo, &binInfo );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
     ret = Save( now_t, TypeEncPri, &binEnc );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
@@ -1292,14 +1292,14 @@ void KeyPairManDlg::clickDecrypt()
     ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg(JERR(ret)), this);
+        berApplet->warnLog( tr( "failed to decrypt private key: %1").arg(JERR(ret)), this);
         goto end;
     }
 
     ret = Save( now_t, TypePriKey, &binDec );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
@@ -1638,7 +1638,7 @@ void KeyPairManDlg::clickImport()
             ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binP8, NULL, &binPri );
             if( ret != 0 )
             {
-                berApplet->warningBox( tr( "fail to decrypt private key: %1" ).arg(JERR(ret)), this );
+                berApplet->warningBox( tr( "failed to decrypt private key: %1" ).arg(JERR(ret)), this );
                 goto end;
             }
         }
@@ -1655,7 +1655,7 @@ void KeyPairManDlg::clickImport()
         ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt PFX: %1" ).arg(JERR(ret)), this );
+            berApplet->warningBox( tr( "failed to decrypt PFX: %1" ).arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -1680,7 +1680,7 @@ void KeyPairManDlg::clickImport()
         QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
         if( dir.exists( fullPath ) )
         {
-            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            berApplet->warningBox( tr( "The folder(%1) already exists" ).arg( strName ), this );
             goto end;
         }
         else

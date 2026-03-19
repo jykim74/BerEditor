@@ -446,7 +446,7 @@ void MakeCSRDlg::clickOK()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make CSR: %1").arg( JERR(ret) ), this);
+        berApplet->warnLog( tr( "failed to make CSR: %1").arg( JERR(ret) ), this);
         return QDialog::reject();
     }
 }

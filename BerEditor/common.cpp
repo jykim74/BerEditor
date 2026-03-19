@@ -1559,21 +1559,21 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, NULL, "SHA256", NULL, NULL, &binReq );
     if( ret != 0 )
     {
-        fprintf( stderr, "fail to encode OCSP request: %d\n", ret );
+        fprintf( stderr, "failed to encode OCSP request: %d\n", ret );
         goto end;
     }
 
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
-        fprintf( stderr, "fail to request : %d\n", ret );
+        fprintf( stderr, "failed to request : %d\n", ret );
         goto end;
     }
 
     ret = JS_OCSP_decodeResponse( &binRsp, NULL, &sIDInfo, pStatusInfo );
     if( ret != 0 )
     {
-        fprintf( stderr, "fail to decode respose:%d\n", ret);
+        fprintf( stderr, "failed to decode respose:%d\n", ret);
         goto end;
     }
 

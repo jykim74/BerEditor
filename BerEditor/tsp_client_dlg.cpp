@@ -484,7 +484,7 @@ void TSPClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to TSP server: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to send a request to TSP server: %1").arg(JERR(ret)), this );
         goto end;
     }
 

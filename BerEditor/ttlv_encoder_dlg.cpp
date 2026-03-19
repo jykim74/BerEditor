@@ -631,7 +631,7 @@ int TTLVEncoderDlg::runGet()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -685,7 +685,7 @@ int TTLVEncoderDlg::runActivate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -746,7 +746,7 @@ int TTLVEncoderDlg::runCreate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -800,7 +800,7 @@ int TTLVEncoderDlg::runDestroy()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -901,7 +901,7 @@ int TTLVEncoderDlg::runEncrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1000,7 +1000,7 @@ int TTLVEncoderDlg::runDecrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1084,7 +1084,7 @@ int TTLVEncoderDlg::runSign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1184,7 +1184,7 @@ int TTLVEncoderDlg::runVerify()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1310,7 +1310,7 @@ int TTLVEncoderDlg::runRegister()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1385,7 +1385,7 @@ int TTLVEncoderDlg::runCreateKeyPair()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1440,7 +1440,7 @@ int TTLVEncoderDlg::runGetAttributeList()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1511,7 +1511,7 @@ int TTLVEncoderDlg::runAddAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1566,7 +1566,7 @@ int TTLVEncoderDlg::runGetAttributes()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1636,7 +1636,7 @@ int TTLVEncoderDlg::runModifyAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1698,7 +1698,7 @@ int TTLVEncoderDlg::runDeleteAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1760,7 +1760,7 @@ int TTLVEncoderDlg::runLocate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1814,7 +1814,7 @@ int TTLVEncoderDlg::runRNGRetrieve()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1872,7 +1872,7 @@ int TTLVEncoderDlg::runRNGSeed()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :
@@ -1933,7 +1933,7 @@ int TTLVEncoderDlg::runHash()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to encode TTLV: %1").arg( ret ), this );
     }
 
 end :

@@ -314,7 +314,7 @@ void TTLVClientDlg::clickSend()
     nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
     {
-        berApplet->warningBox( tr( "fail to connect TTLV: %1").arg(ret), this );
+        berApplet->warningBox( tr( "failed to connect TTLV: %1").arg(ret), this );
         goto end;
     }
 
@@ -388,14 +388,14 @@ void TTLVClientDlg::clickSend()
         ret = JS_KMS_sendSSL( pSSL, &binTTLV );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to send TTLV: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to send TTLV: %1").arg( ret ), this );
             goto end;
         }
 
         ret = JS_KMS_receiveSSL( pSSL, &binResponse );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to recv TTLV: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to recv TTLV: %1").arg( ret ), this );
             goto end;
         }
     }
@@ -404,14 +404,14 @@ void TTLVClientDlg::clickSend()
         ret = JS_KMS_send( nSockFd, &binTTLV );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to send TTLV: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to send TTLV: %1").arg( ret ), this );
             goto end;
         }
 
         ret = JS_KMS_receive( nSockFd, &binResponse );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to recv TTLV: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to recv TTLV: %1").arg( ret ), this );
             goto end;
         }
     }

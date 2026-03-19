@@ -68,7 +68,7 @@ void SignVerifyThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            fprintf( stderr, "fail to read file: %d\n", nRead );
+            fprintf( stderr, "failed to read file: %d\n", nRead );
             goto end;
         }
 

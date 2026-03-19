@@ -530,7 +530,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
     {
-        berApplet->elog( QString("fail to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
+        berApplet->elog( QString("failed to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
         ret = ret = JSR_SERVER_CONNECT_FAIL;
         goto end;
     }
@@ -926,7 +926,7 @@ void SSLCheckDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int 
             ret = CertInfoDlg::getCA( strExtAIA, &binRoot );
             if( ret != 0 )
             {
-                berApplet->warnLog( tr( "fail to get RootCA : %1").arg( ret ), this );
+                berApplet->warnLog( tr( "failed to get RootCA : %1").arg( ret ), this );
                 goto end;
             }
 
@@ -968,7 +968,7 @@ void SSLCheckDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int 
     strSaveName = QString( "%1/%2" ).arg( strTrustPath ).arg( strFileName );
     if( QFileInfo::exists( strFileName ) == true )
     {
-        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strSaveName ), this );
+        berApplet->warningBox( tr( "The file(%1) already exists").arg( strSaveName ), this );
         goto end;
     }
 
@@ -1275,7 +1275,7 @@ void SSLCheckDlg::saveTrustedCA()
     {
         if( dir.mkdir( strTrustedCAPath ) == false )
         {
-            berApplet->warningBox( tr( "fail to mkdir:%1").arg( strTrustedCAPath), this);
+            berApplet->warningBox( tr( "failed to mkdir:%1").arg( strTrustedCAPath), this);
             return;
         }
     }
@@ -1286,7 +1286,7 @@ void SSLCheckDlg::saveTrustedCA()
 
     if( QFileInfo::exists( strFileName ) == true )
     {
-        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strFileName ), this );
+        berApplet->warningBox( tr( "The file(%1) already exists").arg( strFileName ), this );
         goto end;
     }
 

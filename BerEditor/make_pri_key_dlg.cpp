@@ -1100,7 +1100,7 @@ void MakePriKeyDlg::clickSaveToKeyPairMan()
         QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
         if( dir.exists( fullPath ) )
         {
-            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            berApplet->warningBox( tr( "The folder(%1) already exists" ).arg( strName ), this );
             goto end;
         }
         else
@@ -1114,7 +1114,7 @@ void MakePriKeyDlg::clickSaveToKeyPairMan()
         ret = writePriKeyPEM( &binPri, strPriSavePath );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write private key"), this );
+            berApplet->warningBox( tr( "failed to write private key"), this );
             dir.rmdir( fullPath );
             goto end;
         }
@@ -1122,7 +1122,7 @@ void MakePriKeyDlg::clickSaveToKeyPairMan()
         ret = writePubKeyPEM( &binPub, strPubSavePath );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write public key"), this );
+            berApplet->warningBox( tr( "failed to write public key"), this );
             dir.rmdir( fullPath );
             goto end;
         }

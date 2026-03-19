@@ -404,7 +404,7 @@ void BERCheckDlg::clickView()
             ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binSrc, NULL, &binPri );
             if( ret != 0 )
             {
-                berApplet->warningBox( tr( "fail to decrypt private key: %1").arg(ret), this);
+                berApplet->warningBox( tr( "failed to decrypt private key: %1").arg(ret), this);
                 goto end;
             }
 

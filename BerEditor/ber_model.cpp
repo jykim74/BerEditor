@@ -1287,7 +1287,7 @@ void BerModel::ViewBER()
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binNode, NULL, &binPri );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key: %1").arg(ret), tree_view_);
+            berApplet->warningBox( tr( "failed to decrypt private key: %1").arg(ret), tree_view_);
             goto end;
         }
 

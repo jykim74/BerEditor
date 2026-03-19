@@ -500,7 +500,7 @@ void OCSPClientDlg::typeCACert()
     ret = getDataFromURI( strFile, &binData );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA"), this );
+        berApplet->warningBox( tr( "failed to get CA"), this );
         goto end;
     }
 
@@ -632,7 +632,7 @@ void OCSPClientDlg::viewCACert()
     ret = getDataFromURI( strFile, &binData );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA"), this );
+        berApplet->warningBox( tr( "failed to get CA"), this );
         goto end;
     }
 
@@ -737,7 +737,7 @@ void OCSPClientDlg::decodeCACert()
     ret = getDataFromURI( strFile, &binData );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA"), this );
+        berApplet->warningBox( tr( "failed to get CA"), this );
         goto end;
     }
 
@@ -988,7 +988,7 @@ void OCSPClientDlg::clickEncode()
     ret = getDataFromURI( strCAPath, &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA: %1").arg(ret), this );
+        berApplet->warningBox( tr( "failed to get CA: %1").arg(ret), this );
         goto end;
     }
 
@@ -1025,7 +1025,7 @@ void OCSPClientDlg::clickEncode()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to encode request: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to encode request: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -1068,7 +1068,7 @@ void OCSPClientDlg::clickSend()
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
-        fprintf( stderr, "fail to request : %d\n", ret );
+        fprintf( stderr, "failed to request : %d\n", ret );
         goto end;
     }
 
@@ -1080,7 +1080,7 @@ void OCSPClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to OCSP server: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to send a request to OCSP server: %1").arg(JERR(ret)), this );
         goto end;
     }
 

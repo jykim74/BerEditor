@@ -483,7 +483,7 @@ void GenHashDlg::clickDigestSrcFile()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            berApplet->warnLog( tr( "failed to read file: %1").arg( nRead ), this );
             goto end;
         }
 

@@ -46,7 +46,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
     ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, &sIDInfo, &sStatusInfo );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to decode OCSP response: %1").arg(ret));
+        berApplet->elog( QString( "failed to decode OCSP response: %1").arg(ret));
         goto end;
     }
 

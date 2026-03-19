@@ -155,7 +155,7 @@ void GenOTPDlg::clickGenOTP()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to generate OTP: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to generate OTP: %1").arg(JERR(ret)), this );
     }
 end :
     JS_BIN_reset(&binKey);

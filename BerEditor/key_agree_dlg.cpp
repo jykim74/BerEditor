@@ -202,7 +202,7 @@ void KeyAgreeDlg::calcualteA()
         }
         else
         {
-            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "failed to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binP );
@@ -249,7 +249,7 @@ void KeyAgreeDlg::calcualteA()
         }
         else
         {
-            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "failed to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binX );
@@ -333,7 +333,7 @@ void KeyAgreeDlg::calcualteB()
         }
         else
         {
-            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "failed to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binP );
@@ -380,7 +380,7 @@ void KeyAgreeDlg::calcualteB()
         }
         else
         {
-            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "failed to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binX );
@@ -563,7 +563,7 @@ void KeyAgreeDlg::exportDHParam()
     ret = JS_PKI_encodeDHParam( &binP, &binG, NULL, &binParam );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to encode DH param: %1").arg( ret ));
+        berApplet->elog( QString( "failed to encode DH param: %1").arg( ret ));
         goto end;
     }
 
@@ -591,14 +591,14 @@ void KeyAgreeDlg::importDHParam()
     ret = JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binParam );
     if( ret <= 0 )
     {
-        berApplet->elog( QString( "fail to read parameters: %1" ).arg( ret ));
+        berApplet->elog( QString( "failed to read parameters: %1" ).arg( ret ));
         goto end;
     }
 
     ret = JS_PKI_decodeDHParam( &binParam, &binP, &binG, NULL );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to decode DH parameters: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to decode DH parameters: %1").arg( ret ), this );
         goto end;
     }
 

@@ -468,7 +468,7 @@ void KeyManDlg::clickKD_DeriveKey()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make key: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to make key: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -928,7 +928,7 @@ void KeyManDlg::runKEMEncap()
     ret = JS_PKI_encapsulate( &binPub, &binWrappedKey, &binKey );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to encapsulate: %1" ).arg( JERR(ret) ), this );
+        berApplet->warningBox( tr( "failed to encapsulate: %1" ).arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -977,7 +977,7 @@ void KeyManDlg::runKEMDecap()
     ret = JS_PKI_decapsulate( &binPri, &binWrappedKey, &binDecKey );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to decapsulate: %1" ).arg( JERR(ret) ), this );
+        berApplet->warningBox( tr( "failed to decapsulate: %1" ).arg( JERR(ret) ), this );
         goto end;
     }
 

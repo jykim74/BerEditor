@@ -782,7 +782,7 @@ int ExportDlg::exportPFX()
     ret = JS_PKI_encodePFX( &binPFX, strPass.toStdString().c_str(), nPBE, &data_, &data2_ );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to encrypt PFX: %1").arg(ret), this);
+        berApplet->warningBox( tr( "failed to encrypt PFX: %1").arg(ret), this);
         goto end;
     }
 
@@ -824,7 +824,7 @@ int ExportDlg::exportP8Enc()
     ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), &data_, NULL, &binEncPri );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to encrypt private key: %1").arg(ret), this);
+        berApplet->warningBox( tr( "failed to encrypt private key: %1").arg(ret), this);
         goto end;
     }
 

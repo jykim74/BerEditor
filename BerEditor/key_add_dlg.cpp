@@ -57,7 +57,7 @@ int KeyAddDlg::readFile( const QString strName )
 
     if( keyFile.open( QIODevice::ReadOnly | QIODevice::Text ) == false )
     {
-        berApplet->elog( QString( "fail to read key: %1" ).arg( strFilePath ));
+        berApplet->elog( QString( "failed to read key: %1" ).arg( strFilePath ));
         return JSR_ERR;
     }
 

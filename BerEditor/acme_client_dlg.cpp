@@ -246,7 +246,7 @@ void ACMEClientDlg::clickKIDGetPubKey()
     ret = ACMEObject::getPubKey( objRsp["key"].toObject(), &binPub );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get public key from response: %1").arg(ret), this );
+        berApplet->warningBox( tr( "failed to get public key from response: %1").arg(ret), this );
         goto end;
     }
 
@@ -599,9 +599,9 @@ int ACMEClientDlg::clickParse()
     }
 
     if( ret == 0 )
-        berApplet->messageBox( tr( "Parsing is done" ), this );
+        berApplet->messageBox( tr( "Parsing completed" ), this );
     else
-        berApplet->warningBox( tr( "fail to parse : %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to parse : %1").arg( ret ), this );
 
     return ret;
 }
@@ -637,7 +637,7 @@ void ACMEClientDlg::clickAddDNS()
 
         if( strValue == strDNS )
         {
-            berApplet->warningBox( tr("%1 is already existed" ).arg( strDNS), this );
+            berApplet->warningBox( tr("%1 already exists" ).arg( strDNS), this );
             return;
         }
     }
@@ -812,7 +812,7 @@ void ACMEClientDlg::clickGetNonce()
 
     if( nStatus >= 300 )
     {
-        berApplet->warningBox( tr( "fail to get nonce: %1").arg( nStatus ), this );
+        berApplet->warningBox( tr( "failed to get nonce: %1").arg( nStatus ), this );
         return;
     }
 
@@ -858,7 +858,7 @@ void ACMEClientDlg::clickGetLocation()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
         goto end;
     }
 
@@ -894,7 +894,7 @@ void ACMEClientDlg::clickGetDirectory()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
         goto end;
     }
 
@@ -1485,7 +1485,7 @@ int ACMEClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
         goto end;
     }
 
@@ -1547,7 +1547,7 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
     int ret = 0;
 
     bool bVal = false;
-    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    bVal = berApplet->yesOrNoBox( tr( "Do you want to save the private key and certificate"), this, true );
     if( bVal == true )
     {
         int nKeyType = -1;
@@ -1569,7 +1569,7 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
                 if( ret == 0 )
                     berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
                 else
-                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
+                    berApplet->warnLog( tr( "failed to save private key and certificate" ), this );
             }
         }
 
@@ -1597,7 +1597,7 @@ void ACMEClientDlg::clickIssueCert()
 
     if( mEmailText->text().length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a email" ), this );
+        berApplet->warningBox( tr( "Enter an email" ), this );
         mEmailText->setFocus();
         return;
     }

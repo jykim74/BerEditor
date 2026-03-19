@@ -609,7 +609,7 @@ void EncDecDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            berApplet->warnLog( tr( "failed to read file: %1").arg( nRead ), this );
             goto end;
         }
 
@@ -662,7 +662,7 @@ void EncDecDlg::fileRun()
             ret = JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
             if( ret != binDst.nLen )
             {
-                berApplet->warnLog( tr( "fail to append file: %1" ).arg( ret ), this );
+                berApplet->warnLog( tr( "failed to append file: %1" ).arg( ret ), this );
                 goto end;
             }
 

@@ -681,7 +681,7 @@ void PKCS7Dlg::clickVerifyData()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to verify signedData: %1").arg( JERR(ret) ), this );
+        berApplet->warnLog( tr( "failed to verify signedData: %1").arg( JERR(ret) ), this );
     }
 
 end :
@@ -784,7 +784,7 @@ void PKCS7Dlg::clickDevelopedData()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to develop data: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to develop data: %1").arg(JERR(ret)), this );
     }
 
 end :

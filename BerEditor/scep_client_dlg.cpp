@@ -285,7 +285,7 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
     int ret = 0;
 
     bool bVal = false;
-    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    bVal = berApplet->yesOrNoBox( tr( "Do you want to save the private key and certificate"), this, true );
     if( bVal == true )
     {
         int nKeyType = -1;
@@ -307,7 +307,7 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
                 if( ret == 0 )
                     berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
                 else
-                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
+                    berApplet->warnLog( tr( "failed to save private key and certificate" ), this );
             }
         }
 
@@ -693,7 +693,7 @@ void SCEPClientDlg::clickMakeIssue()
     ret = getCA( &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        berApplet->warningBox( tr( "failed to get CA certificate" ), this );
         goto end;
     }
 
@@ -736,7 +736,7 @@ void SCEPClientDlg::clickMakeIssue()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
+        berApplet->warnLog( tr( "failed to make request: %1").arg(ret), this );
     }
 
     strLink = strURL;
@@ -856,7 +856,7 @@ void SCEPClientDlg::clickMakeUpdate()
     ret = getCA( &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        berApplet->warningBox( tr( "failed to get CA certificate" ), this );
         goto end;
     }
 
@@ -920,7 +920,7 @@ void SCEPClientDlg::clickMakeUpdate()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
+        berApplet->warnLog( tr( "failed to make request: %1").arg(ret), this );
     }
 
     strLink = strURL;
@@ -1035,7 +1035,7 @@ void SCEPClientDlg::clickMakeGetCRL()
     ret = getCA( &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        berApplet->warningBox( tr( "failed to get CA certificate" ), this );
         goto end;
     }
 
@@ -1094,7 +1094,7 @@ void SCEPClientDlg::clickMakeGetCRL()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make to get crl: %1").arg(ret), this );
+        berApplet->warnLog( tr( "failed to make to get crl: %1").arg(ret), this );
     }
 
     strLink = strURL;

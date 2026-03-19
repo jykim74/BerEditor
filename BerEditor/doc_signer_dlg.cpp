@@ -1384,7 +1384,7 @@ void DocSignerDlg::clickCMSMakeSign()
             ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1397,7 +1397,7 @@ void DocSignerDlg::clickCMSMakeSign()
 end:
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "fail to make singed data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to make singed data: %1").arg( JERR( ret ) ), this );
     }
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
@@ -1464,7 +1464,7 @@ void DocSignerDlg::clickCMSVerifySign()
             ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1478,7 +1478,7 @@ void DocSignerDlg::clickCMSVerifySign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to verify: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1528,7 +1528,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
             ret = JS_BIN_writePEM( &binData, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1542,7 +1542,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to envelop data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to envelop data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1595,7 +1595,7 @@ void DocSignerDlg::clickCMSDevelopedData()
             ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1609,7 +1609,7 @@ void DocSignerDlg::clickCMSDevelopedData()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to develop data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to develop data: %1").arg( JERR( ret ) ), this );
     }
 
 
@@ -1648,7 +1648,7 @@ void DocSignerDlg::clickCMSMakeData()
             ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1659,7 +1659,7 @@ void DocSignerDlg::clickCMSMakeData()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to make data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to make data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1702,7 +1702,7 @@ void DocSignerDlg::clickCMSMakeDigest()
             ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1713,7 +1713,7 @@ void DocSignerDlg::clickCMSMakeDigest()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to make data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to make data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1768,7 +1768,7 @@ void DocSignerDlg::clickCMSAddSign()
             ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1779,7 +1779,7 @@ void DocSignerDlg::clickCMSAddSign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to make singed data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to make singed data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1820,7 +1820,7 @@ void DocSignerDlg::clickCMSGetData()
             ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1834,7 +1834,7 @@ void DocSignerDlg::clickCMSGetData()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to get data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to get data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -1875,7 +1875,7 @@ void DocSignerDlg::clickCMSGetDigest()
             ret = JS_BIN_fileWrite( &sDigestInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
             if( ret <= 0 )
             {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                berApplet->warningBox( tr( "failed to write file: %1").arg( ret ), this );
                 goto end;
             }
 
@@ -1889,7 +1889,7 @@ void DocSignerDlg::clickCMSGetDigest()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to get digest: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to get digest: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -2444,7 +2444,7 @@ void DocSignerDlg::clickXML_MakeSign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to make signature: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to make signature: %1").arg( JERR( ret ) ), this );
     }
 
 end :
@@ -2566,7 +2566,7 @@ void DocSignerDlg::clickXML_Encrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encrypt: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to encrypt: %1").arg( JERR( ret ) ), this );
     }
 
 
@@ -2646,7 +2646,7 @@ void DocSignerDlg::clickXML_VerifySign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to verify: %1").arg( JERR( ret ) ), this );
     }
 
 end :
@@ -2748,7 +2748,7 @@ void DocSignerDlg::clickXML_Decrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to decrypt: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to decrypt: %1").arg( JERR( ret ) ), this );
     }
 
 end :

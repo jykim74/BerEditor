@@ -548,7 +548,7 @@ void ContentMain::clickMenu()
         {
             QFile file( strSavePath );
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                berApplet->warningBox( tr( "fail to open HTML" ), this );
+                berApplet->warningBox( tr( "failed to open HTML" ), this );
                 return;
             }
 
@@ -639,7 +639,7 @@ void ContentMain::clickMenu()
         {
             QFile file( strSavePath );
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                berApplet->warningBox( tr( "fail to open HTML" ), this );
+                berApplet->warningBox( tr( "failed to open HTML" ), this );
                 return;
             }
 

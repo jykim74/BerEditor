@@ -451,7 +451,7 @@ int CAVPDlg::readJsonReq( const QString strPath, QJsonDocument& pJsonDoc )
 
     if( !jsonFile.open( QIODevice::ReadOnly))
     {
-        berApplet->elog( QString( "fail to read json: %1").arg( strPath));
+        berApplet->elog( QString( "failed to read json: %1").arg( strPath));
         return -1;
     }
 

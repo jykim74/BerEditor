@@ -796,7 +796,7 @@ void PriKeyInfoDlg::clickApplyChange()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to apply change: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to apply change: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binKey );

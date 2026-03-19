@@ -843,7 +843,7 @@ void CAVPDlg::clickHashRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)\n").arg( strPath ));
+        berApplet->elog( QString( "failed to open file(%1)\n").arg( strPath ));
         return;
     }
 
@@ -4161,7 +4161,7 @@ int CAVPDlg::makeHMACData( const QString strCount, const QString strKLen, const 
     ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to gen HMAC ret:%1").arg(ret));
+        berApplet->elog( QString( "failed to gen HMAC ret:%1").arg(ret));
         goto end;
     }
 

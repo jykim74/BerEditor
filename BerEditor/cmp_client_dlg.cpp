@@ -241,7 +241,7 @@ void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
     int ret = 0;
 
     bool bVal = false;
-    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    bVal = berApplet->yesOrNoBox( tr( "Do you want to save the private key and certificate"), this, true );
     if( bVal == true )
     {
         int nKeyType = -1;
@@ -263,7 +263,7 @@ void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
                 if( ret == 0 )
                     berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
                 else
-                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
+                    berApplet->warnLog( tr( "failed to save private key and certificate" ), this );
             }
         }
 

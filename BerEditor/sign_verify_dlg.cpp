@@ -927,7 +927,7 @@ void SignVerifyDlg::fileRun()
 
     if( signVerifyInit() != 0 )
     {
-        berApplet->elog( "fail to init" );
+        berApplet->elog( "failed to init" );
         return;
     }
 
@@ -951,7 +951,7 @@ void SignVerifyDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            berApplet->warnLog( tr( "failed to read file: %1").arg( nRead ), this );
             goto end;
         }
 
@@ -1432,7 +1432,7 @@ void SignVerifyDlg::fileRunThread()
 {
     if( signVerifyInit() != 0 )
     {
-        berApplet->elog( "fail to init" );
+        berApplet->elog( "failed to init" );
         return;
     }
 

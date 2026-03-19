@@ -269,7 +269,7 @@ void SSSDlg::clickSplit()
     ret = JS_PKI_splitKeyGF256( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to split key: %1").arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to split key: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -369,7 +369,7 @@ void SSSDlg::clickJoin()
 
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to join key: %1").arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to join key: %1").arg(JERR(ret)), this );
         goto end;
     }
 

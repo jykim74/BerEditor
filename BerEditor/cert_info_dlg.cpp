@@ -601,7 +601,7 @@ void CertInfoDlg::clickSaveTrustedCA()
 
     if( QFileInfo::exists( strFileName ) == true )
     {
-        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strFileName ), this );
+        berApplet->warningBox( tr( "The file(%1) already exists").arg( strFileName ), this );
         return;
     }
 

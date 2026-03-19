@@ -205,7 +205,7 @@ void KeyListDlg::loadKeyList()
 
         if( keyFile.open( QIODevice::ReadOnly | QIODevice::Text ) == false )
         {
-            berApplet->elog( QString( "fail to read key: %1" ).arg( strFilePath ));
+            berApplet->elog( QString( "failed to read key: %1" ).arg( strFilePath ));
             continue;
         }
 
@@ -305,7 +305,7 @@ void KeyListDlg::clickKeyAdd()
 
         if( file.exists( fullPath ) )
         {
-            berApplet->warningBox( tr( "The file(%1) is already existed" ).arg( strName ), this );
+            berApplet->warningBox( tr( "The file(%1) already exists" ).arg( strName ), this );
             return;
         }
 
@@ -323,7 +323,7 @@ void KeyListDlg::clickKeyAdd()
 
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write key: %1" ).arg(ret), this );
         }
 end :
         JS_BIN_reset( &binIV );
@@ -378,7 +378,7 @@ void KeyListDlg::clickKeyView()
     int ret = keyDlg.readFile( item->text() );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to get symmetric key: %1").arg( JERR(ret) ) );
+        berApplet->elog( QString( "failed to get symmetric key: %1").arg( JERR(ret) ) );
         if( ret == JSR_PASSWORD_INCORRECT )
         {
             berApplet->warningBox( tr( "The password is incorrect" ), this );
@@ -440,7 +440,7 @@ void KeyListDlg::clickOK()
 
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to get symmetric key: %1").arg( ret ) );
+        berApplet->elog( QString( "failed to get symmetric key: %1").arg( ret ) );
         if( ret == JSR_PASSWORD_INCORRECT )
         {
             berApplet->warningBox( tr( "The password is incorrect" ), this );
