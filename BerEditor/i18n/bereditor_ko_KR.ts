@@ -226,9 +226,8 @@
         <translation type="vanished">파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="629"/>
         <source>Enter a DNS</source>
-        <translation>DNS을 입력하세요</translation>
+        <translation type="vanished">DNS을 입력하세요</translation>
     </message>
     <message>
         <source>%1 is already existed</source>
@@ -276,9 +275,8 @@
         <translation type="vanished">메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1063"/>
         <source>Enter a identifier</source>
-        <translation>구별 값을 입력하세요</translation>
+        <translation type="vanished">구별 값을 입력하세요</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1182"/>
@@ -296,14 +294,12 @@
         <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1586"/>
         <source>Click on the directory</source>
-        <translation>디렉토리를 클릭하세요</translation>
+        <translation type="vanished">디렉토리를 클릭하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1593"/>
         <source>Click on the Get Nonce</source>
-        <translation>논스 가져오기 클릭하세요</translation>
+        <translation type="vanished">논스 가져오기 클릭하세요</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1600"/>
@@ -311,9 +307,8 @@
         <translation>메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1607"/>
         <source>Add a DNS</source>
-        <translation>DNS 추가</translation>
+        <translation type="vanished">DNS 추가</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1617"/>
@@ -327,9 +322,8 @@
         <translation>%1 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1683"/>
         <source>There is no certificate. Try account again?</source>
-        <translation>인증서가 없습니다. Account 를 다시 시도하겠습니까?</translation>
+        <translation type="vanished">인증서가 없습니다. Account 를 다시 시도하겠습니까?</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1708"/>
@@ -359,14 +353,18 @@
         <translation>파싱 실패: %1</translation>
     </message>
     <message>
+        <location filename="../acme_client_dlg.cpp" line="629"/>
+        <source>Enter a DNS name</source>
+        <translation>DNS 을 입력하세요</translation>
+    </message>
+    <message>
         <location filename="../acme_client_dlg.cpp" line="640"/>
         <source>%1 already exists</source>
         <translation>%1이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="815"/>
         <source>failed to get nonce: %1</source>
-        <translation>논스 가져오기 실패: %1</translation>
+        <translation type="vanished">논스 가져오기 실패: %1</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1122"/>
@@ -390,16 +388,12 @@
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1447"/>
         <source>There is no command URL</source>
-        <translation>명령 URL이 없습니다</translation>
+        <translation type="vanished">명령 URL이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="679"/>
-        <location filename="../acme_client_dlg.cpp" line="744"/>
-        <location filename="../acme_client_dlg.cpp" line="1454"/>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="118"/>
@@ -463,9 +457,25 @@
         <translation>논스 가져오기 성공</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="857"/>
         <source>Location get success</source>
-        <translation>로케이션 가져오기 성공</translation>
+        <translation type="vanished">로케이션 가져오기 성공</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="679"/>
+        <location filename="../acme_client_dlg.cpp" line="744"/>
+        <location filename="../acme_client_dlg.cpp" line="1454"/>
+        <source>No request available</source>
+        <translation>요청서가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="815"/>
+        <source>failed to retrieve nonce: %1</source>
+        <translation>논스 가져오기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="857"/>
+        <source>Location retrieved successfully</source>
+        <translation>위치 정보를 성공적으로 가져왔습니다.</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="861"/>
@@ -496,9 +506,19 @@
         <translation>RSA ECDSA EDDSA 알고리즈만 지원합니다 [현재 키 알고리즘: %1]</translation>
     </message>
     <message>
+        <location filename="../acme_client_dlg.cpp" line="1063"/>
+        <source>Enter an identifier</source>
+        <translation>구별 값을 입력하세요</translation>
+    </message>
+    <message>
         <location filename="../acme_client_dlg.cpp" line="1382"/>
         <source>Successfully created message</source>
         <translation>메세지 생성에 성공하였습니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1447"/>
+        <source>No command URL available</source>
+        <translation>명령 URL이 없습니다</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="1481"/>
@@ -519,6 +539,26 @@
         <location filename="../acme_client_dlg.cpp" line="1535"/>
         <source>ACME message sent</source>
         <translation>ACME 메세지 보냈습니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1586"/>
+        <source>Click the directory</source>
+        <translation>디렉토리를 클릭하세요</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1593"/>
+        <source>Click Get Nonce</source>
+        <translation>논스 가져오기 클릭하세요</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1607"/>
+        <source>Add a DNS record</source>
+        <translation>DNS 추가</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="1683"/>
+        <source>No certificate found. Try the account again?</source>
+        <translation>인증서가 없습니다. Account 를 다시 시도하겠습니까?</translation>
     </message>
     <message>
         <source>Are you save the private key and certificate</source>
@@ -2837,6 +2877,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
     <message>
+        <location filename="../cmp_client_dlg.cpp" line="502"/>
+        <location filename="../cmp_client_dlg.cpp" line="1432"/>
+        <source>No request available</source>
+        <translation>요청서가 없습니다</translation>
+    </message>
+    <message>
         <location filename="../cmp_client_dlg.cpp" line="648"/>
         <location filename="../cmp_client_dlg.cpp" line="1156"/>
         <source>GENM success</source>
@@ -2934,10 +2980,8 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">RR 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cmp_client_dlg.cpp" line="502"/>
-        <location filename="../cmp_client_dlg.cpp" line="1432"/>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../cmp_client_dlg.cpp" line="1459"/>
@@ -6652,9 +6696,13 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PEM 개인키</translation>
     </message>
     <message>
+        <source>There is no request</source>
+        <translation type="vanished">요청서가 없습니다</translation>
+    </message>
+    <message>
         <location filename="../chall_test_dlg.cpp" line="240"/>
         <location filename="../chall_test_dlg.cpp" line="370"/>
-        <source>There is no request</source>
+        <source>No request available</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
@@ -16610,6 +16658,12 @@ Use %2</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
+        <location filename="../ocsp_client_dlg.cpp" line="841"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1060"/>
+        <source>No request available</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="../ocsp_client_dlg.cpp" line="991"/>
         <source>failed to get CA: %1</source>
         <translation>CA 가져오기 실패 :%1</translation>
@@ -16752,10 +16806,8 @@ Use %2</source>
         <translation>OCSP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="841"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1060"/>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <source>fail to send a request to OCSP server: %1</source>
@@ -19274,6 +19326,12 @@ Only RSA is supported.</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
+        <location filename="../scep_client_dlg.cpp" line="538"/>
+        <location filename="../scep_client_dlg.cpp" line="1178"/>
+        <source>No request available</source>
+        <translation>요청서가 없습니다</translation>
+    </message>
+    <message>
         <location filename="../scep_client_dlg.cpp" line="696"/>
         <location filename="../scep_client_dlg.cpp" line="859"/>
         <location filename="../scep_client_dlg.cpp" line="1038"/>
@@ -19353,10 +19411,8 @@ Only RSA is supported.</source>
         <translation type="vanished">CRL 정보 읽기 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../scep_client_dlg.cpp" line="538"/>
-        <location filename="../scep_client_dlg.cpp" line="1178"/>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../scep_client_dlg.cpp" line="135"/>
@@ -21824,10 +21880,8 @@ Use %2</source>
         <translation>TSP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="178"/>
-        <location filename="../tsp_client_dlg.cpp" line="436"/>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../tsp_client_dlg.cpp" line="103"/>
@@ -21845,6 +21899,12 @@ Use %2</source>
         <location filename="../tsp_client_dlg.cpp" line="108"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
+    </message>
+    <message>
+        <location filename="../tsp_client_dlg.cpp" line="178"/>
+        <location filename="../tsp_client_dlg.cpp" line="436"/>
+        <source>No request available</source>
+        <translation>요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../tsp_client_dlg.cpp" line="402"/>
@@ -22222,8 +22282,12 @@ Use %2</source>
     <message>
         <location filename="../ttlv_client_dlg.cpp" line="282"/>
         <location filename="../ttlv_client_dlg.cpp" line="655"/>
+        <source>No request available</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>There is no request</source>
-        <translation>요청서가 없습니다</translation>
+        <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
         <location filename="../ttlv_client_dlg.cpp" line="317"/>

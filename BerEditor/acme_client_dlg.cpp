@@ -626,7 +626,7 @@ void ACMEClientDlg::clickAddDNS()
     QString strDNS = mDNSText->text();
     if( strDNS.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a DNS" ), this );
+        berApplet->warningBox( tr( "Enter a DNS name" ), this );
         mDNSText->setFocus();
         return;
     }
@@ -676,7 +676,7 @@ void ACMEClientDlg::clickVerify()
 
     if( strRequest.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no request" ), this );
+        berApplet->warningBox( tr("No request available" ), this );
         return;
     }
 
@@ -741,7 +741,7 @@ void ACMEClientDlg::clickRequestView()
     QString strRequest = mRequestText->toPlainText();
     if( strRequest.length() < 1 )
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         return;
     }
 
@@ -812,7 +812,7 @@ void ACMEClientDlg::clickGetNonce()
 
     if( nStatus >= 300 )
     {
-        berApplet->warningBox( tr( "failed to get nonce: %1").arg( nStatus ), this );
+        berApplet->warningBox( tr( "failed to retrieve nonce: %1").arg( nStatus ), this );
         return;
     }
 
@@ -854,7 +854,7 @@ void ACMEClientDlg::clickGetLocation()
 
         mRspCmdText->setText( kCmdLocation );
         mRspStatusText->setText( QString("%1").arg( nStatus ));
-        berApplet->messageBox( tr("Location get success"), this );
+        berApplet->messageBox( tr("Location retrieved successfully"), this );
     }
     else
     {
@@ -1060,7 +1060,7 @@ int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 
     if( mDNSList->count() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a identifier" ), this );
+        berApplet->warningBox( tr( "Enter an identifier" ), this );
         mDNSText->setFocus();
         return -1;
     }
@@ -1444,14 +1444,14 @@ int ACMEClientDlg::clickSend()
 
     if( strCmdURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "There is no command URL"), this );
+        berApplet->warningBox( tr( "No command URL available"), this );
         ret = -1;
         goto end;
     }
 
     if( strMethod == "POST" && strReq.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no request" ), this );
+        berApplet->warningBox( tr("No request available" ), this );
         mRequestText->setFocus();
         ret = -2;
         goto end;
@@ -1583,14 +1583,14 @@ void ACMEClientDlg::clickIssueCert()
 {
     if( mCmdCombo->count() < 1 )
     {
-        berApplet->warningBox( tr( "Click on the directory"), this );
+        berApplet->warningBox( tr( "Click the directory"), this );
         mGetDirBtn->setFocus();
         return;
     }
 
     if( mNonceText->text().length() < 1 )
     {
-        berApplet->warningBox( tr( "Click on the Get Nonce" ), this );
+        berApplet->warningBox( tr( "Click Get Nonce" ), this );
         mGetNonceBtn->setFocus();
         return;
     }
@@ -1604,7 +1604,7 @@ void ACMEClientDlg::clickIssueCert()
 
     if( mDNSList->count() < 1 )
     {
-        berApplet->warningBox( tr( "Add a DNS" ), this );
+        berApplet->warningBox( tr( "Add a DNS record" ), this );
         mDNSText->setFocus();
         return;
     }
@@ -1680,7 +1680,7 @@ check :
     ret = clickParse();
     if( ret != 0 )
     {
-        bool bVal = berApplet->yesOrNoBox( tr( "There is no certificate. Try account again?" ), this );
+        bool bVal = berApplet->yesOrNoBox( tr( "No certificate found. Try the account again?" ), this );
         if( bVal == true )
         {
             goto check;

@@ -175,7 +175,7 @@ void TSPClientDlg::decodeRequest()
 
     if( strHex.length() < 1)
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         mRequestText->setFocus();
         return;
     }
@@ -433,7 +433,7 @@ void TSPClientDlg::clickSend()
 
     if( strReq.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no request" ), this );
+        berApplet->warningBox( tr("No request available" ), this );
         goto end;
     }
 

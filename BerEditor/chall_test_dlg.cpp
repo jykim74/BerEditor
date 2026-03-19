@@ -237,7 +237,7 @@ void ChallTestDlg::clickRequestView()
     QString strRequest = mRequestText->toPlainText();
     if( strRequest.length() < 1 )
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         return;
     }
 
@@ -367,7 +367,7 @@ int ChallTestDlg::clickSend()
 
     if( strRequest.length() < 1 )
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         return -1;
     }
 

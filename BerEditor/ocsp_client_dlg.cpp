@@ -838,7 +838,7 @@ void OCSPClientDlg::decodeRequest()
     QString strHex = mRequestText->toPlainText();
     if( strHex.length() < 1)
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         mRequestText->setFocus();
         return;
     }
@@ -1057,7 +1057,7 @@ void OCSPClientDlg::clickSend()
 
     if( strReq.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no request" ), this );
+        berApplet->warningBox( tr("No request available" ), this );
         mRequestText->setFocus();
         goto end;
     }

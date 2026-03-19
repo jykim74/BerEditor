@@ -279,7 +279,7 @@ void TTLVClientDlg::clickSend()
 
     if( strRequest.length() < 1 )
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         mRequestText->setFocus();
         return;
     }
@@ -652,7 +652,7 @@ void TTLVClientDlg::decodeRequest()
 
     if( strHex.length() < 1)
     {
-        berApplet->warningBox( tr( "There is no request" ), this );
+        berApplet->warningBox( tr( "No request available" ), this );
         mRequestText->setFocus();
         return;
     }

@@ -153,8 +153,8 @@ void CMSInfoDlg::initUI()
     mInfoTab->setTabEnabled( JS_CMS_SIGNER_IDX, false );
     mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, false );
 
-    mViewTSPBtn->setEnabled( false );
-    mViewTSTBtn->setEnabled( false );
+    mViewTSPBtn->hide();
+    mViewTSTBtn->hide();
 }
 
 void CMSInfoDlg::setTitle( const QString strName )
@@ -235,8 +235,8 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
 
     if( tsp_bin_.nLen > 0 )
     {
-        mViewTSPBtn->setEnabled( true );
-        mViewTSTBtn->setEnabled( true );
+        mViewTSPBtn->show();
+        mViewTSTBtn->show();
     }
 }
 
