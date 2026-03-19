@@ -2137,7 +2137,7 @@ void DocSignerDlg::clickJSON_VerifySignature()
     ret = getPubKey( &binPub );
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "failed to get the public key: %1" ).arg(ret), this );
         goto end;
     }
 
@@ -3403,7 +3403,7 @@ void DocSignerDlg::clickPDF_VerifySign()
         ret = getCert( &binCert );
         if( ret != JSR_OK )
         {
-            berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to get the public key: %1" ).arg(ret), this );
             goto end;
         }
     }

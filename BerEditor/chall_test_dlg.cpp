@@ -389,7 +389,7 @@ int ChallTestDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to the ACME server: %1").arg( ret), this );
         goto end;
     }
 

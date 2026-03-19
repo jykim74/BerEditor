@@ -115,6 +115,11 @@
         <translation>명령</translation>
     </message>
     <message>
+        <location filename="../acme_client_dlg.ui" line="466"/>
+        <source>Auto Parse</source>
+        <translation>자동 파싱</translation>
+    </message>
+    <message>
         <location filename="../acme_client_dlg.ui" line="473"/>
         <source>Send</source>
         <translation>보내기</translation>
@@ -130,9 +135,8 @@
         <translation>UpdateAccount</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="888"/>
         <source>Rsp Status</source>
-        <translation>Rsp Status</translation>
+        <translation type="vanished">Rsp Status</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.ui" line="976"/>
@@ -150,9 +154,8 @@
         <translation>만들기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="466"/>
         <source>Automatic parsing</source>
-        <translation>자동 파싱</translation>
+        <translation type="vanished">자동 파싱</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.ui" line="613"/>
@@ -190,6 +193,11 @@
         <location filename="../acme_client_dlg.ui" line="881"/>
         <source>Response</source>
         <translation>응답</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.ui" line="888"/>
+        <source>Response Status</source>
+        <translation>응답 상태</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.ui" line="949"/>
@@ -6738,8 +6746,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../chall_test_dlg.cpp" line="392"/>
-        <source>failed to send a request to ACME server: %1</source>
+        <source>failed to send a request to the ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
+    </message>
+    <message>
+        <source>failed to send a request to ACME server: %1</source>
+        <translation type="vanished">ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
     <message>
         <source>Enter a host</source>
@@ -7949,10 +7961,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>JSON 서명에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2140"/>
-        <location filename="../doc_signer_dlg.cpp" line="3406"/>
         <source>failed to get public key: %1</source>
-        <translation>공개키 가져오기 실패: %1</translation>
+        <translation type="vanished">공개키 가져오기 실패: %1</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="2282"/>
@@ -8133,6 +8143,12 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="1892"/>
         <source>failed to get digest: %1</source>
         <translation>다이제스트 얻기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="2140"/>
+        <location filename="../doc_signer_dlg.cpp" line="3406"/>
+        <source>failed to get the public key: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="2447"/>

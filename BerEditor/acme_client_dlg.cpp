@@ -246,7 +246,7 @@ void ACMEClientDlg::clickKIDGetPubKey()
     ret = ACMEObject::getPubKey( objRsp["key"].toObject(), &binPub );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "failed to get public key from response: %1").arg(ret), this );
+        berApplet->warningBox( tr( "failed to get the public key from response: %1").arg(ret), this );
         goto end;
     }
 
@@ -858,7 +858,7 @@ void ACMEClientDlg::clickGetLocation()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to the ACME server: %1").arg( ret), this );
         goto end;
     }
 
@@ -894,7 +894,7 @@ void ACMEClientDlg::clickGetDirectory()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to the ACME server: %1").arg( ret), this );
         goto end;
     }
 
@@ -1485,7 +1485,7 @@ int ACMEClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to send a request to ACME server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "failed to send a request to the ACME server: %1").arg( ret), this );
         goto end;
     }
 
