@@ -16,6 +16,7 @@ class BinViewDlg : public QDialog, public Ui::BinViewDlg
 public:
     explicit BinViewDlg(QWidget *parent = nullptr);
     ~BinViewDlg();
+    void setData( const BIN *pData );
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -25,8 +26,20 @@ private slots:
     void clickPrintPreview();
     void clickFind();
 
+    void checkBase64();
+    void checkHex();
+    void checkRaw();
+
+    void checkPEM();
+
 private:
+    void initUI();
+    void initialize();
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+
+    void encodeBase64();
+    void encodeHex();
+    void encodeData();
 
     BIN data_;
 };

@@ -21,6 +21,11 @@ TextViewDlg::TextViewDlg(QWidget *parent)
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
     connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(clickPrintPreview()));
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 TextViewDlg::~TextViewDlg()
