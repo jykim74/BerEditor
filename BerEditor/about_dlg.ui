@@ -184,7 +184,7 @@
         <font/>
        </property>
        <property name="text">
-        <string>Check For Update</string>
+        <string>Check for updates</string>
        </property>
       </widget>
      </item>

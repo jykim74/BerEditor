@@ -345,9 +345,8 @@
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="249"/>
         <source>failed to get public key from response: %1</source>
-        <translation>응답에서 공개키 가져오기 실패 하였습니다: %1</translation>
+        <translation type="vanished">응답에서 공개키 가져오기 실패 하였습니다: %1</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.cpp" line="602"/>
@@ -485,10 +484,19 @@
         <translation>위치 정보를 성공적으로 가져왔습니다.</translation>
     </message>
     <message>
+        <source>failed to send a request to ACME server: %1</source>
+        <translation type="vanished">ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="249"/>
+        <source>failed to get the public key from response: %1</source>
+        <translation>응답에서 공개키 가져오기 실패 하였습니다: %1</translation>
+    </message>
+    <message>
         <location filename="../acme_client_dlg.cpp" line="861"/>
         <location filename="../acme_client_dlg.cpp" line="897"/>
         <location filename="../acme_client_dlg.cpp" line="1488"/>
-        <source>failed to send a request to ACME server: %1</source>
+        <source>failed to send a request to the ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
     <message>
@@ -626,6 +634,11 @@
         <translation>현재 버전</translation>
     </message>
     <message>
+        <location filename="../about_dlg.ui" line="187"/>
+        <source>Check for updates</source>
+        <translation>업데이트 확인</translation>
+    </message>
+    <message>
         <source>Information</source>
         <translation type="vanished">정보</translation>
     </message>
@@ -640,9 +653,8 @@
         <translation>오픈 소스</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="187"/>
         <source>Check For Update</source>
-        <translation>업데이트 확인</translation>
+        <translation type="vanished">업데이트 확인</translation>
     </message>
     <message>
         <location filename="../about_dlg.ui" line="207"/>
@@ -8148,7 +8160,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../doc_signer_dlg.cpp" line="2140"/>
         <location filename="../doc_signer_dlg.cpp" line="3406"/>
         <source>failed to get the public key: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>공개키 가져오기 실패: %1</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="2447"/>
