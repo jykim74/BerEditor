@@ -62,6 +62,8 @@
 #include "ber_check_dlg.h"
 #include "make_pri_key_dlg.h"
 #include "ber_compare_dlg.h"
+#include "bin_view_dlg.h"
+#include "text_view_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -506,6 +508,20 @@ void MainWindow::createViewActions()
     toolBERCompareAct->setChecked(bVal);
     connect( toolBERCompareAct, &QAction::triggered, this, &MainWindow::viewToolBERCompare );
     toolMenu->addAction( toolBERCompareAct );
+
+    QAction *toolBinViewAct = new QAction( tr( "Binary View"), this );
+    bVal = isView( ACT_TOOL_BIN_VIEW );
+    toolBinViewAct->setCheckable(true);
+    toolBinViewAct->setChecked(bVal);
+    connect( toolBinViewAct, &QAction::triggered, this, &MainWindow::viewToolBinView );
+    toolMenu->addAction( toolBinViewAct );
+
+    QAction *toolTextViewAct = new QAction( tr( "Text View"), this );
+    bVal = isView( ACT_TOOL_TEXT_VIEW );
+    toolTextViewAct->setCheckable(true);
+    toolTextViewAct->setChecked(bVal);
+    connect( toolTextViewAct, &QAction::triggered, this, &MainWindow::viewToolTextView );
+    toolMenu->addAction( toolTextViewAct );
 
 
     QAction *cryptKeyManAct = new QAction( tr( "KeyManage"), this );
@@ -1059,6 +1075,22 @@ void MainWindow::createToolActions()
     toolMenu->addAction( ber_compare_act_ );
     if( isView( ACT_TOOL_BER_COMPARE ) ) tool_tool_->addAction( ber_compare_act_ );
 
+    const QIcon binViewIcon = QIcon::fromTheme("Binary View", QIcon(":/images/bin_view.png"));
+    bin_view_act_ = new QAction(binViewIcon, tr("&Binary View"), this);
+    bin_view_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_V));
+    connect( bin_view_act_, &QAction::triggered, this, &MainWindow::binView );
+    bin_view_act_->setStatusTip(tr("Binary View"));
+    toolMenu->addAction( bin_view_act_ );
+    if( isView( ACT_TOOL_BIN_VIEW ) ) tool_tool_->addAction( bin_view_act_ );
+
+    const QIcon textViewIcon = QIcon::fromTheme("Text View", QIcon(":/images/text_view.png"));
+    text_view_act_ = new QAction(textViewIcon, tr("&Text View"), this);
+    text_view_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_T));
+    connect( text_view_act_, &QAction::triggered, this, &MainWindow::textView );
+    text_view_act_->setStatusTip(tr("Text View"));
+    toolMenu->addAction( text_view_act_ );
+    if( isView( ACT_TOOL_TEXT_VIEW ) ) tool_tool_->addAction( text_view_act_ );
+
     menuBar()->addSeparator();
 
     if( berApplet->isLicense() == false )
@@ -1066,6 +1098,7 @@ void MainWindow::createToolActions()
         make_ber_act_->setEnabled( false );
         ber_check_act_->setEnabled( false );
         ber_compare_act_->setEnabled( false );
+        text_view_act_->setEnabled( false );
     }
 }
 
@@ -2536,6 +2569,18 @@ void MainWindow::BERCompare()
     ber_comp_dlg_->activateWindow();
 }
 
+void MainWindow::binView()
+{
+    BinViewDlg binView;
+    binView.exec();
+}
+
+void MainWindow::textView()
+{
+    TextViewDlg textView;
+    textView.exec();
+}
+
 void MainWindow::runBERCompare( const BIN *pA, const BIN *pB )
 {
     if( ber_comp_dlg_ == nullptr )
@@ -3305,13 +3350,41 @@ void MainWindow::viewToolBERCompare( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( ber_compare_act_ );
+        tool_tool_->insertAction( bin_view_act_, ber_compare_act_ );
         setView( ACT_TOOL_BER_COMPARE );
     }
     else
     {
         tool_tool_->removeAction( ber_compare_act_ );
         unsetView( ACT_TOOL_BER_COMPARE );
+    }
+}
+
+void MainWindow::viewToolBinView( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->insertAction( text_view_act_, bin_view_act_ );
+        setView( ACT_TOOL_BIN_VIEW );
+    }
+    else
+    {
+        tool_tool_->removeAction( bin_view_act_ );
+        unsetView( ACT_TOOL_BIN_VIEW );
+    }
+}
+
+void MainWindow::viewToolTextView( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( text_view_act_ );
+        setView( ACT_TOOL_TEXT_VIEW );
+    }
+    else
+    {
+        tool_tool_->removeAction( text_view_act_ );
+        unsetView( ACT_TOOL_TEXT_VIEW );
     }
 }
 

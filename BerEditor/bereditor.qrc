@@ -122,5 +122,7 @@
         <file>images/make_pri.png</file>
         <file>images/ber_compare.png</file>
         <file>comptree.qss</file>
+        <file>images/bin_view.png</file>
+        <file>images/text_view.png</file>
     </qresource>
 </RCC>

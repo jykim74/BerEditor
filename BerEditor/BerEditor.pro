@@ -131,7 +131,9 @@ SOURCES += \
     make_pri_key_dlg.cpp \
     ber_compare_dlg.cpp \
     comp_model.cpp \
-    comp_tree.cpp
+    comp_tree.cpp \
+    bin_view_dlg.cpp \
+    text_view_dlg.cpp
 
 
 HEADERS += \
@@ -228,7 +230,9 @@ HEADERS += \
     make_pri_key_dlg.h \
     ber_compare_dlg.h \
     comp_tree.h \
-    comp_model.h
+    comp_model.h \
+    bin_view_dlg.h \
+    text_view_dlg.h
 
 
 
@@ -375,7 +379,9 @@ FORMS += \
         thread_work_dlg.ui \
         data_input_dlg.ui \
         make_pri_key_dlg.ui \
-        ber_compare_dlg.ui
+        ber_compare_dlg.ui \
+        bin_view_dlg.ui \
+        text_view_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

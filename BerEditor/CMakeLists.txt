@@ -232,6 +232,8 @@ add_executable(${PROJECT_NAME}
     ber_compare_dlg.h ber_compare_dlg.cpp ber_compare_dlg.ui
     comp_tree.h comp_tree.cpp
     comp_model.h comp_model.cpp
+    bin_view_dlg.h bin_view_dlg.cpp bin_view_dlg.ui
+    text_view_dlg.h text_view_dlg.cpp text_view_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
