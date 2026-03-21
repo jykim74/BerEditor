@@ -30,12 +30,15 @@ private slots:
     void checkHex();
     void checkRaw();
 
+    void checkAddress();
+    void checkASCII();
     void checkPEM();
+    void changeHeader();
 
 private:
     void initUI();
     void initialize();
-    void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void log( const QString strLog, bool bNL = true );
 
     void encodeBase64();
     void encodeHex();

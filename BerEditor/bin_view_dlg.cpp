@@ -31,7 +31,7 @@ const QStringList kHeaderList = {
     JS_PEM_NAME_DH_PARAMETERS
 };
 
-const int kBlockSize = 80;
+const int kBlockSize = 64;
 
 BinViewDlg::BinViewDlg(QWidget *parent)
     : QDialog(parent)
@@ -47,6 +47,9 @@ BinViewDlg::BinViewDlg(QWidget *parent)
     connect( mHexRadio, SIGNAL(clicked()), this, SLOT(checkHex()));
     connect( mRawRadio, SIGNAL(clicked()), this, SLOT(checkRaw()));
     connect( mPEMHeaderCheck, SIGNAL(clicked()), this, SLOT(checkPEM()));
+    connect( mAddressCheck, SIGNAL(clicked()), this, SLOT(checkAddress()));
+    connect( mASCIICheck, SIGNAL(clicked()), this, SLOT(checkASCII()));
+    connect( mHeaderCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeHeader()));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
@@ -81,22 +84,20 @@ void BinViewDlg::setData( const BIN *pData )
 {
     JS_BIN_reset( &data_ );
     JS_BIN_copy( &data_, pData );
+    encodeData();
 }
 
-void BinViewDlg::log( const QString strLog, QColor cr )
+void BinViewDlg::log( const QString strLog, bool bNL )
 {
-    QDateTime date;
-    date.setTime_t( time(NULL));
-    QString strMsg;
-
     QTextCursor cursor = mDataText->textCursor();
 
     QTextCharFormat format;
-    format.setForeground( cr );
     cursor.mergeCharFormat(format);
 
-    strMsg = QString( "[%1] %2\n" ).arg( date.toString("HH:mm:ss") ).arg( strLog );
-    cursor.insertText( strMsg );
+    if( bNL == true )
+        cursor.insertText( QString( "%1\n" ).arg(strLog) );
+    else
+        cursor.insertText( strLog );
 
     mDataText->setTextCursor( cursor );
     mDataText->repaint();
@@ -149,7 +150,17 @@ void BinViewDlg::clickPrintPreview()
 
 void BinViewDlg::clickFind()
 {
+    QString strPath = berApplet->curFilePath();
 
+    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BIN, strPath );
+
+    if( strFileName > 0 )
+    {
+        JS_BIN_reset( &data_ );
+        JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
+
+        encodeData();
+    }
 }
 
 void BinViewDlg::checkBase64()
@@ -158,9 +169,10 @@ void BinViewDlg::checkBase64()
     mASCIICheck->setEnabled( false );
 
     mPEMHeaderCheck->setEnabled( true );
-    mHeaderCombo->setEnabled( true );
 
-    checkPEM();
+    mHeaderCombo->setEnabled( mPEMHeaderCheck->isChecked() );
+
+    encodeData();
 }
 
 void BinViewDlg::checkHex()
@@ -170,6 +182,8 @@ void BinViewDlg::checkHex()
 
     mPEMHeaderCheck->setEnabled( false );
     mHeaderCombo->setEnabled( false );
+
+    encodeData();
 }
 
 void BinViewDlg::checkRaw()
@@ -179,6 +193,23 @@ void BinViewDlg::checkRaw()
 
     mPEMHeaderCheck->setEnabled( false );
     mHeaderCombo->setEnabled( false );
+
+    encodeData();
+}
+
+void BinViewDlg::checkAddress()
+{
+    encodeData();
+}
+
+void BinViewDlg::checkASCII()
+{
+    encodeData();
+}
+
+void BinViewDlg::changeHeader()
+{
+    encodeData();
 }
 
 void BinViewDlg::checkPEM()
@@ -186,15 +217,48 @@ void BinViewDlg::checkPEM()
     bool bVal = mPEMHeaderCheck->isChecked();
 
     mHeaderCombo->setEnabled( bVal );
+
+    encodeData();
 }
 
 void BinViewDlg::encodeBase64()
 {
+    char *pBase64 = NULL;
 
+    if( data_.nLen <= 0 ) return;
+
+    QString strHeader = mHeaderCombo->currentText();
+
+    JS_BIN_encodeBase64NL( &data_, &pBase64, kBlockSize );
+    if( pBase64 == NULL ) return;
+
+    int len = strlen( pBase64 );
+
+    if( len > 2 )
+    {
+        if( pBase64[len-1] == '\r' || pBase64[len-1] == '\n' )
+            pBase64[len-1] = 0x00;
+
+        if( pBase64[len-2] == '\r' || pBase64[len-2] == '\n' )
+            pBase64[len-2] = 0x00;
+    }
+
+
+    if( mPEMHeaderCheck->isChecked() )
+        log( QString( "-----BEGIN %1-----\r").arg( strHeader ));
+
+    log( pBase64, false );
+
+    if( mPEMHeaderCheck->isChecked() )
+        log( QString( "-----END %1-----\r").arg( strHeader));
+
+    if( pBase64 ) JS_free( pBase64 );
 }
 
 void BinViewDlg::encodeHex()
 {
+    if( data_.nLen <= 0 ) return;
+
     if( mRawRadio->isChecked() == true )
     {
         mDataText->setPlainText( getHexString( &data_ ));
@@ -202,7 +266,7 @@ void BinViewDlg::encodeHex()
     else
     {
         int nLeft = data_.nLen;
-        int nSize = kBlockSize;
+        int nSize = 16;
         int nPos = 0;
         BIN binPart = {0,0};
 
@@ -210,8 +274,8 @@ void BinViewDlg::encodeHex()
         {
             QString strLine;
 
-            if( nLeft > kBlockSize )
-                nSize = kBlockSize;
+            if( nLeft > 16 )
+                nSize = 16;
             else
                 nSize = nLeft;
 
@@ -220,17 +284,17 @@ void BinViewDlg::encodeHex()
 
             if( mAddressCheck->isChecked() )
             {
-                strLine = QString( "0x%1 | " ).arg( nPos );
+                strLine = QString( "%1 | " ).arg( nPos, 6, 16, QLatin1Char('0') );
             }
 
-            strLine += getHexString( &binPart );
+            strLine += QString( "%1" ).arg( getHexString2( &binPart ), -48, QLatin1Char(' ') );
 
             if( mASCIICheck->isChecked() )
             {
                 char *pDump = NULL;
                 JS_BIN_dumpString( &binPart, &pDump );
 
-                strLine += QString( " | %1" ).arg( pDump );
+                strLine += QString( "| %1" ).arg( pDump );
                 if( pDump ) JS_free( pDump );
             }
 
@@ -244,6 +308,8 @@ void BinViewDlg::encodeHex()
 
 void BinViewDlg::encodeData()
 {
+    mDataText->clear();
+
     if( mBase64Radio->isChecked() == true )
         encodeBase64();
     else

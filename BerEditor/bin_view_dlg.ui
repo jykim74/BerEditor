@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>490</height>
+    <width>624</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -152,12 +152,42 @@
     <widget class="QPlainTextEdit" name="mDataText">
      <property name="minimumSize">
       <size>
-       <width>540</width>
+       <width>600</width>
        <height>360</height>
       </size>
      </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
