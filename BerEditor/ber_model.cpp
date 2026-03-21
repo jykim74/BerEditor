@@ -32,7 +32,8 @@
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
 #include "passwd_dlg.h"
-
+#include "bin_view_dlg.h"
+#include "text_view_dlg.h"
 
 
 BerModel::BerModel( QObject *parent )
@@ -1176,6 +1177,24 @@ void BerModel::ChangeDefinite()
     {
         berApplet->warningBox( tr("Failed to change the definite length: %1").arg( JERR(ret)), tree_view_ );
     }
+}
+
+void BerModel::BinView()
+{
+    BerItem* item = tree_view_->currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There are no items selected."), tree_view_ );
+        return;
+    }
+
+    BIN binData = {0,0};
+    item->getNodeBin( &binBer_, &binData );
+
+    BinViewDlg binView;
+    binView.setData( &binData );
+    binView.exec();
+    JS_BIN_reset( &binData );
 }
 
 void BerModel::InsertBER()

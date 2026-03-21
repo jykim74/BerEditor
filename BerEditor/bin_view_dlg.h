@@ -2,6 +2,8 @@
 #define BIN_VIEW_DLG_H
 
 #include <QDialog>
+#include <QPrinter>
+
 #include "ui_bin_view_dlg.h"
 #include "js_bin.h"
 
@@ -23,7 +25,8 @@ private slots:
     void dropEvent(QDropEvent *event);
 
     void clickPrint();
-    void clickPrintPreview();
+    void printPreview(QPrinter *printer);
+    void filePrintPreview();
     void clickFind();
 
     void checkBase64();

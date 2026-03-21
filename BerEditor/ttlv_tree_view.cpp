@@ -209,6 +209,7 @@ void TTLVTreeView::leftContextMenu( QPoint point )
         menu.addAction(tr("Copy as base64"), tree_model, SLOT(CopyAsBase64()));
         menu.addAction( tr("Save node"), tree_model, SLOT(saveNode()) );
         menu.addAction( tr("Save node value"), tree_model, SLOT( saveNodeValue() ) );
+        menu.addAction( tr("Binary view" ), tree_model, SLOT(binaryView()));
 
         if( item->isStructure() == true )
         {

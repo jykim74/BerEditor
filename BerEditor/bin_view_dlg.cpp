@@ -10,6 +10,7 @@
 #include "bin_view_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
+#include "mainwindow.h"
 
 const QStringList kHeaderList = {
     JS_PEM_NAME_RSA_PRIVATE_KEY,
@@ -53,7 +54,7 @@ BinViewDlg::BinViewDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
-    connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(clickPrintPreview()));
+    connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(filePrintPreview()));
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
 
 #if defined(Q_OS_MAC)
@@ -136,16 +137,28 @@ void BinViewDlg::clickPrint()
 
     if (dialog.exec() == QDialog::Accepted) {
         QPainter painter(&printer);
+        mDataText->print(&printer);
         this->render(&painter);   // QDialog 내용 출력
     }
 }
 
-void BinViewDlg::clickPrintPreview()
+void BinViewDlg::printPreview(QPrinter *printer)
 {
-    QPrinter printer;
+#ifdef QT_NO_PRINTER
+    Q_UNUSED(printer);
+#else
+    mDataText->print( printer );
+#endif
+}
 
+void BinViewDlg::filePrintPreview()
+{
+#if QT_CONFIG(printpreviewdialog)
+    QPrinter printer(QPrinter::HighResolution);
     QPrintPreviewDialog preview(&printer, this);
+    connect(&preview, &QPrintPreviewDialog::paintRequested, this, &BinViewDlg::printPreview);
     preview.exec();
+#endif
 }
 
 void BinViewDlg::clickFind()

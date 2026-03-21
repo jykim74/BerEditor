@@ -283,6 +283,10 @@ private slots:
     void rightTableSelectAll();
     void rightTableUnselectAll();
 
+public slots:
+
+
+
 private:
     void createFileActions();
     void createEditActions();

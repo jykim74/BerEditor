@@ -49,6 +49,7 @@ public slots:
     void insertNode();
     void editNode();
     void deleteNode();
+    void binaryView();
 
     const QString saveNode();
     void saveNodeValue();

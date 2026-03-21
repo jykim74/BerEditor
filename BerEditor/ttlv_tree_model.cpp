@@ -14,6 +14,8 @@
 #include "ber_applet.h"
 #include "edit_ttlv_dlg.h"
 #include "make_ttlv_dlg.h"
+#include "bin_view_dlg.h"
+#include "text_view_dlg.h"
 
 TTLVTreeModel::TTLVTreeModel( QObject *parent )
     : QStandardItemModel( parent )
@@ -839,6 +841,26 @@ void TTLVTreeModel::deleteNode()
     {
         berApplet->warningBox( tr( "failed to delete: %1").arg( JERR(ret)), ttlv_view_ );
     }
+}
+
+void TTLVTreeModel::binaryView()
+{
+    TTLVTreeItem *pItem = currentItem();
+
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        return;
+    }
+
+    BIN binData = {0,0};
+    pItem->getDataAll( &binTTLV_, &binData );
+
+    BinViewDlg binView;
+    binView.setData( &binData );
+    binView.exec();
+
+    JS_BIN_reset( &binData );
 }
 
 const QString TTLVTreeModel::saveNode()
