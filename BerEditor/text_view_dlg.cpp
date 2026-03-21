@@ -11,15 +11,22 @@
 #include "common.h"
 #include "ber_applet.h"
 
+#include "ber_model.h"
+#include "ttlv_tree_model.h"
+
+#include "js_kms.h"
+
 TextViewDlg::TextViewDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
     setAcceptDrops(true);
 
+    memset( &data_, 0x00, sizeof(BIN));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
-    connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(clickPrintPreview()));
+    connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(filePrintPreview()));
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
 
 #if defined(Q_OS_MAC)
@@ -30,23 +37,37 @@ TextViewDlg::TextViewDlg(QWidget *parent)
 
 TextViewDlg::~TextViewDlg()
 {
-
+    JS_BIN_reset( &data_ );
 }
 
-void TextViewDlg::log( const QString strLog, QColor cr )
+void TextViewDlg::setData( const BIN *pData )
 {
-    QDateTime date;
-    date.setTime_t( time(NULL));
-    QString strMsg;
+    JS_BIN_reset( &data_ );
+    JS_BIN_copy( &data_, pData );
 
+    int ret = JS_KMS_isTTLV( &data_ );
+
+    if( ret == 1 )
+    {
+        parseTTLV();
+    }
+    else
+    {
+        parseBER();
+    }
+}
+
+void TextViewDlg::log( const QString strLog, bool bNL )
+{
     QTextCursor cursor = mDataText->textCursor();
 
     QTextCharFormat format;
-    format.setForeground( cr );
     cursor.mergeCharFormat(format);
 
-    strMsg = QString( "[%1] %2\n" ).arg( date.toString("HH:mm:ss") ).arg( strLog );
-    cursor.insertText( strMsg );
+    if( bNL == true )
+        cursor.insertText( QString( "%1\n" ).arg(strLog) );
+    else
+        cursor.insertText( strLog );
 
     mDataText->setTextCursor( cursor );
     mDataText->repaint();
@@ -85,19 +106,91 @@ void TextViewDlg::clickPrint()
 
     if (dialog.exec() == QDialog::Accepted) {
         QPainter painter(&printer);
+        mDataText->print(&printer);
         this->render(&painter);   // QDialog 내용 출력
     }
 }
 
-void TextViewDlg::clickPrintPreview()
+void TextViewDlg::printPreview(QPrinter *printer)
 {
-    QPrinter printer;
+#ifdef QT_NO_PRINTER
+    Q_UNUSED(printer);
+#else
+    mDataText->print( printer );
+#endif
+}
 
+void TextViewDlg::filePrintPreview()
+{
+#if QT_CONFIG(printpreviewdialog)
+    QPrinter printer(QPrinter::HighResolution);
     QPrintPreviewDialog preview(&printer, this);
+    connect(&preview, &QPrintPreviewDialog::paintRequested, this, &TextViewDlg::printPreview);
     preview.exec();
+#endif
 }
 
 void TextViewDlg::clickFind()
+{
+    QString strPath = berApplet->curFilePath();
+
+    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BIN, strPath );
+
+    if( strFileName > 0 )
+    {
+        JS_BIN_reset( &data_ );
+        JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
+
+        setData( &data_ );
+    }
+}
+
+void TextViewDlg::parseBER()
+{
+    BerModel berModel;
+
+    berModel.setBER( &data_ );
+    berModel.makeTree( false );
+
+    BerTreeView* treeView = berModel.getTreeView();
+
+    if( mCertUtilRadio->isChecked() )
+        textCertUtil( &berModel );
+    else
+        textOpenSSL( &berModel );
+}
+
+void TextViewDlg::parseTTLV()
+{
+    TTLVTreeModel ttlvModel;
+
+    ttlvModel.setTTLV( &data_ );
+    ttlvModel.parseTree();
+
+    TTLVTreeView* treeView = ttlvModel.getTreeView();
+
+    if( mCertUtilRadio->isChecked() )
+        textCertUtil( &ttlvModel );
+    else
+        textOpenSSL( &ttlvModel );
+}
+
+void TextViewDlg::textCertUtil( BerModel *pModel )
+{
+
+}
+
+void TextViewDlg::textOpenSSL( BerModel *pModel )
+{
+
+}
+
+void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
+{
+
+}
+
+void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
 {
 
 }
