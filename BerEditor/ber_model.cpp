@@ -1143,7 +1143,7 @@ void BerModel::EditValue()
 
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), tree_view_ );
+        berApplet->warningBox( tr( "No items available" ), tree_view_ );
         return;
     }
 
@@ -1161,7 +1161,7 @@ void BerModel::ChangeDefinite()
     BerItem* item = tree_view_->currentItem();
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), tree_view_ );
+        berApplet->warningBox( tr( "No items available" ), tree_view_ );
         return;
     }
 
@@ -1365,7 +1365,7 @@ void BerModel::DeleteBER()
 
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), tree_view_ );
+        berApplet->warningBox( tr( "No items available" ), tree_view_ );
         return;
     }
 

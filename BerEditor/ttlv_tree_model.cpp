@@ -795,7 +795,7 @@ void TTLVTreeModel::editNode()
 
     if( pItem == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        berApplet->warningBox( tr( "No items available" ), ttlv_view_ );
         return;
     }
 
@@ -813,7 +813,7 @@ void TTLVTreeModel::deleteNode()
 
     if( pItem == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        berApplet->warningBox( tr( "No items available" ), ttlv_view_ );
         return;
     }
 
@@ -849,7 +849,7 @@ void TTLVTreeModel::binaryView()
 
     if( pItem == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        berApplet->warningBox( tr( "No items available" ), ttlv_view_ );
         return;
     }
 
@@ -869,7 +869,7 @@ void TTLVTreeModel::textView()
 
     if( pItem == NULL )
     {
-        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        berApplet->warningBox( tr( "No items available" ), ttlv_view_ );
         return;
     }
 
