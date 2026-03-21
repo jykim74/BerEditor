@@ -22,7 +22,7 @@ public:
     ~TextViewDlg();
     void setData( const BIN *pData );
 
-private:
+private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
 
@@ -32,8 +32,15 @@ private:
 
     void clickFind();
 
+    void checkCertUtil();
+    void checkOpenSSL();
+
 private:
+    void initUI();
+
     void log( const QString strLog, bool bNL = true );
+    void line();
+
     void parseBER();
     void parseTTLV();
 

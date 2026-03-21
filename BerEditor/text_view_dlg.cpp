@@ -13,6 +13,8 @@
 
 #include "ber_model.h"
 #include "ttlv_tree_model.h"
+#include "ttlv_tree_item.h"
+#include "settings_mgr.h"
 
 #include "js_kms.h"
 
@@ -22,12 +24,16 @@ TextViewDlg::TextViewDlg(QWidget *parent)
     setupUi(this);
     setAcceptDrops(true);
 
+    initUI();
+
     memset( &data_, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
     connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(filePrintPreview()));
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
+    connect( mCertUtilRadio, SIGNAL(clicked()), this, SLOT(checkCertUtil()));
+    connect( mOpenSSLRadio, SIGNAL(clicked()), this, SLOT(checkOpenSSL()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -38,6 +44,11 @@ TextViewDlg::TextViewDlg(QWidget *parent)
 TextViewDlg::~TextViewDlg()
 {
     JS_BIN_reset( &data_ );
+}
+
+void TextViewDlg::initUI()
+{
+    mOpenSSLRadio->setChecked(true);
 }
 
 void TextViewDlg::setData( const BIN *pData )
@@ -71,6 +82,11 @@ void TextViewDlg::log( const QString strLog, bool bNL )
 
     mDataText->setTextCursor( cursor );
     mDataText->repaint();
+}
+
+ void TextViewDlg::line()
+{
+    log( "==================================================================");
 }
 
 void TextViewDlg::dragEnterEvent(QDragEnterEvent *event)
@@ -141,18 +157,56 @@ void TextViewDlg::clickFind()
         JS_BIN_reset( &data_ );
         JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
 
-        setData( &data_ );
+        int ret = JS_KMS_isTTLV( &data_ );
+
+        if( ret == 1 )
+        {
+            parseTTLV();
+        }
+        else
+        {
+            parseBER();
+        }
+    }
+}
+
+void TextViewDlg::checkCertUtil()
+{
+    int ret = JS_KMS_isTTLV( &data_ );
+
+    if( ret == 1 )
+    {
+        parseTTLV();
+    }
+    else
+    {
+        parseBER();
+    }
+}
+
+void TextViewDlg::checkOpenSSL()
+{
+    int ret = JS_KMS_isTTLV( &data_ );
+
+    if( ret == 1 )
+    {
+        parseTTLV();
+    }
+    else
+    {
+        parseBER();
     }
 }
 
 void TextViewDlg::parseBER()
 {
     BerModel berModel;
+    bool bExpand = berApplet->settingsMgr()->autoExpand();
 
     berModel.setBER( &data_ );
-    berModel.makeTree( false );
+    berModel.parseTree( bExpand );
 
-    BerTreeView* treeView = berModel.getTreeView();
+    mDataText->clear();
 
     if( mCertUtilRadio->isChecked() )
         textCertUtil( &berModel );
@@ -169,6 +223,8 @@ void TextViewDlg::parseTTLV()
 
     TTLVTreeView* treeView = ttlvModel.getTreeView();
 
+    mDataText->clear();
+
     if( mCertUtilRadio->isChecked() )
         textCertUtil( &ttlvModel );
     else
@@ -177,20 +233,108 @@ void TextViewDlg::parseTTLV()
 
 void TextViewDlg::textCertUtil( BerModel *pModel )
 {
+    BerTreeView* treeView = pModel->getTreeView();
+    BerItem *curItem = NULL;
 
+    curItem = treeView->getNext( curItem );
+
+    while( curItem )
+    {
+        QString strLine;
+
+        BIN binHeader = {0,0};
+        JS_BIN_set( &binHeader, curItem->header_, curItem->header_size_ );
+
+        strLine += QString( "%1" ).arg( getHexString( &binHeader ) );
+        log( strLine );
+
+        curItem = treeView->getNext( curItem );
+        JS_BIN_reset( &binHeader );
+    }
 }
 
 void TextViewDlg::textOpenSSL( BerModel *pModel )
 {
+    line();
+    log( "| Offset | Depth | Length | Tag (Type)" );
+    line();
 
+    BerTreeView* treeView = pModel->getTreeView();
+    BerItem *curItem = NULL;
+
+    curItem = treeView->getNext( curItem );
+
+    while( curItem )
+    {
+        QString strLine;
+        int nDepth = curItem->GetLevel();
+
+        QString strS = " ";
+        if( nDepth == 0 ) strS = "";
+
+        strLine = QString( "| %1 | %2 | %3 |%4 %5")
+                      .arg( curItem->GetOffset(), 6, 10, QLatin1Char(' ') )
+                      .arg( curItem->GetLevel(), 5, 10, QLatin1Char(' ') )
+                      .arg( curItem->GetLength(), 6, 10, QLatin1Char(' ') )
+                      .arg( strS, nDepth, QLatin1Char( ' '))
+                      .arg( curItem->GetTagString() );
+
+        log( strLine );
+
+        curItem = treeView->getNext( curItem );
+    }
+
+    line();
 }
 
 void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
 {
+    TTLVTreeView* treeView = pModel->getTreeView();
+    TTLVTreeItem *curItem = NULL;
 
+    curItem = treeView->getNext( curItem );
+
+    while( curItem )
+    {
+        QString strLine;
+
+        strLine += getHexString( &curItem->header_ );
+
+        log( strLine );
+        curItem = treeView->getNext( curItem );
+    }
 }
 
 void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
 {
+    line();
+    log( "| Offset | Depth | Length | Tag (Type)" );
+    line();
 
+    TTLVTreeView* treeView = pModel->getTreeView();
+    TTLVTreeItem *curItem = NULL;
+
+    curItem = treeView->getNext( curItem );
+
+    while( curItem )
+    {
+        QString strLine;
+        QString strS = " ";
+
+        int nDepth = curItem->getLevel();
+        if( nDepth == 0 ) strS = "";
+
+        strLine = QString( "| %1 | %2 | %3 |%4 %5")
+                      .arg( curItem->getOffset(), 6, 10, QLatin1Char(' ') )
+                      .arg( curItem->getLevel(), 5, 10, QLatin1Char(' ') )
+                      .arg( curItem->getLength(), 6, 10, QLatin1Char(' ') )
+                      .arg( strS, nDepth, QLatin1Char( ' '))
+                      .arg( curItem->getTagName() );
+
+        log( strLine );
+
+        curItem = treeView->getNext( curItem );
+    }
+
+    line();
 }

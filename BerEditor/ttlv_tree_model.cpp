@@ -863,6 +863,26 @@ void TTLVTreeModel::binaryView()
     JS_BIN_reset( &binData );
 }
 
+void TTLVTreeModel::textView()
+{
+    TTLVTreeItem *pItem = currentItem();
+
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), ttlv_view_ );
+        return;
+    }
+
+    BIN binData = {0,0};
+    pItem->getDataAll( &binTTLV_, &binData );
+
+    TextViewDlg textView;
+    textView.setData( &binData );
+    textView.exec();
+
+    JS_BIN_reset( &binData );
+}
+
 const QString TTLVTreeModel::saveNode()
 {
     QString strPath;

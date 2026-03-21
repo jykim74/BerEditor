@@ -90,6 +90,20 @@ int TTLVTreeItem::setLength( int32 nLength )
     return 0;
 }
 
+int32 TTLVTreeItem::getLength()
+{
+    int32 len = 0;
+
+    if( header_.nLen != JS_TTLV_HEADER_SIZE ) return -1;
+
+    len = ( header_.pVal[JS_TTLV_LENGTH_OFFSET] << 24 )
+          | ( header_.pVal[JS_TTLV_LENGTH_OFFSET+1] << 16 )
+          | ( header_.pVal[JS_TTLV_LENGTH_OFFSET+2] << 8 )
+          | header_.pVal[JS_TTLV_LENGTH_OFFSET+3];
+
+    return len;
+}
+
 int TTLVTreeItem::getValue( const BIN *pTTLV, BIN *pValue )
 {
     if( header_.nLen != JS_TTLV_HEADER_SIZE || offset_ < 0) return -1;

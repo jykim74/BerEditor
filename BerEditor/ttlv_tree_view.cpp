@@ -210,6 +210,7 @@ void TTLVTreeView::leftContextMenu( QPoint point )
         menu.addAction( tr("Save node"), tree_model, SLOT(saveNode()) );
         menu.addAction( tr("Save node value"), tree_model, SLOT( saveNodeValue() ) );
         menu.addAction( tr("Binary view" ), tree_model, SLOT(binaryView()));
+        menu.addAction( tr("Text view" ), tree_model, SLOT(textView()));
 
         if( item->isStructure() == true )
         {

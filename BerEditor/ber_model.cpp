@@ -264,15 +264,16 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExp
     return nRet;
 }
 
-int BerModel::makeTree( bool bExpand )
+int BerModel::parseTree( bool bExpand )
 {
     int ret = 0;
     int offset = 0;
 
-    BerItem *pRootItem = new BerItem();
-
     clear();
+
+    BerItem *pRootItem = new BerItem();
     QStringList labels;
+
     setHorizontalHeaderLabels( labels );
 
     pRootItem->SetOffset(offset);
@@ -308,6 +309,13 @@ int BerModel::makeTree( bool bExpand )
             }
         }
     }
+
+    return ret;
+}
+
+int BerModel::makeTree( bool bExpand )
+{
+    int ret = parseTree( bExpand );
 
     tree_view_->viewRoot();
     return ret;
@@ -1194,6 +1202,25 @@ void BerModel::BinView()
     BinViewDlg binView;
     binView.setData( &binData );
     binView.exec();
+    JS_BIN_reset( &binData );
+}
+
+void BerModel::TextView()
+{
+    BerItem* item = tree_view_->currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There are no items selected."), tree_view_ );
+        return;
+    }
+
+    BIN binData = {0,0};
+    item->getNodeBin( &binBer_, &binData );
+
+    TextViewDlg textView;
+    textView.setData( &binData );
+    textView.exec();
+
     JS_BIN_reset( &binData );
 }
 

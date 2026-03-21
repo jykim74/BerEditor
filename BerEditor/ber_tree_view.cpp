@@ -755,6 +755,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         QAction *pViewAct = NULL;
         QAction *pChangeDefinite = NULL;
         QAction *pBinViewAct = NULL;
+        QAction *pTextViewAct = NULL;
 
         if( item->isConstructed() )
         {
@@ -770,6 +771,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         }
 
         pBinViewAct = menu.addAction( tr("Binary view" ), tree_model, SLOT(BinView()));
+        pTextViewAct = menu.addAction( tr( "Text view" ), tree_model, SLOT(TextView()));
 
         if( item->parent() )
             pDeleteAct = menu.addAction( tr("Delete node" ), tree_model, SLOT(DeleteBER()));

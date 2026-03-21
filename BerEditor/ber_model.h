@@ -27,6 +27,8 @@ public:
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
     int getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExpand );
+
+    int parseTree( bool bExpand );
     int makeTree( bool bExpand );
 
     const BerItem* addItem( BerItem* pParentItem, bool bFirst, const BIN *pData );
@@ -59,6 +61,7 @@ public slots:
     void ViewBER();
     void ChangeDefinite();
     void BinView();
+    void TextView();
 
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );

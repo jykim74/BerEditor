@@ -32,6 +32,7 @@ public:
     int getTag( BIN *pTag );
     int getType( BIN *pType );
     int getLength( BIN *pLength );
+    int32 getLength();
     int setLength( int32 nLength );
     int getValue( const BIN *pTTLV, BIN *pValue );
     int getValueWithPad( const BIN *pTTLV, BIN *pValue );
