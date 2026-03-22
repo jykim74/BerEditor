@@ -84,9 +84,69 @@ void TextViewDlg::log( const QString strLog, bool bNL )
     mDataText->repaint();
 }
 
+void  TextViewDlg::log( int nSpace, const QString strLog, bool bNL )
+{
+    QString strSpace;
+    QTextCursor cursor = mDataText->textCursor();
+
+    QTextCharFormat format;
+    cursor.mergeCharFormat(format);
+
+    if( bNL == true )
+        cursor.insertText( QString( "%1%2\n" ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strLog) );
+    else
+        cursor.insertText( QString( "%1%2" ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strLog));
+
+    mDataText->setTextCursor( cursor );
+    mDataText->repaint();
+}
+
+void TextViewDlg::log( const QString strHead, int nSpace, const QString strValue, bool bNL )
+{
+    QString strSpace;
+    QTextCursor cursor = mDataText->textCursor();
+
+    QTextCharFormat format;
+    cursor.mergeCharFormat(format);
+
+    if( bNL == true )
+        cursor.insertText( QString( "%1%2%3\n" ).arg( strHead ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strValue) );
+    else
+        cursor.insertText( QString( "%1%2%3" ).arg( strHead ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strValue));
+
+    mDataText->setTextCursor( cursor );
+    mDataText->repaint();
+}
+
  void TextViewDlg::line()
 {
     log( "==================================================================");
+}
+
+void TextViewDlg::logBIN( int nSpace, const BIN *pData )
+{
+    int nLeft = pData->nLen;
+    int nPos = 0;
+    int kBlockSize = 16;
+
+    while( nLeft > 0 )
+    {
+        int nSize = 0;
+        BIN binPart = {0,0};
+
+        if( nLeft > kBlockSize )
+            nSize = 16;
+        else
+            nSize = nLeft;
+
+        binPart.pVal = &pData->pVal[nPos];
+        binPart.nLen = nSize;
+
+        log( nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
+
+        nPos += nSize;
+        nLeft -= nSize;
+    }
 }
 
 void TextViewDlg::dragEnterEvent(QDragEnterEvent *event)
@@ -241,12 +301,22 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
     while( curItem )
     {
         QString strLine;
+        int nLevel = curItem->GetLevel() * 2;
 
         BIN binHeader = {0,0};
         JS_BIN_set( &binHeader, curItem->header_, curItem->header_size_ );
 
-        strLine += QString( "%1" ).arg( getHexString( &binHeader ) );
-        log( strLine );
+        strLine += QString( "%1" ).arg( getHexString2( &binHeader ) );
+        log( nLevel, strLine );
+
+        if( curItem->isConstructed() == false )
+        {
+            BIN binVal = {0,0};
+            binVal.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_];
+            binVal.nLen = curItem->length_;
+
+            logBIN( nLevel, &binVal );
+        }
 
         curItem = treeView->getNext( curItem );
         JS_BIN_reset( &binHeader );

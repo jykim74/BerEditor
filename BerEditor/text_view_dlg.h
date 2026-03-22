@@ -39,7 +39,10 @@ private:
     void initUI();
 
     void log( const QString strLog, bool bNL = true );
+    void log( int nSpace, const QString strLog, bool bNL = true );
+    void log( const QString strHead, int nSpace, const QString strValue, bool bNL = true );
     void line();
+    void logBIN( int nSpace, const BIN *pData );
 
     void parseBER();
     void parseTTLV();
