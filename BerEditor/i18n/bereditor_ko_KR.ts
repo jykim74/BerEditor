@@ -1663,56 +1663,62 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">BER 구조</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1046"/>
-        <location filename="../ber_model.cpp" line="1066"/>
-        <location filename="../ber_model.cpp" line="1085"/>
+        <location filename="../ber_model.cpp" line="1055"/>
+        <location filename="../ber_model.cpp" line="1075"/>
+        <location filename="../ber_model.cpp" line="1094"/>
+        <location filename="../ber_model.cpp" line="1195"/>
+        <location filename="../ber_model.cpp" line="1213"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1137"/>
-        <location filename="../ber_model.cpp" line="1155"/>
-        <location filename="../ber_model.cpp" line="1322"/>
         <source>There is no item to select</source>
-        <translation>선택한 아이템이 없습니다.</translation>
+        <translation type="vanished">선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1142"/>
+        <location filename="../ber_model.cpp" line="1146"/>
+        <location filename="../ber_model.cpp" line="1164"/>
+        <location filename="../ber_model.cpp" line="1368"/>
+        <source>No items available</source>
+        <translation>아이템이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../ber_model.cpp" line="1151"/>
         <source>Edit BER</source>
         <translation>BER 편집</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1160"/>
+        <location filename="../ber_model.cpp" line="1169"/>
         <source>Are you sure you want to change to definte length?</source>
         <translation>정말로 특정(Definite) 길이로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1173"/>
+        <location filename="../ber_model.cpp" line="1182"/>
         <source>Changed to a definite length.</source>
         <translation>특정(Definite) 길이로 변경 하였습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1177"/>
+        <location filename="../ber_model.cpp" line="1186"/>
         <source>Failed to change the definite length: %1</source>
         <translation>특정(Definite) 길이 변경에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1190"/>
+        <location filename="../ber_model.cpp" line="1236"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1196"/>
+        <location filename="../ber_model.cpp" line="1242"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1214"/>
+        <location filename="../ber_model.cpp" line="1260"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1290"/>
+        <location filename="../ber_model.cpp" line="1336"/>
         <source>failed to decrypt private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
@@ -1721,22 +1727,22 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1308"/>
+        <location filename="../ber_model.cpp" line="1354"/>
         <source>Node does not support view: %1</source>
         <translation>이 노드는 보기를 지원 하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1328"/>
+        <location filename="../ber_model.cpp" line="1374"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1332"/>
+        <location filename="../ber_model.cpp" line="1378"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_model.cpp" line="1352"/>
+        <location filename="../ber_model.cpp" line="1398"/>
         <source>failed to delete: %1</source>
         <translation>삭제에 실패 했습니다: %1</translation>
     </message>
@@ -1778,32 +1784,42 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="760"/>
+        <location filename="../ber_tree_view.cpp" line="762"/>
         <source>Insert node</source>
         <translation>노드 입력</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="761"/>
+        <location filename="../ber_tree_view.cpp" line="763"/>
         <source>View node</source>
         <translation>노드 보기</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="764"/>
+        <location filename="../ber_tree_view.cpp" line="766"/>
         <source>Change to definite length</source>
         <translation>특정 길이 변경</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="768"/>
+        <location filename="../ber_tree_view.cpp" line="770"/>
         <source>Edit node</source>
         <translation>노드 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="772"/>
+        <location filename="../ber_tree_view.cpp" line="773"/>
+        <source>Binary view</source>
+        <translation>바이너리 보기</translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="774"/>
+        <source>Text view</source>
+        <translation>텍스트 보기</translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="777"/>
         <source>Delete node</source>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="786"/>
+        <location filename="../ber_tree_view.cpp" line="791"/>
         <source>Expand node</source>
         <translation>노드 확장</translation>
     </message>
@@ -1824,7 +1840,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="855"/>
+        <location filename="../ber_tree_view.cpp" line="860"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
@@ -1863,6 +1879,74 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <source>File name</source>
         <translation type="vanished">파일 이름</translation>
+    </message>
+</context>
+<context>
+    <name>BinViewDlg</name>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="14"/>
+        <source>Binary View Window</source>
+        <translation>바이너리 보기 창</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="35"/>
+        <source>Binary View</source>
+        <translation>바이너리 보기</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="62"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="80"/>
+        <source>ASCII</source>
+        <translation>ASCII</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="100"/>
+        <source>Raw</source>
+        <translation>Raw</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="107"/>
+        <source>Hex</source>
+        <translation>16진수</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="117"/>
+        <source>Address</source>
+        <translation>위치</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="124"/>
+        <source>PEM</source>
+        <translation>PEM</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="131"/>
+        <source>Base64</source>
+        <translation>베이스64</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="206"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="226"/>
+        <source>Print</source>
+        <translation>인쇄</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.ui" line="233"/>
+        <source>Print Preview</source>
+        <translation>인쇄 미리보기</translation>
+    </message>
+    <message>
+        <location filename="../bin_view_dlg.cpp" line="175"/>
+        <source>Binary View - %1</source>
+        <translation>바이너리 보기 - %1</translation>
     </message>
 </context>
 <context>
@@ -13638,17 +13722,17 @@ Use %2</source>
         <translation>메인창</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="763"/>
+        <location filename="../mainwindow.cpp" line="779"/>
         <source>&amp;File</source>
         <translation>파일(&amp;F)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="764"/>
+        <location filename="../mainwindow.cpp" line="780"/>
         <source>File</source>
         <translation>파일</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="770"/>
+        <location filename="../mainwindow.cpp" line="786"/>
         <source>&amp;New</source>
         <translation>새로열기(&amp;N)</translation>
     </message>
@@ -13657,7 +13741,7 @@ Use %2</source>
         <translation type="vanished">새로운 파일 생성</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="778"/>
+        <location filename="../mainwindow.cpp" line="794"/>
         <source>&amp;Open...</source>
         <translation>열기(&amp;O)</translation>
     </message>
@@ -13694,17 +13778,17 @@ Use %2</source>
         <translation type="vanished">개인키 열기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="368"/>
+        <location filename="../mainwindow.cpp" line="370"/>
         <source>Open PrivateKey</source>
         <translation>개인키 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="819"/>
+        <location filename="../mainwindow.cpp" line="835"/>
         <source>&amp;Open PublicKey</source>
         <translation>공개키 열기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="377"/>
         <source>Open PublicKey</source>
         <translation>공개키 열기</translation>
     </message>
@@ -13713,37 +13797,37 @@ Use %2</source>
         <translation type="vanished">CMS 열기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="382"/>
+        <location filename="../mainwindow.cpp" line="384"/>
         <source>Open CMS</source>
         <translation>CMS 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="214"/>
+        <location filename="../mainwindow.cpp" line="216"/>
         <source>JSON </source>
         <translation>JSON </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="218"/>
         <source>JSON</source>
         <translation>JSON</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="320"/>
+        <location filename="../mainwindow.cpp" line="322"/>
         <source>&amp;View</source>
         <translation>보기 (&amp;V)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="322"/>
+        <location filename="../mainwindow.cpp" line="324"/>
         <source>File ToolBar</source>
         <translation>파일 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="323"/>
+        <location filename="../mainwindow.cpp" line="325"/>
         <source>Edit ToolBar</source>
         <translation>편집 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="325"/>
+        <location filename="../mainwindow.cpp" line="327"/>
         <source>Tool ToolBar</source>
         <translation>툴 툴바</translation>
     </message>
@@ -13752,82 +13836,82 @@ Use %2</source>
         <translation type="vanished">암호화 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="327"/>
+        <location filename="../mainwindow.cpp" line="329"/>
         <source>Service ToolBar</source>
         <translation>서비스 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="328"/>
+        <location filename="../mainwindow.cpp" line="330"/>
         <source>Protocol ToolBar</source>
         <translation>프로토콜 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="329"/>
+        <location filename="../mainwindow.cpp" line="331"/>
         <source>KMIP ToolBar</source>
         <translation>KMIP 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="330"/>
+        <location filename="../mainwindow.cpp" line="332"/>
         <source>Help ToolBar</source>
         <translation>돕기 툴바</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="333"/>
+        <location filename="../mainwindow.cpp" line="335"/>
         <source>New</source>
         <translation>새로 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="340"/>
+        <location filename="../mainwindow.cpp" line="342"/>
         <source>Open</source>
         <translation>열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="347"/>
+        <location filename="../mainwindow.cpp" line="349"/>
         <source>Open Certificate</source>
         <translation>인증서 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="354"/>
+        <location filename="../mainwindow.cpp" line="356"/>
         <source>Open CRL</source>
         <translation>CRL 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="361"/>
+        <location filename="../mainwindow.cpp" line="363"/>
         <source>Open CSR</source>
         <translation>CSR 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="389"/>
+        <location filename="../mainwindow.cpp" line="391"/>
         <source>Save</source>
         <translation>저장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="396"/>
+        <location filename="../mainwindow.cpp" line="398"/>
         <source>Print</source>
         <translation>인쇄</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="405"/>
+        <location filename="../mainwindow.cpp" line="407"/>
         <source>Expand All</source>
         <translation>전체 확장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="412"/>
+        <location filename="../mainwindow.cpp" line="414"/>
         <source>Expand Node</source>
         <translation>노드 확장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="419"/>
+        <location filename="../mainwindow.cpp" line="421"/>
         <source>Collapse All</source>
         <translation>전체 닫기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="426"/>
+        <location filename="../mainwindow.cpp" line="428"/>
         <source>Collapse Node</source>
         <translation>노드 닫기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="447"/>
+        <location filename="../mainwindow.cpp" line="449"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -13840,12 +13924,12 @@ Use %2</source>
         <translation type="vanished">숫자 변환</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="475"/>
+        <location filename="../mainwindow.cpp" line="477"/>
         <source>OID Information</source>
         <translation>OID 정보</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="482"/>
+        <location filename="../mainwindow.cpp" line="484"/>
         <source>Make BER</source>
         <translation>BER 만들기</translation>
     </message>
@@ -13862,7 +13946,7 @@ Use %2</source>
         <translation type="vanished">키 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="518"/>
+        <location filename="../mainwindow.cpp" line="534"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
@@ -13871,17 +13955,17 @@ Use %2</source>
         <translation type="vanished">MAC</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="532"/>
+        <location filename="../mainwindow.cpp" line="548"/>
         <source>Encrypt/Decrypt</source>
         <translation>암호화 / 복호화</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="539"/>
+        <location filename="../mainwindow.cpp" line="555"/>
         <source>Sign/Verify</source>
         <translation>서명/검증</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="546"/>
+        <location filename="../mainwindow.cpp" line="562"/>
         <source>PubKey Encrypt/Decrypt</source>
         <translation>공개키 암/복호화</translation>
     </message>
@@ -13906,144 +13990,156 @@ Use %2</source>
         <translation type="vanished">OTP 값 생성</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="588"/>
+        <location filename="../mainwindow.cpp" line="604"/>
         <source>VID</source>
         <translation>VID</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="595"/>
+        <location filename="../mainwindow.cpp" line="611"/>
         <source>BN Calculator</source>
         <translation>큰수 계산기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="623"/>
+        <location filename="../mainwindow.cpp" line="639"/>
         <source>Key List</source>
         <translation>키 목록</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="651"/>
+        <location filename="../mainwindow.cpp" line="667"/>
         <source>CAVP</source>
         <translation>CAVP</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="630"/>
+        <location filename="../mainwindow.cpp" line="646"/>
         <source>SSL Check</source>
         <translation>SSL 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="433"/>
-        <location filename="../mainwindow.cpp" line="963"/>
-        <location filename="../mainwindow.cpp" line="971"/>
+        <location filename="../mainwindow.cpp" line="435"/>
+        <location filename="../mainwindow.cpp" line="979"/>
+        <location filename="../mainwindow.cpp" line="987"/>
         <source>Previous Node</source>
         <translation>이전 노드</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="440"/>
+        <location filename="../mainwindow.cpp" line="442"/>
         <source>Next Node</source>
         <translation>다음 노드</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="503"/>
+        <location filename="../mainwindow.cpp" line="505"/>
         <source>BER Compare</source>
         <translation>BER 비교하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="658"/>
+        <location filename="../mainwindow.cpp" line="512"/>
+        <location filename="../mainwindow.cpp" line="1082"/>
+        <source>Binary View</source>
+        <translation>바이너리 보기</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="519"/>
+        <location filename="../mainwindow.cpp" line="1090"/>
+        <source>Text View</source>
+        <translation>텍스트 보기</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="674"/>
         <source>OCSP client</source>
         <translation>OCSP 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="665"/>
+        <location filename="../mainwindow.cpp" line="681"/>
         <source>TSP client</source>
         <translation>TSP 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="672"/>
+        <location filename="../mainwindow.cpp" line="688"/>
         <source>CMP client</source>
         <translation>CMP 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="679"/>
+        <location filename="../mainwindow.cpp" line="695"/>
         <source>SCEP client</source>
         <translation>SCEP 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="693"/>
+        <location filename="../mainwindow.cpp" line="709"/>
         <source>Decode TTLV</source>
         <translation>TTLV 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="700"/>
+        <location filename="../mainwindow.cpp" line="716"/>
         <source>Make TTLV</source>
         <translation>TTLV 만들기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="721"/>
+        <location filename="../mainwindow.cpp" line="737"/>
         <source>Settings</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="728"/>
+        <location filename="../mainwindow.cpp" line="744"/>
         <source>Clear Log</source>
         <translation>로그 지우기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="735"/>
+        <location filename="../mainwindow.cpp" line="751"/>
         <source>Halt Log</source>
         <translation>로그 중지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="749"/>
+        <location filename="../mainwindow.cpp" line="765"/>
         <source>About</source>
         <translation>대해서</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="756"/>
+        <location filename="../mainwindow.cpp" line="772"/>
         <source>Set Default</source>
         <translation>설정 초기화</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="772"/>
+        <location filename="../mainwindow.cpp" line="788"/>
         <source>Open new window</source>
         <translation>새로운 창 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="780"/>
+        <location filename="../mainwindow.cpp" line="796"/>
         <source>Open BER file</source>
         <translation>BER 파일 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="788"/>
+        <location filename="../mainwindow.cpp" line="804"/>
         <source>Open certificate file</source>
         <translation>인증서 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="796"/>
+        <location filename="../mainwindow.cpp" line="812"/>
         <source>Open CRL file</source>
         <translation>CRL 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="804"/>
+        <location filename="../mainwindow.cpp" line="820"/>
         <source>Open CSR file</source>
         <translation>CSR 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="813"/>
+        <location filename="../mainwindow.cpp" line="829"/>
         <source>Open private key file</source>
         <translation>개인키 파일 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="821"/>
+        <location filename="../mainwindow.cpp" line="837"/>
         <source>Open public key file</source>
         <translation>공개키 파일 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="831"/>
+        <location filename="../mainwindow.cpp" line="847"/>
         <source>Open CMS file</source>
         <translation>CMS 파일 열기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="837"/>
+        <location filename="../mainwindow.cpp" line="853"/>
         <source>&amp;Save</source>
         <translation>저장(&amp;S)</translation>
     </message>
@@ -14052,7 +14148,7 @@ Use %2</source>
         <translation type="vanished">문서를 디스크에 저장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="845"/>
+        <location filename="../mainwindow.cpp" line="861"/>
         <source>Save &amp;As...</source>
         <translation>다른 이름으로 저장(&amp;A)</translation>
     </message>
@@ -14061,32 +14157,32 @@ Use %2</source>
         <translation type="vanished">파일을 새 이름으로 저장하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="860"/>
+        <location filename="../mainwindow.cpp" line="876"/>
         <source>Recent Files</source>
         <translation>최근 파일들</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="871"/>
+        <location filename="../mainwindow.cpp" line="887"/>
         <source>&amp;Print</source>
         <translation>인쇄(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="877"/>
+        <location filename="../mainwindow.cpp" line="893"/>
         <source>&amp;Print Preview</source>
         <translation>인쇄 미리보기(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="878"/>
+        <location filename="../mainwindow.cpp" line="894"/>
         <source>Print preview</source>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="886"/>
+        <location filename="../mainwindow.cpp" line="902"/>
         <source>&amp;Quit</source>
         <translation>끝내기(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="908"/>
+        <location filename="../mainwindow.cpp" line="924"/>
         <source>&amp;Copy Information</source>
         <translation>복사 정보(&amp;C)</translation>
     </message>
@@ -14095,7 +14191,7 @@ Use %2</source>
         <translation type="vanished">노드 닫기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="978"/>
+        <location filename="../mainwindow.cpp" line="994"/>
         <source>&amp;Find</source>
         <translation>찾기(&amp;F)</translation>
     </message>
@@ -14112,7 +14208,7 @@ Use %2</source>
         <translation type="vanished">숫자 변환기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1031"/>
+        <location filename="../mainwindow.cpp" line="1047"/>
         <source>Make &amp;BER</source>
         <translation>BER 만들기(&amp;B)</translation>
     </message>
@@ -14129,7 +14225,7 @@ Use %2</source>
         <translation type="vanished">BER 데이타 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1170"/>
+        <location filename="../mainwindow.cpp" line="1203"/>
         <source>&amp;VID</source>
         <translation>VID(&amp;V)</translation>
     </message>
@@ -14138,7 +14234,7 @@ Use %2</source>
         <translation type="vanished">VID 생성 및 검증</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1178"/>
+        <location filename="../mainwindow.cpp" line="1211"/>
         <source>&amp;BN Calculator</source>
         <translation>큰수 계산기(&amp;B)</translation>
     </message>
@@ -14147,23 +14243,23 @@ Use %2</source>
         <translation type="vanished">큰수 계산기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1291"/>
+        <location filename="../mainwindow.cpp" line="1324"/>
         <source>Protocol</source>
         <translation>프로토콜</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1348"/>
+        <location filename="../mainwindow.cpp" line="1381"/>
         <source>KMIP</source>
         <translation>KMIP</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="742"/>
-        <location filename="../mainwindow.cpp" line="1424"/>
+        <location filename="../mainwindow.cpp" line="758"/>
+        <location filename="../mainwindow.cpp" line="1457"/>
         <source>Content</source>
         <translation>내용</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="326"/>
+        <location filename="../mainwindow.cpp" line="328"/>
         <source>Cryptography ToolBar</source>
         <translation>암호학 툴바</translation>
     </message>
@@ -14172,209 +14268,219 @@ Use %2</source>
         <translation type="vanished">Cryptographic Message Syntax</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="581"/>
+        <location filename="../mainwindow.cpp" line="597"/>
         <source>OTP Generator</source>
         <translation>OTP 생성기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="602"/>
-        <location filename="../mainwindow.cpp" line="1189"/>
+        <location filename="../mainwindow.cpp" line="618"/>
+        <location filename="../mainwindow.cpp" line="1222"/>
         <source>Make PrivateKey</source>
         <translation>개인키 만들기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="637"/>
+        <location filename="../mainwindow.cpp" line="653"/>
         <source>X509 Compare</source>
         <translation>X509 비교</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="644"/>
-        <location filename="../mainwindow.cpp" line="1263"/>
+        <location filename="../mainwindow.cpp" line="660"/>
+        <location filename="../mainwindow.cpp" line="1296"/>
         <source>Document Signer</source>
         <translation>문서 서명자</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="686"/>
+        <location filename="../mainwindow.cpp" line="702"/>
         <source>ACME client</source>
         <translation>ACME 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="786"/>
+        <location filename="../mainwindow.cpp" line="802"/>
         <source>Open &amp;Certificate</source>
         <translation>인증서 열기(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="794"/>
+        <location filename="../mainwindow.cpp" line="810"/>
         <source>Open CR&amp;L</source>
         <translation>CRL 열기(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="802"/>
+        <location filename="../mainwindow.cpp" line="818"/>
         <source>Open CS&amp;R</source>
         <translation>CSR 열기(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="811"/>
+        <location filename="../mainwindow.cpp" line="827"/>
         <source>Open &amp;PrivateKey</source>
         <translation>개인키 열기(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="829"/>
+        <location filename="../mainwindow.cpp" line="845"/>
         <source>Open C&amp;MS</source>
         <translation>CMS 열기(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="917"/>
+        <location filename="../mainwindow.cpp" line="933"/>
         <source>Copy as hex value</source>
         <translation>헥사 값으로 복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="924"/>
+        <location filename="../mainwindow.cpp" line="940"/>
         <source>Copy as Base64 value</source>
         <translation>Base64 값으로 복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="932"/>
+        <location filename="../mainwindow.cpp" line="948"/>
         <source>Expand all nodes</source>
         <translation>모든 노드 확장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="939"/>
+        <location filename="../mainwindow.cpp" line="955"/>
         <source>Node expansion</source>
         <translation>노드 확장</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="955"/>
+        <location filename="../mainwindow.cpp" line="971"/>
         <source>Node collapse</source>
         <translation>노드 닫기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="962"/>
+        <location filename="../mainwindow.cpp" line="978"/>
         <source>&amp;Previous Node</source>
         <translation>이전 노드(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="970"/>
+        <location filename="../mainwindow.cpp" line="986"/>
         <source>&amp;Next Node</source>
         <translation>다음 노드(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="979"/>
+        <location filename="../mainwindow.cpp" line="995"/>
         <source>Finding BER values</source>
         <translation>BER 값 찾기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1007"/>
+        <location filename="../mainwindow.cpp" line="1023"/>
         <source>Data &amp;Converter</source>
         <translation>데이타 변환기(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1010"/>
+        <location filename="../mainwindow.cpp" line="1026"/>
         <source>Converting data characters</source>
         <translation>데이타 문자 변환하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1015"/>
+        <location filename="../mainwindow.cpp" line="1031"/>
         <source>&amp;Num Converter</source>
         <translation>숫자 변환기(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1018"/>
+        <location filename="../mainwindow.cpp" line="1034"/>
         <source>Converting number</source>
         <translation>숫자 변환하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1026"/>
+        <location filename="../mainwindow.cpp" line="1042"/>
         <source>View Object Identifier information</source>
         <translation>OID 정보 보기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1034"/>
+        <location filename="../mainwindow.cpp" line="1050"/>
         <source>Creating BER data</source>
         <translation>BER 데이타 생성하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1039"/>
+        <location filename="../mainwindow.cpp" line="1055"/>
         <source>&amp;Check BER</source>
         <translation>BER 체크하기(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1042"/>
+        <location filename="../mainwindow.cpp" line="1058"/>
         <source>Check BER data</source>
         <translation>BER 데이타 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="999"/>
+        <location filename="../mainwindow.cpp" line="1015"/>
         <source>&amp;Decode BER</source>
         <translation>BER 디코딩(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1002"/>
+        <location filename="../mainwindow.cpp" line="1018"/>
         <source>BER data decoding</source>
         <translation>BER 데이타 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1047"/>
+        <location filename="../mainwindow.cpp" line="1063"/>
         <source>&amp;Get BER from URI</source>
         <translation>URI 로 부터 BER 가져오기(&amp;G)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1050"/>
+        <location filename="../mainwindow.cpp" line="1066"/>
         <source>Reading BER data from a URI</source>
         <translation>URI로 부터 BER 데이타 읽어오기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1055"/>
+        <location filename="../mainwindow.cpp" line="1071"/>
         <source>&amp;BER Compare</source>
         <translation>BER 비교하기(&amp;B)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1058"/>
+        <location filename="../mainwindow.cpp" line="1074"/>
         <source>BER compare</source>
         <translation>BER 비교하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1074"/>
+        <location filename="../mainwindow.cpp" line="1079"/>
+        <source>&amp;Binary View</source>
+        <translation>바이너리 보기(&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1087"/>
+        <source>&amp;Text View</source>
+        <translation>텍스트 보기(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1107"/>
         <source>&amp;Cryptography</source>
         <translation>암호학(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1081"/>
+        <location filename="../mainwindow.cpp" line="1114"/>
         <source>&amp;Key Manage</source>
         <translation>키 관리(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1084"/>
+        <location filename="../mainwindow.cpp" line="1117"/>
         <source>Deriving keys and encrypting/decrypting keys</source>
         <translation>키 유도 및 키 암/복호화 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1092"/>
+        <location filename="../mainwindow.cpp" line="1125"/>
         <source>Creating a hash value</source>
         <translation>해쉬 값 생성하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1097"/>
+        <location filename="../mainwindow.cpp" line="1130"/>
         <source>M&amp;essage Authentication Code</source>
         <translation>메세지 인증 코드(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1100"/>
+        <location filename="../mainwindow.cpp" line="1133"/>
         <source>Create Message Authentication Code value</source>
         <translation>메세지 인증 코드 생성하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1108"/>
+        <location filename="../mainwindow.cpp" line="1141"/>
         <source>Encrypt/decrypt data</source>
         <translation>데이타 암/복호화</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1116"/>
+        <location filename="../mainwindow.cpp" line="1149"/>
         <source>Signing/Verifying Data</source>
         <translation>데이타 서명/검증</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1124"/>
+        <location filename="../mainwindow.cpp" line="1157"/>
         <source>Encrypt/decrypt data with public key</source>
         <translation>공개키를 이용해 데이타 암/복호화 하기</translation>
     </message>
@@ -14391,62 +14497,62 @@ Use %2</source>
         <translation type="vanished">PKCS#7 Cryptographic Message Syntax</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1146"/>
+        <location filename="../mainwindow.cpp" line="1179"/>
         <source>&amp;Shamir Secret Sharing</source>
         <translation>Shamir Secret Sharing(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1149"/>
+        <location filename="../mainwindow.cpp" line="1182"/>
         <source>Splitting and merging keys using Shamir Secret Sharing</source>
         <translation>Shamir Secret Sharing 을 이용 해 키 분할 및 합치기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1157"/>
+        <location filename="../mainwindow.cpp" line="1190"/>
         <source>Verifying the certificate path</source>
         <translation>인증서 경로 검증하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1173"/>
+        <location filename="../mainwindow.cpp" line="1206"/>
         <source>Generating and validating VID values</source>
         <translation>VID 값 생성 및 검증하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1181"/>
+        <location filename="../mainwindow.cpp" line="1214"/>
         <source>Bignum calculator</source>
         <translation>빅넘 계산기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1214"/>
+        <location filename="../mainwindow.cpp" line="1247"/>
         <source>&amp;Service</source>
         <translation>서비스(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1215"/>
+        <location filename="../mainwindow.cpp" line="1248"/>
         <source>Service</source>
         <translation>서비스</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1223"/>
+        <location filename="../mainwindow.cpp" line="1256"/>
         <source>List and manage asymmetric keys</source>
         <translation>비대칭키 목록 및 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1231"/>
+        <location filename="../mainwindow.cpp" line="1264"/>
         <source>List and manage certificates and keys</source>
         <translation>인증서와 키 목록 및 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1239"/>
+        <location filename="../mainwindow.cpp" line="1272"/>
         <source>List and manage symmetric keys</source>
         <translation>대칭키 목록 및 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1271"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
         <source>Cryptography Algorithm Valication Program</source>
         <translation>Cryptography Algorithm Valication Program</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1244"/>
+        <location filename="../mainwindow.cpp" line="1277"/>
         <source>&amp;SSL Check</source>
         <translation>SSL 체크(&amp;S)</translation>
     </message>
@@ -14455,38 +14561,38 @@ Use %2</source>
         <translation type="vanished">SSL 주소 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1843"/>
+        <location filename="../mainwindow.cpp" line="1876"/>
         <source>This file is Public Key. Open it as Public Key?</source>
         <translation>이 파일은 공개키 입니다. 공개키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1857"/>
-        <location filename="../mainwindow.cpp" line="1887"/>
-        <location filename="../mainwindow.cpp" line="1934"/>
-        <location filename="../mainwindow.cpp" line="1964"/>
+        <location filename="../mainwindow.cpp" line="1890"/>
+        <location filename="../mainwindow.cpp" line="1920"/>
+        <location filename="../mainwindow.cpp" line="1967"/>
+        <location filename="../mainwindow.cpp" line="1997"/>
         <source>Do you want to change the original key to the changed key?</source>
         <translation>원래키를 변경된 키로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1861"/>
-        <location filename="../mainwindow.cpp" line="1891"/>
-        <location filename="../mainwindow.cpp" line="1938"/>
-        <location filename="../mainwindow.cpp" line="1968"/>
+        <location filename="../mainwindow.cpp" line="1894"/>
+        <location filename="../mainwindow.cpp" line="1924"/>
+        <location filename="../mainwindow.cpp" line="1971"/>
+        <location filename="../mainwindow.cpp" line="2001"/>
         <source>Key change saved.</source>
         <translation>키 변경이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1871"/>
+        <location filename="../mainwindow.cpp" line="1904"/>
         <source>Invalid Private Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1920"/>
+        <location filename="../mainwindow.cpp" line="1953"/>
         <source>This file is Private Key. Open it as Private Key?</source>
         <translation>이 파일은 개인키 입니다. 개인키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
+        <location filename="../mainwindow.cpp" line="1981"/>
         <source>Invalid Public Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
@@ -14495,17 +14601,17 @@ Use %2</source>
         <translation type="vanished">이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2809"/>
+        <location filename="../mainwindow.cpp" line="2854"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3811"/>
+        <location filename="../mainwindow.cpp" line="3884"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3823"/>
+        <location filename="../mainwindow.cpp" line="3896"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
@@ -14514,34 +14620,34 @@ Use %2</source>
         <translation type="vanished">이 파일을 TTLV 파일로 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3856"/>
-        <location filename="../mainwindow.cpp" line="3913"/>
+        <location filename="../mainwindow.cpp" line="3929"/>
+        <location filename="../mainwindow.cpp" line="3986"/>
         <source>Saved to file [%1]</source>
         <translation>파일에 저장 되었습니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3860"/>
-        <location filename="../mainwindow.cpp" line="3917"/>
+        <location filename="../mainwindow.cpp" line="3933"/>
+        <location filename="../mainwindow.cpp" line="3990"/>
         <source>failed to save file: %1</source>
         <translation>파일 저장에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3888"/>
+        <location filename="../mainwindow.cpp" line="3961"/>
         <source>Do you want to overwrite %1 file?</source>
         <translation>파일(%1)을 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3935"/>
+        <location filename="../mainwindow.cpp" line="4008"/>
         <source>Start logging</source>
         <translation>로그 기록 시작</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3942"/>
+        <location filename="../mainwindow.cpp" line="4015"/>
         <source>Stop logging</source>
         <translation>로그 기록 중지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4034"/>
+        <location filename="../mainwindow.cpp" line="4107"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -14554,7 +14660,7 @@ Use %2</source>
         <translation type="vanished">키 쌍 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="616"/>
+        <location filename="../mainwindow.cpp" line="632"/>
         <source>Certificate Manage</source>
         <translation>인증서 관리</translation>
     </message>
@@ -14567,22 +14673,22 @@ Use %2</source>
         <translation type="vanished">SSL 검증</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1290"/>
+        <location filename="../mainwindow.cpp" line="1323"/>
         <source>&amp;Protocol</source>
         <translation>프로토콜(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1296"/>
+        <location filename="../mainwindow.cpp" line="1329"/>
         <source>&amp;OCSP client</source>
         <translation>OCSP 클라이언트(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1304"/>
+        <location filename="../mainwindow.cpp" line="1337"/>
         <source>&amp;TSP client</source>
         <translation>TSP 클라이언트(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1312"/>
+        <location filename="../mainwindow.cpp" line="1345"/>
         <source>&amp;CMP client</source>
         <translation>CMP 클라이언트(&amp;C)</translation>
     </message>
@@ -14599,47 +14705,47 @@ Use %2</source>
         <translation type="vanished">로그 중지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1432"/>
+        <location filename="../mainwindow.cpp" line="1465"/>
         <source>License Information</source>
         <translation>라이센스 정보</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1440"/>
+        <location filename="../mainwindow.cpp" line="1473"/>
         <source>Bug or Issue Report</source>
         <translation>버그 또는 이슈 보고</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1446"/>
+        <location filename="../mainwindow.cpp" line="1479"/>
         <source>Q and A</source>
         <translation>질문하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1449"/>
+        <location filename="../mainwindow.cpp" line="1482"/>
         <source>Question and Answer</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1995"/>
+        <location filename="../mainwindow.cpp" line="2028"/>
         <source>This message is not CMS.</source>
         <translation>이 메세지는 CMS가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2141"/>
+        <location filename="../mainwindow.cpp" line="2174"/>
         <source>The BER is TTLV format. Do you open as TTLV format?</source>
         <translation>해당 BER은 TTLV 형식입니다. TTLV 형식으로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2150"/>
+        <location filename="../mainwindow.cpp" line="2183"/>
         <source>TTLV decoding requires a license.</source>
         <translation>TTLV 디코딩은 라이선스가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2157"/>
+        <location filename="../mainwindow.cpp" line="2190"/>
         <source>The data is not BER format</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2757"/>
+        <location filename="../mainwindow.cpp" line="2802"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -14648,13 +14754,13 @@ Use %2</source>
         <translation type="vanished">이파일은 CRL 파일 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1709"/>
-        <location filename="../mainwindow.cpp" line="1759"/>
+        <location filename="../mainwindow.cpp" line="1742"/>
+        <location filename="../mainwindow.cpp" line="1792"/>
         <source>This file is CSR. Open it as CSR information?</source>
         <translation>이파일은 CSR 파일입니다. CSR 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1719"/>
+        <location filename="../mainwindow.cpp" line="1752"/>
         <source>Invalid certificate file</source>
         <translation>잘못된 인증서 파일</translation>
     </message>
@@ -14663,28 +14769,28 @@ Use %2</source>
         <translation type="vanished">이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1769"/>
+        <location filename="../mainwindow.cpp" line="1802"/>
         <source>Invalid CRL file</source>
         <translation>잘못된 CRL 파일입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1699"/>
-        <location filename="../mainwindow.cpp" line="1808"/>
+        <location filename="../mainwindow.cpp" line="1732"/>
+        <location filename="../mainwindow.cpp" line="1841"/>
         <source>This file is CRL. Open it as CRL information?</source>
         <translation>이파일은 CRL 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="560"/>
+        <location filename="../mainwindow.cpp" line="576"/>
         <source>PKCS7</source>
         <translation>PKCS7</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1129"/>
+        <location filename="../mainwindow.cpp" line="1162"/>
         <source>Key &amp;Agreement</source>
         <translation>키 동의(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1132"/>
+        <location filename="../mainwindow.cpp" line="1165"/>
         <source>DH or ECDH key agreement</source>
         <translation>DH 또는 ECDH 키 동의</translation>
     </message>
@@ -14697,169 +14803,169 @@ Use %2</source>
         <translation type="vanished">CMS 메세지 생성 및 검증하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1154"/>
+        <location filename="../mainwindow.cpp" line="1187"/>
         <source>Certificate &amp;Path Validation</source>
         <translation>인증서 경로 검증(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1162"/>
+        <location filename="../mainwindow.cpp" line="1195"/>
         <source>&amp;OTP Generator</source>
         <translation>OTP 생성기(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1186"/>
+        <location filename="../mainwindow.cpp" line="1219"/>
         <source>&amp;Make PrivateKey</source>
         <translation>개인키 만들기(&amp;M)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1220"/>
+        <location filename="../mainwindow.cpp" line="1253"/>
         <source>Key&amp;Pair Manage</source>
         <translation>키 쌍 관리(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1228"/>
+        <location filename="../mainwindow.cpp" line="1261"/>
         <source>&amp;Certificate Manage</source>
         <translation>인증서 관리(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1236"/>
+        <location filename="../mainwindow.cpp" line="1269"/>
         <source>&amp;Key List</source>
         <translation>키 목록(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1247"/>
+        <location filename="../mainwindow.cpp" line="1280"/>
         <source>Check SSL and TLS protocols</source>
         <translation>SSL 및 TLS 프로토콜 체크하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1252"/>
+        <location filename="../mainwindow.cpp" line="1285"/>
         <source>&amp;X509 Compare</source>
         <translation>X509 비교(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1255"/>
+        <location filename="../mainwindow.cpp" line="1288"/>
         <source>Compare X509</source>
         <translation>X509 비교</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1260"/>
+        <location filename="../mainwindow.cpp" line="1293"/>
         <source>&amp;Docment Signer</source>
         <translation>문서 서명자(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1298"/>
+        <location filename="../mainwindow.cpp" line="1331"/>
         <source>OCSP Client Tool</source>
         <translation>OCSP 클라이언트 툴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1306"/>
+        <location filename="../mainwindow.cpp" line="1339"/>
         <source>TSP Client Tool</source>
         <translation>TSP 클라이언트 툴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1314"/>
+        <location filename="../mainwindow.cpp" line="1347"/>
         <source>CMP Client Tool</source>
         <translation>CMP 클라이언트 툴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1322"/>
+        <location filename="../mainwindow.cpp" line="1355"/>
         <source>SCEP Client Tool</source>
         <translation>SCEP 클라이언트 툴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1328"/>
+        <location filename="../mainwindow.cpp" line="1361"/>
         <source>&amp;ACME client</source>
         <translation>ACME 클라이언트(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1330"/>
+        <location filename="../mainwindow.cpp" line="1363"/>
         <source>ACME Client Tool</source>
         <translation>ACME 클라이언트 도구</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1356"/>
+        <location filename="../mainwindow.cpp" line="1389"/>
         <source>Decoding KMIP TTLV Messages</source>
         <translation>KMIP 용 TTLV 메세지 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1364"/>
+        <location filename="../mainwindow.cpp" line="1397"/>
         <source>Creating a KMIP TTLV Message</source>
         <translation>KMIP용 TTLV 메세지 생성하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1372"/>
+        <location filename="../mainwindow.cpp" line="1405"/>
         <source>KMIP TTLV Client Messages</source>
         <translation>KMIP용 TTLV 클라이언트 메세지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1377"/>
+        <location filename="../mainwindow.cpp" line="1410"/>
         <source>TTLV &amp;Client</source>
         <translation>TTLV 클라이언트(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1380"/>
+        <location filename="../mainwindow.cpp" line="1413"/>
         <source>KMIP TTLV Client Tool</source>
         <translation>KMIP용 TTLV 클라이언트 툴</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1403"/>
+        <location filename="../mainwindow.cpp" line="1436"/>
         <source>Set up your environment</source>
         <translation>환경 설정 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1411"/>
+        <location filename="../mainwindow.cpp" line="1444"/>
         <source>Clear log tab messages</source>
         <translation>로그탭에서 로그 메세지 지우기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1416"/>
+        <location filename="../mainwindow.cpp" line="1449"/>
         <source>&amp;Log</source>
         <translation>로그(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1419"/>
+        <location filename="../mainwindow.cpp" line="1452"/>
         <source>Halt logging in the log tab</source>
         <translation>로그탭 로그 중지하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1427"/>
+        <location filename="../mainwindow.cpp" line="1460"/>
         <source>PKI related information content</source>
         <translation>PKI와 관련되 정보 내용</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1435"/>
+        <location filename="../mainwindow.cpp" line="1468"/>
         <source>License Information and Registration</source>
         <translation>라이선스 정보 및 등록하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1443"/>
+        <location filename="../mainwindow.cpp" line="1476"/>
         <source>Report bugs and issues</source>
         <translation>버그 및 이슈 보고하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1455"/>
+        <location filename="../mainwindow.cpp" line="1488"/>
         <source>About BerEditor</source>
         <translation>BerEditor 대해</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1564"/>
-        <location filename="../mainwindow.cpp" line="1603"/>
+        <location filename="../mainwindow.cpp" line="1597"/>
+        <location filename="../mainwindow.cpp" line="1636"/>
         <source>Existing data already exists. Would you like to change it?</source>
         <translation>존재하는 데이타가 이미 있습니다. 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1591"/>
+        <location filename="../mainwindow.cpp" line="1624"/>
         <source>Make TTLV [ Tag Type Length Value ]</source>
         <translation>TTLV 만들기 [ Tag Type Length Value ]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1749"/>
-        <location filename="../mainwindow.cpp" line="1798"/>
+        <location filename="../mainwindow.cpp" line="1782"/>
+        <location filename="../mainwindow.cpp" line="1831"/>
         <source>This file is certificate. Open it as certificate information?</source>
         <translation>이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1818"/>
+        <location filename="../mainwindow.cpp" line="1851"/>
         <source>Invalid CSR file</source>
         <translation>잘못된 CSR 파일</translation>
     </message>
@@ -14873,17 +14979,17 @@ Use %2</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2821"/>
+        <location filename="../mainwindow.cpp" line="2866"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2824"/>
+        <location filename="../mainwindow.cpp" line="2869"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2827"/>
+        <location filename="../mainwindow.cpp" line="2872"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -14892,9 +14998,9 @@ Use %2</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3989"/>
-        <location filename="../mainwindow.cpp" line="4014"/>
-        <location filename="../mainwindow.cpp" line="4028"/>
+        <location filename="../mainwindow.cpp" line="4062"/>
+        <location filename="../mainwindow.cpp" line="4087"/>
+        <location filename="../mainwindow.cpp" line="4101"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -14908,12 +15014,12 @@ Use %2</source>
         <translation type="vanished">BerViewer 끝내기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="902"/>
+        <location filename="../mainwindow.cpp" line="918"/>
         <source>&amp;Edit</source>
         <translation>편집(&amp;E)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="903"/>
+        <location filename="../mainwindow.cpp" line="919"/>
         <source>Edit</source>
         <translation>편집</translation>
     </message>
@@ -14930,7 +15036,7 @@ Use %2</source>
         <translation type="vanished">복사(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="910"/>
+        <location filename="../mainwindow.cpp" line="926"/>
         <source>Copy the current selection&apos;s contents to the clipboard</source>
         <translation>선택한 내용을 클립보드로 복사하기</translation>
     </message>
@@ -14959,7 +15065,7 @@ Use %2</source>
         <translation type="vanished">키 관리 함수</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1089"/>
+        <location filename="../mainwindow.cpp" line="1122"/>
         <source>&amp;Hash</source>
         <translation>해쉬(&amp;H)</translation>
     </message>
@@ -14976,7 +15082,7 @@ Use %2</source>
         <translation type="vanished">Hmac 값 생성</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1105"/>
+        <location filename="../mainwindow.cpp" line="1138"/>
         <source>&amp;Encrypt/Decrypt</source>
         <translation>암호화/복호화(&amp;E)</translation>
     </message>
@@ -14985,7 +15091,7 @@ Use %2</source>
         <translation type="vanished">데이타 암호화 복호화</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1113"/>
+        <location filename="../mainwindow.cpp" line="1146"/>
         <source>&amp;Sign/Verify</source>
         <translation>서명/검증(&amp;S)</translation>
     </message>
@@ -15006,7 +15112,7 @@ Use %2</source>
         <translation type="vanished">키 동의(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="553"/>
+        <location filename="../mainwindow.cpp" line="569"/>
         <source>Key Agreement</source>
         <translation>키 동의</translation>
     </message>
@@ -15023,17 +15129,17 @@ Use %2</source>
         <translation type="vanished">OTP 생성(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1165"/>
+        <location filename="../mainwindow.cpp" line="1198"/>
         <source>Generate OTP value</source>
         <translation>OTP 값 생성</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="993"/>
+        <location filename="../mainwindow.cpp" line="1009"/>
         <source>&amp;Tool</source>
         <translation>도구(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="994"/>
+        <location filename="../mainwindow.cpp" line="1010"/>
         <source>Tool</source>
         <translation>도구</translation>
     </message>
@@ -15066,12 +15172,12 @@ Use %2</source>
         <translation type="vanished">LDAP 서버로 부터 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1396"/>
+        <location filename="../mainwindow.cpp" line="1429"/>
         <source>Help</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1401"/>
+        <location filename="../mainwindow.cpp" line="1434"/>
         <source>&amp;Settings</source>
         <translation>설정(&amp;S)</translation>
     </message>
@@ -15100,7 +15206,7 @@ Use %2</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4067"/>
+        <location filename="../mainwindow.cpp" line="4140"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -15109,53 +15215,53 @@ Use %2</source>
         <translation type="vanished">데이타&amp;인코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="267"/>
         <source>Address</source>
         <translation>위치</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
-        <location filename="../mainwindow.cpp" line="266"/>
+        <location filename="../mainwindow.cpp" line="210"/>
+        <location filename="../mainwindow.cpp" line="268"/>
         <source>Text</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="227"/>
+        <location filename="../mainwindow.cpp" line="229"/>
         <source>Log</source>
         <translation>로그</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="461"/>
+        <location filename="../mainwindow.cpp" line="463"/>
         <source>Data Converter</source>
         <translation>데이타 변환기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="468"/>
+        <location filename="../mainwindow.cpp" line="470"/>
         <source>Num Converter</source>
         <translation>숫자 변환기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="489"/>
+        <location filename="../mainwindow.cpp" line="491"/>
         <source>BER Check</source>
         <translation>BER 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="454"/>
+        <location filename="../mainwindow.cpp" line="456"/>
         <source>Decode BER</source>
         <translation>BER 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="496"/>
+        <location filename="../mainwindow.cpp" line="498"/>
         <source>Get BER from URI</source>
         <translation>URI 로 부터 BER 가져오기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="511"/>
+        <location filename="../mainwindow.cpp" line="527"/>
         <source>KeyManage</source>
         <translation>키 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="525"/>
+        <location filename="../mainwindow.cpp" line="541"/>
         <source>Message Authentication Code</source>
         <translation>메세지 인증 코드</translation>
     </message>
@@ -15168,27 +15274,27 @@ Use %2</source>
         <translation type="vanished">Cryptographic Message Syntax</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="567"/>
+        <location filename="../mainwindow.cpp" line="583"/>
         <source>Shamir Secret Sharing</source>
         <translation>Shamir Secret Sharing</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="839"/>
+        <location filename="../mainwindow.cpp" line="855"/>
         <source>Save BER file</source>
         <translation>BER 파일 저장하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="847"/>
+        <location filename="../mainwindow.cpp" line="863"/>
         <source>Save BER file with another name</source>
         <translation>다른 이름으로 BER 파일 저장하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="887"/>
+        <location filename="../mainwindow.cpp" line="903"/>
         <source>Quit BerEditor</source>
         <translation>BerEditor 끝내기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="915"/>
+        <location filename="../mainwindow.cpp" line="931"/>
         <source>Copy As &amp;Hex</source>
         <translation>HEX 로 복사</translation>
     </message>
@@ -15197,7 +15303,7 @@ Use %2</source>
         <translation type="vanished">BER 값을 HEX로 복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="922"/>
+        <location filename="../mainwindow.cpp" line="938"/>
         <source>Copy As &amp;Base64</source>
         <translation>Base64로 복사</translation>
     </message>
@@ -15206,7 +15312,7 @@ Use %2</source>
         <translation type="vanished">BER 값을 Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="930"/>
+        <location filename="../mainwindow.cpp" line="946"/>
         <source>&amp;Expand All</source>
         <translation>전체 확장(&amp;E)</translation>
     </message>
@@ -15215,7 +15321,7 @@ Use %2</source>
         <translation type="vanished">모두 보여주기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="938"/>
+        <location filename="../mainwindow.cpp" line="954"/>
         <source>&amp;Expand Node</source>
         <translation>노드 확장(&amp;E)</translation>
     </message>
@@ -15224,17 +15330,17 @@ Use %2</source>
         <translation type="vanished">노드 보여주기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="946"/>
+        <location filename="../mainwindow.cpp" line="962"/>
         <source>&amp;Collapse All</source>
         <translation>전체 닫기(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="947"/>
+        <location filename="../mainwindow.cpp" line="963"/>
         <source>Collapse all nodes</source>
         <translation>모든 노드 닫기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="954"/>
+        <location filename="../mainwindow.cpp" line="970"/>
         <source>&amp;Collapse Node</source>
         <translation>노드 닫기(&amp;C)</translation>
     </message>
@@ -15255,7 +15361,7 @@ Use %2</source>
         <translation type="vanished">RSA 암호화 복호화</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="228"/>
         <source>information</source>
         <translation>정보</translation>
     </message>
@@ -15268,7 +15374,7 @@ Use %2</source>
         <translation type="vanished">MAC 값 생성</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1121"/>
+        <location filename="../mainwindow.cpp" line="1154"/>
         <source>&amp;PubKey Encrypt/Decrypt</source>
         <translation>공개키 암/복호화(&amp;R)</translation>
     </message>
@@ -15289,7 +15395,7 @@ Use %2</source>
         <translation type="vanished">인증서 경로 검증(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="574"/>
+        <location filename="../mainwindow.cpp" line="590"/>
         <source>Certificate Path Validation</source>
         <translation>인증서 경로 검증</translation>
     </message>
@@ -15298,17 +15404,17 @@ Use %2</source>
         <translation type="vanished">이것은 데이타 인코딩 도구</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="202"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="204"/>
+        <location filename="../mainwindow.cpp" line="206"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1023"/>
+        <location filename="../mainwindow.cpp" line="1039"/>
         <source>&amp;OID Information</source>
         <translation>OID 정보(&amp;O)</translation>
     </message>
@@ -15337,12 +15443,12 @@ Use %2</source>
         <translation type="vanished">URI에서 BER 가져오기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="609"/>
+        <location filename="../mainwindow.cpp" line="625"/>
         <source>KeyPair Manage</source>
         <translation>키 쌍 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1268"/>
+        <location filename="../mainwindow.cpp" line="1301"/>
         <source>&amp;CAVP</source>
         <translation>CAVP(&amp;V)</translation>
     </message>
@@ -15355,17 +15461,17 @@ Use %2</source>
         <translation type="vanished">암호(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1320"/>
+        <location filename="../mainwindow.cpp" line="1353"/>
         <source>&amp;SCEP client</source>
         <translation>SCEP 클라이언트(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1347"/>
+        <location filename="../mainwindow.cpp" line="1380"/>
         <source>&amp;KMIP</source>
         <translation>KMIP(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1353"/>
+        <location filename="../mainwindow.cpp" line="1386"/>
         <source>&amp;Decode TTLV</source>
         <translation>TTLV 디코딩(&amp;D)</translation>
     </message>
@@ -15374,7 +15480,7 @@ Use %2</source>
         <translation type="vanished">TTLV 데이타 디코딩</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1361"/>
+        <location filename="../mainwindow.cpp" line="1394"/>
         <source>&amp;Make TTLV</source>
         <translation>TTLV 만들기(&amp;M)</translation>
     </message>
@@ -15383,12 +15489,12 @@ Use %2</source>
         <translation type="vanished">TTLV 데이타 만들기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1369"/>
+        <location filename="../mainwindow.cpp" line="1402"/>
         <source>&amp;TTLV Encoder</source>
         <translation>TTLV 인코더(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="707"/>
+        <location filename="../mainwindow.cpp" line="723"/>
         <source>TTLV Encoder</source>
         <translation>TTLV 인코더</translation>
     </message>
@@ -15397,27 +15503,27 @@ Use %2</source>
         <translation type="vanished">TTLV 클라이언트(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="714"/>
+        <location filename="../mainwindow.cpp" line="730"/>
         <source>TTLV Client</source>
         <translation>TTLV 클라이언트</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1138"/>
+        <location filename="../mainwindow.cpp" line="1171"/>
         <source>&amp;PKCS7</source>
         <translation>PKCS7(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1141"/>
+        <location filename="../mainwindow.cpp" line="1174"/>
         <source>Creating and validating PKCS7 messages</source>
         <translation>PKCS7 메세지 생성 및 검증하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1395"/>
+        <location filename="../mainwindow.cpp" line="1428"/>
         <source>&amp;Help</source>
         <translation>도움(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1408"/>
+        <location filename="../mainwindow.cpp" line="1441"/>
         <source>&amp;Clear Log</source>
         <translation>로그 지우기(&amp;L)</translation>
     </message>
@@ -15426,7 +15532,7 @@ Use %2</source>
         <translation type="vanished">정보 및 로그 지우기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1452"/>
+        <location filename="../mainwindow.cpp" line="1485"/>
         <source>&amp;About BerEditor</source>
         <translation>BerEditor란(&amp;A)</translation>
     </message>
@@ -15463,7 +15569,7 @@ Use %2</source>
         <translation type="vanished">BerViewer 에 대해 보여줌</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1486"/>
+        <location filename="../mainwindow.cpp" line="1519"/>
         <source>Ready</source>
         <translation>준비</translation>
     </message>
@@ -22826,55 +22932,61 @@ Use %2</source>
 <context>
     <name>TTLVTreeModel</name>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="695"/>
-        <location filename="../ttlv_tree_model.cpp" line="715"/>
-        <location filename="../ttlv_tree_model.cpp" line="734"/>
+        <location filename="../ttlv_tree_model.cpp" line="697"/>
+        <location filename="../ttlv_tree_model.cpp" line="717"/>
+        <location filename="../ttlv_tree_model.cpp" line="736"/>
         <source>There is no selected item</source>
         <translation>선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="753"/>
+        <location filename="../ttlv_tree_model.cpp" line="755"/>
         <source>The item is not structured</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="758"/>
+        <location filename="../ttlv_tree_model.cpp" line="760"/>
         <source>Insert TTLV [ Tag Type Length Value ]</source>
         <translation>TTLV 입력 [ Tag Type Length Value ]</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="763"/>
+        <location filename="../ttlv_tree_model.cpp" line="765"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="783"/>
+        <location filename="../ttlv_tree_model.cpp" line="785"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="796"/>
-        <location filename="../ttlv_tree_model.cpp" line="814"/>
-        <source>There is no item to select</source>
-        <translation>선택한 아이템이 없습니다.</translation>
+        <location filename="../ttlv_tree_model.cpp" line="798"/>
+        <location filename="../ttlv_tree_model.cpp" line="816"/>
+        <location filename="../ttlv_tree_model.cpp" line="852"/>
+        <location filename="../ttlv_tree_model.cpp" line="872"/>
+        <source>No items available</source>
+        <translation>아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="801"/>
+        <source>There is no item to select</source>
+        <translation type="vanished">선택한 아이템이 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_tree_model.cpp" line="803"/>
         <source>Edit TTLV [ Tag Type Length Value ]</source>
         <translation>TTLV 편집 [ Tag Type Length Value ]</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="820"/>
+        <location filename="../ttlv_tree_model.cpp" line="822"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="826"/>
+        <location filename="../ttlv_tree_model.cpp" line="828"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_model.cpp" line="840"/>
+        <location filename="../ttlv_tree_model.cpp" line="842"/>
         <source>failed to delete: %1</source>
         <translation>삭제에 실패 했습니다: %1</translation>
     </message>
@@ -22959,22 +23071,32 @@ Use %2</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="215"/>
+        <location filename="../ttlv_tree_view.cpp" line="212"/>
+        <source>Binary view</source>
+        <translation>바이너리 보기</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_tree_view.cpp" line="213"/>
+        <source>Text view</source>
+        <translation>텍스트 보기</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_tree_view.cpp" line="217"/>
         <source>Insert node</source>
         <translation>노드 입력</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="219"/>
+        <location filename="../ttlv_tree_view.cpp" line="221"/>
         <source>Edit node</source>
         <translation>노드 편집</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="223"/>
+        <location filename="../ttlv_tree_view.cpp" line="225"/>
         <source>Delete node</source>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="574"/>
+        <location filename="../ttlv_tree_view.cpp" line="576"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
@@ -23009,6 +23131,54 @@ Use %2</source>
     <message>
         <source>Save as...</source>
         <translation type="vanished">다른 이름으로 저장</translation>
+    </message>
+</context>
+<context>
+    <name>TextViewDlg</name>
+    <message>
+        <location filename="../text_view_dlg.ui" line="14"/>
+        <source>Text View Window</source>
+        <translation>텍스트 보기 창</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="42"/>
+        <source>Text View</source>
+        <translation>텍스트 보기</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="62"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="80"/>
+        <source>OpenSSL</source>
+        <translation>OpenSSL</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="87"/>
+        <source>CertUtil</source>
+        <translation>CertUtil</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="161"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="181"/>
+        <source>Print</source>
+        <translation>인쇄</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="188"/>
+        <source>Print Preview</source>
+        <translation>인쇄 미리보기</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.cpp" line="231"/>
+        <source>Text View - %1</source>
+        <translation>텍스트 보기 - %1</translation>
     </message>
 </context>
 <context>

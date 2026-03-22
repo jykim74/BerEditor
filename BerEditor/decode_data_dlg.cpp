@@ -201,4 +201,5 @@ void DecodeDataDlg::findData()
     }
 
     JS_BIN_reset( &binData );
+    setWindowTitle( tr( "Decode BER - %1").arg( strFileName ));
 }

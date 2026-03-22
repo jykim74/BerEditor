@@ -137,6 +137,8 @@ void DataConverterDlg::clickReadFile()
 
         mInputText->setPlainText( getHexString( &binFile ));
         JS_BIN_reset( &binFile );
+
+        setWindowTitle( tr( "Data Converter - %1").arg( strFile ));
     }
 }
 

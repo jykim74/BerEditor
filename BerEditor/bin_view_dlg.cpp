@@ -172,6 +172,8 @@ void BinViewDlg::clickFind()
         JS_BIN_reset( &data_ );
         JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
 
+        setWindowTitle( tr( "Binary View - %1").arg( strFileName ));
+
         encodeData();
     }
 }
@@ -327,4 +329,6 @@ void BinViewDlg::encodeData()
         encodeBase64();
     else
         encodeHex();
+
+    mDataText->moveCursor( QTextCursor::Start );
 }

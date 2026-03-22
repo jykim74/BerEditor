@@ -227,6 +227,8 @@ void TextViewDlg::clickFind()
         {
             parseBER();
         }
+
+        setWindowTitle( tr( "Text View - %1").arg( strFileName ));
     }
 }
 
@@ -272,6 +274,8 @@ void TextViewDlg::parseBER()
         textCertUtil( &berModel );
     else
         textOpenSSL( &berModel );
+
+    mDataText->moveCursor( QTextCursor::Start );
 }
 
 void TextViewDlg::parseTTLV()
@@ -289,6 +293,8 @@ void TextViewDlg::parseTTLV()
         textCertUtil( &ttlvModel );
     else
         textOpenSSL( &ttlvModel );
+
+    mDataText->moveCursor( QTextCursor::Start );
 }
 
 void TextViewDlg::textCertUtil( BerModel *pModel )

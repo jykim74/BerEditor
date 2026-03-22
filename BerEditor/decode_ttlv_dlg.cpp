@@ -171,5 +171,6 @@ void DecodeTTLVDlg::findData()
     }
 
     JS_BIN_reset( &binData );
+    setWindowTitle( tr( "Decode TTLV - %1").arg( strFileName ));
 }
 
