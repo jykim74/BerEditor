@@ -101,7 +101,6 @@ void BinViewDlg::log( const QString strLog, bool bNL )
         cursor.insertText( strLog );
 
     mDataText->setTextCursor( cursor );
-    mDataText->repaint();
 }
 
 void BinViewDlg::dragEnterEvent(QDragEnterEvent *event)
@@ -123,6 +122,7 @@ void BinViewDlg::dropEvent(QDropEvent *event)
             berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
             JS_BIN_reset( &data_ );
             JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &data_ );
+            setWindowTitle( tr( "Binary View - %1").arg( url.toLocalFile() ));
             break;
         }
     } else if (event->mimeData()->hasText()) {

@@ -57,6 +57,8 @@ void DecodeTTLVDlg::dropEvent(QDropEvent *event)
         {
             berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
             JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            setWindowTitle( tr( "Decode TTLV - %1").arg( url.toLocalFile() ));
+            JS_BIN_reset( &binData );
             break;
         }
     } else if (event->mimeData()->hasText()) {

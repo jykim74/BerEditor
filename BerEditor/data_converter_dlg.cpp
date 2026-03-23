@@ -88,6 +88,7 @@ void DataConverterDlg::dropEvent(QDropEvent *event)
         {
             berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
             JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            setWindowTitle( tr( "Data Converter - %1").arg( url.toLocalFile() ));
             break;
         }
     } else if (event->mimeData()->hasText()) {

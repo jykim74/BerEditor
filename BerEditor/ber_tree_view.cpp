@@ -783,6 +783,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
             if( pEditAct != NULL ) pEditAct->setEnabled( false );
             if( pDeleteAct != NULL ) pDeleteAct->setEnabled( false );
             if( pChangeDefinite != NULL ) pChangeDefinite->setEnabled( false );
+            if( pTextViewAct != NULL ) pTextViewAct->setEnabled( false );
         }
 
         if( item->isType( JS_OCTETSTRING ) || item->isType( JS_BITSTRING ) )

@@ -81,7 +81,6 @@ void TextViewDlg::log( const QString strLog, bool bNL )
         cursor.insertText( strLog );
 
     mDataText->setTextCursor( cursor );
-    mDataText->repaint();
 }
 
 void  TextViewDlg::log( int nSpace, const QString strLog, bool bNL )
@@ -98,7 +97,6 @@ void  TextViewDlg::log( int nSpace, const QString strLog, bool bNL )
         cursor.insertText( QString( "%1%2" ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strLog));
 
     mDataText->setTextCursor( cursor );
-    mDataText->repaint();
 }
 
 void TextViewDlg::log( const QString strHead, int nSpace, const QString strValue, bool bNL )
@@ -115,7 +113,6 @@ void TextViewDlg::log( const QString strHead, int nSpace, const QString strValue
         cursor.insertText( QString( "%1%2%3" ).arg( strHead ).arg( strSpace, nSpace, QLatin1Char( ' ' )).arg(strValue));
 
     mDataText->setTextCursor( cursor );
-    mDataText->repaint();
 }
 
  void TextViewDlg::line()
@@ -166,8 +163,9 @@ void TextViewDlg::dropEvent(QDropEvent *event)
         for (const QUrl &url : urls)
         {
             berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
-//            JS_BIN_reset( &data_ );
-//            JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &data_ );
+            JS_BIN_reset( &data_ );
+            JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &data_ );
+            setWindowTitle( tr( "Text View - %1").arg( url.toLocalFile() ));
             break;
         }
     } else if (event->mimeData()->hasText()) {
@@ -348,12 +346,18 @@ void TextViewDlg::textOpenSSL( BerModel *pModel )
         QString strS = " ";
         if( nDepth == 0 ) strS = "";
 
-        strLine = QString( "| %1 | %2 | %3 |%4 %5")
+        QString strVal = "";
+
+        if( curItem->isConstructed() == false )
+            strVal = curItem->GetValueString( &data_ );
+
+        strLine = QString( "| %1 | %2 | %3 |%4 %5 : %6")
                       .arg( curItem->GetOffset(), 6, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))
-                      .arg( curItem->GetTagString() );
+                      .arg( curItem->GetTagString() )
+                      .arg( strVal );
 
         log( strLine );
 
@@ -373,10 +377,21 @@ void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
     while( curItem )
     {
         QString strLine;
+        int nLevel = curItem->getLevel() * 2;
 
         strLine += getHexString( &curItem->header_ );
 
-        log( strLine );
+        log( nLevel, strLine );
+
+        if( curItem->isStructure() == false )
+        {
+            BIN binVal = {0,0};
+            binVal.pVal = &data_.pVal[curItem->getOffset() + JS_TTLV_HEADER_SIZE];
+            binVal.nLen = curItem->getLength();
+
+            logBIN( nLevel, &binVal );
+        }
+
         curItem = treeView->getNext( curItem );
     }
 }
@@ -400,12 +415,18 @@ void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
         int nDepth = curItem->getLevel();
         if( nDepth == 0 ) strS = "";
 
-        strLine = QString( "| %1 | %2 | %3 |%4 %5")
+        QString strVal = "";
+
+        if( curItem->isStructure() == false )
+            strVal = curItem->getPrintValue( &data_ );
+
+        strLine = QString( "| %1 | %2 | %3 |%4 %5 : %6")
                       .arg( curItem->getOffset(), 6, 10, QLatin1Char(' ') )
                       .arg( curItem->getLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->getLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))
-                      .arg( curItem->getTagName() );
+                      .arg( curItem->getTagName() )
+                      .arg( strVal );
 
         log( strLine );
 
