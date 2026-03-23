@@ -51,6 +51,8 @@ BinViewDlg::BinViewDlg(QWidget *parent)
     connect( mAddressCheck, SIGNAL(clicked()), this, SLOT(checkAddress()));
     connect( mASCIICheck, SIGNAL(clicked()), this, SLOT(checkASCII()));
     connect( mHeaderCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeHeader()));
+//    connect( mHeaderCombo, SIGNAL(editTextChanged(QString)), this, SLOT(changeHeader()));
+    connect( mHeaderCombo, SIGNAL(currentTextChanged(QString)), this, SLOT(changeHeader()));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
@@ -73,6 +75,7 @@ BinViewDlg::~BinViewDlg()
 void BinViewDlg::initUI()
 {
     mHeaderCombo->addItems( kHeaderList );
+    mHeaderCombo->setEditable(true);
 }
 
 void BinViewDlg::initialize()
