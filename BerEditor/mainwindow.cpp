@@ -2571,14 +2571,62 @@ void MainWindow::BERCompare()
 
 void MainWindow::binView()
 {
+    BIN binData = {0,0};
     BinViewDlg binView;
+
+    if( isTTLV() )
+    {
+        TTLVTreeItem* pItem = ttlv_model_->currentItem();
+        if( pItem )
+        {
+            BIN binTTLV = ttlv_model_->getTTLV();
+            pItem->getDataAll( &binTTLV, &binData );
+            binView.setData( &binData );
+        }
+    }
+    else
+    {
+        BerItem* pItem = ber_model_->getTreeView()->currentItem();
+        if( pItem )
+        {
+            BIN binBER = ber_model_->getBER();
+            pItem->getNodeBin( &binBER, &binData );
+            binView.setData( &binData );
+        }
+    }
+
     binView.exec();
+    JS_BIN_reset( &binData );
 }
 
 void MainWindow::textView()
 {
+    BIN binData = {0,0};
     TextViewDlg textView;
+
+    if( isTTLV() )
+    {
+        TTLVTreeItem* pItem = ttlv_model_->currentItem();
+        if( pItem )
+        {
+            BIN binTTLV = ttlv_model_->getTTLV();
+            pItem->getDataAll( &binTTLV, &binData );
+            textView.setData( &binData );
+        }
+    }
+    else
+    {
+        BerItem* pItem = ber_model_->getTreeView()->currentItem();
+        if( pItem )
+        {
+            BIN binBER = ber_model_->getBER();
+            pItem->getNodeBin( &binBER, &binData );
+            textView.setData( &binData );
+        }
+    }
+
     textView.exec();
+    JS_BIN_reset( &binData );
 }
 
 void MainWindow::runBERCompare( const BIN *pA, const BIN *pB )

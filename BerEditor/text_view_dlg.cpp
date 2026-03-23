@@ -32,8 +32,8 @@ TextViewDlg::TextViewDlg(QWidget *parent)
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
     connect( mPrintPreviewBtn, SIGNAL(clicked()), this, SLOT(filePrintPreview()));
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
-    connect( mCertUtilRadio, SIGNAL(clicked()), this, SLOT(checkCertUtil()));
-    connect( mOpenSSLRadio, SIGNAL(clicked()), this, SLOT(checkOpenSSL()));
+    connect( mHexRadio, SIGNAL(clicked()), this, SLOT(checkHex()));
+    connect( mStringRadio, SIGNAL(clicked()), this, SLOT(checkString()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -48,7 +48,7 @@ TextViewDlg::~TextViewDlg()
 
 void TextViewDlg::initUI()
 {
-    mOpenSSLRadio->setChecked(true);
+    mStringRadio->setChecked(true);
 }
 
 void TextViewDlg::setData( const BIN *pData )
@@ -182,7 +182,7 @@ void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData )
     {
         int nSize = 0;
         BIN binPart = {0,0};
-        QString strAddr = QString( "%1 :" ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
+        QString strAddr = QString( "%1: " ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
 
 
         if( nLeft > kBlockSize )
@@ -210,7 +210,7 @@ void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const
     {
         int nSize = 0;
         BIN binPart = {0,0};
-        QString strAddr = QString( "%1 :" ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
+        QString strAddr = QString( "%1: " ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
         QString strPost = QString( "%1 %2" ).arg( strAddr ).arg( strHead );
 
         if( nLeft > kBlockSize )
@@ -312,7 +312,7 @@ void TextViewDlg::clickFind()
     }
 }
 
-void TextViewDlg::checkCertUtil()
+void TextViewDlg::checkHex()
 {
     int ret = JS_KMS_isTTLV( &data_ );
 
@@ -326,7 +326,7 @@ void TextViewDlg::checkCertUtil()
     }
 }
 
-void TextViewDlg::checkOpenSSL()
+void TextViewDlg::checkString()
 {
     int ret = JS_KMS_isTTLV( &data_ );
 
@@ -350,10 +350,10 @@ void TextViewDlg::parseBER()
 
     mDataText->clear();
 
-    if( mCertUtilRadio->isChecked() )
-        textCertUtil( &berModel );
+    if( mHexRadio->isChecked() )
+        textHex( &berModel );
     else
-        textOpenSSL( &berModel );
+        textString( &berModel );
 
     mDataText->moveCursor( QTextCursor::Start );
 }
@@ -369,17 +369,17 @@ void TextViewDlg::parseTTLV()
 
     mDataText->clear();
 
-    if( mCertUtilRadio->isChecked() )
-        textCertUtil( &ttlvModel );
+    if( mHexRadio->isChecked() )
+        textHex( &ttlvModel );
     else
-        textOpenSSL( &ttlvModel );
+        textString( &ttlvModel );
 
     mDataText->moveCursor( QTextCursor::Start );
 }
 
-void TextViewDlg::textCertUtil( BerModel *pModel )
+void TextViewDlg::textHex( BerModel *pModel )
 {
-    int nSpace = 2;
+    int nSpace = 3;
     BerTreeView* treeView = pModel->getTreeView();
     BerItem *curItem = NULL;
 
@@ -394,7 +394,7 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
         BIN binHeader = {0,0};
         JS_BIN_set( &binHeader, curItem->header_, curItem->header_size_ );
 
-        strHead = QString( "%1 :" ).arg( curItem->GetOffset(), 6, 16, QLatin1Char('0') );
+        strHead = QString( "%1: " ).arg( curItem->GetOffset(), 6, 16, QLatin1Char('0') );
         strLine += QString( "%1" ).arg( getHexString2( &binHeader ) );
 
         log( strHead, nLevel, strLine );
@@ -413,7 +413,7 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
     }
 }
 
-void TextViewDlg::textOpenSSL( BerModel *pModel )
+void TextViewDlg::textString( BerModel *pModel )
 {
     int nSpace = 2;
 
@@ -491,9 +491,9 @@ void TextViewDlg::textOpenSSL( BerModel *pModel )
     line();
 }
 
-void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
+void TextViewDlg::textHex( TTLVTreeModel *pModel )
 {
-    int nSpace = 2;
+    int nSpace = 3;
     TTLVTreeView* treeView = pModel->getTreeView();
     TTLVTreeItem *curItem = NULL;
 
@@ -524,7 +524,7 @@ void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
     }
 }
 
-void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
+void TextViewDlg::textString( TTLVTreeModel *pModel )
 {
     int nSpace = 2;
     line();

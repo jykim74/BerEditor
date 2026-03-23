@@ -32,8 +32,8 @@ private slots:
 
     void clickFind();
 
-    void checkCertUtil();
-    void checkOpenSSL();
+    void checkHex();
+    void checkString();
 
 private:
     void initUI();
@@ -50,11 +50,11 @@ private:
     void parseBER();
     void parseTTLV();
 
-    void textCertUtil( BerModel *pModel );
-    void textOpenSSL( BerModel *pModel );
+    void textHex( BerModel *pModel );
+    void textString( BerModel *pModel );
 
-    void textCertUtil( TTLVTreeModel *pModel );
-    void textOpenSSL( TTLVTreeModel *pModel );
+    void textHex( TTLVTreeModel *pModel );
+    void textString( TTLVTreeModel *pModel );
 
     BIN data_;
 };

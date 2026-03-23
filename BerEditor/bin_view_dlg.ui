@@ -238,6 +238,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mFindBtn</tabstop>
+  <tabstop>mBase64Radio</tabstop>
+  <tabstop>mHexRadio</tabstop>
+  <tabstop>mRawRadio</tabstop>
+  <tabstop>mAddressCheck</tabstop>
+  <tabstop>mASCIICheck</tabstop>
+  <tabstop>mPEMHeaderCheck</tabstop>
+  <tabstop>mHeaderCombo</tabstop>
+  <tabstop>mDataText</tabstop>
+  <tabstop>mPrintBtn</tabstop>
+  <tabstop>mPrintPreviewBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>

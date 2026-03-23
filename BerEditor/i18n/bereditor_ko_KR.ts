@@ -1819,7 +1819,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="791"/>
+        <location filename="../ber_tree_view.cpp" line="792"/>
         <source>Expand node</source>
         <translation>노드 확장</translation>
     </message>
@@ -1840,7 +1840,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="860"/>
+        <location filename="../ber_tree_view.cpp" line="861"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
@@ -1944,6 +1944,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
+        <location filename="../bin_view_dlg.cpp" line="125"/>
         <location filename="../bin_view_dlg.cpp" line="175"/>
         <source>Binary View - %1</source>
         <translation>바이너리 보기 - %1</translation>
@@ -7132,12 +7133,18 @@ mailto : jykim74@gmail.com</translation>
         <translation>베이스64URL</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="130"/>
+        <location filename="../data_converter_dlg.cpp" line="91"/>
+        <location filename="../data_converter_dlg.cpp" line="142"/>
+        <source>Data Converter - %1</source>
+        <translation>데이타 변환기 - %1</translation>
+    </message>
+    <message>
+        <location filename="../data_converter_dlg.cpp" line="131"/>
         <source>The file size is too large(Max:1M)</source>
         <translation>파일 사이즈가 너무 큽니다(최대 1M)</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="158"/>
+        <location filename="../data_converter_dlg.cpp" line="161"/>
         <source>There is no output</source>
         <translation>결과 값이 없습니다</translation>
     </message>
@@ -7150,7 +7157,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">바이너리 저장 실패</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="187"/>
+        <location filename="../data_converter_dlg.cpp" line="190"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
@@ -7393,18 +7400,24 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="96"/>
-        <location filename="../decode_data_dlg.cpp" line="146"/>
+        <location filename="../decode_data_dlg.cpp" line="65"/>
+        <location filename="../decode_data_dlg.cpp" line="206"/>
+        <source>Decode BER - %1</source>
+        <translation>BER 디코딩 - %1</translation>
+    </message>
+    <message>
+        <location filename="../decode_data_dlg.cpp" line="98"/>
+        <location filename="../decode_data_dlg.cpp" line="148"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="116"/>
+        <location filename="../decode_data_dlg.cpp" line="118"/>
         <source>Please enter data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="180"/>
+        <location filename="../decode_data_dlg.cpp" line="182"/>
         <source>This is not a BER file: %1</source>
         <translation>이것은 BER 파일이 아닙니다: %1</translation>
     </message>
@@ -7413,12 +7426,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">잘못된 문자가 있습니다</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="151"/>
+        <location filename="../decode_data_dlg.cpp" line="153"/>
         <source>Base64 or PEM value</source>
         <translation>Base64 또는 PEM 값</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="156"/>
+        <location filename="../decode_data_dlg.cpp" line="158"/>
         <source>Base64URL value</source>
         <translation>베이스64 URL 값</translation>
     </message>
@@ -7478,12 +7491,18 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">보기</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.cpp" line="105"/>
+        <location filename="../decode_ttlv_dlg.cpp" line="60"/>
+        <location filename="../decode_ttlv_dlg.cpp" line="176"/>
+        <source>Decode TTLV - %1</source>
+        <translation>TTLV 디코딩 - %1</translation>
+    </message>
+    <message>
+        <location filename="../decode_ttlv_dlg.cpp" line="107"/>
         <source>Please enter your data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.cpp" line="153"/>
+        <location filename="../decode_ttlv_dlg.cpp" line="155"/>
         <source>This is not a TTLV file: %1</source>
         <translation>이것은 TTLV 파일이 아닙니다: %1</translation>
     </message>
@@ -14601,17 +14620,17 @@ Use %2</source>
         <translation type="vanished">이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2854"/>
+        <location filename="../mainwindow.cpp" line="2902"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3884"/>
+        <location filename="../mainwindow.cpp" line="3932"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3896"/>
+        <location filename="../mainwindow.cpp" line="3944"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
@@ -14620,34 +14639,34 @@ Use %2</source>
         <translation type="vanished">이 파일을 TTLV 파일로 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3929"/>
-        <location filename="../mainwindow.cpp" line="3986"/>
+        <location filename="../mainwindow.cpp" line="3977"/>
+        <location filename="../mainwindow.cpp" line="4034"/>
         <source>Saved to file [%1]</source>
         <translation>파일에 저장 되었습니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3933"/>
-        <location filename="../mainwindow.cpp" line="3990"/>
+        <location filename="../mainwindow.cpp" line="3981"/>
+        <location filename="../mainwindow.cpp" line="4038"/>
         <source>failed to save file: %1</source>
         <translation>파일 저장에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3961"/>
+        <location filename="../mainwindow.cpp" line="4009"/>
         <source>Do you want to overwrite %1 file?</source>
         <translation>파일(%1)을 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4008"/>
+        <location filename="../mainwindow.cpp" line="4056"/>
         <source>Start logging</source>
         <translation>로그 기록 시작</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4015"/>
+        <location filename="../mainwindow.cpp" line="4063"/>
         <source>Stop logging</source>
         <translation>로그 기록 중지</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4107"/>
+        <location filename="../mainwindow.cpp" line="4155"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -14745,7 +14764,7 @@ Use %2</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2802"/>
+        <location filename="../mainwindow.cpp" line="2850"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -14979,17 +14998,17 @@ Use %2</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2866"/>
+        <location filename="../mainwindow.cpp" line="2914"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2869"/>
+        <location filename="../mainwindow.cpp" line="2917"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2872"/>
+        <location filename="../mainwindow.cpp" line="2920"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -14998,9 +15017,9 @@ Use %2</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4062"/>
-        <location filename="../mainwindow.cpp" line="4087"/>
-        <location filename="../mainwindow.cpp" line="4101"/>
+        <location filename="../mainwindow.cpp" line="4110"/>
+        <location filename="../mainwindow.cpp" line="4135"/>
+        <location filename="../mainwindow.cpp" line="4149"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -15206,7 +15225,7 @@ Use %2</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="4140"/>
+        <location filename="../mainwindow.cpp" line="4188"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -23152,13 +23171,21 @@ Use %2</source>
     </message>
     <message>
         <location filename="../text_view_dlg.ui" line="80"/>
-        <source>OpenSSL</source>
-        <translation>OpenSSL</translation>
+        <source>Hex View</source>
+        <translation>16진수 보기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.ui" line="87"/>
+        <location filename="../text_view_dlg.ui" line="100"/>
+        <source>String View</source>
+        <translation>문자 보기</translation>
+    </message>
+    <message>
+        <source>OpenSSL</source>
+        <translation type="vanished">OpenSSL</translation>
+    </message>
+    <message>
         <source>CertUtil</source>
-        <translation>CertUtil</translation>
+        <translation type="vanished">CertUtil</translation>
     </message>
     <message>
         <location filename="../text_view_dlg.ui" line="161"/>
@@ -23176,7 +23203,8 @@ Use %2</source>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.cpp" line="231"/>
+        <location filename="../text_view_dlg.cpp" line="250"/>
+        <location filename="../text_view_dlg.cpp" line="311"/>
         <source>Text View - %1</source>
         <translation>텍스트 보기 - %1</translation>
     </message>

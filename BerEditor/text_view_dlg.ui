@@ -75,20 +75,13 @@
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="1">
-      <widget class="QRadioButton" name="mOpenSSLRadio">
+      <widget class="QRadioButton" name="mHexRadio">
        <property name="text">
-        <string>OpenSSL</string>
+        <string>Hex View</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="mCertUtilRadio">
-       <property name="text">
-        <string>CertUtil</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -100,6 +93,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mStringRadio">
+       <property name="text">
+        <string>String View</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -193,6 +193,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mFindBtn</tabstop>
+  <tabstop>mStringRadio</tabstop>
+  <tabstop>mHexRadio</tabstop>
+  <tabstop>mDataText</tabstop>
+  <tabstop>mPrintBtn</tabstop>
+  <tabstop>mPrintPreviewBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>
