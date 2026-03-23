@@ -139,7 +139,89 @@ void TextViewDlg::logBIN( int nSpace, const BIN *pData )
         binPart.pVal = &pData->pVal[nPos];
         binPart.nLen = nSize;
 
-        log( nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
+        log( nSpace, QString( "%1" ).arg( getHexString(&binPart)));
+
+        nPos += nSize;
+        nLeft -= nSize;
+    }
+}
+
+void TextViewDlg::logBIN( const QString strHead, int nSpace, const BIN *pData )
+{
+    int nLeft = pData->nLen;
+    int nPos = 0;
+    int kBlockSize = 16;
+
+    while( nLeft > 0 )
+    {
+        int nSize = 0;
+        BIN binPart = {0,0};
+
+        if( nLeft > kBlockSize )
+            nSize = 16;
+        else
+            nSize = nLeft;
+
+        binPart.pVal = &pData->pVal[nPos];
+        binPart.nLen = nSize;
+
+        log( strHead, nSpace, QString( "%1" ).arg( getHexString(&binPart)));
+
+        nPos += nSize;
+        nLeft -= nSize;
+    }
+}
+
+void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData )
+{
+    int nLeft = pData->nLen;
+    int nPos = 0;
+    int kBlockSize = 16;
+
+    while( nLeft > 0 )
+    {
+        int nSize = 0;
+        BIN binPart = {0,0};
+        QString strAddr = QString( "%1 :" ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
+
+
+        if( nLeft > kBlockSize )
+            nSize = 16;
+        else
+            nSize = nLeft;
+
+        binPart.pVal = &pData->pVal[nPos];
+        binPart.nLen = nSize;
+
+        log( strAddr, nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
+
+        nPos += nSize;
+        nLeft -= nSize;
+    }
+}
+
+void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData )
+{
+    int nLeft = pData->nLen;
+    int nPos = 0;
+    int kBlockSize = 16;
+
+    while( nLeft > 0 )
+    {
+        int nSize = 0;
+        BIN binPart = {0,0};
+        QString strAddr = QString( "%1 :" ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
+        QString strPost = QString( "%1 %2" ).arg( strAddr ).arg( strHead );
+
+        if( nLeft > kBlockSize )
+            nSize = 16;
+        else
+            nSize = nLeft;
+
+        binPart.pVal = &pData->pVal[nPos];
+        binPart.nLen = nSize;
+
+        log( strPost, nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
 
         nPos += nSize;
         nLeft -= nSize;
@@ -297,6 +379,7 @@ void TextViewDlg::parseTTLV()
 
 void TextViewDlg::textCertUtil( BerModel *pModel )
 {
+    int nSpace = 2;
     BerTreeView* treeView = pModel->getTreeView();
     BerItem *curItem = NULL;
 
@@ -304,14 +387,17 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
 
     while( curItem )
     {
+        QString strHead;
         QString strLine;
-        int nLevel = curItem->GetLevel() * 2;
+        int nLevel = curItem->GetLevel() * nSpace;
 
         BIN binHeader = {0,0};
         JS_BIN_set( &binHeader, curItem->header_, curItem->header_size_ );
 
+        strHead = QString( "%1 :" ).arg( curItem->GetOffset(), 6, 16, QLatin1Char('0') );
         strLine += QString( "%1" ).arg( getHexString2( &binHeader ) );
-        log( nLevel, strLine );
+
+        log( strHead, nLevel, strLine );
 
         if( curItem->isConstructed() == false )
         {
@@ -319,7 +405,7 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
             binVal.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_];
             binVal.nLen = curItem->length_;
 
-            logBIN( nLevel, &binVal );
+            logBIN2( curItem->GetOffset() + curItem->GetHeaderSize(), nLevel + nSpace, &binVal );
         }
 
         curItem = treeView->getNext( curItem );
@@ -329,8 +415,10 @@ void TextViewDlg::textCertUtil( BerModel *pModel )
 
 void TextViewDlg::textOpenSSL( BerModel *pModel )
 {
+    int nSpace = 2;
+
     line();
-    log( "| Offset | Depth | Length | Tag (Type)" );
+    log( "| Offset | Depth | Length | Tag (Type) and Value" );
     line();
 
     BerTreeView* treeView = pModel->getTreeView();
@@ -341,25 +429,61 @@ void TextViewDlg::textOpenSSL( BerModel *pModel )
     while( curItem )
     {
         QString strLine;
-        int nDepth = curItem->GetLevel();
+        int nDepth = curItem->GetLevel() * nSpace;
 
         QString strS = " ";
         if( nDepth == 0 ) strS = "";
 
         QString strVal = "";
 
-        if( curItem->isConstructed() == false )
-            strVal = curItem->GetValueString( &data_ );
-
-        strLine = QString( "| %1 | %2 | %3 |%4 %5 : %6")
+        strLine = QString( "| %1 | %2 | %3 |%4 %5 :")
                       .arg( curItem->GetOffset(), 6, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))
-                      .arg( curItem->GetTagString() )
-                      .arg( strVal );
+                      .arg( curItem->GetTagString() );
 
-        log( strLine );
+        if( curItem->isConstructed() == false )
+        {
+            if( curItem->isType( JS_BITSTRING ) )
+            {
+                BIN binData = {0,0};
+                QString strHead = QString( "|        |       |        | " );
+                int nUnusedBits = data_.pVal[curItem->offset_ + curItem->header_size_];
+
+                binData.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_ + 1];
+                binData.nLen = curItem->length_ - 1;
+
+                strLine += QString( " Unused Bits : %1" ).arg( nUnusedBits );
+
+                log( strLine );
+                logBIN( strHead, nDepth + nSpace, &binData );
+            }
+            else
+            {
+                if( curItem->length_ <= 64 )
+                {
+                    strVal = curItem->GetValueString( &data_ );
+                    strLine += QString( " %1" ).arg( strVal );
+
+                    log( strLine );
+                }
+                else
+                {
+                    BIN binData = {0,0};
+                    QString strHead = QString( "|        |       |        | " );
+                    binData.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_];
+                    binData.nLen = curItem->length_;
+
+                    log( strLine );
+                    logBIN( strHead, nDepth + nSpace, &binData );
+                }
+            }
+        }
+        else
+        {
+            log( strLine );
+        }
 
         curItem = treeView->getNext( curItem );
     }
@@ -369,6 +493,7 @@ void TextViewDlg::textOpenSSL( BerModel *pModel )
 
 void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
 {
+    int nSpace = 2;
     TTLVTreeView* treeView = pModel->getTreeView();
     TTLVTreeItem *curItem = NULL;
 
@@ -376,12 +501,15 @@ void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
 
     while( curItem )
     {
+        QString strHead;
         QString strLine;
-        int nLevel = curItem->getLevel() * 2;
+        int nLevel = curItem->getLevel() * nSpace;
 
-        strLine += getHexString( &curItem->header_ );
+        strHead = QString( "%1: ").arg( curItem->getOffset(), 6, 16, QLatin1Char('0'));
 
-        log( nLevel, strLine );
+        strLine += QString( "%1" ).arg( getHexString( &curItem->header_ ) );
+
+        log( strHead, nLevel, strLine );
 
         if( curItem->isStructure() == false )
         {
@@ -389,7 +517,7 @@ void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
             binVal.pVal = &data_.pVal[curItem->getOffset() + JS_TTLV_HEADER_SIZE];
             binVal.nLen = curItem->getLength();
 
-            logBIN( nLevel, &binVal );
+            logBIN2( curItem->getOffset() + JS_TTLV_HEADER_SIZE, nLevel + nSpace, &binVal );
         }
 
         curItem = treeView->getNext( curItem );
@@ -398,8 +526,9 @@ void TextViewDlg::textCertUtil( TTLVTreeModel *pModel )
 
 void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
 {
+    int nSpace = 2;
     line();
-    log( "| Offset | Depth | Length | Tag (Type)" );
+    log( "| Offset | Depth | Length | Tag and Value" );
     line();
 
     TTLVTreeView* treeView = pModel->getTreeView();
@@ -412,23 +541,44 @@ void TextViewDlg::textOpenSSL( TTLVTreeModel *pModel )
         QString strLine;
         QString strS = " ";
 
-        int nDepth = curItem->getLevel();
+        int nDepth = curItem->getLevel() * nSpace;
         if( nDepth == 0 ) strS = "";
 
         QString strVal = "";
 
-        if( curItem->isStructure() == false )
-            strVal = curItem->getPrintValue( &data_ );
-
-        strLine = QString( "| %1 | %2 | %3 |%4 %5 : %6")
+        strLine = QString( "| %1 | %2 | %3 |%4 %5 :")
                       .arg( curItem->getOffset(), 6, 10, QLatin1Char(' ') )
                       .arg( curItem->getLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->getLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))
-                      .arg( curItem->getTagName() )
-                      .arg( strVal );
+                      .arg( curItem->getTagName() );
 
-        log( strLine );
+        if( curItem->isStructure() == false )
+        {
+            strVal = curItem->getPrintValue( &data_ );
+
+            if( curItem->getLength() <= 64 )
+            {
+                strVal = curItem->getPrintValue( &data_ );
+                strLine += QString( " %1" ).arg( strVal );
+
+                log( strLine );
+            }
+            else
+            {
+                BIN binData = {0,0};
+                QString strHead = QString( "|        |       |        | " );
+                binData.pVal = &data_.pVal[curItem->getOffset() + JS_TTLV_HEADER_SIZE];
+                binData.nLen = curItem->getLength();
+
+                log( strLine );
+                logBIN( strHead, nDepth + nSpace, &binData );
+            }
+        }
+        else
+        {
+            log( strLine );
+        }
 
         curItem = treeView->getNext( curItem );
     }

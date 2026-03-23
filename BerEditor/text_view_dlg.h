@@ -43,6 +43,9 @@ private:
     void log( const QString strHead, int nSpace, const QString strValue, bool bNL = true );
     void line();
     void logBIN( int nSpace, const BIN *pData );
+    void logBIN( const QString strHead, int nSpace, const BIN *pData );
+    void logBIN2( int nOffset, int nSpace, const BIN *pData );
+    void logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData );
 
     void parseBER();
     void parseTTLV();
