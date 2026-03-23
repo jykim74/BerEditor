@@ -74,7 +74,9 @@ BinViewDlg::~BinViewDlg()
 
 void BinViewDlg::initUI()
 {
+    mHeaderCombo->addItem( "" );
     mHeaderCombo->addItems( kHeaderList );
+
     mHeaderCombo->setEditable(true);
 }
 
@@ -227,6 +229,10 @@ void BinViewDlg::checkASCII()
 
 void BinViewDlg::changeHeader()
 {
+    QString strHeader = mHeaderCombo->currentText();
+
+    if( strHeader.length() <= 1 ) return;
+
     encodeData();
 }
 
@@ -245,7 +251,7 @@ void BinViewDlg::encodeBase64()
 
     if( data_.nLen <= 0 ) return;
 
-    QString strHeader = mHeaderCombo->currentText();
+    QString strHeader = mHeaderCombo->currentText().toUpper();
 
     JS_BIN_encodeBase64NL( &data_, &pBase64, kBlockSize );
     if( pBase64 == NULL ) return;
