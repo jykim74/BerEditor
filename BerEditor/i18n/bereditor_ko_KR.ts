@@ -1944,8 +1944,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../bin_view_dlg.cpp" line="125"/>
-        <location filename="../bin_view_dlg.cpp" line="175"/>
+        <location filename="../bin_view_dlg.cpp" line="130"/>
+        <location filename="../bin_view_dlg.cpp" line="180"/>
         <source>Binary View - %1</source>
         <translation>바이너리 보기 - %1</translation>
     </message>
@@ -23175,9 +23175,14 @@ Use %2</source>
         <translation>16진수 보기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.ui" line="100"/>
+        <location filename="../text_view_dlg.ui" line="87"/>
         <source>String View</source>
         <translation>문자 보기</translation>
+    </message>
+    <message>
+        <location filename="../text_view_dlg.ui" line="107"/>
+        <source>View Information</source>
+        <translation>정보 보기</translation>
     </message>
     <message>
         <source>OpenSSL</source>
@@ -23188,23 +23193,23 @@ Use %2</source>
         <translation type="vanished">CertUtil</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.ui" line="161"/>
+        <location filename="../text_view_dlg.ui" line="168"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.ui" line="181"/>
+        <location filename="../text_view_dlg.ui" line="188"/>
         <source>Print</source>
         <translation>인쇄</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.ui" line="188"/>
+        <location filename="../text_view_dlg.ui" line="195"/>
         <source>Print Preview</source>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.cpp" line="250"/>
-        <location filename="../text_view_dlg.cpp" line="311"/>
+        <location filename="../text_view_dlg.cpp" line="287"/>
+        <location filename="../text_view_dlg.cpp" line="348"/>
         <source>Text View - %1</source>
         <translation>텍스트 보기 - %1</translation>
     </message>

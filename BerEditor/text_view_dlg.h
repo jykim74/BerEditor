@@ -34,6 +34,7 @@ private slots:
 
     void checkHex();
     void checkString();
+    void checkShowInfo();
 
 private:
     void initUI();
@@ -44,8 +45,8 @@ private:
     void line();
     void logBIN( int nSpace, const BIN *pData );
     void logBIN( const QString strHead, int nSpace, const BIN *pData );
-    void logBIN2( int nOffset, int nSpace, const BIN *pData );
-    void logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData );
+    void logBIN2( int nOffset, int nSpace, const BIN *pData, bool bInfo = false );
+    void logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData, bool bInfo = false );
 
     void parseBER();
     void parseTTLV();

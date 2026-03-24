@@ -81,6 +81,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mStringRadio">
+       <property name="text">
+        <string>String View</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
@@ -94,10 +101,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="mStringRadio">
+     <item row="0" column="4">
+      <widget class="QCheckBox" name="mViewInfoCheck">
        <property name="text">
-        <string>String View</string>
+        <string>View Information</string>
        </property>
       </widget>
      </item>

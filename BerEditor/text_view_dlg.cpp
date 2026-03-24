@@ -34,6 +34,7 @@ TextViewDlg::TextViewDlg(QWidget *parent)
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(clickFind()));
     connect( mHexRadio, SIGNAL(clicked()), this, SLOT(checkHex()));
     connect( mStringRadio, SIGNAL(clicked()), this, SLOT(checkString()));
+    connect( mViewInfoCheck, SIGNAL(clicked()), this, SLOT(checkShowInfo()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -49,6 +50,8 @@ TextViewDlg::~TextViewDlg()
 void TextViewDlg::initUI()
 {
     mStringRadio->setChecked(true);
+    mDataText->setLineWrapMode(QPlainTextEdit::NoWrap);
+    mViewInfoCheck->setEnabled( false );
 }
 
 void TextViewDlg::setData( const BIN *pData )
@@ -172,7 +175,7 @@ void TextViewDlg::logBIN( const QString strHead, int nSpace, const BIN *pData )
     }
 }
 
-void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData )
+void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData, bool bInfo )
 {
     int nLeft = pData->nLen;
     int nPos = 0;
@@ -183,6 +186,7 @@ void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData )
         int nSize = 0;
         BIN binPart = {0,0};
         QString strAddr = QString( "%1: " ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
+        QString strLine;
 
 
         if( nLeft > kBlockSize )
@@ -193,14 +197,31 @@ void TextViewDlg::logBIN2( int nOffset, int nSpace, const BIN *pData )
         binPart.pVal = &pData->pVal[nPos];
         binPart.nLen = nSize;
 
-        log( strAddr, nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
+        strLine = getHexString2( &binPart );
+
+        if( bInfo == true )
+        {
+            char *pDump = NULL;
+            int nWidth = 64 - strLine.length() - nSpace;
+            if( nWidth < 3 ) nWidth = 3;
+
+            JS_BIN_dumpString( &binPart, &pDump );
+
+            QString strEmpty;
+            strLine += QString( "%1" ).arg( strEmpty, nWidth, QLatin1Char(' '));
+            strLine += QString( "; %1" ).arg( pDump );
+
+            if( pDump ) JS_free( pDump );
+        }
+
+        log( strAddr, nSpace, strLine );
 
         nPos += nSize;
         nLeft -= nSize;
     }
 }
 
-void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData )
+void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const BIN *pData, bool bInfo )
 {
     int nLeft = pData->nLen;
     int nPos = 0;
@@ -212,6 +233,7 @@ void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const
         BIN binPart = {0,0};
         QString strAddr = QString( "%1: " ).arg( nOffset + nPos, 6, 16, QLatin1Char('0'));
         QString strPost = QString( "%1 %2" ).arg( strAddr ).arg( strHead );
+        QString strLine;
 
         if( nLeft > kBlockSize )
             nSize = 16;
@@ -221,7 +243,22 @@ void TextViewDlg::logBIN2( int nOffset, const QString strHead, int nSpace, const
         binPart.pVal = &pData->pVal[nPos];
         binPart.nLen = nSize;
 
-        log( strPost, nSpace, QString( "%1" ).arg( getHexString2(&binPart)));
+        strLine = getHexString2( &binPart );
+
+        if( bInfo == true )
+        {
+            char *pDump = NULL;
+            int nWidth = 64 - strLine.length() - nSpace;
+            if( nWidth < 3 ) nWidth = 3;
+
+            JS_BIN_dumpString( &binPart, &pDump );
+
+            QString strEmpty;
+            strLine += QString( "%1" ).arg( strEmpty, nWidth, QLatin1Char(' '));
+            strLine += QString( "; %1" ).arg( pDump );
+        }
+
+        log( strPost, nSpace, strLine );
 
         nPos += nSize;
         nLeft -= nSize;
@@ -316,6 +353,8 @@ void TextViewDlg::checkHex()
 {
     int ret = JS_KMS_isTTLV( &data_ );
 
+    mViewInfoCheck->setEnabled( true );
+
     if( ret == 1 )
     {
         parseTTLV();
@@ -327,6 +366,22 @@ void TextViewDlg::checkHex()
 }
 
 void TextViewDlg::checkString()
+{
+    int ret = JS_KMS_isTTLV( &data_ );
+
+    mViewInfoCheck->setEnabled( false );
+
+    if( ret == 1 )
+    {
+        parseTTLV();
+    }
+    else
+    {
+        parseBER();
+    }
+}
+
+void TextViewDlg::checkShowInfo()
 {
     int ret = JS_KMS_isTTLV( &data_ );
 
@@ -382,6 +437,7 @@ void TextViewDlg::textHex( BerModel *pModel )
     int nSpace = 3;
     BerTreeView* treeView = pModel->getTreeView();
     BerItem *curItem = NULL;
+    bool bInfo = mViewInfoCheck->isChecked();
 
     curItem = treeView->getNext( curItem );
 
@@ -396,16 +452,51 @@ void TextViewDlg::textHex( BerModel *pModel )
 
         strHead = QString( "%1: " ).arg( curItem->GetOffset(), 6, 16, QLatin1Char('0') );
         strLine += QString( "%1" ).arg( getHexString2( &binHeader ) );
+        if( bInfo == true )
+        {
+            int nWidth = 64 - strLine.length() - nLevel;
+            if( nWidth < nSpace ) nWidth = nSpace;
+
+            QString strEmpty;
+            strLine += QString( "%1" ).arg( strEmpty, nWidth, QLatin1Char(' '));
+            strLine += QString( "; %1 (%2 Bytes)" )
+                           .arg( curItem->GetTagString() )
+                           .arg( curItem->GetLength() );
+        }
 
         log( strHead, nLevel, strLine );
 
         if( curItem->isConstructed() == false )
         {
             BIN binVal = {0,0};
-            binVal.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_];
-            binVal.nLen = curItem->length_;
 
-            logBIN2( curItem->GetOffset() + curItem->GetHeaderSize(), nLevel + nSpace, &binVal );
+            if( curItem->isType( JS_BITSTRING ) )
+            {
+                unsigned char cUnused = data_.pVal[curItem->offset_ + curItem->header_size_];
+                strLine = getHexString( &cUnused, 1 );
+
+                if( bInfo == true )
+                {
+                    int nWidth = 64 - strLine.length() - nLevel - nSpace;
+                    if( nWidth < nSpace ) nWidth = nSpace;
+
+                    QString strEmpty;
+                    strLine += QString( "%1" ).arg( strEmpty, nWidth, QLatin1Char(' '));
+                    strLine += QString( "; %1 unused bytes" ).arg( cUnused );
+                }
+
+                log( strHead, nLevel + nSpace, strLine );
+
+                binVal.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_+1];
+                binVal.nLen = curItem->length_ - 1;
+            }
+            else
+            {
+                binVal.pVal = &data_.pVal[curItem->offset_ + curItem->header_size_];
+                binVal.nLen = curItem->length_;
+            }
+
+            logBIN2( curItem->GetOffset() + curItem->GetHeaderSize(), nLevel + nSpace, &binVal, bInfo );
         }
 
         curItem = treeView->getNext( curItem );
@@ -496,6 +587,7 @@ void TextViewDlg::textHex( TTLVTreeModel *pModel )
     int nSpace = 3;
     TTLVTreeView* treeView = pModel->getTreeView();
     TTLVTreeItem *curItem = NULL;
+    bool bInfo = mViewInfoCheck->isChecked();
 
     curItem = treeView->getNext( curItem );
 
@@ -507,7 +599,16 @@ void TextViewDlg::textHex( TTLVTreeModel *pModel )
 
         strHead = QString( "%1: ").arg( curItem->getOffset(), 6, 16, QLatin1Char('0'));
 
-        strLine += QString( "%1" ).arg( getHexString( &curItem->header_ ) );
+        strLine += QString( "%1" ).arg( getHexString2( &curItem->header_ ) );
+        if( bInfo == true )
+        {
+            int nWidth = 64 - strLine.length() - nLevel;
+            if( nWidth < nSpace ) nWidth = nSpace;
+            QString strEmpty;
+
+            strLine += QString( "%1" ).arg( strEmpty, nWidth, QLatin1Char(' '));
+            strLine += QString( "; %1 (%2 Bytes)" ).arg( curItem->getTagName() ).arg( curItem->getLength() );
+        }
 
         log( strHead, nLevel, strLine );
 
@@ -517,7 +618,7 @@ void TextViewDlg::textHex( TTLVTreeModel *pModel )
             binVal.pVal = &data_.pVal[curItem->getOffset() + JS_TTLV_HEADER_SIZE];
             binVal.nLen = curItem->getLength();
 
-            logBIN2( curItem->getOffset() + JS_TTLV_HEADER_SIZE, nLevel + nSpace, &binVal );
+            logBIN2( curItem->getOffset() + JS_TTLV_HEADER_SIZE, nLevel + nSpace, &binVal, bInfo );
         }
 
         curItem = treeView->getNext( curItem );
