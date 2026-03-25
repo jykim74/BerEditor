@@ -2581,7 +2581,7 @@ void MainWindow::binView()
         {
             BIN binTTLV = ttlv_model_->getTTLV();
             pItem->getDataAll( &binTTLV, &binData );
-            binView.setData( &binData );
+            binView.setData( &binData, pItem->getOffset() );
         }
     }
     else
@@ -2591,7 +2591,7 @@ void MainWindow::binView()
         {
             BIN binBER = ber_model_->getBER();
             pItem->getNodeBin( &binBER, &binData );
-            binView.setData( &binData );
+            binView.setData( &binData, pItem->GetOffset() );
         }
     }
 
@@ -2611,7 +2611,7 @@ void MainWindow::textView()
         {
             BIN binTTLV = ttlv_model_->getTTLV();
             pItem->getDataAll( &binTTLV, &binData );
-            textView.setData( &binData );
+            textView.setData( &binData, pItem->getOffset() );
         }
     }
     else
@@ -2621,7 +2621,7 @@ void MainWindow::textView()
         {
             BIN binBER = ber_model_->getBER();
             pItem->getNodeBin( &binBER, &binData );
-            textView.setData( &binData );
+            textView.setData( &binData, pItem->GetOffset() );
         }
     }
 

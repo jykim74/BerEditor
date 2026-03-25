@@ -27,6 +27,7 @@ TextViewDlg::TextViewDlg(QWidget *parent)
     initUI();
 
     memset( &data_, 0x00, sizeof(BIN));
+    base_offset_ = 0;
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mPrintBtn, SIGNAL(clicked()), this, SLOT(clickPrint()));
@@ -45,6 +46,7 @@ TextViewDlg::TextViewDlg(QWidget *parent)
 TextViewDlg::~TextViewDlg()
 {
     JS_BIN_reset( &data_ );
+    base_offset_ = 0;
 }
 
 void TextViewDlg::initUI()
@@ -54,10 +56,12 @@ void TextViewDlg::initUI()
     mViewInfoCheck->setEnabled( false );
 }
 
-void TextViewDlg::setData( const BIN *pData )
+void TextViewDlg::setData( const BIN *pData, int offset )
 {
     JS_BIN_reset( &data_ );
     JS_BIN_copy( &data_, pData );
+
+    base_offset_ = offset;
 
     int ret = JS_KMS_isTTLV( &data_ );
 
@@ -69,6 +73,8 @@ void TextViewDlg::setData( const BIN *pData )
     {
         parseBER();
     }
+
+    setWindowTitle( tr( "Text View") );
 }
 
 void TextViewDlg::log( const QString strLog, bool bNL )
@@ -332,6 +338,7 @@ void TextViewDlg::clickFind()
     if( strFileName > 0 )
     {
         JS_BIN_reset( &data_ );
+        base_offset_ = 0;
         JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
 
         int ret = JS_KMS_isTTLV( &data_ );
@@ -450,7 +457,7 @@ void TextViewDlg::textHex( BerModel *pModel )
         BIN binHeader = {0,0};
         JS_BIN_set( &binHeader, curItem->header_, curItem->header_size_ );
 
-        strHead = QString( "%1: " ).arg( curItem->GetOffset(), 6, 16, QLatin1Char('0') );
+        strHead = QString( "%1: " ).arg( curItem->GetOffset() + base_offset_, 6, 16, QLatin1Char('0') );
         strLine += QString( "%1" ).arg( getHexString2( &binHeader ) );
         if( bInfo == true )
         {
@@ -528,7 +535,7 @@ void TextViewDlg::textString( BerModel *pModel )
         QString strVal = "";
 
         strLine = QString( "| %1 | %2 | %3 |%4 %5 :")
-                      .arg( curItem->GetOffset(), 6, 10, QLatin1Char(' ') )
+                      .arg( curItem->GetOffset() + base_offset_, 6, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->GetLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))
@@ -597,7 +604,7 @@ void TextViewDlg::textHex( TTLVTreeModel *pModel )
         QString strLine;
         int nLevel = curItem->getLevel() * nSpace;
 
-        strHead = QString( "%1: ").arg( curItem->getOffset(), 6, 16, QLatin1Char('0'));
+        strHead = QString( "%1: ").arg( curItem->getOffset() + base_offset_, 6, 16, QLatin1Char('0'));
 
         strLine += QString( "%1" ).arg( getHexString2( &curItem->header_ ) );
         if( bInfo == true )
@@ -648,7 +655,7 @@ void TextViewDlg::textString( TTLVTreeModel *pModel )
         QString strVal = "";
 
         strLine = QString( "| %1 | %2 | %3 |%4 %5 :")
-                      .arg( curItem->getOffset(), 6, 10, QLatin1Char(' ') )
+                      .arg( curItem->getOffset() + base_offset_, 6, 10, QLatin1Char(' ') )
                       .arg( curItem->getLevel(), 5, 10, QLatin1Char(' ') )
                       .arg( curItem->getLength(), 6, 10, QLatin1Char(' ') )
                       .arg( strS, nDepth, QLatin1Char( ' '))

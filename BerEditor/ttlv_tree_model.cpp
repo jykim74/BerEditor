@@ -857,7 +857,7 @@ void TTLVTreeModel::binaryView()
     pItem->getDataAll( &binTTLV_, &binData );
 
     BinViewDlg binView;
-    binView.setData( &binData );
+    binView.setData( &binData, pItem->getOffset() );
     binView.exec();
 
     JS_BIN_reset( &binData );
@@ -877,7 +877,7 @@ void TTLVTreeModel::textView()
     pItem->getDataAll( &binTTLV_, &binData );
 
     TextViewDlg textView;
-    textView.setData( &binData );
+    textView.setData( &binData, pItem->getOffset() );
     textView.exec();
 
     JS_BIN_reset( &binData );

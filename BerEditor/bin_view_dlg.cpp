@@ -43,6 +43,7 @@ BinViewDlg::BinViewDlg(QWidget *parent)
     initUI();
 
     memset( &data_, 0x00, sizeof(BIN));
+    base_offset_ = 0;
 
     connect( mBase64Radio, SIGNAL(clicked()), this, SLOT(checkBase64()));
     connect( mHexRadio, SIGNAL(clicked()), this, SLOT(checkHex()));
@@ -70,6 +71,7 @@ BinViewDlg::BinViewDlg(QWidget *parent)
 BinViewDlg::~BinViewDlg()
 {
     JS_BIN_reset( &data_ );
+    base_offset_ = 0;
 }
 
 void BinViewDlg::initUI()
@@ -86,10 +88,12 @@ void BinViewDlg::initialize()
     checkBase64();
 }
 
-void BinViewDlg::setData( const BIN *pData )
+void BinViewDlg::setData( const BIN *pData, int offset )
 {
     JS_BIN_reset( &data_ );
     JS_BIN_copy( &data_, pData );
+    base_offset_ = offset;
+    setWindowTitle( tr( "Binary View"));
     encodeData();
 }
 
@@ -178,6 +182,7 @@ void BinViewDlg::clickFind()
         JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &data_ );
 
         setWindowTitle( tr( "Binary View - %1").arg( strFileName ));
+        base_offset_ = 0;
 
         encodeData();
     }
@@ -308,7 +313,7 @@ void BinViewDlg::encodeHex()
 
             if( mAddressCheck->isChecked() )
             {
-                strLine = QString( "%1 | " ).arg( nPos, 6, 16, QLatin1Char('0') );
+                strLine = QString( "%1 | " ).arg( nPos + base_offset_, 6, 16, QLatin1Char('0') );
             }
 
             strLine += QString( "%1" ).arg( getHexString2( &binPart ), -48, QLatin1Char(' ') );

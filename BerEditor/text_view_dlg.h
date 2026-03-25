@@ -20,7 +20,7 @@ class TextViewDlg : public QDialog, public Ui::TextViewDlg
 public:
     explicit TextViewDlg(QWidget *parent = nullptr);
     ~TextViewDlg();
-    void setData( const BIN *pData );
+    void setData( const BIN *pData, int offset = 0 );
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -58,6 +58,7 @@ private:
     void textString( TTLVTreeModel *pModel );
 
     BIN data_;
+    int base_offset_;
 };
 
 #endif // TEXT_VIEW_DLG_H

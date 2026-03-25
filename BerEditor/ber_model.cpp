@@ -1200,7 +1200,7 @@ void BerModel::BinView()
     item->getNodeBin( &binBer_, &binData );
 
     BinViewDlg binView;
-    binView.setData( &binData );
+    binView.setData( &binData, item->offset_ );
     binView.exec();
     JS_BIN_reset( &binData );
 }
@@ -1218,7 +1218,7 @@ void BerModel::TextView()
     item->getNodeBin( &binBer_, &binData );
 
     TextViewDlg textView;
-    textView.setData( &binData );
+    textView.setData( &binData, item->GetOffset() );
     textView.exec();
 
     JS_BIN_reset( &binData );

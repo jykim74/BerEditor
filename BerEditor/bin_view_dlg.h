@@ -18,7 +18,7 @@ class BinViewDlg : public QDialog, public Ui::BinViewDlg
 public:
     explicit BinViewDlg(QWidget *parent = nullptr);
     ~BinViewDlg();
-    void setData( const BIN *pData );
+    void setData( const BIN *pData, int offset = 0 );
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -48,6 +48,7 @@ private:
     void encodeData();
 
     BIN data_;
+    int base_offset_;
 };
 
 #endif // BIN_VIEW_DLG_H
