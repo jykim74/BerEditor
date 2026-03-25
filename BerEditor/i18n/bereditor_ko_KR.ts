@@ -1890,6 +1890,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../bin_view_dlg.ui" line="35"/>
+        <location filename="../bin_view_dlg.cpp" line="96"/>
         <source>Binary View</source>
         <translation>바이너리 보기</translation>
     </message>
@@ -1944,8 +1945,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../bin_view_dlg.cpp" line="130"/>
-        <location filename="../bin_view_dlg.cpp" line="180"/>
+        <location filename="../bin_view_dlg.cpp" line="134"/>
+        <location filename="../bin_view_dlg.cpp" line="184"/>
         <source>Binary View - %1</source>
         <translation>바이너리 보기 - %1</translation>
     </message>
@@ -23161,6 +23162,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../text_view_dlg.ui" line="42"/>
+        <location filename="../text_view_dlg.cpp" line="77"/>
         <source>Text View</source>
         <translation>텍스트 보기</translation>
     </message>
@@ -23208,8 +23210,8 @@ Use %2</source>
         <translation>인쇄 미리보기</translation>
     </message>
     <message>
-        <location filename="../text_view_dlg.cpp" line="287"/>
-        <location filename="../text_view_dlg.cpp" line="348"/>
+        <location filename="../text_view_dlg.cpp" line="293"/>
+        <location filename="../text_view_dlg.cpp" line="355"/>
         <source>Text View - %1</source>
         <translation>텍스트 보기 - %1</translation>
     </message>
