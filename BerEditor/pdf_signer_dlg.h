@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_pdf_signer_dlg.h"
+#include "js_bin.h"
 
 #ifdef PDF_SIGN
 
@@ -19,8 +20,39 @@ public:
     explicit PDFSignerDlg(QWidget *parent = nullptr);
     ~PDFSignerDlg();
 
-private:
+private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
+    void findSrcPath();
+    void findDstPath();
+    void clickClearAll();
+
+    void checkUseTSP();
+    void clickTSP();
+
+    void checkSign();
+    void checkEnc();
+    void checkNameSubjectDN();
+
+    void clickGetInfo();
+    void clickMakeSign();
+    void clickVerifySign();
+    void clickClearInfo();
+    void clickEncrypt();
+    void clickDecrypt();
+
+    void clickViewCMS();
+    void clickExportCMS();
+    void clickMake();
+    void clickVerify();
+
+private:
+    void initUI();
+    void initialize();
+    int getTSP( const BIN *pSrc, BIN *pTSP );
+    int getPriKeyCert( BIN *pPriKey, BIN *pCert );
+    int getCert( BIN *pCert );
 };
 
 #endif

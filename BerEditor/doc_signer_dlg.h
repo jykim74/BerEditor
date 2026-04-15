@@ -33,7 +33,6 @@ class DocSignerDlg;
 const int kIndexCMS     = 0;
 const int kIndexJSON    = 1;
 const int kIndexXML     = 2;
-const int kIndexPDF     = 3;
 
 class DocSignerDlg : public QDialog, public Ui::DocSignerDlg
 {
@@ -130,25 +129,6 @@ private slots:
     void changeXML_Body();
     void changeXML_Data();
     void changeXML_Res();
-
-#ifdef PDF_SIGN
-    void checkPDFSign();
-    void checkPDFEnc();
-    void checkPDFNameSubjectDN();
-
-    void clickPDF_GetInfo();
-    void clickPDF_TSP();
-    void clickPDF_MakeSign();
-    void clickPDF_VerifySign();
-    void clickPDF_ClearInfo();
-    void clickPDF_Encrypt();
-    void clickPDF_Decrypt();
-
-    void clickPDF_ViewCMS();
-    void clickPDF_ExportCMS();
-    void clickPDF_Make();
-    void clickPDF_Verify();
-#endif
 
 private:
     void initUI();
