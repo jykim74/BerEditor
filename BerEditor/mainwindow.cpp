@@ -64,6 +64,7 @@
 #include "ber_compare_dlg.h"
 #include "bin_view_dlg.h"
 #include "text_view_dlg.h"
+#include "pdf_signer_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -157,6 +158,11 @@ MainWindow::~MainWindow()
     if( key_list_dlg_ ) delete key_list_dlg_;
     if( x509_comp_dlg_ ) delete x509_comp_dlg_;
     if( doc_signer_dlg_ ) delete doc_signer_dlg_;
+
+#ifdef PDF_SIGN
+    if( pdf_signer_dlg_ ) delete pdf_signer_dlg_;
+#endif
+
     if( make_pri_key_dlg_ ) delete make_pri_key_dlg_;
     if( ber_comp_dlg_ ) delete ber_comp_dlg_;
 
@@ -663,6 +669,15 @@ void MainWindow::createViewActions()
     serviceDocSignerAct->setChecked(bVal);
     connect( serviceDocSignerAct, &QAction::triggered, this, &MainWindow::viewServiceDocSigner );
     serviceMenu->addAction( serviceDocSignerAct );
+
+#ifdef PDF_SIGN
+    QAction *servicePDFSignerAct = new QAction( tr( "PDF Signer"), this );
+    bVal = isView( ACT_SERVICE_PDF_SIGNER );
+    servicePDFSignerAct->setCheckable(true);
+    servicePDFSignerAct->setChecked(bVal);
+    connect( servicePDFSignerAct, &QAction::triggered, this, &MainWindow::viewServicePDFSigner );
+    serviceMenu->addAction( servicePDFSignerAct );
+#endif
 
     QAction *serviceCAVPAct = new QAction( tr( "CAVP"), this );
     bVal = isView( ACT_SERVICE_CAVP );
@@ -1297,6 +1312,16 @@ void MainWindow::createServiceActions()
     serviceMenu->addAction( doc_signer_act_ );
     if( isView( ACT_SERVICE_DOC_SIGNER ) ) service_tool_->addAction( doc_signer_act_ );
 
+#ifdef PDF_SIGN
+    const QIcon pdfIcon = QIcon::fromTheme( "pdf-signer", QIcon(":/images/pdf.png"));
+    pdf_signer_act_ = new QAction(pdfIcon, tr("&PDF Signer"), this);
+    pdf_signer_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
+    connect( pdf_signer_act_, &QAction::triggered, this, &MainWindow::pdfSigner );
+    pdf_signer_act_->setStatusTip(tr("PDF Signer"));
+    serviceMenu->addAction( pdf_signer_act_ );
+    if( isView( ACT_SERVICE_PDF_SIGNER ) ) service_tool_->addAction( pdf_signer_act_ );
+#endif
+
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
     cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
@@ -1314,6 +1339,10 @@ void MainWindow::createServiceActions()
         ssl_act_->setEnabled( false );
         x509_comp_act_->setEnabled( false );
         doc_signer_act_->setEnabled( false );
+
+#ifdef PDF_SIGN
+        pdf_signer_act_->setEnabled( false );
+#endif
     }
 
 }
@@ -2748,6 +2777,18 @@ void MainWindow::docSigner()
     doc_signer_dlg_->activateWindow();
 }
 
+#ifdef PDF_SIGN
+void MainWindow::pdfSigner()
+{
+    if( pdf_signer_dlg_ == nullptr )
+        pdf_signer_dlg_ = new PDFSignerDlg;
+
+    pdf_signer_dlg_->show();
+    pdf_signer_dlg_->raise();
+    pdf_signer_dlg_->activateWindow();
+}
+#endif
+
 void MainWindow::genOTP()
 {
     if( gen_otp_dlg_ == nullptr )
@@ -3715,6 +3756,22 @@ void MainWindow::viewServiceDocSigner( bool bChecked )
         unsetView( ACT_SERVICE_DOC_SIGNER );
     }
 }
+
+#ifdef PDF_SIGN
+void MainWindow::viewServicePDFSigner( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->insertAction( doc_signer_act_, pdf_signer_act_ );
+        setView( ACT_SERVICE_PDF_SIGNER );
+    }
+    else
+    {
+        service_tool_->removeAction( pdf_signer_act_ );
+        unsetView( ACT_SERVICE_PDF_SIGNER );
+    }
+}
+#endif
 
 void MainWindow::viewServiceCAVP( bool bChecked )
 {

@@ -56,6 +56,7 @@ class X509CompareDlg;
 class DocSignerDlg;
 class MakePriKeyDlg;
 class BERCompareDlg;
+class PDFSignerDlg;
 
 namespace Ui {
 class MainWindow;
@@ -168,6 +169,10 @@ public:
     void viewServiceX509Comp( bool bChecked );
     void viewServiceDocSigner( bool bChecked );
 
+#ifdef PDF_SIGN
+    void viewServicePDFSigner( bool bChecked );
+#endif
+
     void viewProtoOCSP( bool bChecked );
     void viewProtoTSP( bool bChecked );
     void viewProtoCMP( bool bChecked );
@@ -239,6 +244,9 @@ private slots:
     void sslCheck();
     void x509Compare();
     void docSigner();
+#ifdef PDF_SIGN
+    void pdfSigner();
+#endif
     void genOTP();
     void VID();
     void BNCalc();
@@ -363,6 +371,9 @@ private:
     KeyListDlg      *key_list_dlg_ = nullptr;
     X509CompareDlg  *x509_comp_dlg_ = nullptr;
     DocSignerDlg    *doc_signer_dlg_ = nullptr;
+#ifdef PDF_SIGN
+    PDFSignerDlg    *pdf_signer_dlg_ = nullptr;
+#endif
     MakePriKeyDlg   *make_pri_key_dlg_ = nullptr;
     BERCompareDlg   *ber_comp_dlg_ = nullptr;
 
@@ -429,6 +440,9 @@ private:
     QAction* ssl_act_;
     QAction* x509_comp_act_;
     QAction* doc_signer_act_;
+#ifdef PDF_SIGN
+    QAction* pdf_signer_act_;
+#endif
 
     QToolBar* proto_tool_;
     QAction* ocsp_act_;

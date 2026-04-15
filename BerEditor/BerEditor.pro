@@ -133,7 +133,8 @@ SOURCES += \
     comp_model.cpp \
     comp_tree.cpp \
     bin_view_dlg.cpp \
-    text_view_dlg.cpp
+    text_view_dlg.cpp \
+    pdf_signer_dlg.cpp
 
 
 HEADERS += \
@@ -232,7 +233,8 @@ HEADERS += \
     comp_tree.h \
     comp_model.h \
     bin_view_dlg.h \
-    text_view_dlg.h
+    text_view_dlg.h \
+    pdf_signer_dlg.h
 
 
 
@@ -381,7 +383,8 @@ FORMS += \
         make_pri_key_dlg.ui \
         ber_compare_dlg.ui \
         bin_view_dlg.ui \
-        text_view_dlg.ui
+        text_view_dlg.ui \
+        pdf_signer_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

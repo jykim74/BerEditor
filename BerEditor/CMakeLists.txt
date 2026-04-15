@@ -234,6 +234,7 @@ add_executable(${PROJECT_NAME}
     comp_model.h comp_model.cpp
     bin_view_dlg.h bin_view_dlg.cpp bin_view_dlg.ui
     text_view_dlg.h text_view_dlg.cpp text_view_dlg.ui
+    pdf_signer_dlg.h pdf_signer_dlg.cpp pdf_signer_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

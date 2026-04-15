@@ -124,5 +124,6 @@
         <file>comptree.qss</file>
         <file>images/bin_view.png</file>
         <file>images/text_view.png</file>
+        <file>images/pdf.png</file>
     </qresource>
 </RCC>
