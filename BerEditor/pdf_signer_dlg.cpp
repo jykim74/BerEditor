@@ -10,7 +10,8 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QDir>
-
+#include <QMenu>
+#include <QClipboard>
 
 #include "ber_applet.h"
 #include "mainwindow.h"
@@ -52,6 +53,8 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
     connect( mSrcFindBtn, SIGNAL(clicked()), this, SLOT(findSrcPath()));
     connect( mDstFindBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
+
+    connect( mInfoTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTableMenuRequested(QPoint)));
 
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
@@ -254,6 +257,36 @@ end :
     if( pString ) JS_free( pString );
 }
 
+void PDFSignerDlg::copyValue()
+{
+    QModelIndex idx = mInfoTable->currentIndex();
+    QTableWidgetItem* item = mInfoTable->item( idx.row(), 1 );
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( item->text() );
+
+    berApplet->messageBox( tr( "The value has been copied." ), this );
+}
+
+void PDFSignerDlg::slotTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *copyValueAct = new QAction( tr( "Copy value" ), this );
+
+    connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyValue()));
+
+    menu->addAction( copyValueAct );
+
+    menu->popup( mInfoTable->viewport()->mapToGlobal(pos));
+}
+
 void PDFSignerDlg::findSrcPath()
 {
     int nType = JS_FILE_TYPE_PDF;
@@ -398,6 +431,14 @@ void PDFSignerDlg::clickGetInfo()
 
     if( sInfo.nCMS == 1 )
     {
+        BINList *pCertList = NULL;
+        BINList *pCRLList = NULL;
+        BINList *pOCSPList = NULL;
+        const BINList *pCurList = NULL;
+        int nCount = 0;
+
+        BIN binTSP = {0,0};
+
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
             strSrcPath.toLocal8Bit().toStdString().c_str(),
@@ -417,6 +458,81 @@ void PDFSignerDlg::clickGetInfo()
             mInfoTable->setItem( i, 1, new QTableWidgetItem( strRange ));
             i++;
         }
+
+        ret = JS_PDF_getDSS( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                            NULL,
+                            &pCertList, &pCRLList, &pOCSPList );
+
+        if( ret == JSR_OK )
+        {
+            if( pCertList )
+            {
+                nCount = JS_BIN_countList( pCertList );
+
+                for( int k = 0; k < nCount; k++ )
+                {
+                    pCurList = JS_BIN_getListAt( k, pCertList );
+
+                    mInfoTable->insertRow(i);
+                    mInfoTable->setRowHeight(i,10);
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS Cert" )));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+                    i++;
+                }
+            }
+
+            if( pCRLList )
+            {
+                nCount = JS_BIN_countList( pCRLList );
+
+                for( int k = 0; k < nCount; k++ )
+                {
+                    pCurList = JS_BIN_getListAt( k, pCRLList );
+
+                    mInfoTable->insertRow(i);
+                    mInfoTable->setRowHeight(i,10);
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS OCSP" )));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+                    i++;
+                }
+            }
+
+            if( pOCSPList )
+            {
+                nCount = JS_BIN_countList( pOCSPList );
+
+                for( int k = 0; k < nCount; k++ )
+                {
+                    pCurList = JS_BIN_getListAt( k, pOCSPList );
+
+                    mInfoTable->insertRow(i);
+                    mInfoTable->setRowHeight(i,10);
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS CRL" )));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+                    i++;
+                }
+            }
+        }
+
+        ret = JS_PDF_getTimestamp(
+            strSrcPath.toLocal8Bit().toStdString().c_str(),
+            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+            &binTSP );
+
+        if( binTSP.nLen > 0 )
+        {
+            mInfoTable->insertRow(i);
+            mInfoTable->setRowHeight(i,10);
+            mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TimeStamp" )));
+            mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binTSP ) ));
+            i++;
+        }
+
+        if( pCertList ) JS_BIN_resetList( &pCertList );
+        if( pCRLList ) JS_BIN_resetList( &pCRLList );
+        if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+        JS_BIN_reset( &binTSP );
     }
 
     if( sSignLabel.pName )

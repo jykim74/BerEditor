@@ -23,6 +23,9 @@ public:
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    void slotTableMenuRequested( QPoint pos );
+
+    void copyValue();
 
     void findSrcPath();
     void findDstPath();

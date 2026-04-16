@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>575</height>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,8 +132,11 @@
      <property name="minimumSize">
       <size>
        <width>500</width>
-       <height>0</height>
+       <height>100</height>
       </size>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
      </property>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
