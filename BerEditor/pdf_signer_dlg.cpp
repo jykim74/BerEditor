@@ -26,6 +26,10 @@
 #include "time_stamp_dlg.h"
 #include "export_dlg.h"
 #include "data_input_dlg.h"
+#include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
+#include "cert_id_dlg.h"
+#include "cms_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -274,15 +278,107 @@ void PDFSignerDlg::copyValue()
     berApplet->messageBox( tr( "The value has been copied." ), this );
 }
 
+void PDFSignerDlg::decodeValue()
+{
+    QModelIndex idx = mInfoTable->currentIndex();
+
+    QTableWidgetItem* item0 = mInfoTable->item( idx.row(), 0 );
+    QTableWidgetItem* item1 = mInfoTable->item( idx.row(), 1 );
+
+    if( item1 == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strValue = item1->text();
+    BIN binData = {0,0};
+
+    JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+
+    berApplet->decodeTitle( &binData, item0->text() );
+
+    JS_BIN_reset( &binData );
+}
+
+void PDFSignerDlg::viewValue()
+{
+    QModelIndex idx = mInfoTable->currentIndex();
+
+    QTableWidgetItem* item0 = mInfoTable->item( idx.row(), 0 );
+    QTableWidgetItem* item1 = mInfoTable->item( idx.row(), 1 );
+
+    if( item1 == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strType = item0->text();
+    QString strValue = item1->text();
+    BIN binData = {0,0};
+
+    JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+
+    if( strType == kDSS_Cert )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binData, strType );
+        certInfo.exec();
+    }
+    else if( strType == kDSS_CRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binData, strType );
+        crlInfo.exec();
+    }
+    else if( strType == kDSS_OCSP )
+    {
+        CertIDDlg certID;
+        certID.setResponse( &binData );
+        certID.exec();
+    }
+    else if( strType == kDocTimeStamp )
+    {
+        CMSInfoDlg cmsInfo;
+        cmsInfo.setCMS( &binData, kDocTimeStamp );
+        cmsInfo.exec();
+    }
+
+
+    JS_BIN_reset( &binData );
+}
+
 void PDFSignerDlg::slotTableMenuRequested( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
 
+    QModelIndex idx = mInfoTable->currentIndex();
+    QTableWidgetItem* item = mInfoTable->item( idx.row(), 0 );
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
     QAction *copyValueAct = new QAction( tr( "Copy value" ), this );
+    QAction *decodeAct = new QAction( tr( "Decode value" ), this );
+    QAction *viewAct = new QAction( tr( "View value" ), this );
+
+    QString strName = item->text();
 
     connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyValue()));
+    connect( decodeAct, SIGNAL(triggered(bool)), this, SLOT(decodeValue()));
+    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewValue()));
 
     menu->addAction( copyValueAct );
+
+    if( strName == kDSS_Cert || strName == kDSS_CRL || strName == kDSS_OCSP || strName == kDocTimeStamp )
+    {
+        menu->addAction( decodeAct );
+        menu->addAction( viewAct );
+    }
 
     menu->popup( mInfoTable->viewport()->mapToGlobal(pos));
 }
@@ -476,7 +572,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
-                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS Cert" )));
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
                     i++;
                 }
@@ -492,7 +588,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
-                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS OCSP" )));
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_CRL ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
                     i++;
                 }
@@ -508,7 +604,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
-                    mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("DSS CRL" )));
+                    mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_OCSP ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
                     i++;
                 }
@@ -524,7 +620,7 @@ void PDFSignerDlg::clickGetInfo()
         {
             mInfoTable->insertRow(i);
             mInfoTable->setRowHeight(i,10);
-            mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TimeStamp" )));
+            mInfoTable->setItem( i, 0, new QTableWidgetItem( kDocTimeStamp ));
             mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binTSP ) ));
             i++;
         }
