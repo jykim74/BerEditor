@@ -37,6 +37,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
     JCertStatusInfo sStatusInfo;
     BIN binSignCert = {0,0};
     char sRevokedTime[64];
+    QString strVerify;
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
@@ -44,11 +45,22 @@ void CertIDDlg::setResponse( const BIN *pResp )
     JS_BIN_copy( &resp_, pResp );
 
     ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, &sIDInfo, &sStatusInfo );
-    if( ret != 0 )
+    if( ret != JSR_VERIFY && ret != JSR_INVALID )
     {
         berApplet->elog( QString( "failed to decode OCSP response: %1").arg(ret));
         goto end;
     }
+
+    if( ret == JSR_VERIFY )
+        strVerify = tr("Verify OK");
+    else
+        strVerify = tr("Verify Err");
+
+    mIDTable->insertRow(i);
+    mIDTable->setRowHeight(i, 10);
+    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Verify" )));
+    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( strVerify )));
+    i++;
 
     mIDTable->insertRow(i);
     mIDTable->setRowHeight(i, 10);
@@ -126,8 +138,8 @@ void CertIDDlg::initUI()
     mIDTable->setHorizontalHeaderLabels( sBaseLabels );
     mIDTable->verticalHeader()->setVisible(false);
     mIDTable->horizontalHeader()->setStyleSheet( kTableStyle );
-//    mIDTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-//    mIDTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mIDTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mIDTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mStatusTable->clear();
     mStatusTable->horizontalHeader()->setStretchLastSection(true);

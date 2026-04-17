@@ -252,7 +252,7 @@ void CRLInfoDlg::initialize()
     ret = JS_PKI_getCRLInfo( &crl_bin_, &crl_info_, &ext_info_list_, &revoke_info_list_ );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("failed to get CRL information"), this );
+        berApplet->warningBox( tr("failed to get CRL information: %1").arg( JERR(ret)), this );
         close();
         return;
     }

@@ -13,6 +13,7 @@
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
 #include "passwd_dlg.h"
+#include "cert_id_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -20,7 +21,8 @@
 const QStringList sTypeList = {
     JS_PKI_BER_NAME_CERTIFICATE, JS_PKI_BER_NAME_CRL, JS_PKI_BER_NAME_CSR,
     JS_PKI_BER_NAME_PUB_KEY, JS_PKI_BER_NAME_PRI_KEY, JS_PKI_BER_NAME_PRI_KEY_INFO,
-    JS_PKI_BER_NAME_ENC_PRI_KEY, JS_PKI_BER_NAME_CMS, JS_PKI_BER_NAME_PKCS7
+    JS_PKI_BER_NAME_ENC_PRI_KEY, JS_PKI_BER_NAME_CMS, JS_PKI_BER_NAME_PKCS7,
+    JS_PKI_BER_NAME_OCSP_RSP
 };
 
 BERCheckDlg::BERCheckDlg(QWidget *parent)
@@ -111,6 +113,8 @@ void BERCheckDlg::initUI()
     for( int i = 0; i < sTypeList.size(); i++ )
     {
         QString strType = sTypeList.at(i);
+
+        if( i == 8 ) strList += "\n";
 
         strList += strType;
         strList += " ";
@@ -252,6 +256,8 @@ void BERCheckDlg::clickCheckFormat()
         ret = JS_PKI_checkCMSFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_PKCS7 )
         ret = JS_PKI_checkPKCS7Format( &binSrc, sError );
+    else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
+        ret = JS_PKI_checkOCSPRspFormat( &binSrc, sError );
     else
     {
         goto end;
@@ -345,6 +351,8 @@ void BERCheckDlg::clickView()
         ret = JS_PKI_checkCMSFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_PKCS7 )
         ret = JS_PKI_checkPKCS7Format( &binSrc, sError );
+    else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
+        ret = JS_PKI_checkOCSPRspFormat( &binSrc, sError );
 
 
     if( ret == JSR_OK )
@@ -416,6 +424,12 @@ void BERCheckDlg::clickView()
             CMSInfoDlg cmsInfo;
             cmsInfo.setCMS( &binSrc );
             cmsInfo.exec();
+        }
+        else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
+        {
+            CertIDDlg certID;
+            certID.setResponse( &binSrc );
+            certID.exec();
         }
     }
     else

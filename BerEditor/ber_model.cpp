@@ -34,7 +34,7 @@
 #include "passwd_dlg.h"
 #include "bin_view_dlg.h"
 #include "text_view_dlg.h"
-
+#include "cert_id_dlg.h"
 
 BerModel::BerModel( QObject *parent )
     : QStandardItemModel (parent)
@@ -1345,6 +1345,12 @@ void BerModel::ViewBER()
         CMSInfoDlg cmsInfo;
         cmsInfo.setCMS( &binNode );
         cmsInfo.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_OCSP_RSP )
+    {
+        CertIDDlg certID;
+        certID.setResponse( &binNode );
+        certID.exec();
     }
 
     ret = JSR_OK;

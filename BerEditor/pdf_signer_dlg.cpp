@@ -41,6 +41,7 @@
 #include "js_tsp.h"
 #include "js_http.h"
 #include "js_pdf.h"
+#include "js_pki_tools.h"
 
 #include "pdf_signer_dlg.h"
 
@@ -295,9 +296,15 @@ void PDFSignerDlg::decodeValue()
     BIN binData = {0,0};
 
     JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+    if( JS_PKI_isBER( &binData ) == false )
+    {
+        berApplet->warningBox( tr( "No avaiable BER" ), this );
+        goto end;
+    }
 
     berApplet->decodeTitle( &binData, item0->text() );
 
+end :
     JS_BIN_reset( &binData );
 }
 
@@ -319,6 +326,13 @@ void PDFSignerDlg::viewValue()
     BIN binData = {0,0};
 
     JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+
+    if( JS_PKI_isBER( &binData ) == false )
+    {
+        berApplet->warningBox( tr( "No avaiable BER" ), this );
+        goto end;
+    }
+
 
     if( strType == kDSS_Cert )
     {
@@ -345,7 +359,7 @@ void PDFSignerDlg::viewValue()
         cmsInfo.exec();
     }
 
-
+end :
     JS_BIN_reset( &binData );
 }
 
