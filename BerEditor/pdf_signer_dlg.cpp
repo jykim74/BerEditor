@@ -74,6 +74,9 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
     connect( mExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickExportCMS()));
 
+    connect( mAddDSSBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS()));
+    connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
@@ -1303,6 +1306,16 @@ void PDFSignerDlg::clickVerify()
         clickVerifySign();
     else
         clickDecrypt();
+}
+
+void PDFSignerDlg::clickAddDSS()
+{
+
+}
+
+void PDFSignerDlg::clickAddDocTSP()
+{
+
 }
 
 #endif

@@ -56,6 +56,9 @@ private slots:
     void clickMake();
     void clickVerify();
 
+    void clickAddDSS();
+    void clickAddDocTSP();
+
 private:
     void initUI();
     void initialize();
