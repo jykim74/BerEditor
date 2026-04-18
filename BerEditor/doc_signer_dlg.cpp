@@ -135,7 +135,6 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mXMLBodyClearBtn->setFixedWidth(34);
     mXMLResClearBtn->setFixedWidth(34);
 
-    mPDFInfoClearBtn->setFixedWidth(34);
 
     mTabJSON->layout()->setSpacing(5);
     mTabJSON->layout()->setMargin(5);
@@ -145,9 +144,6 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     mTabCMS->layout()->setSpacing(5);
     mTabCMS->layout()->setMargin(5);
-
-    mTabPDF->layout()->setSpacing(5);
-    mTabPDF->layout()->setMargin(5);
 #endif
     initialize();
     mCMSRunBtn->setDefault(true);
