@@ -1310,7 +1310,64 @@ void PDFSignerDlg::clickVerify()
 
 void PDFSignerDlg::clickAddDSS()
 {
+    int ret = 0;
 
+    BINList *pCertList = NULL;
+    BINList *pCRLList = NULL;
+    BINList *pOCSPList = NULL;
+
+    BIN binCert = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_dec.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    ret = getCert( &binCert );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get the certificate: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    JS_BIN_addList( &pCertList, &binCert );
+
+    ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
+                           strDstPath.toStdString().c_str(),
+                           pCertList, pCRLList, pOCSPList );
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "DSS added successfully" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to add DSS: %1").arg(JERR(ret)), this );
+    }
+
+
+end :
+    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+
+    JS_BIN_reset( &binCert );
 }
 
 void PDFSignerDlg::clickAddDocTSP()
