@@ -475,9 +475,13 @@ void PDFSignerDlg::clickGetInfo()
     JByteRange sRange;
     JSignLabel  sSignLabel;
 
+    BIN binTSP = {0,0};
+    JByteRange sTSPRange;
+
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+    memset( &sTSPRange, 0x00, sizeof(sTSPRange));
 
     if( strSrcPath.length() < 1 )
     {
@@ -552,11 +556,6 @@ void PDFSignerDlg::clickGetInfo()
         BINList *pOCSPList = NULL;
         const BINList *pCurList = NULL;
         int nCount = 0;
-
-        BIN binTSP = {0,0};
-        JByteRange sTSPRange;
-
-        memset( &sTSPRange, 0x00, sizeof(sTSPRange));
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -634,36 +633,9 @@ void PDFSignerDlg::clickGetInfo()
             }
         }
 
-        ret = JS_PDF_getDocTimeStamp(
-            strSrcPath.toLocal8Bit().toStdString().c_str(),
-            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-            &binTSP, &sTSPRange );
-
-        if( binTSP.nLen > 0 )
-        {
-            mInfoTable->insertRow(i);
-            mInfoTable->setRowHeight(i,10);
-            mInfoTable->setItem( i, 0, new QTableWidgetItem( kDocTimeStamp ));
-            mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binTSP ) ));
-            i++;
-
-            QString strTSPRange = QString( "[ %1 %2 %3 %4 ]" )
-                                   .arg( sTSPRange.nFirstStart)
-                                   .arg( sTSPRange.nFirstLen )
-                                   .arg( sTSPRange.nSecondStart )
-                                   .arg( sTSPRange.nSecondLen );
-
-            mInfoTable->insertRow(i);
-            mInfoTable->setRowHeight(i,10);
-            mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP ByteRange" )));
-            mInfoTable->setItem( i, 1, new QTableWidgetItem( strTSPRange ));
-            i++;
-        }
-
         if( pCertList ) JS_BIN_resetList( &pCertList );
         if( pCRLList ) JS_BIN_resetList( &pCRLList );
         if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
-        JS_BIN_reset( &binTSP );
     }
 
     if( sSignLabel.pName )
@@ -710,9 +682,36 @@ void PDFSignerDlg::clickGetInfo()
         i++;
     }
 
+    ret = JS_PDF_getDocTimeStamp(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        &binTSP, &sTSPRange );
+
+    if( binTSP.nLen > 0 )
+    {
+        mInfoTable->insertRow(i);
+        mInfoTable->setRowHeight(i,10);
+        mInfoTable->setItem( i, 0, new QTableWidgetItem( kDocTimeStamp ));
+        mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binTSP ) ));
+        i++;
+
+        QString strTSPRange = QString( "[ %1 %2 %3 %4 ]" )
+                                  .arg( sTSPRange.nFirstStart)
+                                  .arg( sTSPRange.nFirstLen )
+                                  .arg( sTSPRange.nSecondStart )
+                                  .arg( sTSPRange.nSecondLen );
+
+        mInfoTable->insertRow(i);
+        mInfoTable->setRowHeight(i,10);
+        mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP ByteRange" )));
+        mInfoTable->setItem( i, 1, new QTableWidgetItem( strTSPRange ));
+        i++;
+    }
+
     berApplet->messageBox( tr("PDF information import complete"), this );
 
     JS_PDF_resetSignLabel( &sSignLabel );
+    JS_BIN_reset( &binTSP );
 }
 
 void PDFSignerDlg::clickMakeSign()
