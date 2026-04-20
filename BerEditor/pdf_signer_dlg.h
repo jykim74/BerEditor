@@ -58,9 +58,12 @@ private slots:
 
     void clickAddDSS();
     void clickAddDocTSP();
+    void clickVerifyDocTSP();
 
     void clickExportByteRange();
     void clickExportDocTSPByteRange();
+
+    void clickDstPathUp();
 private:
     void initUI();
     void initialize();

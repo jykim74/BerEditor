@@ -42,6 +42,8 @@
 #include "js_http.h"
 #include "js_pdf.h"
 #include "js_pki_tools.h"
+#include "js_tsp.h"
+#include "js_ocsp.h"
 
 #include "pdf_signer_dlg.h"
 
@@ -76,12 +78,15 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 
     connect( mAddDSSBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS()));
     connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
+    connect( mVerifyDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDocTSP()));
 
     connect( mExportByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportByteRange()));
     connect( mExportDocTSPByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportDocTSPByteRange()));
+    connect( mDstPathUpBtn, SIGNAL(clicked()), this, SLOT(clickDstPathUp()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mDstPathUpBtn->setFixedWidth(34);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -1395,7 +1400,118 @@ end :
 
 void PDFSignerDlg::clickAddDocTSP()
 {
+    int ret = 0;
 
+    BIN binData = {0,0};
+    BIN binTSP = {0,0};
+
+    JByteRange sRange;
+
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_dec.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    // Need To DocTSP ByteRange
+
+    ret = JS_PDF_getDataFile( strSrcPath.toStdString().c_str(), &sRange, &binData );
+    if( ret != 0 ) goto end;
+
+    ret = getTSP( &binData, &binTSP );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_appendDocTSP(
+        strSrcPath.toStdString().c_str(),
+        strDstPath.toStdString().c_str(),
+        &binTSP, &sRange );
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr("append DocTSP successfully"), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to append DocTSP: %1").arg(JERR(ret)), this );
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binTSP );
+}
+
+void PDFSignerDlg::clickVerifyDocTSP()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+
+    JByteRange sRange;
+
+    BIN binCMS = {0,0};
+    BIN binData = {0,0};
+
+    ExportDlg exportDlg;
+    int nFlag = -1;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getDocTimeStamp( strSrcPath.toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS, &sRange );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get DocTimeStamp: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_CMS_verifySignedData( &binCMS, NULL, NULL, nFlag, NULL, NULL, &binData );
+
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->messageBox( tr( "DocTimeStamp Verify OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to verify DocTimeStamp: %1" ).arg(JERR(ret)), this );
+    }
+
+end :
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binData );
 }
 
 void PDFSignerDlg::clickExportByteRange()
@@ -1493,6 +1609,14 @@ void PDFSignerDlg::clickExportDocTSPByteRange()
 
 end :
     JS_BIN_reset( &binPDF );
+}
+
+void PDFSignerDlg::clickDstPathUp()
+{
+    QString strDstPath = mDstPathText->text();
+    mDstPathText->clear();
+
+    mSrcPathText->setText( strDstPath );
 }
 
 #endif

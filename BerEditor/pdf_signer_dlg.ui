@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>645</height>
+    <width>660</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -394,6 +394,19 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="5">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="0" column="3">
       <widget class="QRadioButton" name="mSignCheck">
        <property name="text">
@@ -415,18 +428,12 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mAddDSSBtn">
+       <property name="text">
+        <string>Add DSS</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      </widget>
      </item>
     </layout>
    </item>
@@ -449,28 +456,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mExportByteRangeBtn">
-       <property name="text">
-        <string>Export ByteRange</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QPushButton" name="mExportDocTSPByteRangeBtn">
        <property name="text">
         <string>Export DocTSP ByteRange</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mAddDSSBtn">
-       <property name="text">
-        <string>Add DSS</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -482,6 +475,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mExportByteRangeBtn">
+       <property name="text">
+        <string>Export ByteRange</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mVerifyDocTSPBtn">
+       <property name="text">
+        <string>Verify DocTSP</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -497,6 +504,9 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mDstPathText"/>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
@@ -504,13 +514,23 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mDstPathText"/>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mDstFindBtn">
        <property name="text">
         <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mDstPathUpBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
        </property>
       </widget>
      </item>
