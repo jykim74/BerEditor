@@ -77,6 +77,9 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mAddDSSBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS()));
     connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
 
+    connect( mExportByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportByteRange()));
+    connect( mExportDocTSPByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportDocTSPByteRange()));
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
@@ -631,7 +634,7 @@ void PDFSignerDlg::clickGetInfo()
             }
         }
 
-        ret = JS_PDF_getTimestamp(
+        ret = JS_PDF_getDocTimeStamp(
             strSrcPath.toLocal8Bit().toStdString().c_str(),
             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
             &binTSP, &sTSPRange );
@@ -1388,6 +1391,96 @@ end :
 void PDFSignerDlg::clickAddDocTSP()
 {
 
+}
+
+void PDFSignerDlg::clickExportByteRange()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    JByteRange sRange;
+
+    BIN binPDF = {0,0};
+
+    ExportDlg exportDlg;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_findByteRangeFile( strSrcPath.toStdString().c_str(), NULL, &sRange );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("Failed to retrieve range: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    JS_PDF_getDataFile( strSrcPath.toStdString().c_str(), &sRange, &binPDF );
+
+    exportDlg.setBIN( &binPDF );
+    exportDlg.setName( fileInfo.baseName() );
+    exportDlg.exec();
+
+end :
+    JS_BIN_reset( &binPDF );
+}
+
+void PDFSignerDlg::clickExportDocTSPByteRange()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    JByteRange sRange;
+
+    BIN binPDF = {0,0};
+
+    ExportDlg exportDlg;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getDocTimeStampRange( strSrcPath.toStdString().c_str(), NULL, &sRange );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("Failed to retrieve DocTimeStamp range: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    JS_PDF_getDataFile( strSrcPath.toStdString().c_str(), &sRange, &binPDF );
+
+    exportDlg.setBIN( &binPDF );
+    exportDlg.setName( fileInfo.baseName() );
+    exportDlg.exec();
+
+end :
+    JS_BIN_reset( &binPDF );
 }
 
 #endif
