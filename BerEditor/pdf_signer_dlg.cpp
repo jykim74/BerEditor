@@ -551,6 +551,9 @@ void PDFSignerDlg::clickGetInfo()
         int nCount = 0;
 
         BIN binTSP = {0,0};
+        JByteRange sTSPRange;
+
+        memset( &sTSPRange, 0x00, sizeof(sTSPRange));
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -631,7 +634,7 @@ void PDFSignerDlg::clickGetInfo()
         ret = JS_PDF_getTimestamp(
             strSrcPath.toLocal8Bit().toStdString().c_str(),
             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-            &binTSP );
+            &binTSP, &sTSPRange );
 
         if( binTSP.nLen > 0 )
         {
@@ -639,6 +642,18 @@ void PDFSignerDlg::clickGetInfo()
             mInfoTable->setRowHeight(i,10);
             mInfoTable->setItem( i, 0, new QTableWidgetItem( kDocTimeStamp ));
             mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binTSP ) ));
+            i++;
+
+            QString strTSPRange = QString( "[ %1 %2 %3 %4 ]" )
+                                   .arg( sTSPRange.nFirstStart)
+                                   .arg( sTSPRange.nFirstLen )
+                                   .arg( sTSPRange.nSecondStart )
+                                   .arg( sTSPRange.nSecondLen );
+
+            mInfoTable->insertRow(i);
+            mInfoTable->setRowHeight(i,10);
+            mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP ByteRange" )));
+            mInfoTable->setItem( i, 1, new QTableWidgetItem( strTSPRange ));
             i++;
         }
 
