@@ -1240,6 +1240,7 @@ void PDFSignerDlg::clickViewCMS()
     BIN binCMS = {0,0};
 
     CMSInfoDlg cmsInfo;
+    QString strPasswd = mPasswdText->text();
 
     if( strSrcPath.length() < 1 )
     {
@@ -1257,7 +1258,9 @@ void PDFSignerDlg::clickViewCMS()
     }
 
     //    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
-    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &binCMS );
+    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
@@ -1275,6 +1278,7 @@ void PDFSignerDlg::clickExportCMS()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
     BIN binCMS = {0,0};
 
     ExportDlg exportDlg;
@@ -1295,7 +1299,9 @@ void PDFSignerDlg::clickExportCMS()
     }
 
     //    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
-    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &binCMS );
+    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
@@ -1397,6 +1403,8 @@ void PDFSignerDlg::clickExportByteRange()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+
     JByteRange sRange;
 
     BIN binPDF = {0,0};
@@ -1420,7 +1428,9 @@ void PDFSignerDlg::clickExportByteRange()
         return;
     }
 
-    ret = JS_PDF_findByteRangeFile( strSrcPath.toStdString().c_str(), NULL, &sRange );
+    ret = JS_PDF_findByteRangeFile( strSrcPath.toStdString().c_str(),
+                                   strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                   &sRange );
 
     if( ret != JSR_OK )
     {
@@ -1442,6 +1452,7 @@ void PDFSignerDlg::clickExportDocTSPByteRange()
 {
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
     JByteRange sRange;
 
     BIN binPDF = {0,0};
@@ -1465,7 +1476,9 @@ void PDFSignerDlg::clickExportDocTSPByteRange()
         return;
     }
 
-    ret = JS_PDF_getDocTimeStampRange( strSrcPath.toStdString().c_str(), NULL, &sRange );
+    ret = JS_PDF_getDocTimeStampRange( strSrcPath.toStdString().c_str(),
+                                      strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                      &sRange );
 
     if( ret != JSR_OK )
     {
