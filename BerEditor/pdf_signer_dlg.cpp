@@ -128,6 +128,11 @@ void PDFSignerDlg::initUI()
     mDSSTree->clear();
     mDSSTree->header()->setVisible( false );
     mDSSTree->setColumnCount(1);
+
+    QTreeWidgetItem* tItem = new QTreeWidgetItem;
+    tItem->setText( 0, "DSS" );
+
+    mDSSTree->insertTopLevelItem( 0, tItem );
 }
 
 void PDFSignerDlg::initialize()
@@ -596,14 +601,18 @@ void PDFSignerDlg::clickGetInfo()
 
         ret = JS_PDF_getDSS( strSrcPath.toLocal8Bit().toStdString().c_str(),
                             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-                            NULL,
                             &pCertList, &pCRLList, &pOCSPList );
 
         if( ret == JSR_OK )
         {
+            QTreeWidgetItem* rootItem = mDSSTree->topLevelItem(0);
+
             if( pCertList )
             {
                 nCount = JS_BIN_countList( pCertList );
+                QTreeWidgetItem* certItem = new QTreeWidgetItem;
+                certItem->setText( 0, "Certs" );
+                certItem->setIcon(0, QIcon(":/images/cert.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -613,13 +622,22 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+                    QTreeWidgetItem *item = new QTreeWidgetItem;
+                    item->setText( 0, "Certificate" );
+                    certItem->addChild( item );
+
                     i++;
                 }
+
+                rootItem->addChild( certItem );
             }
 
             if( pCRLList )
             {
                 nCount = JS_BIN_countList( pCRLList );
+                QTreeWidgetItem* crlItem = new QTreeWidgetItem;
+                crlItem->setText(0, "CRLs" );
+                crlItem->setIcon(0, QIcon(":/images/crl.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -629,13 +647,23 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_CRL ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+
+                    QTreeWidgetItem *item = new QTreeWidgetItem;
+                    item->setText( 0, "CRL" );
+                    crlItem->addChild( item );
+
                     i++;
                 }
+
+                rootItem->addChild( crlItem );
             }
 
             if( pOCSPList )
             {
                 nCount = JS_BIN_countList( pOCSPList );
+                QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
+                ocspItem->setText(0, "OCSPs" );
+                ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -645,8 +673,14 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_OCSP ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+
+                    QTreeWidgetItem *item = new QTreeWidgetItem;
+                    item->setText( 0, "OCSP" );
+                    ocspItem->addChild( item );
                     i++;
                 }
+
+                rootItem->addChild( ocspItem );
             }
         }
 
@@ -723,9 +757,15 @@ void PDFSignerDlg::clickGetInfo()
         mInfoTable->setItem( i, 0, new QTableWidgetItem( tr("TSP ByteRange" )));
         mInfoTable->setItem( i, 1, new QTableWidgetItem( strTSPRange ));
         i++;
+
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        item->setText(0, "DocTimeStamp" );
+        item->setIcon( 0, QIcon(":/images/tsp.png" ));
+        mDSSTree->topLevelItem(0)->addChild( item );
     }
 
     berApplet->messageBox( tr("PDF information import complete"), this );
+    mDSSTree->expandAll();
 
     JS_PDF_resetSignLabel( &sSignLabel );
     JS_BIN_reset( &binTSP );
@@ -1472,7 +1512,11 @@ void PDFSignerDlg::clickAddDocTSP()
     }
 
 end :
-    if( ret != 0 ) unlink( strDstPath.toStdString().c_str() );
+    if( ret != 0 )
+    {
+        QFile dstFile( strDstPath );
+        dstFile.remove();
+    }
 
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binTSP );
