@@ -88,6 +88,11 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mDstPathUpBtn->setFixedWidth(34);
+
+    mInfoTab->layout()->setSpacing(5);
+    mInfoTab->layout()->setMargin(5);
+    mDSSTab->layout()->setSpacing(5);
+    mDSSTab->layout()->setMargin(5);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -102,6 +107,8 @@ PDFSignerDlg::~PDFSignerDlg()
 void PDFSignerDlg::initUI()
 {
     QStringList sHeaders = { tr( "Name" ), tr( "Value" ) };
+
+    mTabWidget->setCurrentIndex(0);
 
     mInfoTable->clear();
     mInfoTable->horizontalHeader()->setStretchLastSection(true);
