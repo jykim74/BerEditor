@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>800</height>
+    <width>558</width>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,7 +131,7 @@
     <widget class="QTableWidget" name="mInfoTable">
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>540</width>
        <height>100</height>
       </size>
      </property>
@@ -387,10 +387,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="mVerifyBtn">
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mAddDSSBtn">
        <property name="text">
-        <string>Verify</string>
+        <string>Add DSS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mMakeBtn">
+       <property name="text">
+        <string>Make</string>
        </property>
       </widget>
      </item>
@@ -414,10 +421,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mMakeBtn">
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mVerifyBtn">
        <property name="text">
-        <string>Make</string>
+        <string>Verify</string>
        </property>
       </widget>
      </item>
@@ -428,10 +435,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="8">
-      <widget class="QPushButton" name="mAddDSSBtn">
+     <item row="0" column="9">
+      <widget class="QPushButton" name="mAddDocTSPBtn">
        <property name="text">
-        <string>Add DSS</string>
+        <string>Add DocTSP</string>
        </property>
       </widget>
      </item>
@@ -449,13 +456,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mAddDocTSPBtn">
-       <property name="text">
-        <string>Add DocTSP</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="5">
       <widget class="QPushButton" name="mExportDocTSPByteRangeBtn">
        <property name="text">
@@ -487,6 +487,13 @@
       <widget class="QPushButton" name="mVerifyDocTSPBtn">
        <property name="text">
         <string>Verify DocTSP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mViewDocTSPBtn">
+       <property name="text">
+        <string>View DocTSP</string>
        </property>
       </widget>
      </item>

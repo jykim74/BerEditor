@@ -78,6 +78,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 
     connect( mAddDSSBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS()));
     connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
+    connect( mViewDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP()));
     connect( mVerifyDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDocTSP()));
 
     connect( mExportByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportByteRange()));
@@ -1455,6 +1456,54 @@ void PDFSignerDlg::clickAddDocTSP()
 end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binTSP );
+}
+
+void PDFSignerDlg::clickViewDocTSP()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+
+    JByteRange sRange;
+
+    BIN binCMS = {0,0};
+
+    ExportDlg exportDlg;
+    CMSInfoDlg cmsInfo;
+    int nFlag = -1;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getDocTimeStamp( strSrcPath.toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS, &sRange );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get DocTimeStamp: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    cmsInfo.setCMS( &binCMS, "DocTimeStamp" );
+    cmsInfo.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
 }
 
 void PDFSignerDlg::clickVerifyDocTSP()
