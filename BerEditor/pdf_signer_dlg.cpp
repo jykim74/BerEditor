@@ -1433,16 +1433,23 @@ void PDFSignerDlg::clickAddDocTSP()
 
     // Need To DocTSP ByteRange
 
+    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    if( ret != 0 ) goto end;
+
     ret = JS_PDF_getDataFile( strSrcPath.toStdString().c_str(), &sRange, &binData );
     if( ret != 0 ) goto end;
 
     ret = getTSP( &binData, &binTSP );
     if( ret != 0 ) goto end;
 
-    ret = JS_PDF_appendDocTSP(
+    ret = JS_PDF_makeUnsignedTSPDocFile(
         strSrcPath.toStdString().c_str(),
-        strDstPath.toStdString().c_str(),
-        &binTSP, &sRange );
+        strDstPath.toStdString().c_str() );
+
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
+    if( ret != 0 ) goto end;
 
     if( ret == JSR_OK )
     {
@@ -1454,6 +1461,8 @@ void PDFSignerDlg::clickAddDocTSP()
     }
 
 end :
+    if( ret != 0 ) unlink( strDstPath.toStdString().c_str() );
+
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binTSP );
 }
