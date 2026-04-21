@@ -124,6 +124,10 @@ void PDFSignerDlg::initUI()
     mReasonText->setPlaceholderText( tr( "String value" ));
     mLocationText->setPlaceholderText( tr("String value" ));
     mContactInfoText->setPlaceholderText( tr("String value" ));
+
+    mDSSTree->clear();
+    mDSSTree->header()->setVisible( false );
+    mDSSTree->setColumnCount(1);
 }
 
 void PDFSignerDlg::initialize()
