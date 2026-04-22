@@ -573,11 +573,10 @@ void PDFSignerDlg::clickGetInfo()
 
     if( sInfo.nCMS == 1 )
     {
-        BINList *pCertList = NULL;
-        BINList *pCRLList = NULL;
-        BINList *pOCSPList = NULL;
         const BINList *pCurList = NULL;
         int nCount = 0;
+
+        JDSSDataList *pDSSList = NULL;
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -599,24 +598,24 @@ void PDFSignerDlg::clickGetInfo()
             i++;
         }
 
-        ret = JS_PDF_getDSS( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
-                            &pCertList, &pCRLList, &pOCSPList );
+        ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                                strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                &pDSSList );
 
         if( ret == JSR_OK )
         {
             QTreeWidgetItem* rootItem = mDSSTree->topLevelItem(0);
 
-            if( pCertList )
+            if( pDSSList->pDSSData->pCertList )
             {
-                nCount = JS_BIN_countList( pCertList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pCertList );
                 QTreeWidgetItem* certItem = new QTreeWidgetItem;
                 certItem->setText( 0, "Certs" );
                 certItem->setIcon(0, QIcon(":/images/cert.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_BIN_getListAt( k, pCertList );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCertList );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
@@ -632,16 +631,16 @@ void PDFSignerDlg::clickGetInfo()
                 rootItem->addChild( certItem );
             }
 
-            if( pCRLList )
+            if( pDSSList->pDSSData->pCRLList )
             {
-                nCount = JS_BIN_countList( pCRLList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pCRLList );
                 QTreeWidgetItem* crlItem = new QTreeWidgetItem;
                 crlItem->setText(0, "CRLs" );
                 crlItem->setIcon(0, QIcon(":/images/crl.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_BIN_getListAt( k, pCRLList );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCRLList );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
@@ -658,16 +657,16 @@ void PDFSignerDlg::clickGetInfo()
                 rootItem->addChild( crlItem );
             }
 
-            if( pOCSPList )
+            if( pDSSList->pDSSData->pOCSPList )
             {
-                nCount = JS_BIN_countList( pOCSPList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pOCSPList );
                 QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
                 ocspItem->setText(0, "OCSPs" );
                 ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_BIN_getListAt( k, pOCSPList );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pOCSPList );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
@@ -684,9 +683,7 @@ void PDFSignerDlg::clickGetInfo()
             }
         }
 
-        if( pCertList ) JS_BIN_resetList( &pCertList );
-        if( pCRLList ) JS_BIN_resetList( &pCRLList );
-        if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+        if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
     }
 
     if( sSignLabel.pName )
