@@ -642,7 +642,7 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, "Certificate" );
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
                     certItem->addChild( item );
                     JS_BIN_reset( &binVal );
 
@@ -670,7 +670,7 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, "CRL" );
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
                     crlItem->addChild( item );
                     JS_BIN_reset( &binVal );
 
@@ -698,7 +698,7 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, "OCSP" );
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
                     ocspItem->addChild( item );
                     JS_BIN_reset( &binVal );
                     i++;
