@@ -1591,7 +1591,7 @@ void PDFSignerDlg::clickAddDSS()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_dec.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        strDstPath = QString( "%1/%2_dss.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
         mDstPathText->setText( strDstPath );
     }
 
@@ -1654,7 +1654,7 @@ void PDFSignerDlg::clickAddDocTSP()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_dec.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        strDstPath = QString( "%1/%2_tsp.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
         mDstPathText->setText( strDstPath );
     }
 
@@ -1750,7 +1750,7 @@ void PDFSignerDlg::clickViewDocTSP()
         goto end;
     }
 
-    cmsInfo.setCMS( &binCMS, "DocTimeStamp" );
+    cmsInfo.setCMS( &binCMS, kDocTimeStamp );
     cmsInfo.exec();
 
 end :
