@@ -365,41 +365,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mViewCMSBtn">
-       <property name="text">
-        <string>View CMS</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mUseTSPCheck">
-       <property name="text">
-        <string>Use Timestamp</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mTSPBtn">
-       <property name="text">
-        <string>TSP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="mVerifyChainCheck">
-       <property name="text">
-        <string>Verify Chain</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mExportCMSBtn">
-       <property name="text">
-        <string>Export CMS</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
@@ -412,6 +377,48 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mExportCMSBtn">
+       <property name="text">
+        <string>Export CMS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mTSPBtn">
+       <property name="text">
+        <string>TSP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mViewCMSBtn">
+       <property name="text">
+        <string>View CMS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mVerifyChainCheck">
+       <property name="text">
+        <string>Verify Chain</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mUseTSPCheck">
+       <property name="text">
+        <string>Use Timestamp</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mExportByteRangeBtn">
+       <property name="text">
+        <string>Export ByteRange</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -496,14 +503,28 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <widget class="QPushButton" name="mExportDocTSPByteRangeBtn">
        <property name="text">
         <string>Export DocTSP ByteRange</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mViewDocTSPBtn">
+       <property name="text">
+        <string>View DocTSP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mVerifyDocTSPBtn">
+       <property name="text">
+        <string>Verify DocTSP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -516,24 +537,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mExportByteRangeBtn">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mViewDocTSP_TSTBtn">
        <property name="text">
-        <string>Export ByteRange</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mVerifyDocTSPBtn">
-       <property name="text">
-        <string>Verify DocTSP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mViewDocTSPBtn">
-       <property name="text">
-        <string>View DocTSP</string>
+        <string>View DocTSP TST</string>
        </property>
       </widget>
      </item>

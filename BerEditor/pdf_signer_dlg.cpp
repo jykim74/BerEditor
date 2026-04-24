@@ -30,6 +30,7 @@
 #include "crl_info_dlg.h"
 #include "cert_id_dlg.h"
 #include "cms_info_dlg.h"
+#include "tst_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -81,6 +82,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
     connect( mViewDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP()));
     connect( mVerifyDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDocTSP()));
+    connect( mViewDocTSP_TSTBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP_TST()));
 
     connect( mExportByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportByteRange()));
     connect( mExportDocTSPByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportDocTSPByteRange()));
@@ -1810,6 +1812,63 @@ void PDFSignerDlg::clickVerifyDocTSP()
 end :
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binData );
+}
+
+void PDFSignerDlg::clickViewDocTSP_TST()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+
+    JByteRange sRange;
+
+    BIN binCMS = {0,0};
+    BIN binTST = {0,0};
+
+    ExportDlg exportDlg;
+    TSTInfoDlg tstInfo;
+    int nFlag = -1;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getDocTimeStamp( strSrcPath.toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS, &sRange );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get DocTimeStamp: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_TSP_getTST( &binCMS, &binTST );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    tstInfo.setTST( &binTST );
+    tstInfo.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binTST );
 }
 
 void PDFSignerDlg::clickExportByteRange()
