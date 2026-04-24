@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
+    <width>582</width>
     <height>725</height>
    </rect>
   </property>
@@ -169,6 +169,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QTreeWidget" name="mDSSTree">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <column>
           <property name="text">
            <string notr="true">1</string>

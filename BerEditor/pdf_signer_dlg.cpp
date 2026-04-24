@@ -62,6 +62,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mDstFindBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
 
     connect( mInfoTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTableMenuRequested(QPoint)));
+    connect( mDSSTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
@@ -130,7 +131,7 @@ void PDFSignerDlg::initUI()
     mDSSTree->setColumnCount(1);
 
     QTreeWidgetItem* tItem = new QTreeWidgetItem;
-    tItem->setText( 0, "DSS" );
+    tItem->setText( 0, kDSS );
 
     mDSSTree->insertTopLevelItem( 0, tItem );
 }
@@ -425,6 +426,137 @@ void PDFSignerDlg::slotTableMenuRequested( QPoint pos )
     menu->popup( mInfoTable->viewport()->mapToGlobal(pos));
 }
 
+void PDFSignerDlg::copyTreeValue()
+{
+    QTreeWidgetItem* item = mDSSTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( item->data(0, Qt::UserRole ).toString() );
+
+    berApplet->messageBox( tr( "The value has been copied." ), this );
+}
+
+void PDFSignerDlg::decodeTreeValue()
+{
+    QTreeWidgetItem* item = mDSSTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strValue = item->data(0, Qt::UserRole ).toString();
+    BIN binData = {0,0};
+
+    JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+    if( JS_PKI_isBER( &binData ) == false )
+    {
+        berApplet->warningBox( tr( "No avaiable BER" ), this );
+        goto end;
+    }
+
+    berApplet->decodeTitle( &binData, item->parent()->text(0) );
+
+end :
+    JS_BIN_reset( &binData );
+}
+
+void PDFSignerDlg::viewTreeValue()
+{
+    QTreeWidgetItem* item = mDSSTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strType = item->parent()->text(0);
+    QString strValue = item->data( 0, Qt::UserRole ).toString();
+    BIN binData = {0,0};
+
+    JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
+
+    if( JS_PKI_isBER( &binData ) == false )
+    {
+        berApplet->warningBox( tr( "No avaiable BER" ), this );
+        goto end;
+    }
+
+
+    if( strType == kDSS_Certs )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binData, strType );
+        certInfo.exec();
+    }
+    else if( strType == kDSS_CRLs )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binData, strType );
+        crlInfo.exec();
+    }
+    else if( strType == kDSS_OCSPs )
+    {
+        CertIDDlg certID;
+        certID.setResponse( &binData );
+        certID.exec();
+    }
+    else if( strType == kDSS )
+    {
+        CMSInfoDlg cmsInfo;
+        cmsInfo.setCMS( &binData, kDocTimeStamp );
+        cmsInfo.exec();
+    }
+
+end :
+    JS_BIN_reset( &binData );
+}
+
+
+void PDFSignerDlg::slotTreeMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QTreeWidgetItem* item = mDSSTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    if( item->parent() == nullptr ) return;
+    if( item->data(0, Qt::UserRole ).toString().length() < 1 ) return;
+
+    QAction *copyValueAct = new QAction( tr( "Copy value" ), this );
+    QAction *decodeAct = new QAction( tr( "Decode value" ), this );
+    QAction *viewAct = new QAction( tr( "View value" ), this );
+
+    QString strName = item->parent()->text(0);
+
+    connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyTreeValue()));
+    connect( decodeAct, SIGNAL(triggered(bool)), this, SLOT(decodeTreeValue()));
+    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewTreeValue()));
+
+    menu->addAction( copyValueAct );
+
+    if( strName == kDSS_Certs || strName == kDSS_CRLs || strName == kDSS_OCSPs || strName == kDSS )
+    {
+        menu->addAction( decodeAct );
+        menu->addAction( viewAct );
+    }
+
+    menu->popup( mDSSTree->viewport()->mapToGlobal(pos));
+}
+
 void PDFSignerDlg::findSrcPath()
 {
     int nType = JS_FILE_TYPE_PDF;
@@ -629,7 +761,7 @@ void PDFSignerDlg::clickGetInfo()
             {
                 nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pCertList );
                 QTreeWidgetItem* certItem = new QTreeWidgetItem;
-                certItem->setText( 0, "Certs" );
+                certItem->setText( 0, kDSS_Certs );
                 certItem->setIcon(0, QIcon(":/images/cert.png" ));
 
                 for( int k = 0; k < nCount; k++ )
@@ -641,8 +773,10 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
+
                     QTreeWidgetItem *item = new QTreeWidgetItem;
                     item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
                     certItem->addChild( item );
                     JS_BIN_reset( &binVal );
 
@@ -656,7 +790,7 @@ void PDFSignerDlg::clickGetInfo()
             {
                 nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pCRLList );
                 QTreeWidgetItem* crlItem = new QTreeWidgetItem;
-                crlItem->setText(0, "CRLs" );
+                crlItem->setText(0, kDSS_CRLs );
                 crlItem->setIcon(0, QIcon(":/images/crl.png" ));
 
                 for( int k = 0; k < nCount; k++ )
@@ -671,6 +805,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
                     item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
                     crlItem->addChild( item );
                     JS_BIN_reset( &binVal );
 
@@ -684,7 +819,7 @@ void PDFSignerDlg::clickGetInfo()
             {
                 nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pOCSPList );
                 QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
-                ocspItem->setText(0, "OCSPs" );
+                ocspItem->setText(0, kDSS_OCSPs );
                 ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
 
                 for( int k = 0; k < nCount; k++ )
@@ -699,6 +834,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
                     item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
                     ocspItem->addChild( item );
                     JS_BIN_reset( &binVal );
                     i++;
@@ -712,7 +848,6 @@ void PDFSignerDlg::clickGetInfo()
 
         if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
         if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
-
     }
 
     if( sSignLabel.pName )
@@ -803,6 +938,7 @@ void PDFSignerDlg::clickGetInfo()
 
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText(0, "DocTimeStamp" );
+        item->setData( 0, Qt::UserRole, getHexString( &binTSP ));
         item->setIcon( 0, QIcon(":/images/tsp.png" ));
         mDSSTree->topLevelItem(0)->addChild( item );
     }
@@ -1159,6 +1295,12 @@ end :
 void PDFSignerDlg::clickClearInfo()
 {
     mInfoTable->setRowCount(0);
+    mDSSTree->clear();
+
+    QTreeWidgetItem* tItem = new QTreeWidgetItem;
+    tItem->setText( 0, kDSS );
+
+    mDSSTree->insertTopLevelItem( 0, tItem );
 }
 
 void PDFSignerDlg::clickEncrypt()

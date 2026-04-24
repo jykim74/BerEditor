@@ -11,9 +11,13 @@ namespace Ui {
 class PDFSignerDlg;
 }
 
-const QString kDSS_Cert = "DSS Cert";
-const QString kDSS_CRL = "DSS CRL";
-const QString kDSS_OCSP = "DSS OCSP";
+const QString kDSS = "DSS";
+const QString kDSS_Certs = "Certs";
+const QString kDSS_CRLs = "CRLs";
+const QString kDSS_OCSPs = "OCSPs";
+const QString kDSS_Cert = "Certificate";
+const QString kDSS_CRL = "CRL";
+const QString kDSS_OCSP = "OCSP Rsp";
 const QString kDocTimeStamp = "DocTimeStamp";
 
 class PDFSignerDlg : public QDialog, public Ui::PDFSignerDlg
@@ -28,10 +32,15 @@ private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void slotTableMenuRequested( QPoint pos );
+    void slotTreeMenuRequested( QPoint pos );
 
     void copyValue();
     void decodeValue();
     void viewValue();
+
+    void copyTreeValue();
+    void decodeTreeValue();
+    void viewTreeValue();
 
     void findSrcPath();
     void findDstPath();
