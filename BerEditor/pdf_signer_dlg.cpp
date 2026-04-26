@@ -71,14 +71,16 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mUseSubjectDNCheck, SIGNAL(clicked()), this, SLOT(checkNameSubjectDN()));
     connect( mGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickGetInfo()));
     connect( mInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickClearInfo()));
-    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
-    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
-    connect( mSignCheck, SIGNAL(clicked()), this, SLOT(checkSign()));
-    connect( mEncryptCheck, SIGNAL(clicked()), this, SLOT(checkEnc()));
+    connect( mSignBtn, SIGNAL(clicked()), this, SLOT(clickMakeSign()));
+    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerifySign()));
+    connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
+    connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
+
     connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
     connect( mExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickExportCMS()));
 
     connect( mAddDSSBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS()));
+    connect( mAddDSS_VRIBtn, SIGNAL(clicked()), this, SLOT(clickAddDSS_VRI()));
     connect( mAddDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickAddDocTSP()));
     connect( mViewDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP()));
     connect( mVerifyDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDocTSP()));
@@ -136,14 +138,13 @@ void PDFSignerDlg::initUI()
     tItem->setText( 0, kDSS );
 
     mDSSTree->insertTopLevelItem( 0, tItem );
+    mToolBox->setCurrentIndex(0);
 }
 
 void PDFSignerDlg::initialize()
 {
     QDateTime dateTime = QDateTime::currentDateTime();
     mDateTime->setDateTime( dateTime );
-    mSignCheck->setChecked(true);
-    checkSign();
 }
 
 int PDFSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
@@ -601,18 +602,6 @@ void PDFSignerDlg::clickTSP()
 {
     TimeStampDlg tspDlg;
     tspDlg.exec();
-}
-
-void PDFSignerDlg::checkSign()
-{
-    mMakeBtn->setText( tr("Make") );
-    mVerifyBtn->setText( tr("Verify" ));
-}
-
-void PDFSignerDlg::checkEnc()
-{
-    mMakeBtn->setText( tr("Encrypt") );
-    mVerifyBtn->setText( tr("Decrypt" ));
 }
 
 void PDFSignerDlg::checkNameSubjectDN()
@@ -1143,6 +1132,23 @@ void PDFSignerDlg::clickMakeSign()
         goto end;
     }
 
+    if( mDSSCheck->isChecked() == true )
+    {
+        if( mVRICheck->isChecked() == true )
+        {
+            clickAddDSS_VRI();
+        }
+        else
+        {
+            clickAddDSS();
+        }
+    }
+
+    if( mDocTimeStampCheck->isChecked() == true )
+    {
+        clickAddDocTSP();
+    }
+
     JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
@@ -1559,22 +1565,6 @@ end :
     JS_BIN_reset( &binCMS );
 }
 
-void PDFSignerDlg::clickMake()
-{
-    if( mSignCheck->isChecked() )
-        clickMakeSign();
-    else
-        clickEncrypt();
-}
-
-void PDFSignerDlg::clickVerify()
-{
-    if( mSignCheck->isChecked() )
-        clickVerifySign();
-    else
-        clickDecrypt();
-}
-
 void PDFSignerDlg::clickAddDSS()
 {
     int ret = 0;
@@ -1633,6 +1623,75 @@ end :
     if( pCertList ) JS_BIN_resetList( &pCertList );
     if( pCRLList ) JS_BIN_resetList( &pCRLList );
     if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+
+    JS_BIN_reset( &binCert );
+}
+
+void PDFSignerDlg::clickAddDSS_VRI()
+{
+    int ret = 0;
+
+    BINList *pCertList = NULL;
+    BINList *pCRLList = NULL;
+    BINList *pOCSPList = NULL;
+
+    JDSSDataList *pDSSList = NULL;
+
+    BIN binCert = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+        strDstPath = QString( "%1/%2_dss_vri.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        mDstPathText->setText( strDstPath );
+    }
+
+    QFileInfo dstInfo( strDstPath );
+    if( dstInfo.exists() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The target file already exists. Do you want to continue?"), this, false );
+        if( bVal == false )
+        {
+            mDstPathText->setFocus();
+            return;
+        }
+    }
+
+    ret = getCert( &binCert );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get the certificate: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    JS_BIN_addList( &pCertList, &binCert );
+
+    ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
+                           strDstPath.toStdString().c_str(),
+                           pCertList, pCRLList, pOCSPList );
+
+    ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
+                               strDstPath.toStdString().c_str(),
+                               pDSSList );
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "DSS added successfully" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to add DSS: %1").arg(JERR(ret)), this );
+    }
+
+
+end :
+    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
 
     JS_BIN_reset( &binCert );
 }

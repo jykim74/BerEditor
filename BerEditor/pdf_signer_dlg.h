@@ -49,8 +49,6 @@ private slots:
     void checkUseTSP();
     void clickTSP();
 
-    void checkSign();
-    void checkEnc();
     void checkNameSubjectDN();
 
     void clickGetInfo();
@@ -62,10 +60,9 @@ private slots:
 
     void clickViewCMS();
     void clickExportCMS();
-    void clickMake();
-    void clickVerify();
 
     void clickAddDSS();
+    void clickAddDSS_VRI();
     void clickAddDocTSP();
     void clickViewDocTSP();
     void clickVerifyDocTSP();

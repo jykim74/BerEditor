@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
-    <height>939</height>
+    <width>721</width>
+    <height>1142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -225,139 +225,209 @@
     </layout>
    </item>
    <item>
+    <widget class="QToolBox" name="mToolBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="mSignTab">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>697</width>
+        <height>214</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Signature</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_15">
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="4">
+          <widget class="QCheckBox" name="mTrustListCheck">
+           <property name="text">
+            <string>Trust List</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mCertCheck">
+           <property name="text">
+            <string>Certificate</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>CertMan certificate include in verification</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mCAListCheck">
+           <property name="text">
+            <string>CA List</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Signature Labels</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="mNameText"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="mUseSubjectDNCheck">
+              <property name="text">
+               <string>Use Subject DN</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="mContactInfoText"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="mReasonText"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Reason</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Location</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>ContactInfo</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLineEdit" name="mLocationText"/>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Date Time</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QDateTimeEdit" name="mDateTime"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mEncTab">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>697</width>
+        <height>214</height>
+       </rect>
+      </property>
+      <attribute name="label">
+       <string>Encryption</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_14">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mEncryptBtn">
+           <property name="text">
+            <string>mEncrypt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mDecryptBtn">
+           <property name="text">
+            <string>Decrypt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line_5">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>CertMan certificate include in verification</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="mTrustListCheck">
-        <property name="text">
-         <string>Trust List</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="mCAListCheck">
-        <property name="text">
-         <string>CA List</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="mCertCheck">
-        <property name="text">
-         <string>Certificate</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Signature Labels</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mNameText"/>
-        </item>
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="mUseSubjectDNCheck">
-          <property name="text">
-           <string>Use Subject DN</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_8">
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="mContactInfoText"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mReasonText"/>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Reason</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>ContactInfo</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLineEdit" name="mLocationText"/>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Date Time</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QDateTimeEdit" name="mDateTime"/>
-        </item>
-       </layout>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>
@@ -392,17 +462,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="mVerifyChainCheck">
-       <property name="text">
-        <string>Verify Chain</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="6">
       <widget class="QPushButton" name="mExportByteRangeBtn">
        <property name="text">
         <string>Export ByteRange</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mVerifyChainCheck">
+       <property name="text">
+        <string>Verify Chain</string>
        </property>
       </widget>
      </item>
@@ -482,17 +552,38 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="8">
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mAddDSS_VRIBtn">
+       <property name="text">
+        <string>Add DSS VRI</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSignBtn">
+       <property name="text">
+        <string>Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
       <widget class="QPushButton" name="mAddDSSBtn">
        <property name="text">
         <string>Add DSS</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mMakeBtn">
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mAddDocTSPBtn">
        <property name="text">
-        <string>Make</string>
+        <string>Add DocTSP</string>
        </property>
       </widget>
      </item>
@@ -508,34 +599,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mSignCheck">
-       <property name="text">
-        <string>Signature</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="mVerifyBtn">
-       <property name="text">
-        <string>Verify</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QRadioButton" name="mEncryptCheck">
-       <property name="text">
-        <string>Encryption</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="9">
-      <widget class="QPushButton" name="mAddDocTSPBtn">
-       <property name="text">
-        <string>Add DocTSP</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
