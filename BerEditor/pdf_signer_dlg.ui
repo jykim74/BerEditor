@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>721</width>
-    <height>629</height>
+    <width>582</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -367,6 +367,13 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_19">
          <item row="0" column="6">
           <widget class="QPushButton" name="mAddDSS_VRIBtn">
@@ -462,101 +469,18 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_10">
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mExportCMSBtn">
-           <property name="text">
-            <string>Export CMS</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mExportByteRangeBtn">
-           <property name="text">
-            <string>Export ByteRange</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_17">
+         <item row="0" column="4">
           <widget class="QPushButton" name="mViewCMSBtn">
            <property name="text">
             <string>View CMS</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mExportDocTSPByteRangeBtn">
-           <property name="text">
-            <string>Export DocTSP ByteRange</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mViewDocTSP_TSTBtn">
-           <property name="text">
-            <string>View DocTSP TST</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mViewDocTSPBtn">
-           <property name="text">
-            <string>View DocTSP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_17">
          <item row="0" column="2">
           <widget class="QPushButton" name="mVerifyBtn">
            <property name="text">
             <string>Verify</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="mVerifyChainCheck">
-           <property name="text">
-            <string>Verify Chain</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mVerifyDocTSPBtn">
-           <property name="text">
-            <string>Verify DocTSP</string>
            </property>
           </widget>
          </item>
@@ -573,7 +497,100 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mVerifyDocTSPBtn">
+           <property name="text">
+            <string>Verify DocTSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mVerifyChainCheck">
+           <property name="text">
+            <string>Verify Chain</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mViewDocTSPBtn">
+           <property name="text">
+            <string>View DocTSP</string>
+           </property>
+          </widget>
+         </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mViewDocTSP_TSTBtn">
+           <property name="text">
+            <string>View DocTSP TST</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mExportDocTSPByteRangeBtn">
+           <property name="text">
+            <string>Export DocTSP ByteRange</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mExportByteRangeBtn">
+           <property name="text">
+            <string>Export ByteRange</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mExportCMSBtn">
+           <property name="text">
+            <string>Export CMS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -612,6 +629,26 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
