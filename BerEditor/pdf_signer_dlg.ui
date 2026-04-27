@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>721</width>
-    <height>1156</height>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -225,29 +225,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QToolBox" name="mToolBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mSignTab">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>697</width>
-        <height>301</height>
-       </rect>
-      </property>
-      <attribute name="label">
+      <attribute name="title">
        <string>Signature</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="minimumSize">
@@ -428,10 +414,10 @@
       </layout>
      </widget>
      <widget class="QWidget" name="mVerifyTab">
-      <attribute name="label">
+      <attribute name="title">
        <string>Verification</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_7">
+      <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -592,24 +578,16 @@
       </layout>
      </widget>
      <widget class="QWidget" name="mEncTab">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>697</width>
-        <height>301</height>
-       </rect>
-      </property>
-      <attribute name="label">
+      <attribute name="title">
        <string>Encryption</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>
         <layout class="QGridLayout" name="gridLayout_14">
          <item row="0" column="1">
           <widget class="QPushButton" name="mEncryptBtn">
            <property name="text">
-            <string>mEncrypt</string>
+            <string>Encrypt</string>
            </property>
           </widget>
          </item>

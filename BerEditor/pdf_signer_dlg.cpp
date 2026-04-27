@@ -145,7 +145,7 @@ void PDFSignerDlg::initUI()
     tItem->setText( 0, kDSS );
 
     mDSSTree->insertTopLevelItem( 0, tItem );
-    mToolBox->setCurrentIndex(0);
+    mTypeTab->setCurrentIndex(0);
 }
 
 void PDFSignerDlg::initialize()
@@ -703,13 +703,14 @@ void PDFSignerDlg::clickGetInfo()
 
     if( sInfo.nCMS == 1 )
     {
-        const JNumList *pCurList = NULL;
+        const BINList *pCurList = NULL;
         int nCount = 0;
         BIN binData = {0,0};
         BIN binHash = {0,0};
 
         JDSSDataList *pDSSList = NULL;
         JNumBINList *pObjList = NULL;
+        int nNum = 0;
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -752,31 +753,30 @@ void PDFSignerDlg::clickGetInfo()
 
         if( ret == JSR_OK )
         {
-            BIN binVal = {0,0};
             QTreeWidgetItem* rootItem = mDSSTree->topLevelItem(0);
 
             if( pDSSList->pDSSData->pCertList )
             {
-                nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pCertList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pCertList );
                 QTreeWidgetItem* certItem = new QTreeWidgetItem;
                 certItem->setText( 0, kDSS_Certs );
                 certItem->setIcon(0, QIcon(":/images/cert.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_UTIL_getNumList( pDSSList->pDSSData->pCertList, k );
-                    JS_PDF_getObjectData( pObjList, pCurList->nNum, &binVal );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCertList );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pCertList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pCertList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
+
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pCertList->Bin ));
                     certItem->addChild( item );
-                    JS_BIN_reset( &binVal );
 
                     i++;
                 }
@@ -786,26 +786,25 @@ void PDFSignerDlg::clickGetInfo()
 
             if( pDSSList->pDSSData->pCRLList )
             {
-                nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pCRLList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pCRLList );
                 QTreeWidgetItem* crlItem = new QTreeWidgetItem;
                 crlItem->setText(0, kDSS_CRLs );
                 crlItem->setIcon(0, QIcon(":/images/crl.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_UTIL_getNumList( pDSSList->pDSSData->pCRLList, k );
-                    JS_PDF_getObjectData( pObjList, pCurList->nNum, &binVal );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCRLList );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pCRLList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_CRL ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pCRLList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pCRLList->Bin ));
                     crlItem->addChild( item );
-                    JS_BIN_reset( &binVal );
 
                     i++;
                 }
@@ -815,33 +814,31 @@ void PDFSignerDlg::clickGetInfo()
 
             if( pDSSList->pDSSData->pOCSPList )
             {
-                nCount = JS_UTIL_countNumList( pDSSList->pDSSData->pOCSPList );
+                nCount = JS_BIN_countList( pDSSList->pDSSData->pOCSPList );
+
                 QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
                 ocspItem->setText(0, kDSS_OCSPs );
                 ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
 
                 for( int k = 0; k < nCount; k++ )
                 {
-                    pCurList = JS_UTIL_getNumList( pDSSList->pDSSData->pOCSPList, k );
-                    JS_PDF_getObjectData( pObjList, pCurList->nNum, &binVal );
+                    pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pOCSPList );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pOCSPList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_OCSP ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &binVal ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pOCSPList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setText( 0, QString( "[%1 0 R]" ).arg( pCurList->nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &binVal ));
+                    item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pOCSPList->Bin ));
                     ocspItem->addChild( item );
-                    JS_BIN_reset( &binVal );
                     i++;
                 }
 
                 rootItem->addChild( ocspItem );
             }
-
-            JS_BIN_reset( &binVal );
         }
 
         if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
@@ -1643,11 +1640,18 @@ void PDFSignerDlg::clickAddDSS_VRI()
     BINList *pOCSPList = NULL;
 
     JDSSDataList *pDSSList = NULL;
+    JDSSData sDSSData;
+    JDSSData sVRIData;
 
     BIN binCert = {0,0};
+    BIN binSrc = {0,0};
+    BIN binHash = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
+
+    memset( &sDSSData, 0x00, sizeof(sDSSData));
+    memset( &sVRIData, 0x00, sizeof(sVRIData));
 
     if( strDstPath.length() < 1 )
     {
@@ -1676,9 +1680,17 @@ void PDFSignerDlg::clickAddDSS_VRI()
 
     JS_BIN_addList( &pCertList, &binCert );
 
-    ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
-                           strDstPath.toStdString().c_str(),
-                           pCertList, pCRLList, pOCSPList );
+    JS_PDF_setDSSDataName( &sDSSData, "DSS" );
+    JS_PDF_setDSSDataCert( &sDSSData, &binCert );
+
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    JS_PKI_genHash( "SHA256", &binSrc, &binHash );
+
+    JS_PDF_setDSSDataName( &sVRIData, getHexString( &binHash ).toStdString().c_str() );
+    JS_PDF_setDSSDataCert( &sVRIData, &binCert );
+
+    JS_PDF_addDSSDataList( &pDSSList, &sDSSData );
+    JS_PDF_addDSSDataList( &pDSSList, &sVRIData );
 
     ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
                                strDstPath.toStdString().c_str(),
@@ -1700,7 +1712,12 @@ end :
     if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
 
+    JS_PDF_resetDSSData( &sDSSData );
+    JS_PDF_resetDSSData( &sVRIData );
+
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binHash );
 }
 
 void PDFSignerDlg::clickAddDocTSP()
