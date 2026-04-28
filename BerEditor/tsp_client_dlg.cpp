@@ -647,7 +647,8 @@ void TSPClientDlg::clickVerifySigned()
     ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binSigned, &binTST );
     if( ret != 0 )
     {
-        berApplet->warningBox(tr( "failed to decode TSP response"), this );
+        berApplet->warningBox(tr( "failed to decode TSP response: %1 (STATUS: %2)")
+                                  .arg( JERR(ret)).arg( nStatus ), this );
         goto end;
     }
 
