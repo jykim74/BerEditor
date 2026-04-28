@@ -1597,7 +1597,33 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
     ret = JS_PKI_getIssuerNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
 
-    strCAPath = QString( "%1/%2.0").arg( strCertPath ).arg( uHash );
+    QDir dir( strCertPath );
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files ))
+    {
+        QString strName = file.baseName();
+        QString strSuffix = file.suffix();
+
+        if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
+        {
+            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( uHash ).arg(strSuffix );
+            break;
+        }
+    }
+
+    if( strCAPath.length() < 1 )
+    {
+        return JSR_FILE_READ_FAIL;
+    }
+
+#if 0
+    for( int i = 0; i < 10; i++ )
+    {
+        strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( uHash ).arg(i);
+        QFileInfo fileInfo( strCAPath );
+        if( fileInfo.exists() ) break;
+    }
+#endif
+
     ret = JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), pCA );
 
     if( ret > 0 && pCA->nLen > 0 )
@@ -1665,6 +1691,93 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
 
     ret = JS_BIN_writePEM( pCRL, JS_PEM_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
+
+    return ret;
+}
+
+int CertManDlg::getCA( const BIN *pCert, BIN *pCA )
+{
+    int ret = 0;
+    BIN binCA = {0,0};
+
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
+    QString strRCAPath = berApplet->settingsMgr()->trustCertPath();
+
+    ret = readCA( strCAPath, pCert, pCA );
+    if( ret == JSR_OK ) goto end;
+
+    ret = readCA( strRCAPath, pCert, pCA );
+
+end :
+
+    return ret;
+}
+
+int CertManDlg::getChain( const BIN *pCert, BINList *pChainList )
+{
+    int ret = 0;
+    BIN binCA = {0,0};
+    BIN binCA2 = {0,0};
+    int count = 0;
+
+    ret = getCA( pCert, &binCA );
+    if( ret != 0 ) goto end;
+
+    JS_BIN_appendList( pChainList, &binCA );
+    count = 1;
+
+    while( JS_PKI_isSelfSignedCert( &binCA ) )
+    {
+        ret = getCA( &binCA, &binCA2 );
+        if( ret != JSR_OK ) break;
+
+        JS_BIN_appendList( pChainList, &binCA2 );
+        count++;
+        JS_BIN_reset( &binCA );
+        JS_BIN_copy( &binCA, &binCA2 );
+        JS_BIN_reset( &binCA );
+    }
+
+end :
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCA2 );
+
+    return count;
+}
+
+int CertManDlg::getCertCRL( const BIN *pCert, BIN *pCRL )
+{
+    int ret = 0;
+    unsigned long uHash = 0;
+    QString strPath = berApplet->settingsMgr()->CRLPath();
+    QString strCRLPath;
+
+    ret = JS_PKI_getIssuerNameHash( pCert, &uHash );
+    if( ret != 0 ) return ret;
+    QDir dir( strPath );
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files ))
+    {
+        QString strName = file.baseName();
+        QString strSuffix = file.suffix();
+
+        if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
+        {
+            strCRLPath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash ).arg(strSuffix );
+            break;
+        }
+    }
+
+    if( strCRLPath.length() < 1 )
+    {
+        return JSR_FILE_READ_FAIL;
+    }
+
+    ret = JS_BIN_fileReadBER( strCRLPath.toLocal8Bit().toStdString().c_str(), pCRL );
+
+    if( ret > 0 && pCRL->nLen > 0 )
+        ret = JSR_OK;
+    else
+        ret = JSR_ERR2;
 
     return ret;
 }

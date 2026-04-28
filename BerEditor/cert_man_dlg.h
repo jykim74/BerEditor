@@ -62,6 +62,9 @@ public:
     static int readCA( const QString strCertPath, const BIN* pCert, BIN *pCA );
     static int writeNameHash( const QString strPath, const BIN *pCert );
     static int writeCRL( const QString strCRLPath, const BIN *pCRL );
+    static int getCA( const BIN *pCert, BIN *pCA );
+    static int getChain( const BIN *pCert, BINList *pChainList );
+    static int getCertCRL( const BIN *pCert, BIN *pCRL );
 
 private slots:
     void showEvent(QShowEvent *event);

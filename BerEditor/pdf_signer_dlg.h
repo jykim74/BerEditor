@@ -78,6 +78,15 @@ private:
     int getTSP( const BIN *pSrc, BIN *pTSP );
     int getPriKeyCert( BIN *pPriKey, BIN *pCert );
     int getCert( BIN *pCert );
+
+    int appendDSS( const QString strSrcPath,
+                  const QString strDstPath,
+                  const BIN *pCert );
+
+    int appendDSS_VRI( const QString strSrcPath,
+                      const QString strDstPath,
+                      const BIN *pCMS,
+                      const BIN *pCert );
 };
 
 #endif

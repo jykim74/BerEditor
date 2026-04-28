@@ -1178,6 +1178,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     BIN binTST = {0,0};
 
     TimeStampDlg tspDlg;
+    int nTSPStatus = 0;
 
     if( tspDlg.exec() != QDialog::Accepted )
         return -1;
@@ -1219,7 +1220,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
 
     if( ret != 0 ) goto end;
 
-    ret = JS_TSP_decodeResponse( &binRsp, pTSP, &binTST );
+    ret = JS_TSP_decodeResponse( &binRsp, &nTSPStatus, pTSP, &binTST );
 
 end :
     JS_BIN_reset( &binReq );

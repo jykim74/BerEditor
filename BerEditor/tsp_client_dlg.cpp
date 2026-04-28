@@ -476,7 +476,7 @@ void TSPClientDlg::clickSend()
     else
         ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
 
-    if( ret == 0 )
+    if( ret == 0 && nStatus == 200 )
     {
         mResponseText->setPlainText( getHexString( &binRsp ));
         setUsedURL( strURL );
@@ -484,7 +484,7 @@ void TSPClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to send a request to TSP server: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to send a request to TSP server: %1 (STATUS: %2)").arg(JERR(ret)).arg( nStatus ), this );
         goto end;
     }
 
@@ -610,6 +610,7 @@ void TSPClientDlg::clickVerifySigned()
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
     int nFlags = -1;
+    int nStatus = 0;
 
     if( strSrvCertPath.length() < 1 )
     {
@@ -643,7 +644,7 @@ void TSPClientDlg::clickVerifySigned()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_TSP_decodeResponse( &binRsp, &binSigned, &binTST );
+    ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binSigned, &binTST );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "failed to decode TSP response"), this );
@@ -681,6 +682,7 @@ void TSPClientDlg::clickTSTInfo()
     BIN binRsp = {0,0};
 
     TSTInfoDlg tstInfo;
+    int nStatus = 0;
 
     QString strOut = mResponseText->toPlainText();
     if( strOut.length() < 1 )
@@ -691,7 +693,7 @@ void TSPClientDlg::clickTSTInfo()
     }
 
     JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
-    ret = JS_TSP_decodeResponse( &binRsp, &binData, &binTST );
+    ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binData, &binTST );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "failed to decode TSP response"), this );
@@ -715,6 +717,7 @@ void TSPClientDlg::clickViewCMS()
     BIN binRsp = {0,0};
 
     CMSInfoDlg cmsInfo;
+    int nStatus = 0;
 
     QString strOut = mResponseText->toPlainText();
     if( strOut.length() < 1 )
@@ -725,7 +728,7 @@ void TSPClientDlg::clickViewCMS()
     }
 
     JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
-    ret = JS_TSP_decodeResponse( &binRsp, &binData, &binTST );
+    ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binData, &binTST );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "failed to decode TSP response"), this );

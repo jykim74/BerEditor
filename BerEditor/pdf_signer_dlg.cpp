@@ -173,6 +173,7 @@ int PDFSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     BIN binTST = {0,0};
 
     TimeStampDlg tspDlg;
+    int nTSPStatus = 0;
 
     if( tspDlg.exec() != QDialog::Accepted )
         return -1;
@@ -214,7 +215,7 @@ int PDFSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
 
     if( ret != 0 ) goto end;
 
-    ret = JS_TSP_decodeResponse( &binRsp, pTSP, &binTST );
+    ret = JS_TSP_decodeResponse( &binRsp, &nTSPStatus, pTSP, &binTST );
 
 end :
     JS_BIN_reset( &binReq );
@@ -1138,13 +1139,25 @@ void PDFSignerDlg::clickMakeSign()
 
     if( mDSSCheck->isChecked() == true )
     {
+        QString strDSSSrcPath = mDstPathText->text();
+        QString strDSSDstPath;
+
+        QFileInfo fileInfo( strDSSSrcPath );
+        strDSSDstPath = QString( "%1/%2_dss.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+
         if( mVRICheck->isChecked() == true )
         {
-            clickAddDSS_VRI();
+            BIN binCMS_PDF = {0,0};
+            JS_BIN_fileRead( strDSSSrcPath.toStdString().c_str(), &binCMS_PDF );
+
+            ret = appendDSS_VRI( strDSSSrcPath, strDSSDstPath, &binCMS_PDF, &binCert );
+            JS_BIN_reset( &binCMS_PDF );
+            if( ret != CKR_OK ) goto end;
         }
         else
         {
-            clickAddDSS();
+            ret = appendDSS( strDSSSrcPath, strDSSDstPath, &binCert );
+            if( ret != CKR_OK ) goto end;
         }
     }
 
@@ -1569,13 +1582,100 @@ end :
     JS_BIN_reset( &binCMS );
 }
 
-void PDFSignerDlg::clickAddDSS()
+int PDFSignerDlg::appendDSS( const QString strSrcPath,
+              const QString strDstPath,
+              const BIN *pCert )
+{
+    int ret = 0;
+    BIN binCRL = {0,0};
+
+    BINList *pCertList = NULL;
+    BINList *pCRLList = NULL;
+    BINList *pOCSPList = NULL;
+
+    JS_BIN_addList( &pCertList, pCert );
+
+    CertManDlg::getChain( pCert, pCertList );
+    CertManDlg::getCertCRL( pCert, &binCRL );
+
+    if( binCRL.nLen > 0 ) JS_BIN_createList( &binCRL, &pCRLList );
+
+    ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
+                           strDstPath.toStdString().c_str(),
+                           pCertList, pCRLList, pOCSPList );
+
+end :
+    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+
+    JS_BIN_reset( &binCRL );
+
+    return ret;
+}
+
+int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
+                  const QString strDstPath,
+                  const BIN *pCMS_PDF,
+                  const BIN *pCert )
 {
     int ret = 0;
 
     BINList *pCertList = NULL;
     BINList *pCRLList = NULL;
     BINList *pOCSPList = NULL;
+
+    JDSSDataList *pDSSList = NULL;
+    JDSSData sDSSData;
+    JDSSData sVRIData;
+
+    BIN binHash = {0,0};
+    BIN binCRL = {0,0};
+
+
+    memset( &sDSSData, 0x00, sizeof(sDSSData));
+    memset( &sVRIData, 0x00, sizeof(sVRIData));
+
+    JS_BIN_addList( &pCertList, pCert );
+
+    CertManDlg::getChain( pCert, pCertList );
+    CertManDlg::getCertCRL( pCert, &binCRL );
+
+    if( binCRL.nLen > 0 ) JS_BIN_createList( &binCRL, &pCRLList );
+
+    JS_PDF_setDSSDataName( &sDSSData, "DSS" );
+    JS_PDF_setDSSDataCert( &sDSSData, pCert );
+
+    JS_PKI_genHash( "SHA256", pCMS_PDF, &binHash );
+
+    JS_PDF_setDSSDataName( &sVRIData, getHexString( &binHash ).toStdString().c_str() );
+    JS_PDF_setDSSDataCert( &sVRIData, pCert );
+
+    JS_PDF_addDSSDataList( &pDSSList, &sDSSData );
+    JS_PDF_addDSSDataList( &pDSSList, &sVRIData );
+
+    ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
+                               strDstPath.toStdString().c_str(),
+                               pDSSList );
+
+end :
+    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
+
+    JS_PDF_resetDSSData( &sDSSData );
+    JS_PDF_resetDSSData( &sVRIData );
+
+    JS_BIN_reset( &binHash );
+    JS_BIN_reset( &binCRL );
+
+    return ret;
+}
+
+void PDFSignerDlg::clickAddDSS()
+{
+    int ret = 0;
 
     BIN binCert = {0,0};
 
@@ -1607,11 +1707,7 @@ void PDFSignerDlg::clickAddDSS()
         goto end;
     }
 
-    JS_BIN_addList( &pCertList, &binCert );
-
-    ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
-                           strDstPath.toStdString().c_str(),
-                           pCertList, pCRLList, pOCSPList );
+    ret = appendDSS( strSrcPath, strDstPath, &binCert );
 
     if( ret == JSR_OK )
     {
@@ -1622,11 +1718,7 @@ void PDFSignerDlg::clickAddDSS()
         berApplet->warningBox( tr( "failed to add DSS: %1").arg(JERR(ret)), this );
     }
 
-
 end :
-    if( pCertList ) JS_BIN_resetList( &pCertList );
-    if( pCRLList ) JS_BIN_resetList( &pCRLList );
-    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
 
     JS_BIN_reset( &binCert );
 }
@@ -1635,23 +1727,11 @@ void PDFSignerDlg::clickAddDSS_VRI()
 {
     int ret = 0;
 
-    BINList *pCertList = NULL;
-    BINList *pCRLList = NULL;
-    BINList *pOCSPList = NULL;
-
-    JDSSDataList *pDSSList = NULL;
-    JDSSData sDSSData;
-    JDSSData sVRIData;
-
     BIN binCert = {0,0};
-    BIN binSrc = {0,0};
-    BIN binHash = {0,0};
+    BIN binCMS_PDF = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
-
-    memset( &sDSSData, 0x00, sizeof(sDSSData));
-    memset( &sVRIData, 0x00, sizeof(sVRIData));
 
     if( strDstPath.length() < 1 )
     {
@@ -1678,23 +1758,9 @@ void PDFSignerDlg::clickAddDSS_VRI()
         goto end;
     }
 
-    JS_BIN_addList( &pCertList, &binCert );
+    JS_BIN_fileRead( strDstPath.toStdString().c_str(), &binCMS_PDF );
 
-    JS_PDF_setDSSDataName( &sDSSData, "DSS" );
-    JS_PDF_setDSSDataCert( &sDSSData, &binCert );
-
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    JS_PKI_genHash( "SHA256", &binSrc, &binHash );
-
-    JS_PDF_setDSSDataName( &sVRIData, getHexString( &binHash ).toStdString().c_str() );
-    JS_PDF_setDSSDataCert( &sVRIData, &binCert );
-
-    JS_PDF_addDSSDataList( &pDSSList, &sDSSData );
-    JS_PDF_addDSSDataList( &pDSSList, &sVRIData );
-
-    ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
-                               strDstPath.toStdString().c_str(),
-                               pDSSList );
+    ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert );
 
     if( ret == JSR_OK )
     {
@@ -1705,19 +1771,10 @@ void PDFSignerDlg::clickAddDSS_VRI()
         berApplet->warningBox( tr( "failed to add DSS: %1").arg(JERR(ret)), this );
     }
 
-
 end :
-    if( pCertList ) JS_BIN_resetList( &pCertList );
-    if( pCRLList ) JS_BIN_resetList( &pCRLList );
-    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
-    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
-
-    JS_PDF_resetDSSData( &sDSSData );
-    JS_PDF_resetDSSData( &sVRIData );
 
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binHash );
+    JS_BIN_reset( &binCMS_PDF );
 }
 
 void PDFSignerDlg::clickAddDocTSP()
