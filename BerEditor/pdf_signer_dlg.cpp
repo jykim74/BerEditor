@@ -1640,7 +1640,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     JS_PDF_setDSSDataName( &sDSSData, "DSS" );
     JS_PDF_setDSSDataCert( &sDSSData, pCert );
 
-    JS_PKI_genHash( "SHA256", pCMS_PDF, &binHash );
+    JS_PKI_genHash( "SHA1", pCMS_PDF, &binHash );
 
     JS_PDF_setDSSDataName( &sVRIData, getHexString( &binHash ).toStdString().c_str() );
     JS_PDF_setDSSDataCert( &sVRIData, pCert );
@@ -1748,11 +1748,21 @@ void PDFSignerDlg::clickAddDSS_VRI()
     ret = getCert( &binCert );
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "failed to get the certificate: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "failed to get the certificate: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
-    JS_BIN_fileRead( strDstPath.toStdString().c_str(), &binCMS_PDF );
+    ret = JS_PDF_getContentsFile(
+        strDstPath.toStdString().c_str(),
+        NULL,
+        &binCMS_PDF );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get the CMS contents: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
 
     ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert );
 
