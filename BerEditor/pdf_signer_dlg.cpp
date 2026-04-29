@@ -31,6 +31,7 @@
 #include "cert_id_dlg.h"
 #include "cms_info_dlg.h"
 #include "tst_info_dlg.h"
+#include "cert_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -1595,10 +1596,7 @@ int PDFSignerDlg::appendDSS( const QString strSrcPath,
 
     JS_BIN_addList( &pCertList, pCert );
 
-    CertManDlg::getChain( pCert, pCertList );
-    CertManDlg::getCertCRL( pCert, &binCRL );
-
-    if( binCRL.nLen > 0 ) JS_BIN_createList( &binCRL, &pCRLList );
+    getDSSList( pCert, &pCertList, &pCRLList, &pOCSPList );
 
     ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
                            strDstPath.toStdString().c_str(),
@@ -1637,11 +1635,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     memset( &sVRIData, 0x00, sizeof(sVRIData));
 
     JS_BIN_addList( &pCertList, pCert );
-
-    CertManDlg::getChain( pCert, pCertList );
-    CertManDlg::getCertCRL( pCert, &binCRL );
-
-    if( binCRL.nLen > 0 ) JS_BIN_createList( &binCRL, &pCRLList );
+    getDSSList( pCert, &pCertList, &pCRLList, &pOCSPList );
 
     JS_PDF_setDSSDataName( &sDSSData, "DSS" );
     JS_PDF_setDSSDataCert( &sDSSData, pCert );
@@ -1811,19 +1805,22 @@ void PDFSignerDlg::clickAddDocTSP()
 
     // Need To DocTSP ByteRange
 
-    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
-    if( ret != 0 ) goto end;
-
-    ret = JS_PDF_getDataFile( strSrcPath.toStdString().c_str(), &sRange, &binData );
-    if( ret != 0 ) goto end;
-
-    ret = getTSP( &binData, &binTSP );
-    if( ret != 0 ) goto end;
-
     ret = JS_PDF_makeUnsignedTSPDocFile(
         strSrcPath.toStdString().c_str(),
         strDstPath.toStdString().c_str() );
 
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_applyDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_getDataFile( strDstPath.toStdString().c_str(), &sRange, &binData );
+    if( ret != 0 ) goto end;
+
+    ret = getTSP( &binData, &binTSP );
     if( ret != 0 ) goto end;
 
     ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
@@ -2114,6 +2111,84 @@ void PDFSignerDlg::clickDstPathUp()
     mDstPathText->clear();
 
     mSrcPathText->setText( strDstPath );
+}
+
+int PDFSignerDlg::getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
+{
+    int ret = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+
+    QString strAIA_URI;
+    QString strCRLDP_URI;
+
+    ret = JS_PKI_getCertInfo( pCert, &sCertInfo, &pExtInfoList );
+    if( ret != 0 ) goto end;
+
+    strAIA_URI = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtInfoList );
+    strCRLDP_URI = CertInfoDlg::getValueFromExtList( kExtNameCRLDP, pExtInfoList );
+
+    if( strAIA_URI.length() > 0 )
+    {
+        CertInfoDlg::getCA( strAIA_URI, pCA );
+        CertInfoDlg::getOCSP( strAIA_URI, pOCSP );
+
+        if( pCA->nLen < 0 )
+        {
+            CertManDlg::getCA( pCert, pCA );
+        }
+    }
+
+    if( strCRLDP_URI.length() > 0 )
+    {
+        CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    return ret;
+}
+
+int PDFSignerDlg::getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList )
+{
+    int ret = 0;
+    BIN binCA = {0,0};
+    BIN binCert = {0,0};
+    BIN binCRL = {0,0};
+    BIN binOCSP = {0,0};
+
+    if( pCert == NULL ) return JSR_ERR;
+
+    JS_BIN_copy( &binCert, pCert );
+
+    while( binCert.nLen > 0 )
+    {
+        JS_BIN_reset( &binCA );
+        JS_BIN_reset( &binCRL );
+        JS_BIN_reset( &binOCSP );
+
+        ret = getDSS( &binCert, &binCA, &binCRL, &binOCSP );
+        if( ret != JSR_OK ) break;
+
+        if( binCA.nLen > 0 ) JS_BIN_addList( ppCertList, &binCA );
+        if( binCRL.nLen > 0 ) JS_BIN_addList( ppCRLList, &binCRL );
+        if( binOCSP.nLen > 0 ) JS_BIN_addList( ppOCSPList, &binOCSP );
+
+        if( JS_PKI_isSelfSignedCert( &binCert ) == true )
+            break;
+
+        JS_BIN_reset( &binCert );
+        JS_BIN_copy( &binCert, &binCA );
+    }
+
+end :
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCRL );
+    JS_BIN_reset( &binOCSP );
+
+    return ret;
 }
 
 #endif

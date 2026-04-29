@@ -35,6 +35,7 @@ public:
     static bool isCA( const QString strExtBC );
     static int getCA( const QString strExtAIA, BIN *pCA );
     static int getCRL( const QString strExtCRLDP, BIN *pCRL );
+    static int getOCSP( const QString strExtAIA, BIN *pOCSP );
     static const QString getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList );
 
 private slots:

@@ -1141,6 +1141,26 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     return ret;
 }
 
+int CertInfoDlg::getOCSP( const QString strExtAIA, BIN *pOCSP )
+{
+    int ret = 0;
+    QString strURI;
+
+    //    berApplet->log( QString( "AIA : %1" ).arg( strExtAIA ));
+    strURI = getOCSP_URIFromExt( strExtAIA );
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->elog( "failed to get CA certificate URI address" );
+        return JSR_SSL_NO_OCSP_INFO;
+    }
+
+    berApplet->log( QString( "OCSP URI: %1").arg( strURI));
+    ret = getDataFromURI( strURI, pOCSP );
+
+    return ret;
+}
+
 const QString CertInfoDlg::getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList )
 {
     QString strValue;
