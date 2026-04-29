@@ -1640,7 +1640,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     JS_PDF_setDSSDataName( &sDSSData, "DSS" );
     JS_PDF_setDSSDataCert( &sDSSData, pCert );
 
-    JS_PKI_genHash( "SHA1", pCMS_PDF, &binHash );
+    JS_PKI_genHash( "SHA256", pCMS_PDF, &binHash );
 
     JS_PDF_setDSSDataName( &sVRIData, getHexString( &binHash ).toStdString().c_str() );
     JS_PDF_setDSSDataCert( &sVRIData, pCert );
