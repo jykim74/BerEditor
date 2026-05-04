@@ -767,17 +767,17 @@ void PDFSignerDlg::clickGetInfo()
                 for( int k = 0; k < nCount; k++ )
                 {
                     pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCertList );
-                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pCertList->Bin );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pCertList->Bin ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
 
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pCertList->Bin ));
+                    item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     certItem->addChild( item );
 
                     i++;
@@ -796,16 +796,16 @@ void PDFSignerDlg::clickGetInfo()
                 for( int k = 0; k < nCount; k++ )
                 {
                     pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pCRLList );
-                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pCRLList->Bin );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_CRL ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pCRLList->Bin ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pCRLList->Bin ));
+                    item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     crlItem->addChild( item );
 
                     i++;
@@ -825,16 +825,16 @@ void PDFSignerDlg::clickGetInfo()
                 for( int k = 0; k < nCount; k++ )
                 {
                     pCurList = JS_BIN_getListAt( k, pDSSList->pDSSData->pOCSPList );
-                    nNum = JS_PDF_getObjectNum( pObjList, &pDSSList->pDSSData->pOCSPList->Bin );
+                    nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
 
                     mInfoTable->insertRow(i);
                     mInfoTable->setRowHeight(i,10);
                     mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_OCSP ));
-                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pDSSList->pDSSData->pOCSPList->Bin ) ));
+                    mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
-                    item->setData( 0, Qt::UserRole, getHexString( &pDSSList->pDSSData->pOCSPList->Bin ));
+                    item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     ocspItem->addChild( item );
                     i++;
                 }
@@ -1834,22 +1834,16 @@ void PDFSignerDlg::clickAddDocTSP()
     if( ret != 0 ) goto end;
 
     ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
-    if( ret != 0 ) goto end;
+    if( ret != JSR_OK ) goto end;
 
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr("append DocTSP successfully"), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "failed to append DocTSP: %1").arg(JERR(ret)), this );
-    }
+    berApplet->messageBox( tr("append DocTSP successfully"), this );
 
 end :
-    if( ret != 0 )
+    if( ret != JSR_OK )
     {
         QFile dstFile( strDstPath );
         dstFile.remove();
+        berApplet->warningBox( tr( "failed to append DocTSP: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset( &binData );
