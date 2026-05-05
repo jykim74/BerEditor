@@ -66,6 +66,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mInfoTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTableMenuRequested(QPoint)));
     connect( mDSSTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
+    connect( mDSSCheck, SIGNAL(clicked()), this, SLOT(checkDSS()));
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
@@ -144,7 +145,10 @@ void PDFSignerDlg::initUI()
     mDSSTree->setColumnCount(1);
 
     QTreeWidgetItem* tItem = new QTreeWidgetItem;
+    tItem->setIcon( 0, QIcon(":/images/pdf.png" ));
     tItem->setText( 0, kDSS );
+
+    checkDSS();
 
     mDSSTree->insertTopLevelItem( 0, tItem );
     mTypeTab->setCurrentIndex(0);
@@ -600,6 +604,12 @@ void PDFSignerDlg::clickClearAll()
 
     clickClearInfo();
     mPasswdText->clear();
+}
+
+void PDFSignerDlg::checkDSS()
+{
+    bool bVal = mDSSCheck->isChecked();
+    mVRICheck->setEnabled( bVal );
 }
 
 void PDFSignerDlg::checkUseTSP()

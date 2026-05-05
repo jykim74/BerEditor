@@ -46,6 +46,8 @@ private slots:
     void findDstPath();
     void clickClearAll();
 
+    void checkDSS();
+
     void checkUseTSP();
     void clickTSP();
 
