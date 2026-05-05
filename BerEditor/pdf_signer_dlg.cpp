@@ -94,6 +94,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mDstPathUpBtn->setFixedWidth(34);
+    mInfoClearBtn->setFixedWidth(34);
 
     mInfoTab->layout()->setSpacing(5);
     mInfoTab->layout()->setMargin(5);
@@ -1600,6 +1601,7 @@ int PDFSignerDlg::appendDSS( const QString strSrcPath,
 
     ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
                            strDstPath.toStdString().c_str(),
+                           mCompressCheck->isChecked(),
                            pCertList, pCRLList, pOCSPList );
 
 end :
@@ -1650,6 +1652,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
 
     ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
                                strDstPath.toStdString().c_str(),
+                               mCompressCheck->isChecked(),
                                pDSSList );
 
 end :

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
-    <height>647</height>
+    <width>695</width>
+    <height>820</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -400,34 +400,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_19">
-         <item row="0" column="6">
-          <widget class="QPushButton" name="mAddDSS_VRIBtn">
-           <property name="text">
-            <string>Add DSS VRI</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mAddDSSBtn">
-           <property name="text">
-            <string>Add DSS</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QPushButton" name="mAddDocTSPBtn">
-           <property name="text">
-            <string>Add DocTSP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mSignBtn">
-           <property name="text">
-            <string>Sign</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="4">
           <spacer name="horizontalSpacer_10">
            <property name="orientation">
@@ -440,6 +412,41 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="7">
+          <widget class="QPushButton" name="mAddDSS_VRIBtn">
+           <property name="text">
+            <string>Add DSS VRI</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8">
+          <widget class="QPushButton" name="mAddDocTSPBtn">
+           <property name="text">
+            <string>Add DocTSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mAddDSSBtn">
+           <property name="text">
+            <string>Add DSS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mSignBtn">
+           <property name="text">
+            <string>Sign</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QCheckBox" name="mCompressCheck">
+           <property name="text">
+            <string>Compress</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
