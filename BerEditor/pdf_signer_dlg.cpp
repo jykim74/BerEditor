@@ -1139,6 +1139,13 @@ void PDFSignerDlg::clickMakeSign()
         goto end;
     }
 
+    ret = JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "failed to write file: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
     if( mDSSCheck->isChecked() == true )
     {
         QString strDSSSrcPath = mDstPathText->text();
@@ -1154,21 +1161,54 @@ void PDFSignerDlg::clickMakeSign()
 
             ret = appendDSS_VRI( strDSSSrcPath, strDSSDstPath, &binCMS_PDF, &binCert );
             JS_BIN_reset( &binCMS_PDF );
-            if( ret != CKR_OK ) goto end;
+            if( ret != CKR_OK )
+            {
+                berApplet->warningBox( tr( "failed to append DSS VRI: %1" ).arg(JERR(ret)), this );
+                goto end;
+            }
         }
         else
         {
             ret = appendDSS( strDSSSrcPath, strDSSDstPath, &binCert );
-            if( ret != CKR_OK ) goto end;
+            if( ret != CKR_OK )
+            {
+                berApplet->warningBox( tr( "failed to append DSS: %1" ).arg( JERR(ret)), this );
+                goto end;
+            }
+        }
+
+        if( ret == JSR_OK )
+        {
+            QFile dstFile( strDSSSrcPath );
+            dstFile.remove();
+            mDstPathText->setText( strDSSDstPath );
         }
     }
 
     if( mDocTimeStampCheck->isChecked() == true )
     {
-        clickAddDocTSP();
+        QString strDSSSrcPath = mDstPathText->text();
+        QString strDSSDstPath;
+
+        QFileInfo fileInfo( strDSSSrcPath );
+        strDSSDstPath = QString( "%1/%2_doc_tsp.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+
+        ret = appendDocTSP( strDSSSrcPath, strDSSDstPath );
+
+        if( ret == JSR_OK )
+        {
+            QFile dstFile( strDSSSrcPath );
+            dstFile.remove();
+            mDstPathText->setText( strDSSDstPath );
+        }
+        else
+        {
+            berApplet->warningBox( tr( "failed to append DocTSP: %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
     }
 
-    JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
 end :
@@ -1784,6 +1824,47 @@ end :
     JS_BIN_reset( &binCMS_PDF );
 }
 
+int PDFSignerDlg::appendDocTSP( const QString strSrcPath, const QString strDstPath )
+{
+    int ret = 0;
+
+    BIN binData = {0,0};
+    BIN binTSP = {0,0};
+
+    JByteRange sRange;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+
+    // Need To DocTSP ByteRange
+
+    ret = JS_PDF_makeUnsignedTSPDocFile(
+        strSrcPath.toStdString().c_str(),
+        strDstPath.toStdString().c_str() );
+
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_applyDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_getDataFile( strDstPath.toStdString().c_str(), &sRange, &binData );
+    if( ret != 0 ) goto end;
+
+    ret = getTSP( &binData, &binTSP );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
+    if( ret != JSR_OK ) goto end;
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binTSP );
+
+    return ret;
+}
+
 void PDFSignerDlg::clickAddDocTSP()
 {
     int ret = 0;
@@ -1816,27 +1897,8 @@ void PDFSignerDlg::clickAddDocTSP()
         }
     }
 
-    // Need To DocTSP ByteRange
+    ret = appendDocTSP( strSrcPath, strDstPath );
 
-    ret = JS_PDF_makeUnsignedTSPDocFile(
-        strSrcPath.toStdString().c_str(),
-        strDstPath.toStdString().c_str() );
-
-    if( ret != 0 ) goto end;
-
-    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
-    if( ret != 0 ) goto end;
-
-    ret = JS_PDF_applyDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
-    if( ret != 0 ) goto end;
-
-    ret = JS_PDF_getDataFile( strDstPath.toStdString().c_str(), &sRange, &binData );
-    if( ret != 0 ) goto end;
-
-    ret = getTSP( &binData, &binTSP );
-    if( ret != 0 ) goto end;
-
-    ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
     if( ret != JSR_OK ) goto end;
 
     berApplet->messageBox( tr("append DocTSP successfully"), this );
