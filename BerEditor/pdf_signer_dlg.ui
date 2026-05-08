@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>820</height>
+    <width>582</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -234,7 +234,7 @@
    <item>
     <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mSignTab">
       <attribute name="title">
@@ -501,6 +501,13 @@
         </widget>
        </item>
        <item>
+        <widget class="Line" name="line_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_17">
          <item row="0" column="4">
           <widget class="QPushButton" name="mViewCMSBtn">
@@ -547,6 +554,37 @@
           <widget class="QPushButton" name="mViewDocTSPBtn">
            <property name="text">
             <string>View DocTSP</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_10">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mVerifyDSS_VRIBtn">
+           <property name="text">
+            <string>Verify VRI</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mVRIText"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mVerifyDSSBtn">
+           <property name="text">
+            <string>Verify DSS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>VRI</string>
            </property>
           </widget>
          </item>

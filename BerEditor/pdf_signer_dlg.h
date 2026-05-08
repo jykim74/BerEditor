@@ -69,6 +69,8 @@ private slots:
     void clickViewDocTSP();
     void clickVerifyDocTSP();
     void clickViewDocTSP_TST();
+    void clickVerifyDSS();
+    void clickVerifyDSS_VRI();
 
     void clickExportByteRange();
     void clickExportDocTSPByteRange();

@@ -87,6 +87,8 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mViewDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP()));
     connect( mVerifyDocTSPBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDocTSP()));
     connect( mViewDocTSP_TSTBtn, SIGNAL(clicked()), this, SLOT(clickViewDocTSP_TST()));
+    connect( mVerifyDSSBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDSS()));
+    connect( mVerifyDSS_VRIBtn, SIGNAL(clicked()), this, SLOT(clickVerifyDSS_VRI()));
 
     connect( mExportByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportByteRange()));
     connect( mExportDocTSPByteRangeBtn, SIGNAL(clicked()), this, SLOT(clickExportDocTSPByteRange()));
@@ -2088,6 +2090,322 @@ void PDFSignerDlg::clickViewDocTSP_TST()
 end :
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binTST );
+}
+
+void PDFSignerDlg::clickVerifyDSS()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+    BIN binPDF = {0,0};
+    BIN binCert = {0,0};
+    BIN binCMS = {0,0};
+    BIN binData = {0,0};
+    BIN binOut = {0,0};
+
+    JByteRange  sRange;
+    JPDFInfo    sInfo;
+    JDSSDataList *pDSSList = NULL;
+    JNumBINList *pObjList = NULL;
+
+    JSignLabel  sSignLabel;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+    memset( &sInfo, 0x00, sizeof(sInfo));
+    memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getInfoFile(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        NULL,
+        &sInfo, &sSignLabel );
+
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "Invalid PDF file: %1" ).arg(JERR(ret)), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( sInfo.nCMS == 0 )
+    {
+        berApplet->warningBox( tr( "This PDF is not signed" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( mCertCheck->isChecked() == true )
+    {
+        ret = getCert( &binCert );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get the public key: %1" ).arg(ret), this );
+            goto end;
+        }
+    }
+
+    ret = JS_PDF_readPlain(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        NULL,
+        &binPDF );
+
+    //   ret = JS_PDF_getByteRange( &binPDF, &sRange );
+    ret = JS_PDF_findByteRange(
+        &binPDF,
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        &sRange );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    //    ret = JS_PDF_getCMS( &binPDF, &binCMS );
+    ret = JS_PDF_getContents( &binPDF,
+                             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                             &binCMS );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get CMS: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_getData( &binPDF, &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                            &pDSSList, &pObjList );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get DSS: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
+
+    ret = JS_PDF_verifyCMS_DSS(
+        &binData,
+        &binCert,
+        &binCMS,
+        pDSSList->pDSSData->pCertList,
+        pDSSList->pDSSData->pCRLList,
+        pDSSList->pDSSData->pOCSPList );
+
+    if( ret == JSR_VERIFY )
+        berApplet->messageBox( tr("Verify OK" ), this );
+    else
+        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binOut );
+    JS_BIN_reset( &binPDF );
+    JS_PDF_resetSignLabel( &sSignLabel );
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
+    if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
+}
+
+void PDFSignerDlg::clickVerifyDSS_VRI()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    QString strPasswd = mPasswdText->text();
+    QString strVRI = mVRIText->text();
+
+    BIN binPDF = {0,0};
+    BIN binCert = {0,0};
+    BIN binCMS = {0,0};
+    BIN binData = {0,0};
+    BIN binOut = {0,0};
+
+    JByteRange  sRange;
+    JPDFInfo    sInfo;
+
+    JSignLabel  sSignLabel;
+
+    JDSSDataList *pDSSList = NULL;
+    JDSSDataList *pCurList = NULL;
+    JNumBINList *pObjList = NULL;
+
+    memset( &sRange, 0x00, sizeof(sRange));
+    memset( &sInfo, 0x00, sizeof(sInfo));
+    memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( strVRI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a VRI" ), this );
+        mVRIText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    ret = JS_PDF_getInfoFile(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        NULL,
+        &sInfo, &sSignLabel );
+
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "Invalid PDF file: %1" ).arg(JERR(ret)), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( sInfo.nCMS == 0 )
+    {
+        berApplet->warningBox( tr( "This PDF is not signed" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    if( mCertCheck->isChecked() == true )
+    {
+        ret = getCert( &binCert );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get the public key: %1" ).arg(ret), this );
+            goto end;
+        }
+    }
+
+    ret = JS_PDF_readPlain(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        NULL,
+        &binPDF );
+
+    //   ret = JS_PDF_getByteRange( &binPDF, &sRange );
+    ret = JS_PDF_findByteRange(
+        &binPDF,
+        strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+        &sRange );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get byte range: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify Range [ %1 %2 %3 %4 ]")
+                       .arg(sRange.nFirstStart)
+                       .arg( sRange.nFirstLen )
+                       .arg( sRange.nSecondStart )
+                       .arg( sRange.nSecondLen ));
+
+    //    ret = JS_PDF_getCMS( &binPDF, &binCMS );
+    ret = JS_PDF_getContents( &binPDF,
+                             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                             &binCMS );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get CMS: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
+
+    ret = JS_PDF_getData( &binPDF, &sRange, &binData );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                            &pDSSList, &pObjList );
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get DSS: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
+    pCurList = pDSSList;
+
+    while( pCurList )
+    {
+        if( pCurList->pDSSData->pName == strVRI )
+        {
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+    if( pCurList == NULL )
+    {
+        berApplet->warningBox( tr( "There is no corresponding VRI value."), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
+
+    ret = JS_PDF_verifyCMS_DSS(
+        &binData,
+        &binCert,
+        &binCMS,
+        pCurList->pDSSData->pCertList,
+        pCurList->pDSSData->pCRLList,
+        pCurList->pDSSData->pOCSPList );
+
+    if( ret == JSR_VERIFY )
+        berApplet->messageBox( tr("Verify OK" ), this );
+    else
+        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binOut );
+    JS_BIN_reset( &binPDF );
+    JS_PDF_resetSignLabel( &sSignLabel );
+
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
+    if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
 }
 
 void PDFSignerDlg::clickExportByteRange()
