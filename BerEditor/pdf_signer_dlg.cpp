@@ -2256,6 +2256,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     JDSSDataList *pDSSList = NULL;
     JDSSDataList *pCurList = NULL;
     JNumBINList *pObjList = NULL;
+    BINList *pBINList = NULL;
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
@@ -2381,15 +2382,39 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         goto end;
     }
 
+    pBINList = pCurList->pDSSData->pCertList;
+
+    while( pBINList )
+    {
+        JS_BIN_addList( &pDSSList->pDSSData->pCertList, &pBINList->Bin );
+        pBINList = pBINList->pNext;
+    }
+
+    pBINList = pCurList->pDSSData->pCRLList;
+
+    while( pBINList )
+    {
+        JS_BIN_addList( &pDSSList->pDSSData->pCRLList, &pBINList->Bin );
+        pBINList = pBINList->pNext;
+    }
+
+    pBINList = pCurList->pDSSData->pOCSPList;
+
+    while( pBINList )
+    {
+        JS_BIN_addList( &pDSSList->pDSSData->pOCSPList, &pBINList->Bin );
+        pBINList = pBINList->pNext;
+    }
+
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
 
     ret = JS_PDF_verifyCMS_DSS(
         &binData,
         &binCert,
         &binCMS,
-        pCurList->pDSSData->pCertList,
-        pCurList->pDSSData->pCRLList,
-        pCurList->pDSSData->pOCSPList );
+        pDSSList->pDSSData->pCertList,
+        pDSSList->pDSSData->pCRLList,
+        pDSSList->pDSSData->pOCSPList );
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
