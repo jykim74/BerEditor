@@ -676,7 +676,7 @@ void PDFSignerDlg::clickGetInfo()
         return;
     }
 
-
+    clickClearInfo();
 
     mInfoTable->setRowCount(0);
 
