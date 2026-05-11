@@ -45,16 +45,15 @@ void CertIDDlg::setResponse( const BIN *pResp )
     JS_BIN_copy( &resp_, pResp );
 
     ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, &sIDInfo, &sStatusInfo );
-    if( ret != JSR_VERIFY && ret != JSR_INVALID )
-    {
-        berApplet->elog( QString( "failed to decode OCSP response: %1").arg(ret));
-        goto end;
-    }
 
     if( ret == JSR_VERIFY )
+    {
         strVerify = tr("Verify OK");
+    }
     else
-        strVerify = tr("Verify Err");
+    {
+        strVerify = tr("Verify Err: %1").arg( JERR(ret));
+    }
 
     mIDTable->insertRow(i);
     mIDTable->setRowHeight(i, 10);
