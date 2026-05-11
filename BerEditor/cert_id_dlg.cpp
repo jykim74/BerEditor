@@ -3,6 +3,7 @@
 #include "js_ocsp.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
+#include "cert_info_dlg.h"
 
 #include "js_util.h"
 
@@ -12,8 +13,10 @@ CertIDDlg::CertIDDlg(QWidget *parent)
     setupUi(this);
 
     memset( &resp_, 0x00, sizeof(BIN));
+    memset( &signer_, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
 
     initUI();
 
@@ -27,6 +30,7 @@ CertIDDlg::CertIDDlg(QWidget *parent)
 CertIDDlg::~CertIDDlg()
 {
     JS_BIN_reset( &resp_ );
+    JS_BIN_reset( &signer_ );
 }
 
 void CertIDDlg::setResponse( const BIN *pResp )
@@ -36,6 +40,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
     JCertIDInfo sIDInfo;
     JCertStatusInfo sStatusInfo;
     BIN binSignCert = {0,0};
+    BIN binSigner = {0,0};
     char sRevokedTime[64];
     QString strVerify;
 
@@ -44,7 +49,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
 
     JS_BIN_copy( &resp_, pResp );
 
-    ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, &sIDInfo, &sStatusInfo );
+    ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, &sIDInfo, &sStatusInfo, &binSigner );
 
     if( ret == JSR_VERIFY )
     {
@@ -53,6 +58,16 @@ void CertIDDlg::setResponse( const BIN *pResp )
     else
     {
         strVerify = tr("Verify Err: %1").arg( JERR(ret));
+    }
+
+    if( binSigner.nLen > 0 )
+    {
+        JS_BIN_copy( &signer_, &binSigner );
+        mViewSignerBtn->setEnabled( true );
+    }
+    else
+    {
+        mViewSignerBtn->setEnabled( false );
     }
 
     mIDTable->insertRow(i);
@@ -125,6 +140,14 @@ end :
     JS_BIN_reset( &binSignCert );
     JS_OCSP_resetCertIDInfo( &sIDInfo );
     JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+    JS_BIN_reset( &binSigner );
+}
+
+void CertIDDlg::clickViewSigner()
+{
+    CertInfoDlg certInfo;
+    certInfo.setCertBIN( &signer_, "OCSP Signer" );
+    certInfo.exec();
 }
 
 void CertIDDlg::initUI()

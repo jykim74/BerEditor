@@ -18,11 +18,15 @@ public:
     ~CertIDDlg();
     void setResponse( const BIN *pResp );
 
+private slots:
+    void clickViewSigner();
+
 private:
     void initUI();
     void initialize();
 
     BIN resp_;
+    BIN signer_;
 };
 
 #endif // CERT_ID_DLG_H

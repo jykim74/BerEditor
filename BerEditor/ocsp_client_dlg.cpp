@@ -1136,6 +1136,8 @@ void OCSPClientDlg::clickVerify()
     JCertIDInfo sIDInfo;
     JCertStatusInfo sStatusInfo;
 
+    BIN binSigner = {0,0};
+
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
 
@@ -1168,7 +1170,7 @@ void OCSPClientDlg::clickVerify()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo );
+    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo, &binSigner );
 
     if( ret == JSR_INVALID )
     {
@@ -1192,6 +1194,7 @@ end :
     JS_BIN_reset( &binRsp );
     JS_OCSP_resetCertIDInfo( &sIDInfo );
     JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+    JS_BIN_reset( &binSigner );
 }
 
 void OCSPClientDlg::clickClearAll()
