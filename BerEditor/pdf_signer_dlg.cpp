@@ -1676,10 +1676,6 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
 {
     int ret = 0;
 
-    BINList *pCertList = NULL;
-    BINList *pCRLList = NULL;
-    BINList *pOCSPList = NULL;
-
     JDSSDataList *pDSSList = NULL;
     JDSSData sDSSData;
     JDSSData sVRIData;
@@ -1691,11 +1687,10 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     memset( &sDSSData, 0x00, sizeof(sDSSData));
     memset( &sVRIData, 0x00, sizeof(sVRIData));
 
-    JS_BIN_addList( &pCertList, pCert );
-    getDSSList( pCert, &pCertList, &pCRLList, &pOCSPList );
-
     JS_PDF_setDSSDataName( &sDSSData, "DSS" );
-    JS_PDF_setDSSDataCert( &sDSSData, pCert );
+
+    getDSSList( pCert, &sDSSData.pCertList, &sDSSData.pCRLList, &sDSSData.pOCSPList );
+    JS_BIN_addList( &sDSSData.pCertList, pCert );
 
     JS_PKI_genHash( "SHA256", pCMS_PDF, &binHash );
 
@@ -1711,9 +1706,6 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
                                pDSSList );
 
 end :
-    if( pCertList ) JS_BIN_resetList( &pCertList );
-    if( pCRLList ) JS_BIN_resetList( &pCRLList );
-    if( pOCSPList ) JS_BIN_resetList( &pOCSPList );
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
 
     JS_PDF_resetDSSData( &sDSSData );
@@ -2555,17 +2547,14 @@ int PDFSignerDlg::getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
 
     if( strAIA_URI.length() > 0 )
     {
-        ret = CertInfoDlg::getCA( strAIA_URI, pCA );
-        if( ret != JSR_OK ) JS_BIN_reset( pCA );
+        CertInfoDlg::getCA( strAIA_URI, pCA );
 
         if( pCA->nLen < 0 )
         {
-            ret = CertManDlg::getCA( pCert, pCA );
-            if( ret != JSR_OK ) JS_BIN_reset( pCA );
+            CertManDlg::getCA( pCert, pCA );
         }
 
-        ret = CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
-        if( ret != JSR_OK ) JS_BIN_reset( pOCSP );
+        CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
     }
 
     if( strCRLDP_URI.length() > 0 )
