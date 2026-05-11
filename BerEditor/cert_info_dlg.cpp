@@ -14,6 +14,7 @@
 #include "js_pki_pvd.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
+#include "js_http.h"
 #include "js_error.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
@@ -1141,10 +1142,14 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     return ret;
 }
 
-int CertInfoDlg::getOCSP( const QString strExtAIA, BIN *pOCSP )
+int CertInfoDlg::getOCSP( const QString strExtAIA, const BIN *pCA, const BIN *pCert, BIN *pOCSP )
 {
     int ret = 0;
     QString strURI;
+    int nStatus = 0;
+    BIN binNonce = {0,0};
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
 
     //    berApplet->log( QString( "AIA : %1" ).arg( strExtAIA ));
     strURI = getOCSP_URIFromExt( strExtAIA );
@@ -1155,8 +1160,28 @@ int CertInfoDlg::getOCSP( const QString strExtAIA, BIN *pOCSP )
         return JSR_SSL_NO_OCSP_INFO;
     }
 
+    ret = JS_OCSP_encodeRequest( pCert, pCA, &binNonce, "SHA256", NULL, NULL, &binReq );
+    if( ret != 0 )
+    {
+        ret = JSR_OCSP_FAIL;
+        goto end;
+    }
+
     berApplet->log( QString( "OCSP URI: %1").arg( strURI));
-    ret = getDataFromURI( strURI, pOCSP );
+
+    ret = JS_HTTP_requestPostBin( strURI.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "failed to request : %d\n", ret );
+        goto end;
+    }
+
+    if( nStatus == 200 ) JS_BIN_copy( pOCSP, &binRsp );
+
+end :
+    JS_BIN_reset( &binNonce );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
 
     return ret;
 }

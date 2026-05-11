@@ -1518,6 +1518,11 @@ int getDataFromURI( const QString strURI, BIN *pData )
         nPort = url.port(80);
 
         ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, pData );
+
+        if( nStatus != 200 )
+        {
+            ret = JSR_HTTP_STATUS_NOT_OK;
+        }
     }
     else if( strScheme == "ldap" )
     {
