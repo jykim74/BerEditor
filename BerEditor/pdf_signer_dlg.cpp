@@ -124,6 +124,7 @@ PDFSignerDlg::~PDFSignerDlg()
 void PDFSignerDlg::initUI()
 {
     QStringList sHeaders = { tr( "Name" ), tr( "Value" ) };
+    mVRICombo->setEditable(true);
 
     mTabWidget->setCurrentIndex(0);
 
@@ -817,6 +818,8 @@ void PDFSignerDlg::clickGetInfo()
         JDSSDataList    *pCurDataList = NULL;
         JDSSData        *pCurData = NULL;
 
+        mVRICombo->clear();
+
         pCurDataList = pDSSList;
 
         while( pCurDataList )
@@ -825,6 +828,11 @@ void PDFSignerDlg::clickGetInfo()
             QTreeWidgetItem* nameItem = new QTreeWidgetItem;
             nameItem->setText( 0, pCurData->pName );
             nameItem->setIcon( 0, QIcon(":/images/pdf.png" ));
+
+            if( pCurData->pName != kDSS )
+            {
+                mVRICombo->addItem( pCurData->pName );
+            }
 
             if( pCurData->pCertList )
             {
@@ -2262,7 +2270,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     int ret = 0;
     QString strSrcPath = mSrcPathText->text();
     QString strPasswd = mPasswdText->text();
-    QString strVRI = mVRIText->text();
+    QString strVRI = mVRICombo->currentText();
 
     BIN binPDF = {0,0};
     BIN binCert = {0,0};
@@ -2294,7 +2302,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     if( strVRI.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a VRI" ), this );
-        mVRIText->setFocus();
+        mVRICombo->setFocus();
         return;
     }
 

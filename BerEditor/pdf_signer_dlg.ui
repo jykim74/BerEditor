@@ -234,7 +234,7 @@
    <item>
     <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mSignTab">
       <attribute name="title">
@@ -571,8 +571,12 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="mVRIText"/>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>VRI</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="mVerifyDSSBtn">
@@ -581,10 +585,13 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>VRI</string>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mVRICombo">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
           </widget>
          </item>
@@ -808,6 +815,57 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mSrcPathText</tabstop>
+  <tabstop>mSrcFindBtn</tabstop>
+  <tabstop>mInfoClearBtn</tabstop>
+  <tabstop>mGetInfoBtn</tabstop>
+  <tabstop>mTabWidget</tabstop>
+  <tabstop>mInfoTable</tabstop>
+  <tabstop>mDSSTree</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mTypeTab</tabstop>
+  <tabstop>mNameText</tabstop>
+  <tabstop>mUseSubjectDNCheck</tabstop>
+  <tabstop>mReasonText</tabstop>
+  <tabstop>mLocationText</tabstop>
+  <tabstop>mContactInfoText</tabstop>
+  <tabstop>mDateTime</tabstop>
+  <tabstop>mUseTSPCheck</tabstop>
+  <tabstop>mTSPBtn</tabstop>
+  <tabstop>mDSSCheck</tabstop>
+  <tabstop>mVRICheck</tabstop>
+  <tabstop>mDocTimeStampCheck</tabstop>
+  <tabstop>mSignBtn</tabstop>
+  <tabstop>mCompressCheck</tabstop>
+  <tabstop>mAddDSSBtn</tabstop>
+  <tabstop>mAddDSS_VRIBtn</tabstop>
+  <tabstop>mAddDocTSPBtn</tabstop>
+  <tabstop>mCertCheck</tabstop>
+  <tabstop>mCAListCheck</tabstop>
+  <tabstop>mTrustListCheck</tabstop>
+  <tabstop>mVerifyChainCheck</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mVerifyDocTSPBtn</tabstop>
+  <tabstop>mViewCMSBtn</tabstop>
+  <tabstop>mViewDocTSPBtn</tabstop>
+  <tabstop>mVerifyDSSBtn</tabstop>
+  <tabstop>mVRICombo</tabstop>
+  <tabstop>mVerifyDSS_VRIBtn</tabstop>
+  <tabstop>mExportCMSBtn</tabstop>
+  <tabstop>mExportByteRangeBtn</tabstop>
+  <tabstop>mViewDocTSP_TSTBtn</tabstop>
+  <tabstop>mExportDocTSPByteRangeBtn</tabstop>
+  <tabstop>mEncryptBtn</tabstop>
+  <tabstop>mDecryptBtn</tabstop>
+  <tabstop>mDstPathText</tabstop>
+  <tabstop>mDstFindBtn</tabstop>
+  <tabstop>mDstPathUpBtn</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>
