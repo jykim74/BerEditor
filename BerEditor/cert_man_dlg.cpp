@@ -1871,6 +1871,7 @@ void CertManDlg::clickViewCert()
     }
 
     certInfo.setCertBIN( &binCert );
+    certInfo.mSaveToManBtn->setEnabled( false );
     certInfo.exec();
 
 end :
@@ -2605,6 +2606,7 @@ void CertManDlg::clickViewCA()
 
     CertInfoDlg certInfo;
     certInfo.setCertPath( strPath );
+    certInfo.mSaveToCABtn->setEnabled( false );
     certInfo.exec();
 }
 
@@ -2795,6 +2797,7 @@ void CertManDlg::clickViewOther()
 
     CertInfoDlg certInfo;
     certInfo.setCertPath( strPath );
+    certInfo.mSaveToManBtn->setEnabled(false);
     certInfo.exec();
 }
 
@@ -3015,6 +3018,7 @@ void CertManDlg::clickViewCRL()
 
     CRLInfoDlg crlInfo;
     crlInfo.setCRLPath( strPath );
+    crlInfo.mSaveToManBtn->setEnabled( false );
     crlInfo.exec();
 }
 
@@ -3180,6 +3184,7 @@ void CertManDlg::clickViewTrust()
 
     CertInfoDlg certInfo;
     certInfo.setCertPath( strPath );
+    certInfo.mSaveTrustedCABtn->setEnabled( false );
     certInfo.exec();
 }
 

@@ -860,11 +860,11 @@ void CertInfoDlg::clickOCSPCheck()
 
     berApplet->log( QString( "OCSP URI: %1").arg( strURI));
     ret = checkOCSP( strURI, &binCA, &cert_bin_, &sStatusInfo );
-    if( ret != 0 )
+    if( ret != JSR_VERIFY )
     {
         berApplet->warningBox( tr( "Certificate status verification failed with OCSP: %1(%2)")
                                   .arg( JS_OCSP_getResponseStatusName(ret) )
-                                  .arg( ret ), this );
+                                  .arg( JERR(ret) ), this );
     }
     else
     {
