@@ -168,7 +168,7 @@ void CertPVDDlg::dropEvent(QDropEvent *event)
 
 void CertPVDDlg::initialize()
 {
-    QStringList sPathLabels = { tr( "Type"), tr( "Path" ) };
+    QStringList sPathLabels = { tr( "Type"), tr( "DN" ) };
 
     mPathTable->clear();
     mPathTable->horizontalHeader()->setStretchLastSection(true);
@@ -209,9 +209,86 @@ void CertPVDDlg::initialize()
     mTargetPathText->setPlaceholderText( tr( "Select CertMan certificate" ) );
 }
 
+void CertPVDDlg::addList( const QString strType, const QString strPath )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    QString strDN;
+    QIcon icon;
+    time_t now_t = time(NULL);
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( binData.nLen <= 0 ) return;
+
+    if( strType == kTypeCRL )
+    {
+        JCRLInfo sCRLInfo;
+        memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
+
+        ret = JS_PKI_getCRLInfo( &binData, &sCRLInfo, NULL, NULL );
+        if( ret == JSR_OK )
+        {
+            strDN = sCRLInfo.pIssuerName;
+        }
+
+        if( now_t > sCRLInfo.tNextUpdate )
+            icon = QIcon(":/images/crl_expired.png" );
+        else
+            icon = QIcon(":/images/crl.png" );
+
+        JS_PKI_resetCRLInfo( &sCRLInfo );
+    }
+    else
+    {
+        JCertInfo sCertInfo;
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        ret = JS_PKI_getCertInfo( &binData, &sCertInfo, NULL );
+        if( ret == JSR_OK )
+        {
+            strDN = sCertInfo.pSubjectName;
+        }
+
+        if( strType == kTypeTCert )
+        {
+            if( now_t > sCertInfo.tNotAfter )
+                icon = QIcon(":/images/rca_expired.png" );
+            else
+                icon = QIcon(":/images/rca.png" );
+        }
+        else
+        {
+            if( now_t > sCertInfo.tNotAfter )
+                icon = QIcon(":/images/ca_expired.png" );
+            else
+                icon = QIcon(":/images/ca.png" );
+        }
+
+        JS_PKI_resetCertInfo( &sCertInfo );
+    }
+
+    if( strDN.length() > 0 )
+    {
+        int row = mPathTable->rowCount();
+        QTableWidgetItem *item = new QTableWidgetItem( strType );
+        item->setData( Qt::UserRole, getHexString(&binData));
+
+        QTableWidgetItem *item1 = new QTableWidgetItem( strDN );
+        item1->setIcon( icon );
+
+        mPathTable->insertRow( 0 );
+        mPathTable->setRowHeight( 0, 10 );
+        mPathTable->setItem( 0, 0, item );
+        mPathTable->setItem( 0, 1, item1);
+    }
+
+    JS_BIN_reset( &binData );
+}
+
 void CertPVDDlg::slotPathMenu( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
+    QAction* viewAct = new QAction( tr("View" ), this );
     QAction* delAct = new QAction( tr("Delete" ), this );
     QAction* sendAct = new QAction( tr( "Send target" ), this );
 
@@ -221,13 +298,15 @@ void CertPVDDlg::slotPathMenu( QPoint pos )
 
     QString strType = pItem->text();
 
+    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewData()));
     connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delPath()));
     connect( sendAct, SIGNAL(triggered(bool)), this, SLOT( sendTarget()));
 
+    menu->addAction( viewAct );
+    menu->addAction( delAct );
+
     if( strType == kTypeUCert )
         menu->addAction( sendAct );
-
-    menu->addAction( delAct );
 
     menu->popup( mPathTable->viewport()->mapToGlobal(pos));
 }
@@ -245,6 +324,34 @@ void CertPVDDlg::slotParamMenu( QPoint pos )
 
     menu->addAction( delAct );
     menu->popup( mParamTable->viewport()->mapToGlobal(pos));
+}
+
+void CertPVDDlg::viewData()
+{
+    BIN binData = {0,0};
+
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    QString strType = item->text();
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+    if( strType == kTypeCRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binData );
+        crlInfo.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binData );
+        certInfo.exec();
+    }
+
+    JS_BIN_reset( &binData );
 }
 
 void CertPVDDlg::delPath()
@@ -600,9 +707,8 @@ void CertPVDDlg::clickPolicyCheck()
     {
         BIN binData = {0,0};
         QString strType = mPathTable->item( i, 0 )->text();
-        QString strPath = mPathTable->item( i, 1 )->text();
-
-        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+        QString strData = mPathTable->item( i, 0 )->data(Qt::UserRole).toString();
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
         if( strType == kTypeTCert || strType == kTypeUCert )
         {
@@ -836,9 +942,8 @@ void CertPVDDlg::clickPathValidation()
     {
         BIN binData = {0,0};
         QString strType = mPathTable->item( i, 0 )->text();
-        QString strPath = mPathTable->item( i, 1 )->text();
-
-        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+        QString strData = mPathTable->item( i, 0 )->data(Qt::UserRole).toString();
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
         if( strType == kTypeTCert )
         {
@@ -848,7 +953,7 @@ void CertPVDDlg::clickPathValidation()
             }
             else
             {
-                berApplet->warnLog( tr( "Trust values ​​are not supported when using a trust list: %1").arg( strPath ), this );
+                berApplet->warnLog( tr( "Trust values ​​are not supported when using a trust list"), this );
             }
         }
         else if( strType == kTypeUCert )
@@ -1037,12 +1142,7 @@ void CertPVDDlg::clickTrustAdd()
         }
     }
 
-    int row = mPathTable->rowCount();
-    mPathTable->insertRow( 0 );
-    mPathTable->setRowHeight( 0, 10 );
-    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeTCert ));
-    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
-
+    addList( kTypeTCert, strPath );
     mTrustPathText->clear();
 }
 
@@ -1070,12 +1170,7 @@ void CertPVDDlg::clickUntrustAdd()
         }
     }
 
-    int row = mPathTable->rowCount();
-    mPathTable->insertRow( 0 );
-    mPathTable->setRowHeight( 0, 10 );
-    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeUCert ));
-    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
-
+    addList( kTypeUCert, strPath );
     mUntrustPathText->clear();
 }
 
@@ -1103,12 +1198,7 @@ void CertPVDDlg::clickCRLAdd()
         }
     }
 
-    int row = mPathTable->rowCount();
-    mPathTable->insertRow( 0 );
-    mPathTable->setRowHeight( 0, 10 );
-    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeCRL ));
-    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
-
+    addList( kTypeCRL, strPath );
     mCRLPathText->clear();
 }
 

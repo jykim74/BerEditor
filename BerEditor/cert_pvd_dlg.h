@@ -28,6 +28,7 @@ private slots:
     void slotPathMenu( QPoint pos );
     void slotParamMenu( QPoint pos );
 
+    void viewData();
     void delPath();
     void sendTarget();
     void delParam();
@@ -72,6 +73,7 @@ private slots:
     void clickClearDataAll();
 private:
     void initialize();
+    void addList( const QString strType, const QString strPath );
 };
 
 #endif // CERT_PVD_DLG_H
