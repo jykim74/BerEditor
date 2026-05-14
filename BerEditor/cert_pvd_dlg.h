@@ -8,6 +8,7 @@
 
 #include <QDialog>
 #include "ui_cert_pvd_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class CertPVDDlg;
@@ -20,6 +21,13 @@ class CertPVDDlg : public QDialog, public Ui::CertPVDDlg
 public:
     explicit CertPVDDlg(QWidget *parent = nullptr);
     ~CertPVDDlg();
+    void setTarget( const QString strPath );
+    void setTarget( const BIN *pTarget );
+
+    void setPathList( const BINList *pCAList, const BINList *pCRLList );
+
+    static int getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP );
+    static int getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList );
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -69,11 +77,16 @@ private slots:
     void clickUntrustDecode();
     void clickCRLDecode();
     void clickTargetDecode();
+    void clickTargetList();
 
     void clickClearDataAll();
+
 private:
     void initialize();
     void addList( const QString strType, const QString strPath );
+    void addList( const QString strType, const BIN *pData );
+
+    BIN target_;
 };
 
 #endif // CERT_PVD_DLG_H

@@ -32,6 +32,7 @@
 #include "cms_info_dlg.h"
 #include "tst_info_dlg.h"
 #include "cert_info_dlg.h"
+#include "cert_pvd_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -2571,79 +2572,16 @@ void PDFSignerDlg::clickDstPathUp()
 int PDFSignerDlg::getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
 {
     int ret = 0;
-    JCertInfo sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
 
-    QString strAIA_URI;
-    QString strCRLDP_URI;
-
-    ret = JS_PKI_getCertInfo( pCert, &sCertInfo, &pExtInfoList );
-    if( ret != 0 ) goto end;
-
-    strAIA_URI = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtInfoList );
-    strCRLDP_URI = CertInfoDlg::getValueFromExtList( kExtNameCRLDP, pExtInfoList );
-
-    if( strAIA_URI.length() > 0 )
-    {
-        CertInfoDlg::getCA( strAIA_URI, pCA );
-
-        if( pCA->nLen < 0 )
-        {
-            CertManDlg::getCA( pCert, pCA );
-        }
-
-        CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
-    }
-
-    if( strCRLDP_URI.length() > 0 )
-    {
-        CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
-    }
-
-end :
-    JS_PKI_resetCertInfo( &sCertInfo );
-    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    ret = CertPVDDlg::getStatusData( pCert, pCA, pCRL, pOCSP );
     return ret;
 }
 
 int PDFSignerDlg::getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList )
 {
     int ret = 0;
-    BIN binCA = {0,0};
-    BIN binCert = {0,0};
-    BIN binCRL = {0,0};
-    BIN binOCSP = {0,0};
 
-    if( pCert == NULL ) return JSR_ERR;
-
-    JS_BIN_copy( &binCert, pCert );
-
-    while( binCert.nLen > 0 )
-    {
-        JS_BIN_reset( &binCA );
-        JS_BIN_reset( &binCRL );
-        JS_BIN_reset( &binOCSP );
-
-        ret = getDSS( &binCert, &binCA, &binCRL, &binOCSP );
-        if( ret != JSR_OK ) break;
-
-        if( binCA.nLen > 0 ) JS_BIN_addList( ppCertList, &binCA );
-        if( binCRL.nLen > 0 ) JS_BIN_addList( ppCRLList, &binCRL );
-        if( binOCSP.nLen > 0 ) JS_BIN_addList( ppOCSPList, &binOCSP );
-
-        if( JS_PKI_isSelfSignedCert( &binCert ) == true )
-            break;
-
-        JS_BIN_reset( &binCert );
-        JS_BIN_copy( &binCert, &binCA );
-    }
-
-end :
-    JS_BIN_reset( &binCA );
-    JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binCRL );
-    JS_BIN_reset( &binOCSP );
-
+    ret = CertPVDDlg::getStatusDataList( pCert, ppCertList, ppCRLList, ppOCSPList );
     return ret;
 }
 

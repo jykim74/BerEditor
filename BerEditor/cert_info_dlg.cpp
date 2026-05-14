@@ -24,6 +24,7 @@
 #include "get_uri_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "export_dlg.h"
+#include "cert_id_dlg.h"
 
 enum {
     FIELD_ALL = 0,
@@ -836,9 +837,8 @@ void CertInfoDlg::clickOCSPCheck()
 
     QString strURI;
     BIN binCA = {0,0};
-    JCertStatusInfo sStatusInfo;
-
-    memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+    BIN binOCSP = {0,0};
+    CertIDDlg certID;
 
     QString strExtValue = getValueFromExtList( kExtNameAIA );
     berApplet->log( QString( "AIA : %1" ).arg( strExtValue ));
@@ -850,31 +850,19 @@ void CertInfoDlg::clickOCSPCheck()
         return;
     }
 
-    strURI = getOCSP_URIFromExt( strExtValue );
-
-    if( strURI.length() < 1 )
+    ret = getOCSP( strExtValue, &binCA, &cert_bin_, &binOCSP );
+    if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "failed to get OCSP URI address" ), this );
-        return;
+        berApplet->warningBox( tr( "failed to get OCSP response: %1").arg( JERR(ret) ), this );
+        goto end;
     }
 
-    berApplet->log( QString( "OCSP URI: %1").arg( strURI));
-    ret = checkOCSP( strURI, &binCA, &cert_bin_, &sStatusInfo );
-    if( ret != JSR_VERIFY )
-    {
-        berApplet->warningBox( tr( "Certificate status verification failed with OCSP: %1(%2)")
-                                  .arg( JS_OCSP_getResponseStatusName(ret) )
-                                  .arg( JERR(ret) ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr( "Verification results with OCSP: %1(%2)" )
-                                  .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
-                                  .arg( sStatusInfo.nStatus ), this);
-    }
+    certID.setResponse( &binOCSP );
+    certID.exec();
 
+end :
     JS_BIN_reset( &binCA );
-    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+    JS_BIN_reset( &binOCSP );
 }
 
 void CertInfoDlg::clickCRLCheck()

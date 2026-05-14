@@ -38,6 +38,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     setupUi(this);
     setAcceptDrops( true );
 
+    memset( &target_, 0x00, sizeof(BIN));
+
     connect( mPathTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotPathMenu(QPoint)));
     connect( mParamTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotParamMenu(QPoint)));
 
@@ -76,6 +78,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mUntrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickUntrustDecode()));
     connect( mCRLDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCRLDecode()));
     connect( mTargetDecodeBtn, SIGNAL(clicked()), this, SLOT(clickTargetDecode()));
+    connect( mTargetListBtn, SIGNAL(clicked()), this, SLOT(clickTargetList()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
@@ -99,8 +102,162 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 
 CertPVDDlg::~CertPVDDlg()
 {
-
+    JS_BIN_reset( &target_ );
 }
+
+void CertPVDDlg::setTarget( const QString strPath )
+{
+    BIN binTarget = {0,0};
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binTarget );
+    setTarget( &binTarget );
+    JS_BIN_reset( &binTarget );
+}
+
+void CertPVDDlg::setTarget( const BIN *pTarget )
+{
+    JCertInfo sCertInfo;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    mTargetDNText->clear();
+    JS_BIN_reset( &target_ );
+
+    int ret = JS_PKI_getCertInfo( pTarget, &sCertInfo, NULL );
+    if( ret == JSR_OK )
+    {
+        JS_BIN_copy( &target_, pTarget );
+        mTargetDNText->setText( sCertInfo.pSubjectName );
+    }
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+}
+
+void CertPVDDlg::setPathList( const BINList *pCAList, const BINList *pCRLList )
+{
+    QString strType;
+    const BINList *pCurList = NULL;
+
+    mParamTable->setRowCount(0);
+
+    pCurList = pCAList;
+
+    while( pCurList )
+    {
+        if( JS_PKI_isSelfSignedCert( &pCurList->Bin ) )
+            strType = kTypeTCert;
+        else
+            strType = kTypeUCert;
+
+        addList( strType, &pCurList->Bin );
+        pCurList = pCurList->pNext;
+    }
+
+    pCurList = pCRLList;
+
+    while( pCurList )
+    {
+        strType = kTypeCRL;
+        addList( strType, &pCurList->Bin );
+        pCurList = pCurList->pNext;
+    }
+}
+
+int CertPVDDlg::getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
+{
+    int ret = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+
+    QString strAIA_URI;
+    QString strCRLDP_URI;
+
+    if( pCert == NULL ) return JSR_ERR;
+
+    ret = JS_PKI_getCertInfo( pCert, &sCertInfo, &pExtInfoList );
+    if( ret != 0 ) goto end;
+
+    strAIA_URI = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtInfoList );
+    strCRLDP_URI = CertInfoDlg::getValueFromExtList( kExtNameCRLDP, pExtInfoList );
+
+    if( strAIA_URI.length() > 0 )
+    {
+        if( pCA == NULL ) return JSR_INVALID_ALG;
+
+        CertInfoDlg::getCA( strAIA_URI, pCA );
+
+        if( pCA->nLen < 0 )
+        {
+            CertManDlg::getCA( pCert, pCA );
+        }
+
+        if( pOCSP )
+            CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
+    }
+
+    if( strCRLDP_URI.length() > 0 )
+    {
+        if( pCRL )
+            CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    return ret;
+}
+
+int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList )
+{
+    int ret = 0;
+    BIN binCA = {0,0};
+    BIN binCert = {0,0};
+    BIN *pCRL = NULL;
+    BIN *pOCSP = NULL;
+
+    if( pCert == NULL ) return JSR_ERR;
+
+    JS_BIN_copy( &binCert, pCert );
+
+    if( ppCRLList ) pCRL = (BIN *)JS_calloc( 1, sizeof(BIN));
+    if( ppOCSPList ) pOCSP = (BIN *)JS_calloc( 1, sizeof(BIN));
+
+    while( binCert.nLen > 0 )
+    {
+        JS_BIN_reset( &binCA );
+        if( pCRL ) JS_BIN_reset( pCRL );
+        if( pOCSP ) JS_BIN_reset( pOCSP );
+
+        ret = getStatusData( &binCert, &binCA, pCRL, pOCSP );
+        if( ret != JSR_OK ) break;
+
+        if( binCA.nLen > 0 ) JS_BIN_addList( ppCAList, &binCA );
+        if( pCRL && pCRL->nLen > 0 ) JS_BIN_addList( ppCRLList, pCRL );
+        if( pOCSP && pOCSP->nLen > 0 ) JS_BIN_addList( ppOCSPList, pOCSP );
+
+        if( JS_PKI_isSelfSignedCert( &binCert ) == true )
+            break;
+
+        JS_BIN_reset( &binCert );
+        JS_BIN_copy( &binCert, &binCA );
+    }
+
+end :
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCert );
+    if( pCRL )
+    {
+        JS_BIN_reset( pCRL );
+        JS_free( pCRL );
+    }
+
+    if( pOCSP )
+    {
+        JS_BIN_reset( pOCSP );
+        JS_free( pOCSP );
+    }
+
+    return ret;
+}
+
 
 void CertPVDDlg::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -153,10 +310,7 @@ void CertPVDDlg::dropEvent(QDropEvent *event)
                 }
             }
 
-            mPathTable->insertRow( 0 );
-            mPathTable->setRowHeight( 0, 10 );
-            mPathTable->setItem( 0, 0, new QTableWidgetItem( strType ));
-            mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
+            addList( strType, strPath );
 
             JS_BIN_reset( &binData );
             JS_PKI_resetCertInfo( &sCertInfo );
@@ -204,9 +358,6 @@ void CertPVDDlg::initialize()
 
     checkATTime();
     checkUseTrustList();
-
-    mTargetPathText->setFocus();
-    mTargetPathText->setPlaceholderText( tr( "Select CertMan certificate" ) );
 }
 
 void CertPVDDlg::addList( const QString strType, const QString strPath )
@@ -220,12 +371,26 @@ void CertPVDDlg::addList( const QString strType, const QString strPath )
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( binData.nLen <= 0 ) return;
 
+    addList( strType, &binData );
+    JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::addList( const QString strType, const BIN *pData )
+{
+    int ret = 0;
+
+    QString strDN;
+    QIcon icon;
+    time_t now_t = time(NULL);
+
+    if( pData == NULL || pData->nLen <= 0 ) return;
+
     if( strType == kTypeCRL )
     {
         JCRLInfo sCRLInfo;
         memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
 
-        ret = JS_PKI_getCRLInfo( &binData, &sCRLInfo, NULL, NULL );
+        ret = JS_PKI_getCRLInfo( pData, &sCRLInfo, NULL, NULL );
         if( ret == JSR_OK )
         {
             strDN = sCRLInfo.pIssuerName;
@@ -240,10 +405,11 @@ void CertPVDDlg::addList( const QString strType, const QString strPath )
     }
     else
     {
+        int bSelf = 0;
         JCertInfo sCertInfo;
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-        ret = JS_PKI_getCertInfo( &binData, &sCertInfo, NULL );
+        ret = JS_PKI_getCertInfo2( pData, &sCertInfo, NULL, &bSelf );
         if( ret == JSR_OK )
         {
             strDN = sCertInfo.pSubjectName;
@@ -271,7 +437,7 @@ void CertPVDDlg::addList( const QString strType, const QString strPath )
     {
         int row = mPathTable->rowCount();
         QTableWidgetItem *item = new QTableWidgetItem( strType );
-        item->setData( Qt::UserRole, getHexString(&binData));
+        item->setData( Qt::UserRole, getHexString(pData));
 
         QTableWidgetItem *item1 = new QTableWidgetItem( strDN );
         item1->setIcon( icon );
@@ -281,8 +447,6 @@ void CertPVDDlg::addList( const QString strType, const QString strPath )
         mPathTable->setItem( 0, 0, item );
         mPathTable->setItem( 0, 1, item1);
     }
-
-    JS_BIN_reset( &binData );
 }
 
 void CertPVDDlg::slotPathMenu( QPoint pos )
@@ -365,12 +529,17 @@ void CertPVDDlg::delPath()
 
 void CertPVDDlg::sendTarget()
 {
+    BIN binData = {0,0};
     QModelIndex idx = mPathTable->currentIndex();
     QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
     QTableWidgetItem* item1 = mPathTable->item( idx.row(), 1 );
     if( item == NULL || item1 == NULL ) return;
 
-    mTargetPathText->setText( item1->text() );
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+    setTarget( &binData );
+    JS_BIN_reset( &binData );
+
     mPathTable->removeRow( idx.row() );
 }
 
@@ -446,12 +615,12 @@ void CertPVDDlg::clickCRLFind()
 
 void CertPVDDlg::clickTargetFind()
 {
-    QString strPath = mTargetPathText->text();
+    QString strPath;
 
     QString strFile = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
-        mTargetPathText->setText( strFile );
+        setTarget( strFile );
     }
 }
 
@@ -655,7 +824,7 @@ void CertPVDDlg::clickPolicyCheck()
 
     QString strTrustPath = mTrustPathText->text();
     QString strUntrustPath = mUntrustPathText->text();
-    QString strTargetPath = mTargetPathText->text();
+    QString strTargetDN = mTargetDNText->text();
 
     JNumValList *pParamList = NULL;
 
@@ -679,7 +848,7 @@ void CertPVDDlg::clickPolicyCheck()
         JS_BIN_reset( &binCert );
     }
 
-    if( strTargetPath.length() < 1 )
+    if( strTargetDN.length() < 1 )
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
@@ -688,19 +857,10 @@ void CertPVDDlg::clickPolicyCheck()
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
-        strTargetPath = certMan.getSeletedCertPath();
-        if( strTargetPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Select target certificate" ), this );
-            goto end;
-        }
-        else
-        {
-            mTargetPathText->setText( strTargetPath );
-        }
+        certMan.getCert( &binCert );
+        setTarget( &binCert );
+        JS_BIN_reset( &binCert );
     }
-
-    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     nCount = mPathTable->rowCount();
     for( int i = 0; i < nCount; i++ )
@@ -772,6 +932,7 @@ void CertPVDDlg::clickPolicyCheck()
     }
 
 //    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+    JS_BIN_addList( &pCertList, &target_ );
     ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
 
     berApplet->log( QString( "Check policy results: Ret %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
@@ -903,29 +1064,21 @@ void CertPVDDlg::clickPathValidation()
         }
     }
 
-    QString strTargetPath = mTargetPathText->text();
-    if( strTargetPath.length() < 1 )
+    QString strTargetDN = mTargetDNText->text();
+    if( strTargetDN.length() < 1 )
     {
         CertManDlg certMan;
+
         certMan.setMode(ManModeSelCert);
         certMan.setTitle( tr( "Select a certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
-        strTargetPath = certMan.getSeletedCertPath();
-        if( strTargetPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Select target certificate" ), this );
-            goto end;
-        }
-        else
-        {
-            mTargetPathText->setText( strTargetPath );
-        }
+        certMan.getCert( &binTarget );
+        setTarget( &binTarget );
+        JS_BIN_reset( &binTarget );
     }
-
-    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
 
     if( JS_PKI_isSelfSignedCert2( &binTarget, &nSelfVerify ) == JSR_YES )
     {
@@ -1026,11 +1179,11 @@ void CertPVDDlg::clickPathValidation()
     if( mUseTrustListCheck->isChecked() )
     {
         QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
-        ret = JS_PKI_CertPVD2( strTrustPath.toLocal8Bit().toStdString().c_str(), pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
+        ret = JS_PKI_CertPVD2( strTrustPath.toLocal8Bit().toStdString().c_str(), pUntrustList, pCRLList, pParamList, &target_, sMsg );
     }
     else
     {
-        ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
+        ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &target_, sMsg );
     }
 
     berApplet->log( QString( "Path verification result : %1").arg(ret));
@@ -1104,16 +1257,14 @@ void CertPVDDlg::clickCRLInfo()
 
 void CertPVDDlg::clickTargetInfo()
 {
-    QString strPath = mTargetPathText->text();
-    if( strPath.length() < 1 )
+    if( target_.nLen < 1 )
     {
         berApplet->warningBox( "Select target ceritifcate", this );
-        mTargetPathText->setFocus();
         return;
     }
 
     CertInfoDlg certInfoDlg;
-    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.setCertBIN( &target_ );
     certInfoDlg.exec();
 }
 
@@ -1212,7 +1363,7 @@ void CertPVDDlg::clickPathClear()
     mTrustPathText->clear();
     mUntrustPathText->clear();
     mCRLPathText->clear();
-    mTargetPathText->clear();
+    mTargetDNText->clear();
 }
 
 void CertPVDDlg::checkATTime()
@@ -1326,27 +1477,30 @@ void CertPVDDlg::clickCRLDecode()
 
 void CertPVDDlg::clickTargetDecode()
 {
-    BIN binData = {0,0};
-    QString strPath = mTargetPathText->text();
-
-    if( strPath.length() < 1 )
+    if( target_.nLen < 1 )
     {
         berApplet->warningBox( "Select target ceritifcate", this );
-        mTargetPathText->setFocus();
         return;
     }
 
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+    berApplet->decodeData( &target_ );
+}
 
-    if( binData.nLen < 1 )
+void CertPVDDlg::clickTargetList()
+{
+    BINList *pCAList = NULL;
+    BINList *pCRLList = NULL;
+
+    if( target_.nLen < 1 )
     {
-        berApplet->warningBox( tr("failed to read data"), this );
+        berApplet->warningBox( "Select target ceritifcate", this );
         return;
     }
 
-    berApplet->decodeData( &binData, strPath );
+    getStatusDataList( &target_, &pCAList, &pCRLList, NULL );
 
-    JS_BIN_reset( &binData );
+    if( pCAList ) JS_BIN_resetList( &pCAList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
 }
 
 void CertPVDDlg::clickClearDataAll()
@@ -1358,7 +1512,7 @@ void CertPVDDlg::clickClearDataAll()
     mTrustPathText->clear();
     mUntrustPathText->clear();
     mCRLPathText->clear();
-    mTargetPathText->clear();
+    mTargetDNText->clear();
     mParamValueText->clear();
 
     mUseCheckTimeCheck->setChecked(false);
