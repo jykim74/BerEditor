@@ -816,24 +816,22 @@ void PDFSignerDlg::clickGetInfo()
     if( ret == JSR_OK )
     {
         QTreeWidgetItem* rootItem = mDSSTree->topLevelItem(0);
-        JDSSDataList    *pCurDataList = NULL;
+        JDSSDataList    *pDSSDataList = NULL;
+        JDSSDataList    *pVRIDataList = NULL;
         JDSSData        *pCurData = NULL;
 
         mVRICombo->clear();
 
-        pCurDataList = pDSSList;
+        pDSSDataList = pDSSList;
 
-        while( pCurDataList )
+        if( pDSSDataList )
         {
-            pCurData = pCurDataList->pDSSData;
+            pCurData = pDSSDataList->pDSSData;
             QTreeWidgetItem* nameItem = new QTreeWidgetItem;
             nameItem->setText( 0, pCurData->pName );
             nameItem->setIcon( 0, QIcon(":/images/pdf.png" ));
 
-            if( pCurData->pName != kDSS )
-            {
-                mVRICombo->addItem( pCurData->pName );
-            }
+            QTreeWidgetItem* vriItem = nullptr;
 
             if( pCurData->pCertList )
             {
@@ -924,7 +922,123 @@ void PDFSignerDlg::clickGetInfo()
             }
 
             rootItem->addChild( nameItem );
-            pCurDataList = pCurDataList->pNext;
+            pVRIDataList = pDSSDataList->pNext;
+            pCurData = nullptr;
+
+            if( pVRIDataList )
+            {
+                pCurData = pVRIDataList->pDSSData;
+
+                if( pCurData )
+                {
+                    vriItem = new QTreeWidgetItem;
+                    vriItem->setText( 0, "VRI" );
+                    vriItem->setIcon( 0, QIcon(":/images/pdf.png" ));
+                    nameItem->addChild( vriItem );
+                }
+            }
+
+            while( pCurData )
+            {
+                mVRICombo->addItem( pCurData->pName );
+                QTreeWidgetItem* vriSub = new QTreeWidgetItem;
+                vriSub->setText( 0, pCurData->pName );
+                vriSub->setIcon( 0, QIcon(":/images/pdf.png" ));
+                vriItem->addChild( vriSub );
+
+                if( pCurData->pCertList )
+                {
+                    nCount = JS_BIN_countList( pCurData->pCertList );
+                    QTreeWidgetItem* certItem = new QTreeWidgetItem;
+                    certItem->setText( 0, kDSS_Cert );
+                    certItem->setIcon(0, QIcon(":/images/cert.png" ));
+
+                    for( int k = 0; k < nCount; k++ )
+                    {
+                        pCurList = JS_BIN_getListAt( k, pCurData->pCertList );
+                        nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
+
+                        mInfoTable->insertRow(i);
+                        mInfoTable->setRowHeight(i,10);
+                        mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_Cert ));
+                        mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+
+                        QTreeWidgetItem *item = new QTreeWidgetItem;
+
+                        item->setIcon(0, QIcon(":/images/cert.png" ));
+                        item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                        item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
+                        certItem->addChild( item );
+
+                        i++;
+                    }
+
+                    vriSub->addChild( certItem );
+                }
+
+                if( pCurData->pCRLList )
+                {
+                    nCount = JS_BIN_countList( pCurData->pCRLList );
+                    QTreeWidgetItem* crlItem = new QTreeWidgetItem;
+                    crlItem->setText(0, kDSS_CRL );
+                    crlItem->setIcon(0, QIcon(":/images/crl.png" ));
+
+                    for( int k = 0; k < nCount; k++ )
+                    {
+                        pCurList = JS_BIN_getListAt( k, pCurData->pCRLList );
+                        nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
+
+                        mInfoTable->insertRow(i);
+                        mInfoTable->setRowHeight(i,10);
+                        mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_CRL ));
+                        mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+
+                        QTreeWidgetItem *item = new QTreeWidgetItem;
+                        item->setIcon(0, QIcon(":/images/crl.png" ));
+                        item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                        item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
+                        crlItem->addChild( item );
+
+                        i++;
+                    }
+
+                    vriSub->addChild( crlItem );
+                }
+
+                if( pCurData->pOCSPList )
+                {
+                    nCount = JS_BIN_countList( pCurData->pOCSPList );
+
+                    QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
+                    ocspItem->setText(0, kDSS_OCSP );
+                    ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
+
+                    for( int k = 0; k < nCount; k++ )
+                    {
+                        pCurList = JS_BIN_getListAt( k, pCurData->pOCSPList );
+                        nNum = JS_PDF_getObjectNum( pObjList, &pCurList->Bin );
+
+                        mInfoTable->insertRow(i);
+                        mInfoTable->setRowHeight(i,10);
+                        mInfoTable->setItem( i, 0, new QTableWidgetItem( kDSS_OCSP ));
+                        mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
+
+                        QTreeWidgetItem *item = new QTreeWidgetItem;
+                        item->setIcon(0, QIcon(":/images/ocsp.png" ));
+                        item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
+                        item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
+                        ocspItem->addChild( item );
+                        i++;
+                    }
+
+                    vriSub->addChild( ocspItem );
+                }
+
+                if( pVRIDataList->pNext )
+                    pCurData = pVRIDataList->pNext->pDSSData;
+                else
+                    pCurData = nullptr;
+            }
         }
     }
 
