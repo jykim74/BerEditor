@@ -41,6 +41,7 @@ private slots:
     void copyTreeValue();
     void decodeTreeValue();
     void viewTreeValue();
+    void treePVD();
 
     void findSrcPath();
     void findDstPath();

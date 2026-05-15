@@ -542,6 +542,128 @@ end :
     JS_BIN_reset( &binData );
 }
 
+void PDFSignerDlg::treePVD()
+{
+    BINList *pCAList = NULL;
+    BINList *pCRLList = NULL;
+
+    BIN binData = {0,0};
+
+    QTreeWidgetItem* item = mDSSTree->currentItem();
+    QTreeWidgetItem* dss = nullptr;
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strName = item->data(0, 99).toString();
+    if( strName.length() <= 0 ) return;
+
+    if( strName == kDSS )
+    {
+        dss = item;
+    }
+    else
+    {
+        if( item->parent() == nullptr || item->parent()->parent() == nullptr )
+            return;
+
+        dss = item->parent()->parent();
+
+        int nVRI = item->childCount();
+        for( int i = 0; i < nVRI; i++ )
+        {
+            QTreeWidgetItem* child = dss->child(i);
+            if( child->text(0) == kDSS_Cert )
+            {
+                int nCert = child->childCount();
+
+                for( int k = 0; k < nCert; k++ )
+                {
+                    QTreeWidgetItem* cert = child->child(k);
+                    QString strVal = cert->data(0, Qt::UserRole ).toString();
+                    JS_BIN_decodeHex( strVal.toStdString().c_str(), &binData );
+
+                    if( binData.nLen > 0 )
+                    {
+                        JS_BIN_addList( &pCAList, &binData );
+                        JS_BIN_reset( &binData );
+                    }
+                }
+            }
+            else if( child->text(0) == kDSS_CRL )
+            {
+                int nCRL = child->childCount();
+
+                for( int k = 0; k < nCRL; k++ )
+                {
+                    QTreeWidgetItem* crl = child->child(k);
+                    QString strVal = crl->data(0, Qt::UserRole ).toString();
+                    JS_BIN_decodeHex( strVal.toStdString().c_str(), &binData );
+
+                    if( binData.nLen > 0 )
+                    {
+                        JS_BIN_addList( &pCRLList, &binData );
+                        JS_BIN_reset( &binData );
+                    }
+                }
+            }
+        }
+    }
+
+    int nCount = dss->childCount();
+    for( int i = 0; i < nCount; i++ )
+    {
+        QTreeWidgetItem* child = dss->child(i);
+        if( child->text(0) == kDSS_Certs )
+        {
+            int nCert = child->childCount();
+
+            for( int k = 0; k < nCert; k++ )
+            {
+                QTreeWidgetItem* cert = child->child(k);
+                QString strVal = cert->data(0, Qt::UserRole ).toString();
+                JS_BIN_decodeHex( strVal.toStdString().c_str(), &binData );
+
+                if( binData.nLen > 0 )
+                {
+                    JS_BIN_addList( &pCAList, &binData );
+                    JS_BIN_reset( &binData );
+                }
+            }
+        }
+        else if( child->text(0) == kDSS_CRLs )
+        {
+            int nCRL = child->childCount();
+
+            for( int k = 0; k < nCRL; k++ )
+            {
+                QTreeWidgetItem* crl = child->child(k);
+                QString strVal = crl->data(0, Qt::UserRole ).toString();
+                JS_BIN_decodeHex( strVal.toStdString().c_str(), &binData );
+
+                if( binData.nLen > 0 )
+                {
+                    JS_BIN_addList( &pCRLList, &binData );
+                    JS_BIN_reset( &binData );
+                }
+            }
+        }
+    }
+
+    if( pCAList == NULL && pCRLList == NULL )
+        return;
+
+    CertPVDDlg pvdDlg;
+    pvdDlg.setPathList( pCAList, pCRLList );
+    pvdDlg.exec();
+
+    if( pCAList ) JS_BIN_resetList( &pCAList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+    JS_BIN_reset( &binData );
+}
 
 void PDFSignerDlg::slotTreeMenuRequested( QPoint pos )
 {
@@ -556,24 +678,39 @@ void PDFSignerDlg::slotTreeMenuRequested( QPoint pos )
     }
 
     if( item->parent() == nullptr ) return;
-    if( item->data(0, Qt::UserRole ).toString().length() < 1 ) return;
+
+    QString strDSS = item->data(0,99).toString();
+
+    if( strDSS.length() <= 0 )
+    {
+        if( item->data(0, Qt::UserRole ).toString().length() < 1 ) return;
+    }
 
     QAction *copyValueAct = new QAction( tr( "Copy value" ), this );
     QAction *decodeAct = new QAction( tr( "Decode value" ), this );
     QAction *viewAct = new QAction( tr( "View value" ), this );
+    QAction *PVDAct = new QAction( tr( "Path Validation" ), this );
 
     QString strName = item->parent()->text(0);
 
-    connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyTreeValue()));
-    connect( decodeAct, SIGNAL(triggered(bool)), this, SLOT(decodeTreeValue()));
-    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewTreeValue()));
-
-    menu->addAction( copyValueAct );
-
-    if( strName == kDSS_Certs || strName == kDSS_CRLs || strName == kDSS_OCSPs || strName == kDSS )
+    if( strDSS.length() > 0 )
     {
-        menu->addAction( decodeAct );
-        menu->addAction( viewAct );
+        connect( PVDAct, SIGNAL(triggered(bool)), this, SLOT(treePVD()));
+        menu->addAction( PVDAct );
+    }
+    else
+    {
+        connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyTreeValue()));
+        connect( decodeAct, SIGNAL(triggered(bool)), this, SLOT(decodeTreeValue()));
+        connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewTreeValue()));
+
+        menu->addAction( copyValueAct );
+
+        if( strName == kDSS_Certs || strName == kDSS_CRLs || strName == kDSS_OCSPs || strName == kDSS )
+        {
+            menu->addAction( decodeAct );
+            menu->addAction( viewAct );
+        }
     }
 
     menu->popup( mDSSTree->viewport()->mapToGlobal(pos));
@@ -831,6 +968,7 @@ void PDFSignerDlg::clickGetInfo()
             QTreeWidgetItem* nameItem = new QTreeWidgetItem;
             nameItem->setText( 0, pCurData->pName );
             nameItem->setIcon( 0, QIcon(":/images/pdf.png" ));
+            nameItem->setData( 0, 99, pCurData->pName );
 
             QTreeWidgetItem* vriItem = nullptr;
 
@@ -945,6 +1083,7 @@ void PDFSignerDlg::clickGetInfo()
                 QTreeWidgetItem* vriSub = new QTreeWidgetItem;
                 vriSub->setText( 0, pCurData->pName );
                 vriSub->setIcon( 0, QIcon(":/images/hash.png" ));
+                vriSub->setData( 0, 99, pCurData->pName );
                 vriItem->addChild( vriSub );
 
                 if( pCurData->pCertList )
@@ -1128,6 +1267,10 @@ void PDFSignerDlg::clickMakeSign()
 
     char sUTCTime[32];
 
+    QString strTmpPath;
+    QString strTmpPath2;
+    QString strTmpPath3;
+
     QString strName = mNameText->text();
     QString strReason = mReasonText->text();
     QString strLocation = mLocationText->text();
@@ -1156,11 +1299,22 @@ void PDFSignerDlg::clickMakeSign()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        strDstPath = QString( "%1/%2_signed.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+        strDstPath = QString( "%1/%2_signed" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
+
+        if( mDSSCheck->isChecked() == true )
+        {
+            strDstPath += "_dss";
+
+            if( mVRICheck->isChecked() == true )
+                strDstPath += "_vri";
+        }
+
+        if( mDocTimeStampCheck->isChecked() == true )
+            strDstPath += "_doc_tsp";
+
+        strDstPath += ".pdf";
         mDstPathText->setText( strDstPath );
     }
-
-    JS_PDF_getUTCTime( now_t, sUTCTime, sizeof(sUTCTime));
 
     QFileInfo dstInfo( strDstPath );
     if( dstInfo.exists() )
@@ -1171,7 +1325,15 @@ void PDFSignerDlg::clickMakeSign()
             mDstPathText->setFocus();
             return;
         }
+
+        QFile::remove( strDstPath );
     }
+
+    JS_PDF_getUTCTime( now_t, sUTCTime, sizeof(sUTCTime));
+
+    strTmpPath = getTmpFile();
+    strTmpPath2 = getTmpFile();
+    strTmpPath3 = getTmpFile();
 
     bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());
 
@@ -1262,8 +1424,6 @@ void PDFSignerDlg::clickMakeSign()
 
     berApplet->log( QString( "PDF Data[Len:%1]: %2").arg( binData.nLen).arg( getHexString( &binData )));
 
-
-
     ret = JS_PDF_makeCMS( &binData, &binPri, &binCert, &binCMS );
 
     if( ret == JSR_OK && mUseTSPCheck->isChecked() == true )
@@ -1293,7 +1453,7 @@ void PDFSignerDlg::clickMakeSign()
         goto end;
     }
 
-    ret = JS_BIN_fileWrite( &binUnsigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_fileWrite( &binUnsigned, strTmpPath.toLocal8Bit().toStdString().c_str() );
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to write file: %1").arg( JERR(ret)), this );
@@ -1302,18 +1462,12 @@ void PDFSignerDlg::clickMakeSign()
 
     if( mDSSCheck->isChecked() == true )
     {
-        QString strDSSSrcPath = mDstPathText->text();
-        QString strDSSDstPath;
-
-        QFileInfo fileInfo( strDSSSrcPath );
-        strDSSDstPath = QString( "%1/%2_dss.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
-
         if( mVRICheck->isChecked() == true )
         {
             BIN binCMS_PDF = {0,0};
-            JS_BIN_fileRead( strDSSSrcPath.toStdString().c_str(), &binCMS_PDF );
+            JS_BIN_fileRead( strTmpPath.toStdString().c_str(), &binCMS_PDF );
 
-            ret = appendDSS_VRI( strDSSSrcPath, strDSSDstPath, &binCMS_PDF, &binCert, mDocTimeStampCheck->isChecked() );
+            ret = appendDSS_VRI( strTmpPath, strTmpPath2, &binCMS_PDF, &binCert, mDocTimeStampCheck->isChecked() );
             JS_BIN_reset( &binCMS_PDF );
             if( ret != CKR_OK )
             {
@@ -1323,50 +1477,63 @@ void PDFSignerDlg::clickMakeSign()
         }
         else
         {
-            ret = appendDSS( strDSSSrcPath, strDSSDstPath, &binCert, mDocTimeStampCheck->isChecked() );
+            ret = appendDSS( strTmpPath, strTmpPath2, &binCert, mDocTimeStampCheck->isChecked() );
             if( ret != CKR_OK )
             {
                 berApplet->warningBox( tr( "failed to append DSS: %1" ).arg( JERR(ret)), this );
                 goto end;
             }
         }
-
-        if( ret == JSR_OK )
-        {
-            QFile dstFile( strDSSSrcPath );
-            dstFile.remove();
-            mDstPathText->setText( strDSSDstPath );
-        }
     }
 
     if( mDocTimeStampCheck->isChecked() == true )
     {
-        int bSetOnly = 1;
-        QString strDSSSrcPath = mDstPathText->text();
-        QString strDSSDstPath;
+        int bSetOnly = 0;
+        QString strDocSrcPath;
 
-        QFileInfo fileInfo( strDSSSrcPath );
-        strDSSDstPath = QString( "%1/%2_doc_tsp.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
-
-        ret = appendDocTSP( bSetOnly, strDSSSrcPath, strDSSDstPath );
-
-        if( ret == JSR_OK )
+        if( mDSSCheck->isChecked() == true )
         {
-            QFile dstFile( strDSSSrcPath );
-            dstFile.remove();
-            mDstPathText->setText( strDSSDstPath );
+            strDocSrcPath = strTmpPath2;
+            bSetOnly = 1;
         }
         else
+        {
+            strDocSrcPath = strTmpPath;
+            bSetOnly = 0;
+        }
+
+        ret = appendDocTSP( bSetOnly, strDocSrcPath, strTmpPath3 );
+
+        if( ret != JSR_OK )
         {
             berApplet->warningBox( tr( "failed to append DocTSP: %1" ).arg( JERR(ret)), this );
             goto end;
         }
     }
 
+    if( mDocTimeStampCheck->isChecked() == true )
+    {
+        QFile dstFile( strTmpPath3 );
+        dstFile.copy( strDstPath );
+    }
+    else if( mDSSCheck->isChecked() == true && mDocTimeStampCheck->isChecked() == false)
+    {
+        QFile dstFile( strTmpPath2 );
+        dstFile.copy( strDstPath );
+    }
+    else
+    {
+        QFile dstFile( strTmpPath );
+        dstFile.copy( strDstPath );
+    }
 
     berApplet->messageBox( tr("PDF signing was successful"), this );
 
 end :
+    if( QFile::exists( strTmpPath ) ) QFile::remove( strTmpPath );
+    if( QFile::exists( strTmpPath2 ) )QFile::remove( strTmpPath2 );
+    if( QFile::exists( strTmpPath3 ) )QFile::remove( strTmpPath3 );
+
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binPri );

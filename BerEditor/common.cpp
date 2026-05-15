@@ -12,6 +12,7 @@
 #include <QRegExp>
 #include <QProcess>
 #include <QNetworkInterface>
+#include <QTemporaryFile>
 
 #include "common.h"
 #include "js_ocsp.h"
@@ -1806,4 +1807,16 @@ const QString getShowFileSize( qint64 nFileSize )
     strSize = strSize.remove( QRegularExpression("\\.$"));
 
     return QString( "%1 %2" ).arg( strSize ).arg( strKind );
+}
+
+const QString getTmpFile()
+{
+    QString strPath;
+
+    QTemporaryFile tmpFile;
+    tmpFile.open();
+    strPath = tmpFile.fileName();
+    tmpFile.close();
+
+    return strPath;
 }
