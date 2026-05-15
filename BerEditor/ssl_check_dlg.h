@@ -52,6 +52,7 @@ private slots:
     void slotTreeMenuRequested( QPoint pos );
     void viewCertTreeMenu();
     void decodeCertTreeMenu();
+    void treePVD();
     void saveTrustedCA();
 
     void checkUseMutual();

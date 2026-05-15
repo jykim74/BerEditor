@@ -279,7 +279,7 @@
        <item>
         <widget class="QTreeWidget" name="mCertTree">
          <property name="contextMenuPolicy">
-          <enum>Qt::DefaultContextMenu</enum>
+          <enum>Qt::CustomContextMenu</enum>
          </property>
          <column>
           <property name="text">

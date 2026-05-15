@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QFileDialog>
+#include <QMenu>
 
 #include "mainwindow.h"
 #include "ber_applet.h"
@@ -25,6 +26,7 @@
 #include "pri_key_info_dlg.h"
 #include "export_dlg.h"
 #include "cert_id_dlg.h"
+#include "cert_pvd_dlg.h"
 
 enum {
     FIELD_ALL = 0,
@@ -104,6 +106,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mGetURL_CRLBtn, SIGNAL(clicked()), this, SLOT(clickGetURL_CRL()));
 
     connect( mCertTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
+    connect( mCertTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
     initUI();
 
@@ -239,6 +242,43 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         else
             mSaveTrustedCABtn->show();
     }
+}
+
+void CertInfoDlg::slotTreeMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    BIN binCert = {0,0};
+
+    QTreeWidgetItem* item = mCertTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strCert = item->data(0, Qt::UserRole ).toString();
+    JS_BIN_decodeHex( strCert.toStdString().c_str(), &binCert );
+    if( binCert.nLen <= 0 ) return;
+
+    QAction *PVDAct = new QAction( tr( "Cert PVD" ), this );
+    QAction *viewCertAct = new QAction( tr( "View Cert" ), this );
+
+    if( berApplet->isLicense() == false )
+    {
+        PVDAct->setEnabled( false );
+    }
+
+    connect( PVDAct, SIGNAL(triggered(bool)), this, SLOT(treeCertPVD()));
+    connect( viewCertAct, SIGNAL(triggered(bool)), this, SLOT(treeViewCert()));
+
+    menu->addAction( PVDAct );
+
+    if( JS_BIN_cmp( &binCert, &cert_bin_ ) != 0 )
+        menu->addAction( viewCertAct );
+
+    menu->popup( mCertTree->viewport()->mapToGlobal(pos));
+    JS_BIN_reset( &binCert );
 }
 
 void CertInfoDlg::getFields()
@@ -643,6 +683,7 @@ void CertInfoDlg::clickMakeTree()
 
         QTreeWidgetItem* item = new QTreeWidgetItem;
         item->setText( 0, sCertInfo.pSubjectName );
+        item->setData( 0, Qt::UserRole, getHexString( &binCert ));
 
         if( bSelfSign == true )
         {
@@ -911,6 +952,71 @@ void CertInfoDlg::clickTreeItem(QTreeWidgetItem* item, int index)
     QString strText = QString( "DN: %2\n").arg( item->text(0));
 
     mCertLogText->setPlainText( strText );
+}
+
+void CertInfoDlg::treeCertPVD()
+{
+    BIN binCert = {0,0};
+    BIN binCA = {0,0};
+
+    BINList *pCAList = NULL;
+
+    QTreeWidgetItem* item = mCertTree->currentItem();
+    QTreeWidgetItem* ca = NULL;
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strCert = item->data( 0, Qt::UserRole ).toString();
+    JS_BIN_decodeHex( strCert.toStdString().c_str(), &binCert );
+
+    ca = item->parent();
+
+    while( ca )
+    {
+        strCert = ca->data( 0, Qt::UserRole ).toString();
+        JS_BIN_decodeHex( strCert.toStdString().c_str(), &binCA );
+
+        JS_BIN_addList( &pCAList, &binCA );
+        JS_BIN_reset( &binCA );
+
+        ca = ca->parent();
+    }
+
+    CertPVDDlg certPVD;
+    certPVD.setPathList( pCAList, NULL );
+    certPVD.setTarget( &binCert );
+    certPVD.exec();
+
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCA );
+
+    if( pCAList ) JS_BIN_resetList( &pCAList );
+}
+
+void CertInfoDlg::treeViewCert()
+{
+    BIN binCert = {0,0};
+
+    QTreeWidgetItem* item = mCertTree->currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QString strCert = item->data( 0, Qt::UserRole ).toString();
+    JS_BIN_decodeHex( strCert.toStdString().c_str(), &binCert );
+
+    CertInfoDlg certInfo;
+    certInfo.setCertBIN( &binCert );
+    certInfo.exec();
+
+    JS_BIN_reset( &binCert );
 }
 
 void CertInfoDlg::clickOCSPClient()

@@ -40,6 +40,8 @@ public:
 
 private slots:
     void showEvent(QShowEvent *event);
+    void slotTreeMenuRequested( QPoint pos );
+
     void clickField( QModelIndex index );
     void changeFieldType( int index );
     void clickExport();
@@ -59,6 +61,8 @@ private slots:
     void clickCRLCheck();
 
     void clickTreeItem(QTreeWidgetItem* item, int index);
+    void treeCertPVD();
+    void treeViewCert();
 
     void clickOCSPClient();
     void clickGetURL_CA();

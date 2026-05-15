@@ -22,6 +22,7 @@
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "cert_pvd_dlg.h"
 
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -1215,13 +1216,17 @@ void SSLCheckDlg::slotTreeMenuRequested( QPoint pos )
     QAction *viewAct = new QAction( tr("View Cert"), this );
     QAction *decodeAct = new QAction( tr( "Decode Cert"), this);
     QAction *saveTrustedCAAct = new QAction( tr( "Save to trustedCA" ), this );
+    QAction *PVDAct = new QAction( tr( "Cert PVD" ), this );
 
     connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCertTreeMenu()));
     connect( decodeAct, SIGNAL(triggered()), this, SLOT(decodeCertTreeMenu()));
     connect( saveTrustedCAAct, SIGNAL(triggered()), this, SLOT(saveTrustedCA()));
+    connect( PVDAct, SIGNAL(triggered()), this, SLOT(treePVD()));
 
     menu->addAction( viewAct );
     menu->addAction( decodeAct );
+    menu->addAction( PVDAct );
+
     int bSelfSign = item->data( 0, 99 ).toInt();
 
     if( bSelfSign == 1 )
@@ -1320,6 +1325,44 @@ void SSLCheckDlg::decodeCertTreeMenu()
 
     berApplet->decodeData( &binCert, "SSL Certificate" );
     JS_BIN_reset( &binCert );
+}
+
+void SSLCheckDlg::treePVD()
+{
+    QTreeWidgetItem *item = mURLTree->currentItem();
+    QTreeWidgetItem *ca = nullptr;
+
+    if( item == NULL ) return;
+
+    QString strData = item->data(0, Qt::UserRole).toString();
+    BIN binCert = {0,0};
+    BIN binCA = {0,0};
+    BINList *pCAList = NULL;
+
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    ca = item->parent();
+    while( ca )
+    {
+        strData = ca->data(0, Qt::UserRole).toString();
+
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binCA );
+        if( binCA.nLen <= 0 ) break;
+
+        JS_BIN_addList( &pCAList, &binCA );
+        JS_BIN_reset( &binCA );
+
+        ca = ca->parent();
+    }
+
+    CertPVDDlg certPVD;
+    certPVD.setPathList( pCAList, NULL );
+    certPVD.setTarget( &binCert );
+    certPVD.exec();
+
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCA );
+    if( pCAList ) JS_BIN_resetList( &pCAList );
 }
 
 int SSLCheckDlg::readPrivateKey( BIN *pPriKey )
