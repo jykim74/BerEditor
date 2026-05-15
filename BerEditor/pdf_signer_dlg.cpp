@@ -1269,7 +1269,6 @@ void PDFSignerDlg::clickMakeSign()
 
     QString strTmpPath;
     QString strTmpPath2;
-    QString strTmpPath3;
 
     QString strName = mNameText->text();
     QString strReason = mReasonText->text();
@@ -1333,7 +1332,6 @@ void PDFSignerDlg::clickMakeSign()
 
     strTmpPath = getTmpFile();
     strTmpPath2 = getTmpFile();
-    strTmpPath3 = getTmpFile();
 
     bool bEncrypted = JS_PDF_isEncryptedFile( strSrcPath.toLocal8Bit().toStdString().c_str());
 
@@ -1428,7 +1426,6 @@ void PDFSignerDlg::clickMakeSign()
 
     if( ret == JSR_OK && mUseTSPCheck->isChecked() == true )
     {
-
         ret = getTSP( &binData, &binTSP );
         if( ret != 0 ) goto end;
 
@@ -1488,21 +1485,16 @@ void PDFSignerDlg::clickMakeSign()
 
     if( mDocTimeStampCheck->isChecked() == true )
     {
-        int bSetOnly = 0;
-        QString strDocSrcPath;
+        if( mDSSCheck->isChecked() == false )
+        {
+            ret = JS_PDF_makeUnsignedTSPDocFile(
+                strTmpPath.toStdString().c_str(),
+                strTmpPath2.toStdString().c_str() );
 
-        if( mDSSCheck->isChecked() == true )
-        {
-            strDocSrcPath = strTmpPath2;
-            bSetOnly = 1;
-        }
-        else
-        {
-            strDocSrcPath = strTmpPath;
-            bSetOnly = 0;
+            if( ret != 0 ) goto end;
         }
 
-        ret = appendDocTSP( bSetOnly, strDocSrcPath, strTmpPath3 );
+        ret = appendDocTSP( strTmpPath2 );
 
         if( ret != JSR_OK )
         {
@@ -1511,12 +1503,7 @@ void PDFSignerDlg::clickMakeSign()
         }
     }
 
-    if( mDocTimeStampCheck->isChecked() == true )
-    {
-        QFile dstFile( strTmpPath3 );
-        dstFile.copy( strDstPath );
-    }
-    else if( mDSSCheck->isChecked() == true && mDocTimeStampCheck->isChecked() == false)
+    if( mDSSCheck->isChecked() == true || mDocTimeStampCheck->isChecked() == true )
     {
         QFile dstFile( strTmpPath2 );
         dstFile.copy( strDstPath );
@@ -1532,7 +1519,6 @@ void PDFSignerDlg::clickMakeSign()
 end :
     if( QFile::exists( strTmpPath ) ) QFile::remove( strTmpPath );
     if( QFile::exists( strTmpPath2 ) )QFile::remove( strTmpPath2 );
-    if( QFile::exists( strTmpPath3 ) )QFile::remove( strTmpPath3 );
 
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binCMS );
@@ -2155,7 +2141,7 @@ end :
     JS_BIN_reset( &binCMS_PDF );
 }
 
-int PDFSignerDlg::appendDocTSP( int bSetOnly, const QString strSrcPath, const QString strDstPath )
+int PDFSignerDlg::appendDocTSP( const QString strUnsignedPath )
 {
     int ret = 0;
 
@@ -2168,28 +2154,19 @@ int PDFSignerDlg::appendDocTSP( int bSetOnly, const QString strSrcPath, const QS
 
     // Need To DocTSP ByteRange
 
-    if( bSetOnly == 0 )
-    {
-        ret = JS_PDF_makeUnsignedTSPDocFile(
-            strSrcPath.toStdString().c_str(),
-            strDstPath.toStdString().c_str() );
-
-        if( ret != 0 ) goto end;
-    }
-
-    ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    ret = JS_PDF_getDocTSPByteRangeFile( strUnsignedPath.toStdString().c_str(), &sRange );
     if( ret != 0 ) goto end;
 
-    ret = JS_PDF_applyDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
+    ret = JS_PDF_applyDocTSPByteRangeFile( strUnsignedPath.toStdString().c_str(), &sRange );
     if( ret != 0 ) goto end;
 
-    ret = JS_PDF_getDataFile( strDstPath.toStdString().c_str(), &sRange, &binData );
+    ret = JS_PDF_getDataFile( strUnsignedPath.toStdString().c_str(), &sRange, &binData );
     if( ret != 0 ) goto end;
 
     ret = getTSP( &binData, &binTSP );
     if( ret != 0 ) goto end;
 
-    ret = JS_PDF_applyContentsDocTSPFile( strDstPath.toStdString().c_str(), &binTSP );
+    ret = JS_PDF_applyContentsDocTSPFile( strUnsignedPath.toStdString().c_str(), &binTSP );
     if( ret != JSR_OK ) goto end;
 
 end :
@@ -2232,7 +2209,13 @@ void PDFSignerDlg::clickAddDocTSP()
         }
     }
 
-    ret = appendDocTSP( bSetOnly, strSrcPath, strDstPath );
+    ret = JS_PDF_makeUnsignedTSPDocFile(
+        strSrcPath.toStdString().c_str(),
+        strDstPath.toStdString().c_str() );
+
+    if( ret != 0 ) goto end;
+
+    ret = appendDocTSP( strDstPath );
 
     if( ret != JSR_OK ) goto end;
 

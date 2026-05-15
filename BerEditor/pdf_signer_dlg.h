@@ -96,7 +96,7 @@ private:
     int getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP );
     int getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList );
 
-    int appendDocTSP( int bSetOnly, const QString strSrcPath, const QString strDstPath );
+    int appendDocTSP( const QString strUnsignedPath );
 };
 
 #endif
