@@ -12,6 +12,7 @@
 #include <QDir>
 #include <QMenu>
 #include <QClipboard>
+#include <QTemporaryFile>
 
 #include "ber_applet.h"
 #include "mainwindow.h"
@@ -943,7 +944,7 @@ void PDFSignerDlg::clickGetInfo()
                 mVRICombo->addItem( pCurData->pName );
                 QTreeWidgetItem* vriSub = new QTreeWidgetItem;
                 vriSub->setText( 0, pCurData->pName );
-                vriSub->setIcon( 0, QIcon(":/images/pdf.png" ));
+                vriSub->setIcon( 0, QIcon(":/images/hash.png" ));
                 vriItem->addChild( vriSub );
 
                 if( pCurData->pCertList )
