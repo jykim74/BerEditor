@@ -1312,7 +1312,7 @@ void PDFSignerDlg::clickMakeSign()
             BIN binCMS_PDF = {0,0};
             JS_BIN_fileRead( strDSSSrcPath.toStdString().c_str(), &binCMS_PDF );
 
-            ret = appendDSS_VRI( strDSSSrcPath, strDSSDstPath, &binCMS_PDF, &binCert );
+            ret = appendDSS_VRI( strDSSSrcPath, strDSSDstPath, &binCMS_PDF, &binCert, mDocTimeStampCheck->isChecked() );
             JS_BIN_reset( &binCMS_PDF );
             if( ret != CKR_OK )
             {
@@ -1322,7 +1322,7 @@ void PDFSignerDlg::clickMakeSign()
         }
         else
         {
-            ret = appendDSS( strDSSSrcPath, strDSSDstPath, &binCert );
+            ret = appendDSS( strDSSSrcPath, strDSSDstPath, &binCert, mDocTimeStampCheck->isChecked() );
             if( ret != CKR_OK )
             {
                 berApplet->warningBox( tr( "failed to append DSS: %1" ).arg( JERR(ret)), this );
@@ -1340,13 +1340,14 @@ void PDFSignerDlg::clickMakeSign()
 
     if( mDocTimeStampCheck->isChecked() == true )
     {
+        int bSetOnly = 1;
         QString strDSSSrcPath = mDstPathText->text();
         QString strDSSDstPath;
 
         QFileInfo fileInfo( strDSSSrcPath );
         strDSSDstPath = QString( "%1/%2_doc_tsp.pdf" ).arg( fileInfo.path() ).arg( fileInfo.baseName() );
 
-        ret = appendDocTSP( strDSSSrcPath, strDSSDstPath );
+        ret = appendDocTSP( bSetOnly, strDSSSrcPath, strDSSDstPath );
 
         if( ret == JSR_OK )
         {
@@ -1779,7 +1780,7 @@ end :
 
 int PDFSignerDlg::appendDSS( const QString strSrcPath,
               const QString strDstPath,
-              const BIN *pCert )
+              const BIN *pCert, int bDocTSP )
 {
     int ret = 0;
     BIN binCRL = {0,0};
@@ -1795,6 +1796,7 @@ int PDFSignerDlg::appendDSS( const QString strSrcPath,
     ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
                            strDstPath.toStdString().c_str(),
                            mCompressCheck->isChecked(),
+                           bDocTSP,
                            pCertList, pCRLList, pOCSPList );
 
 end :
@@ -1810,7 +1812,7 @@ end :
 int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
                   const QString strDstPath,
                   const BIN *pCMS_PDF,
-                  const BIN *pCert )
+                  const BIN *pCert, int bDocTSP )
 {
     int ret = 0;
 
@@ -1854,6 +1856,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     ret = JS_PDF_appendDSS_VRI( strSrcPath.toStdString().c_str(),
                                strDstPath.toStdString().c_str(),
                                mCompressCheck->isChecked(),
+                               bDocTSP,
                                pDSSList );
 
 end :
@@ -1904,7 +1907,7 @@ void PDFSignerDlg::clickAddDSS()
         goto end;
     }
 
-    ret = appendDSS( strSrcPath, strDstPath, &binCert );
+    ret = appendDSS( strSrcPath, strDstPath, &binCert, 0 );
 
     if( ret == JSR_OK )
     {
@@ -1967,7 +1970,7 @@ void PDFSignerDlg::clickAddDSS_VRI()
     }
 
 
-    ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert );
+    ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert, 0 );
 
     if( ret == JSR_OK )
     {
@@ -1984,7 +1987,7 @@ end :
     JS_BIN_reset( &binCMS_PDF );
 }
 
-int PDFSignerDlg::appendDocTSP( const QString strSrcPath, const QString strDstPath )
+int PDFSignerDlg::appendDocTSP( int bSetOnly, const QString strSrcPath, const QString strDstPath )
 {
     int ret = 0;
 
@@ -1997,11 +2000,14 @@ int PDFSignerDlg::appendDocTSP( const QString strSrcPath, const QString strDstPa
 
     // Need To DocTSP ByteRange
 
-    ret = JS_PDF_makeUnsignedTSPDocFile(
-        strSrcPath.toStdString().c_str(),
-        strDstPath.toStdString().c_str() );
+    if( bSetOnly == 0 )
+    {
+        ret = JS_PDF_makeUnsignedTSPDocFile(
+            strSrcPath.toStdString().c_str(),
+            strDstPath.toStdString().c_str() );
 
-    if( ret != 0 ) goto end;
+        if( ret != 0 ) goto end;
+    }
 
     ret = JS_PDF_getDocTSPByteRangeFile( strDstPath.toStdString().c_str(), &sRange );
     if( ret != 0 ) goto end;
@@ -2028,6 +2034,7 @@ end :
 void PDFSignerDlg::clickAddDocTSP()
 {
     int ret = 0;
+    int bSetOnly = 0;
 
     BIN binData = {0,0};
     BIN binTSP = {0,0};
@@ -2057,7 +2064,7 @@ void PDFSignerDlg::clickAddDocTSP()
         }
     }
 
-    ret = appendDocTSP( strSrcPath, strDstPath );
+    ret = appendDocTSP( bSetOnly, strSrcPath, strDstPath );
 
     if( ret != JSR_OK ) goto end;
 
