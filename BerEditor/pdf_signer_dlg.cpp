@@ -549,9 +549,12 @@ void PDFSignerDlg::treePVD()
     BINList *pCRLList = NULL;
 
     BIN binData = {0,0};
+    BIN binCMS = {0,0};
+    BIN binSigner = {0,0};
 
     QTreeWidgetItem* item = mDSSTree->currentItem();
     QTreeWidgetItem* dss = nullptr;
+    QString strSrcPath = mSrcPathText->text();
 
     if( item == NULL )
     {
@@ -657,13 +660,27 @@ void PDFSignerDlg::treePVD()
     if( pCAList == NULL && pCRLList == NULL )
         return;
 
+    if( strSrcPath.length() > 0 )
+    {
+        int ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(), NULL, &binCMS );
+        if( ret == JSR_OK )
+        {
+            JS_CMS_getSignedDataSigner( &binCMS, &binSigner );
+        }
+    }
+
     CertPVDDlg pvdDlg;
     pvdDlg.setPathList( pCAList, pCRLList );
+
+    if( binSigner.nLen > 0 ) pvdDlg.setTarget( &binSigner );
+
     pvdDlg.exec();
 
     if( pCAList ) JS_BIN_resetList( &pCAList );
     if( pCRLList ) JS_BIN_resetList( &pCRLList );
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binSigner );
 }
 
 void PDFSignerDlg::slotTreeMenuRequested( QPoint pos )
