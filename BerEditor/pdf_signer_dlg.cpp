@@ -80,6 +80,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
+    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
     connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
     connect( mExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickExportCMS()));
 
@@ -1849,6 +1850,56 @@ void PDFSignerDlg::clickDecrypt()
     }
 
     return;
+}
+
+void PDFSignerDlg::clickViewSigner()
+{
+    int ret = 0;
+    QString strSrcPath = mSrcPathText->text();
+    BIN binCMS = {0,0};
+    BIN binSigner = {0,0};
+
+    CertInfoDlg certInfo;
+    QString strPasswd = mPasswdText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source pdf" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QFileInfo fileInfo( strSrcPath );
+    if( fileInfo.exists() == false )
+    {
+        berApplet->warningBox( tr( "There is no file" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    //    ret = JS_PDF_getCMSFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+    ret = JS_PDF_getContentsFile( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                                 strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                                 &binCMS );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("Failed to retrieve CMS information: %1").arg( JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_CMS_getSignedDataSigner( &binCMS, &binSigner );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get CMS signer: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    certInfo.setCertBIN( &binSigner );
+    certInfo.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binSigner );
 }
 
 void PDFSignerDlg::clickViewCMS()

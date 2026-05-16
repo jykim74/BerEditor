@@ -61,6 +61,7 @@ private slots:
     void clickEncrypt();
     void clickDecrypt();
 
+    void clickViewSigner();
     void clickViewCMS();
     void clickExportCMS();
 
