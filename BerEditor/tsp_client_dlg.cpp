@@ -695,9 +695,9 @@ void TSPClientDlg::clickTSTInfo()
 
     JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
     ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binData, &binTST );
-    if( ret != 0 )
+    if( ret != JSR_OK )
     {
-        berApplet->warningBox(tr( "failed to decode TSP response"), this );
+        berApplet->warningBox(tr( "TSP Response error: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -730,9 +730,9 @@ void TSPClientDlg::clickViewCMS()
 
     JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
     ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binData, &binTST );
-    if( ret != 0 )
+    if( ret != JSR_OK )
     {
-        berApplet->warningBox(tr( "failed to decode TSP response"), this );
+        berApplet->warningBox(tr( "TSP Response error: %1").arg(JERR(ret)), this );
         goto end;
     }
 

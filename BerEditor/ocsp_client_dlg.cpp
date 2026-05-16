@@ -1108,13 +1108,6 @@ void OCSPClientDlg::clickViewCertID()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    int nStatus = JS_OCSP_statusResponse( &binRsp );
-    if( nStatus != JS_OCSP_RESPONSE_STATUS_SUCCESSFUL )
-    {
-        berApplet->warningBox( tr("This is not a successful OCSP response message."), this );
-        goto end;
-    }
-
     certID.setResponse( &binRsp );
     certID.exec();
 

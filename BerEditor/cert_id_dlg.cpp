@@ -55,9 +55,13 @@ void CertIDDlg::setResponse( const BIN *pResp )
     {
         strVerify = tr("Verify OK");
     }
+    else if( ret == JSR_INVALID )
+    {
+        strVerify = tr( "Verify Fail: %1").arg( JERR(ret));
+    }
     else
     {
-        strVerify = tr("Verify Err: %1").arg( JERR(ret));
+        strVerify = tr("Error: %1").arg( JERR(ret));
     }
 
     if( binSigner.nLen > 0 )
@@ -75,6 +79,9 @@ void CertIDDlg::setResponse( const BIN *pResp )
     mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Verify" )));
     mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( strVerify )));
     i++;
+
+    if( ret != JSR_VERIFY && ret != JSR_INVALID )
+        goto end;
 
     mIDTable->insertRow(i);
     mIDTable->setRowHeight(i, 10);
