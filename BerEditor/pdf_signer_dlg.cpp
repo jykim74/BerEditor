@@ -1437,7 +1437,7 @@ void PDFSignerDlg::clickMakeSign()
     }
 
 #ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0 );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0, NULL );
     berApplet->log( QString( "CMS Verify: %1").arg( ret ));
 #endif
 
@@ -1541,6 +1541,7 @@ void PDFSignerDlg::clickVerifySign()
     BIN binCMS = {0,0};
     BIN binData = {0,0};
     BIN binOut = {0,0};
+    BIN binSigner = {0,0};
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
@@ -1650,7 +1651,7 @@ void PDFSignerDlg::clickVerifySign()
         &binCMS,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
-        nVerifyChain );
+        nVerifyChain, &binSigner );
 
 
     if( ret == JSR_VERIFY )
@@ -1664,6 +1665,7 @@ end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binPDF );
+    JS_BIN_reset( &binSigner );
     JS_PDF_resetSignLabel( &sSignLabel );
 }
 
@@ -2405,6 +2407,7 @@ void PDFSignerDlg::clickVerifyDSS()
     BIN binCMS = {0,0};
     BIN binData = {0,0};
     BIN binOut = {0,0};
+    BIN binSigner = {0,0};
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
@@ -2520,7 +2523,8 @@ void PDFSignerDlg::clickVerifyDSS()
         &binCMS,
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
-        pDSSList->pDSSData->pOCSPList );
+        pDSSList->pDSSData->pOCSPList,
+        &binSigner );
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
@@ -2533,6 +2537,7 @@ end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binPDF );
+    JS_BIN_reset( &binSigner );
     JS_PDF_resetSignLabel( &sSignLabel );
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
     if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
@@ -2550,6 +2555,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     BIN binCMS = {0,0};
     BIN binData = {0,0};
     BIN binOut = {0,0};
+    BIN binSigner = {0,0};
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
@@ -2717,7 +2723,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         &binCMS,
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
-        pDSSList->pDSSData->pOCSPList );
+        pDSSList->pDSSData->pOCSPList, &binSigner );
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
@@ -2730,6 +2736,7 @@ end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binPDF );
+    JS_BIN_reset( &binSigner );
     JS_PDF_resetSignLabel( &sSignLabel );
 
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
