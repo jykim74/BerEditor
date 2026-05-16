@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>696</height>
+    <width>748</width>
+    <height>951</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1419,17 +1419,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="mXORBtn">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSHLBtn">
        <property name="text">
-        <string>A xor B</string>
+        <string>A &lt;&lt;</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QPushButton" name="mSQRTBtn">
+      <widget class="QPushButton" name="mANDBtn">
        <property name="text">
-        <string>√ A</string>
+        <string>A and B</string>
        </property>
       </widget>
      </item>
@@ -1440,24 +1440,31 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mSQRBtn">
+     <item row="2" column="3">
+      <widget class="QPushButton" name="mGCDBtn">
        <property name="text">
-        <string>A ^ 2</string>
+        <string>GCD(A,B)</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mORBtn">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mADDBtn">
        <property name="text">
-        <string>A or B</string>
+        <string>A + B</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="mMULBtn">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="mXORBtn">
        <property name="text">
-        <string>A * B</string>
+        <string>A xor B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QPushButton" name="mSQRTBtn">
+       <property name="text">
+        <string>√ A</string>
        </property>
       </widget>
      </item>
@@ -1468,21 +1475,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mSHLBtn">
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mEXPBtn">
        <property name="text">
-        <string>A &lt;&lt;</string>
+        <string>A ^ B</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mMODBtn">
-       <property name="text">
-        <string>A % B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
+     <item row="3" column="0">
       <widget class="QPushButton" name="mCOMPBtn">
        <property name="text">
         <string>A comp</string>
@@ -1496,38 +1496,38 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mEXPBtn">
-       <property name="text">
-        <string>A ^ B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
+     <item row="3" column="2">
       <widget class="QPushButton" name="mINVBtn">
        <property name="text">
         <string>A^-1</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mANDBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mSQRBtn">
        <property name="text">
-        <string>A and B</string>
+        <string>A ^ 2</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mADDBtn">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="mMULBtn">
        <property name="text">
-        <string>A + B</string>
+        <string>A * B</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
-      <widget class="QPushButton" name="mGCDBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mORBtn">
        <property name="text">
-        <string>GCD(A,B)</string>
+        <string>A or B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="mMODBtn">
+       <property name="text">
+        <string>A % B</string>
        </property>
       </widget>
      </item>
@@ -1632,19 +1632,12 @@
   <tabstop>mSumTimeText</tabstop>
   <tabstop>mSumTimeClearBtn</tabstop>
   <tabstop>mSQRBtn</tabstop>
-  <tabstop>mCOMPBtn</tabstop>
   <tabstop>mSHRBtn</tabstop>
   <tabstop>mSHLBtn</tabstop>
-  <tabstop>mORBtn</tabstop>
-  <tabstop>mANDBtn</tabstop>
   <tabstop>mXORBtn</tabstop>
   <tabstop>mADDBtn</tabstop>
   <tabstop>mDIVBtn</tabstop>
   <tabstop>mEXPBtn</tabstop>
-  <tabstop>mMODBtn</tabstop>
-  <tabstop>mMULBtn</tabstop>
-  <tabstop>mSQRTBtn</tabstop>
-  <tabstop>mINVBtn</tabstop>
   <tabstop>mSUBBtn</tabstop>
   <tabstop>mGCDBtn</tabstop>
   <tabstop>mClearAllBtn</tabstop>
