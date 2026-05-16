@@ -95,6 +95,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     mCRLDecodeBtn->setFixedWidth(34);
     mTargetInfoBtn->setFixedWidth(34);
     mTargetDecodeBtn->setFixedWidth(34);
+    mTargetListBtn->setFixedWidth(34);
+
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     mPathValidationBtn->setFocus();
@@ -1498,6 +1500,7 @@ void CertPVDDlg::clickTargetList()
     }
 
     getStatusDataList( &target_, &pCAList, &pCRLList, NULL );
+    setPathList( pCAList, pCRLList );
 
     if( pCAList ) JS_BIN_resetList( &pCAList );
     if( pCRLList ) JS_BIN_resetList( &pCRLList );
