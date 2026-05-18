@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>834</height>
+    <width>582</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -516,20 +516,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_17">
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mViewCMSBtn">
-           <property name="text">
-            <string>View CMS</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mVerifyBtn">
-           <property name="text">
-            <string>Verify</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_9">
            <property name="orientation">
@@ -543,13 +529,6 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mVerifyDocTSPBtn">
-           <property name="text">
-            <string>Verify DocTSP</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="5">
           <widget class="QPushButton" name="mViewDocTSPBtn">
            <property name="text">
@@ -557,10 +536,24 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mViewSignerBtn">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mVerifyDocTSPBtn">
            <property name="text">
-            <string>View Signer</string>
+            <string>Verify DocTSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mViewCMSBtn">
+           <property name="text">
+            <string>View CMS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mVerifyBtn">
+           <property name="text">
+            <string>Verify</string>
            </property>
           </widget>
          </item>
@@ -853,7 +846,6 @@
   <tabstop>mCertCheck</tabstop>
   <tabstop>mCAListCheck</tabstop>
   <tabstop>mTrustListCheck</tabstop>
-  <tabstop>mVerifyBtn</tabstop>
   <tabstop>mVerifyDocTSPBtn</tabstop>
   <tabstop>mViewCMSBtn</tabstop>
   <tabstop>mViewDocTSPBtn</tabstop>

@@ -80,7 +80,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
-    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
+//    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
     connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
     connect( mExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickExportCMS()));
 
@@ -1869,6 +1869,7 @@ void PDFSignerDlg::clickDecrypt()
     return;
 }
 
+#if 0
 void PDFSignerDlg::clickViewSigner()
 {
     int ret = 0;
@@ -1918,6 +1919,7 @@ end :
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binSigner );
 }
+#endif
 
 void PDFSignerDlg::clickViewCMS()
 {
@@ -2105,6 +2107,10 @@ void PDFSignerDlg::clickAddDSS()
 
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
+    QString strPasswd = mPasswdText->text();
+
+    JDSSDataList *pDSSList = NULL;
+    JNumBINList *pObjList = NULL;
 
     if( strDstPath.length() < 1 )
     {
@@ -2123,6 +2129,16 @@ void PDFSignerDlg::clickAddDSS()
             return;
         }
     }
+
+    ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                            &pDSSList, &pObjList );
+    if( ret == JSR_OK )
+    {
+        berApplet->warningBox( tr("The DSS value already exists."), this );
+        goto end;
+    }
+
 
     ret = getCert( &binCert );
     if( ret != JSR_OK )
@@ -2143,7 +2159,8 @@ void PDFSignerDlg::clickAddDSS()
     }
 
 end :
-
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
+    if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
     JS_BIN_reset( &binCert );
 }
 
@@ -2154,8 +2171,12 @@ void PDFSignerDlg::clickAddDSS_VRI()
     BIN binCert = {0,0};
     BIN binCMS_PDF = {0,0};
 
+    JDSSDataList *pDSSList = NULL;
+    JNumBINList *pObjList = NULL;
+
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
+    QString strPasswd = mPasswdText->text();
 
     if( strDstPath.length() < 1 )
     {
@@ -2173,6 +2194,15 @@ void PDFSignerDlg::clickAddDSS_VRI()
             mDstPathText->setFocus();
             return;
         }
+    }
+
+    ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+                            &pDSSList, &pObjList );
+    if( ret == JSR_OK )
+    {
+        berApplet->warningBox( tr("The DSS value already exists."), this );
+        goto end;
     }
 
     ret = getCert( &binCert );
@@ -2206,7 +2236,8 @@ void PDFSignerDlg::clickAddDSS_VRI()
     }
 
 end :
-
+    if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
+    if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binCMS_PDF );
 }
