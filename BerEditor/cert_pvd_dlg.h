@@ -41,8 +41,6 @@ private slots:
     void sendTarget();
     void delParam();
 
-    void clickViewCertCRL();
-
     void clickTrustFind();
     void clickUntrustFind();
     void clickCRLFind();

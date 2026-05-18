@@ -48,7 +48,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
     connect( mCRLFindBtn, SIGNAL(clicked()), this, SLOT(clickCRLFind()));
 
-    connect( mPathTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCertCRL()));
+    connect( mPathTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewData()));
 
     connect( mUseTrustListCheck, SIGNAL(clicked()), this, SLOT(checkUseTrustList()));
     connect( mTrustListBtn, SIGNAL(clicked()), this, SLOT(clickTrustList()));
@@ -138,7 +138,7 @@ void CertPVDDlg::setPathList( const BINList *pCAList, const BINList *pCRLList )
     QString strType;
     const BINList *pCurList = NULL;
 
-    mParamTable->setRowCount(0);
+    mPathTable->setRowCount(0);
 
     pCurList = pCAList;
 
@@ -554,33 +554,6 @@ void CertPVDDlg::delParam()
     mParamTable->removeRow( idx.row() );
 }
 
-
-void CertPVDDlg::clickViewCertCRL()
-{
-    QString strPath;
-
-    QModelIndex idx = mPathTable->currentIndex();
-    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
-
-    QTableWidgetItem* item1 = mPathTable->item( idx.row(), 1 );
-    if( item1 == NULL ) return;
-
-    strPath = item1->text();
-
-    if( item->text() == kTypeCRL )
-    {
-        CRLInfoDlg crlInfo;
-        crlInfo.setCRLPath( item1->text() );
-        crlInfo.exec();
-    }
-    else
-    {
-        CertInfoDlg certInfo;
-        certInfo.setCertPath( item1->text() );
-        certInfo.exec();
-    }
-}
 
 void CertPVDDlg::clickTrustFind()
 {
