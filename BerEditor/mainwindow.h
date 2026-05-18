@@ -89,6 +89,10 @@ public:
     BerModel* berModel() { return ber_model_; };
     TTLVTreeModel* ttlvModel() { return ttlv_model_; };
 
+    CertManDlg* certManDlg() { return cert_man_dlg_; };
+    KeyPairManDlg* keyPairManDlg() { return key_pair_man_dlg_; };
+    KeyListDlg* keyListDlg() { return key_list_dlg_; };
+
     void showTextMsg( const QString& msg );
     int tableCurrentIndex();
 

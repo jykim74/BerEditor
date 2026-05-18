@@ -609,7 +609,12 @@ void CertInfoDlg::clickSaveToMan()
     ret = CertManDlg::writeNameHash( strPath, &cert_bin_ );
 
     if( ret > 0 )
+    {
+        if( berApplet->mainWindow()->certManDlg() )
+            berApplet->mainWindow()->certManDlg()->setLoadEE( false );
+
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
+    }
     else
         berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
 }
@@ -622,7 +627,11 @@ void CertInfoDlg::clickSaveToCA()
     ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
 
     if( ret > 0 )
+    {
+        if( berApplet->mainWindow()->certManDlg() )
+            berApplet->mainWindow()->certManDlg()->setLoadCA( false );
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
+    }
     else
         berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
 }
@@ -649,7 +658,11 @@ void CertInfoDlg::clickSaveTrustedCA()
 
     ret = CertManDlg::writeNameHash( strTrustedCAPath, &cert_bin_ );
     if( ret > 0 )
+    {
+        if( berApplet->mainWindow()->certManDlg() )
+            berApplet->mainWindow()->certManDlg()->setLoadTrust( false );
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
+    }
     else
         berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(ret), this );
 }

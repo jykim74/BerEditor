@@ -771,6 +771,31 @@ int CertManDlg::getCRL( BIN *pCRL )
     return 0;
 }
 
+void CertManDlg::setLoadEE( bool bVal )
+{
+    load_ee_ = bVal;
+}
+
+void CertManDlg::setLoadOther( bool bVal )
+{
+    load_other_ = bVal;
+}
+
+void CertManDlg::setLoadCA( bool bVal )
+{
+    load_ca_ = bVal;
+}
+
+void CertManDlg::setLoadCRL( bool bVal )
+{
+    load_crl_ = bVal;
+}
+
+void CertManDlg::setLoadTrust( bool bVal )
+{
+    load_trust_ = bVal;
+}
+
 void CertManDlg::clearCAList()
 {
     mCA_CertTable->setRowCount(0);

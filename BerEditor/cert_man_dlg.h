@@ -51,6 +51,12 @@ public:
     int getCACert( BIN *pCA );
     int getCRL( BIN *pCRL );
 
+    void setLoadEE( bool bVal );
+    void setLoadOther( bool bVal );
+    void setLoadCA( bool bVal );
+    void setLoadCRL( bool bVal );
+    void setLoadTrust( bool bVal );
+
 
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
     const QString getSeletedPath();
