@@ -584,11 +584,18 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     if( ret == 0 )
     {
-        ret = JS_SSL_verifyCert( pSSL );
-        if( ret != 0)
+        char sResMsg[1024];
+
+        ret = JS_SSL_verifyCert( pSSL, sResMsg );
+        if( ret == X509_V_OK)
         {
+            log( QString( "Verification        : %1" ).arg( sResMsg ));
+            ret = JSR_VERIFY;
+        }
+        else
+        {   
             bGood = false;
-            elog( QString( "Verification        : Fail [ %1(%2) ]").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+            elog( QString( "Verification        : Fail [ %1(%2) ]").arg( sResMsg ).arg( ret ));
 
             // ret == 20 (unable to get local issuer certificate)
 
@@ -596,11 +603,6 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
                 ret = JSR_SSL_LOCAL_ISSUER_CERT;
             else
                 ret = JSR_INVALID;
-        }
-        else
-        {
-            log( QString( "Verification        : OK" ));
-            ret = JSR_VERIFY;
         }
     }
 

@@ -1335,7 +1335,11 @@ void DocSignerDlg::clickCMSVerifySign()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
     BIN binInput = {0,0};
+    char sResMsg[1024];
+
     int nFlags = getCMSFlags();
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1371,7 +1375,7 @@ void DocSignerDlg::clickCMSVerifySign()
         nFlags,
         mCMS_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mCMSTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
-        &binData );
+        &binData, sResMsg );
 
     if( binData.nLen > 0 )
     {
@@ -1399,7 +1403,7 @@ void DocSignerDlg::clickCMSVerifySign()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to verify: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to verify: %1(%2)").arg( JERR( ret ) ).arg(sResMsg), this );
     }
 
 end:

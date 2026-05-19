@@ -80,7 +80,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
-//    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
+    connect( mViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickViewSigner()));
     connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
     connect( mExportCMSBtn, SIGNAL(clicked()), this, SLOT(clickExportCMS()));
 
@@ -1455,7 +1455,7 @@ void PDFSignerDlg::clickMakeSign()
     }
 
 #ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0, NULL );
+    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0, NULL, NULL );
     berApplet->log( QString( "CMS Verify: %1").arg( ret ));
 #endif
 
@@ -1567,9 +1567,12 @@ void PDFSignerDlg::clickVerifySign()
     int nVerifyChain = 0;
     JSignLabel  sSignLabel;
 
+    char sResMsg[1024];
+
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strSrcPath.length() < 1 )
     {
@@ -1669,13 +1672,13 @@ void PDFSignerDlg::clickVerifySign()
         &binCMS,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
-        nVerifyChain, &binSigner );
+        nVerifyChain, &binSigner, sResMsg );
 
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else
-        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to verify CMS: %1(%2)").arg( JERR(ret)).arg(sResMsg), this );
 
 end :
     JS_BIN_reset( &binCert );
@@ -1869,7 +1872,7 @@ void PDFSignerDlg::clickDecrypt()
     return;
 }
 
-#if 0
+#if 1
 void PDFSignerDlg::clickViewSigner()
 {
     int ret = 0;
@@ -2395,8 +2398,10 @@ void PDFSignerDlg::clickVerifyDocTSP()
 
     ExportDlg exportDlg;
     int nFlag = -1;
+    char sResMsg[1024];
 
     memset( &sRange, 0x00, sizeof(sRange));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2423,7 +2428,7 @@ void PDFSignerDlg::clickVerifyDocTSP()
         goto end;
     }
 
-    ret = JS_CMS_verifySignedData( &binCMS, NULL, NULL, nFlag, NULL, NULL, &binData );
+    ret = JS_CMS_verifySignedData( &binCMS, NULL, NULL, nFlag, NULL, NULL, &binData, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
@@ -2431,7 +2436,7 @@ void PDFSignerDlg::clickVerifyDocTSP()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to verify DocTimeStamp: %1" ).arg(JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to verify DocTimeStamp: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
     }
 
 end :
@@ -2514,10 +2519,12 @@ void PDFSignerDlg::clickVerifyDSS()
     JNumBINList *pObjList = NULL;
 
     JSignLabel  sSignLabel;
+    char sResMsg[1024];
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2623,12 +2630,16 @@ void PDFSignerDlg::clickVerifyDSS()
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
         pDSSList->pDSSData->pOCSPList,
-        &binSigner );
+        &binSigner, sResMsg );
 
     if( ret == JSR_VERIFY )
+    {
         berApplet->messageBox( tr("Verify OK" ), this );
+    }
     else
-        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+    {
+        berApplet->warningBox( tr( "failed to verify CMS: %1(%2)").arg( JERR(ret)).arg(sResMsg), this );
+    }
 
 end :
     JS_BIN_reset( &binCert );
@@ -2666,9 +2677,12 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     JNumBINList *pObjList = NULL;
     BINList *pBINList = NULL;
 
+    char sResMsg[1024];
+
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2822,12 +2836,12 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         &binCMS,
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
-        pDSSList->pDSSData->pOCSPList, &binSigner );
+        pDSSList->pDSSData->pOCSPList, &binSigner, sResMsg );
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else
-        berApplet->warningBox( tr( "failed to verify CMS: %1").arg( JERR(ret)), this );
+        berApplet->warningBox( tr( "failed to verify CMS: %1(%2)").arg( JERR(ret)).arg(sResMsg), this );
 
 end :
     JS_BIN_reset( &binCert );
