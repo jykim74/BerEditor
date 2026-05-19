@@ -80,7 +80,7 @@ private slots:
 private:
     void initUI();
     void initialize();
-    int verifyURL( const QString strHost, int nPort, BIN *pCA = NULL );
+    int verifyURL( const QString strHost, int nPort, QString& strMsg, BIN *pCA = NULL );
     const QTreeWidgetItem* createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood );
     long getFlags();
 

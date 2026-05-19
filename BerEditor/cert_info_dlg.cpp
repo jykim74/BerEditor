@@ -717,7 +717,11 @@ void CertInfoDlg::clickMakeTree()
         if( child ) item->addChild( child );
         child = item;
 
-        if( bSelfSign == 1 ) break;
+        if( bSelfSign == 1 )
+        {
+            berApplet->log( QString( "%1 certificate is selfsigned" ).arg( sCertInfo.pSubjectName) );
+            break;
+        }
 
         ret = CertManDlg::readCA( strCAPath, &binCert, &binCA );
         if( ret != CKR_OK )

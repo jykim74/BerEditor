@@ -404,7 +404,7 @@ void SSLCheckDlg::setUsedURL( const QString strURL )
     mURLCombo->addItems( list );
 }
 
-int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
+int SSLCheckDlg::verifyURL( const QString strHost, int nPort, QString& strMsg, BIN *pCA )
 {
     int ret = 0;
     int count = 0;
@@ -586,7 +586,11 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     {
         char sResMsg[1024];
 
+        memset( sResMsg, 0x00, sizeof(sResMsg));
+
         ret = JS_SSL_verifyCert( pSSL, sResMsg );
+        strMsg = sResMsg;
+
         if( ret == X509_V_OK)
         {
             log( QString( "Verification        : %1" ).arg( sResMsg ));
@@ -835,6 +839,8 @@ void SSLCheckDlg::clickCheck()
     QString strURL = mURLCombo->currentText();
     BIN binCA = {0,0};
 
+    QString strMsg;
+
     if( strURL.length() < 2 )
     {
         berApplet->warningBox( tr( "Insert URL" ), this );
@@ -864,7 +870,7 @@ void SSLCheckDlg::clickCheck()
 
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
-    ret = verifyURL( strHost, nPort, &binCA );
+    ret = verifyURL( strHost, nPort, strMsg, &binCA );
     if( strHost.length() > 3 )
     {
         setUsedURL( strURL );
@@ -872,11 +878,11 @@ void SSLCheckDlg::clickCheck()
 
     if( ret == JSR_VERIFY)
     {
-        berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
+        berApplet->messageLog( tr( "Verify OK: %1").arg( strMsg ), this );
     }
     else
     {
-        berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
+        berApplet->warnLog( tr( "Verify failed : %1(%2)").arg(JERR(ret)).arg(strMsg), this );
         if( binCA.nLen > 0 )
         {
             if( ret == JSR_SSL_LOCAL_ISSUER_CERT )
@@ -902,6 +908,7 @@ void SSLCheckDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int 
     QString strSaveName;
 
     QDir dir;
+    QString strRes;
 
     if( dir.exists(strTrustPath) == false )
         dir.mkdir( strTrustPath );
@@ -982,14 +989,14 @@ void SSLCheckDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int 
         goto end;
     }
 
-    ret = verifyURL( strHost, nPort );
+    ret = verifyURL( strHost, nPort, strRes );
     if( ret == JSR_VERIFY)
     {
-        berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
+        berApplet->messageLog( tr( "Verify OK: %1").arg( strRes ), this );
     }
     else
     {
-        berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
+        berApplet->warnLog( tr( "Verify failed : %1(%2)").arg(JERR(ret)).arg(strRes), this );
     }
 
 end :
@@ -1001,6 +1008,7 @@ end :
 void SSLCheckDlg::clickRefresh()
 {
     int ret = 0;
+    QString strMsg;
 //    clickClearResult();
 
     int nCount = mURLTable->rowCount();
@@ -1015,12 +1023,12 @@ void SSLCheckDlg::clickRefresh()
 
 //        mURLTable->removeRow(0);
 
-        ret = verifyURL( strHost, nPort );
+        ret = verifyURL( strHost, nPort, strMsg );
 
         if( ret == JSR_VERIFY)
-            berApplet->log( tr( "Verify successful : %1").arg( ret ) );
+            berApplet->log( tr( "Verify OK: %1").arg( strMsg ) );
         else
-            berApplet->elog( tr( "Verify failed : %1").arg( ret ) );
+            berApplet->elog( tr( "Verify failed : %1(%2)").arg( JERR(ret) ).arg(strMsg) );
     }
 }
 
@@ -1162,8 +1170,9 @@ void SSLCheckDlg::verifyTableMenu()
 
     QString strHost = item0->text();
     int nPort = item1->text().toInt();
+    QString strMsg;
 
-    verifyURL( strHost, nPort );
+    verifyURL( strHost, nPort, strMsg );
 }
 
 void SSLCheckDlg::deleteTableMenu()
