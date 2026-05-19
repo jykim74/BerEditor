@@ -184,21 +184,48 @@ int CertPVDDlg::getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP
     {
         if( pCA == NULL ) return JSR_INVALID_ALG;
 
-        CertInfoDlg::getCA( strAIA_URI, pCA );
-
-        if( pCA->nLen < 0 )
+        CertManDlg::getCA( pCert, pCA );
+        if( pCA->nLen > 0 )
         {
-            CertManDlg::getCA( pCert, pCA );
+            berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
+        }
+        else
+        {
+            CertInfoDlg::getCA( strAIA_URI, pCA );
+            if( pCA->nLen > 0 )
+            {
+                berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
+            }
         }
 
         if( pOCSP )
+        {
             CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
+            if( pOCSP->nLen > 0 )
+            {
+                berApplet->log( QString( "Read OCSP[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
+            }
+        }
     }
 
     if( strCRLDP_URI.length() > 0 )
     {
         if( pCRL )
-            CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
+        {
+            CertManDlg::getCertCRL( pCert, pCRL );
+            if( pCRL->nLen > 0 )
+            {
+                berApplet->log( QString( "Read CRL[%1] from CertMan" ).arg( sCertInfo.pSubjectName ));
+            }
+            else
+            {
+                CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
+                if( pCRL->nLen > 0 )
+                {
+                    berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
+                }
+            }
+        }
     }
 
 end :
@@ -215,8 +242,12 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList
     BIN *pCRL = NULL;
     BIN *pOCSP = NULL;
 
+    JCertInfo sCertInfo;
+    int bSelf = 0;
+
     if( pCert == NULL ) return JSR_ERR;
 
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     JS_BIN_copy( &binCert, pCert );
 
     if( ppCRLList ) pCRL = (BIN *)JS_calloc( 1, sizeof(BIN));
@@ -227,6 +258,10 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList
         JS_BIN_reset( &binCA );
         if( pCRL ) JS_BIN_reset( pCRL );
         if( pOCSP ) JS_BIN_reset( pOCSP );
+        bSelf = 0;
+
+        ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, NULL, &bSelf );
+        if( ret != JSR_OK ) goto end;
 
         ret = getStatusData( &binCert, &binCA, pCRL, pOCSP );
         if( ret != JSR_OK ) break;
@@ -235,14 +270,21 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList
         if( pCRL && pCRL->nLen > 0 ) JS_BIN_addList( ppCRLList, pCRL );
         if( pOCSP && pOCSP->nLen > 0 ) JS_BIN_addList( ppOCSPList, pOCSP );
 
-        if( JS_PKI_isSelfSignedCert( &binCert ) == true )
-            break;
+        if( bSelf == true )
+        {
+            berApplet->log( QString( "%1 certificate is selfsigned" ).arg( sCertInfo.pSubjectName) );
 
+            JS_PKI_resetCertInfo( &sCertInfo );
+            break;
+        }
+
+        JS_PKI_resetCertInfo( &sCertInfo );
         JS_BIN_reset( &binCert );
         JS_BIN_copy( &binCert, &binCA );
     }
 
 end :
+    JS_PKI_resetCertInfo( &sCertInfo );
     JS_BIN_reset( &binCA );
     JS_BIN_reset( &binCert );
     if( pCRL )

@@ -719,7 +719,7 @@ void CertInfoDlg::clickMakeTree()
 
         if( bSelfSign == 1 ) break;
 
-        ret = CertManDlg::readCA(  strCAPath, &binCert, &binCA );
+        ret = CertManDlg::readCA( strCAPath, &binCert, &binCA );
         if( ret != CKR_OK )
         {
             strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
@@ -735,6 +735,7 @@ void CertInfoDlg::clickMakeTree()
         else
         {
             ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+
             if( ret != JSR_VERIFY )
             {
                 JS_BIN_reset( &binCA );
@@ -747,7 +748,14 @@ void CertInfoDlg::clickMakeTree()
                 }
 
                 ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
-                if( ret != JSR_VERIFY ) break;
+                if( ret != JSR_VERIFY )
+                    break;
+
+                berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
+            }
+            else
+            {
+                berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
             }
         }
 
@@ -1234,7 +1242,7 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     int ret = 0;
     QString strURI;
 
-    berApplet->log( QString( "CRLDP : %1" ).arg( strExtCRLDP ));
+//    berApplet->log( QString( "CRLDP : %1" ).arg( strExtCRLDP ));
     strURI = getCRL_URIFromExt( strExtCRLDP );
 
     if( strURI.length() < 1 )
