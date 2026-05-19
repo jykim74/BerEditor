@@ -1484,7 +1484,11 @@ void DocSignerDlg::clickCMSDevelopedData()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
+    char sResMsg[1024];
+
     int nFlags = getCMSFlags();
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1502,7 +1506,7 @@ void DocSignerDlg::clickCMSDevelopedData()
 #if 0
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, nFlags, &binData );
 #else
-    ret = JS_CMS_makeDevelopedData( &binSrc, &binPri, &binCert, nFlags, &binData );
+    ret = JS_CMS_makeDevelopedData( &binSrc, &binPri, &binCert, nFlags, &binData, sResMsg );
 #endif
 
     if( binData.nLen > 0 )
@@ -1534,7 +1538,7 @@ void DocSignerDlg::clickCMSDevelopedData()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to develop data: %1").arg( JERR( ret ) ), this );
+        berApplet->warningBox( tr( "failed to develop data: %1(%2)").arg( JERR( ret ) ).arg(sResMsg), this );
     }
 
 

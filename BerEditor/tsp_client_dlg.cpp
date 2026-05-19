@@ -612,6 +612,10 @@ void TSPClientDlg::clickVerifySigned()
     int nFlags = -1;
     int nStatus = 0;
 
+    char sResMsg[1024];
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
+
     if( strSrvCertPath.length() < 1 )
     {
         CertManDlg certMan;
@@ -652,19 +656,15 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, NULL, NULL, &binMsg );
+    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, NULL, NULL, &binMsg, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
-        berApplet->messageLog( tr( "verify reponse successfully"), this );
-    }
-    else if( ret == JSR_INVALID )
-    {
-        berApplet->warnLog( tr( "failed to verify signature"), this );
+        berApplet->messageLog( tr( "Verify OK"), this );
     }
     else
     {
-        berApplet->warnLog( QString( "failed to verify response message: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( QString( "failed to verify: %1(%2)").arg(JERR(ret)).arg(sResMsg), this );
     }
 
 end :

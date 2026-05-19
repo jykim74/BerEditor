@@ -593,7 +593,11 @@ void PKCS7Dlg::clickVerifyData()
     QString strSrcType = mSrcTypeCombo->currentText();
     QString strSrc;
 
+    char sResMsg[1024];
+
     int nFlags = getFlags();
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strCMS.isEmpty() )
     {
@@ -658,7 +662,7 @@ void PKCS7Dlg::clickVerifyData()
         nFlags,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
-        &binSrc );
+        &binSrc, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
@@ -681,7 +685,7 @@ void PKCS7Dlg::clickVerifyData()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to verify signedData: %1").arg( JERR(ret) ), this );
+        berApplet->warnLog( tr( "failed to verify signedData: %1(%2)").arg( JERR(ret) ).arg(sResMsg), this );
     }
 
 end :
@@ -705,6 +709,10 @@ void PKCS7Dlg::clickDevelopedData()
     QString strCMS = mSrcText->toPlainText();
     QString strSrcType = mSrcTypeCombo->currentText();
     int nFlags = getFlags();
+
+    char sResMsg[1024];
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strCMS.isEmpty() )
     {
@@ -760,10 +768,10 @@ void PKCS7Dlg::clickDevelopedData()
         goto end;
     }
 
-    ret = JS_PKCS7_makeDevelopedData( &binCMS, &binPri, &binCert, nFlags, &binSrc );
+    ret = JS_PKCS7_makeDevelopedData( &binCMS, &binPri, &binCert, nFlags, &binSrc, sResMsg );
     berApplet->log( QString( "developedData results: %1").arg(ret));
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
@@ -784,7 +792,7 @@ void PKCS7Dlg::clickDevelopedData()
     }
     else
     {
-        berApplet->warnLog( tr( "failed to develop data: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to develop data: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
     }
 
 end :
