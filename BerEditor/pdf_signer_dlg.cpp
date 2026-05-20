@@ -2964,8 +2964,9 @@ void PDFSignerDlg::clickDstPathUp()
 int PDFSignerDlg::getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
 {
     int ret = 0;
+    bool bOnline = berApplet->settingsMgr()->getOnlineCA_CRL();
 
-    ret = CertPVDDlg::getStatusData( pCert, pCA, pCRL, pOCSP );
+    ret = CertPVDDlg::getStatusData( pCert, bOnline, pCA, pCRL, pOCSP );
     return ret;
 }
 
@@ -2973,7 +2974,9 @@ int PDFSignerDlg::getDSSList( const BIN *pCert, BINList **ppCertList, BINList **
 {
     int ret = 0;
 
-    ret = CertPVDDlg::getStatusDataList( pCert, ppCertList, ppCRLList, ppOCSPList );
+    bool bOnline = berApplet->settingsMgr()->getOnlineCA_CRL();
+
+    ret = CertPVDDlg::getStatusDataList( pCert, bOnline, ppCertList, ppCRLList, ppOCSPList );
     return ret;
 }
 

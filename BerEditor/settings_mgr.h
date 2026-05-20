@@ -37,6 +37,7 @@ const char *kRunTime = "runTime";
 const char *kUseCertMan = "useCertMan";
 const char *kAutoExpand = "autoExpand";
 const char *kPriEncMethod = "priEncMethod";
+const char *kOnlineCA_CRL = "onlineCA_CRL";
 }
 
 class SettingsMgr : public QObject
@@ -63,6 +64,10 @@ public:
     void setAutoExpand( bool val );
     bool getAutoExpand();
     bool autoExpand() { return auto_expand_; };
+
+    void setOnlineCA_CRL( bool val );
+    bool getOnlineCA_CRL();
+    bool onlineCA_CRL() { return online_ca_crl_; };
 
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();
@@ -109,7 +114,7 @@ public:
     int getHexAreaWidth();
     int hexAreaWidth() { return hex_area_width_; };
 
-    void setSupportKeyPairChagne( bool val );
+    void setSupportKeyPairChange( bool val );
     bool getSupportKeyPairChange();
     bool supportKeyPairChange() { return support_keypair_change_; };
 
@@ -145,6 +150,7 @@ private:
     bool support_keypair_change_;
     bool use_certman_;
     bool auto_expand_;
+    bool online_ca_crl_;
 
     int view_file_;
     int view_edit_;

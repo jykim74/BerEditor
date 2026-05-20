@@ -163,7 +163,7 @@ void CertPVDDlg::setPathList( const BINList *pCAList, const BINList *pCRLList )
     }
 }
 
-int CertPVDDlg::getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
+int CertPVDDlg::getStatusData( const BIN *pCert, bool bOnline, BIN *pCA, BIN *pCRL, BIN *pOCSP )
 {
     int ret = 0;
     JCertInfo sCertInfo;
@@ -180,24 +180,26 @@ int CertPVDDlg::getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP
     strAIA_URI = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtInfoList );
     strCRLDP_URI = CertInfoDlg::getValueFromExtList( kExtNameCRLDP, pExtInfoList );
 
-    if( strAIA_URI.length() > 0 )
+    CertManDlg::getCA( pCert, pCA );
+    if( pCA->nLen > 0 )
     {
-        if( pCA == NULL ) return JSR_INVALID_ALG;
-
-        CertManDlg::getCA( pCert, pCA );
-        if( pCA->nLen > 0 )
+        berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
+    }
+    else
+    {
+        if( bOnline == true )
         {
-            berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
-        }
-        else
-        {
+            ;
             CertInfoDlg::getCA( strAIA_URI, pCA );
             if( pCA->nLen > 0 )
             {
                 berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
             }
         }
+    }
 
+    if( strAIA_URI.length() > 0 )
+    {
         if( pOCSP )
         {
             CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
@@ -208,22 +210,19 @@ int CertPVDDlg::getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP
         }
     }
 
-    if( strCRLDP_URI.length() > 0 )
+    CertManDlg::getCertCRL( pCert, pCRL );
+    if( pCRL->nLen > 0 )
     {
-        if( pCRL )
+        berApplet->log( QString( "Read CRL[%1] from CertMan" ).arg( sCertInfo.pSubjectName ));
+    }
+    else
+    {
+        if( bOnline == true )
         {
-            CertManDlg::getCertCRL( pCert, pCRL );
+            CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
             if( pCRL->nLen > 0 )
             {
-                berApplet->log( QString( "Read CRL[%1] from CertMan" ).arg( sCertInfo.pSubjectName ));
-            }
-            else
-            {
-                CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
-                if( pCRL->nLen > 0 )
-                {
-                    berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
-                }
+                berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
             }
         }
     }
@@ -234,7 +233,7 @@ end :
     return ret;
 }
 
-int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList )
+int CertPVDDlg::getStatusDataList( const BIN *pCert, bool bOnline, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList )
 {
     int ret = 0;
     BIN binCA = {0,0};
@@ -263,7 +262,7 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList
         ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, NULL, &bSelf );
         if( ret != JSR_OK ) goto end;
 
-        ret = getStatusData( &binCert, &binCA, pCRL, pOCSP );
+        ret = getStatusData( &binCert, bOnline, &binCA, pCRL, pOCSP );
         if( ret != JSR_OK ) break;
 
         if( binCA.nLen > 0 ) JS_BIN_addList( ppCAList, &binCA );
@@ -1514,7 +1513,7 @@ void CertPVDDlg::clickTargetList()
         return;
     }
 
-    getStatusDataList( &target_, &pCAList, &pCRLList, NULL );
+    getStatusDataList( &target_, berApplet->settingsMgr()->onlineCA_CRL(), &pCAList, &pCRLList, NULL );
     setPathList( pCAList, pCRLList );
 
     if( pCAList ) JS_BIN_resetList( &pCAList );

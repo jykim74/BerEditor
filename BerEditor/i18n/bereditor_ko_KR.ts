@@ -4847,8 +4847,8 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_info_dlg.cpp" line="256"/>
-        <location filename="../cert_info_dlg.cpp" line="994"/>
-        <location filename="../cert_info_dlg.cpp" line="1033"/>
+        <location filename="../cert_info_dlg.cpp" line="1000"/>
+        <location filename="../cert_info_dlg.cpp" line="1039"/>
         <source>No avaiable item</source>
         <translation>아이템이 없습니다</translation>
     </message>
@@ -4868,17 +4868,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="863"/>
+        <location filename="../cert_info_dlg.cpp" line="869"/>
         <source>Path verification result : %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="893"/>
+        <location filename="../cert_info_dlg.cpp" line="899"/>
         <source>Verification results: %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="922"/>
+        <location filename="../cert_info_dlg.cpp" line="928"/>
         <source>failed to get OCSP response: %1</source>
         <translation>OCSP 응답을 가져오기 실패: %1</translation>
     </message>
@@ -5063,12 +5063,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 검증 결과: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="886"/>
+        <location filename="../cert_info_dlg.cpp" line="892"/>
         <source>failed to get CA certificate [%1]</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="889"/>
+        <location filename="../cert_info_dlg.cpp" line="895"/>
         <source>failed to get CRL [%1]</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5077,7 +5077,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="915"/>
+        <location filename="../cert_info_dlg.cpp" line="921"/>
         <source>failed to get CA certificate: %1</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
@@ -5094,7 +5094,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">OCSP 검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="943"/>
+        <location filename="../cert_info_dlg.cpp" line="949"/>
         <source>failed to get CRL : %1</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5135,12 +5135,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CRL 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="965"/>
+        <location filename="../cert_info_dlg.cpp" line="971"/>
         <source>The certificate is not revoked (STATUS:Good)</source>
         <translation>인증서가 폐기 되지 않았습니다(상태:유효함)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="967"/>
+        <location filename="../cert_info_dlg.cpp" line="973"/>
         <source>The certificate is revoked: (STATUS:Revoked %1:%2)</source>
         <translation>인증서가 폐기 되었습니다(상태:폐기됨 %1%2)</translation>
     </message>
@@ -6571,7 +6571,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="674"/>
-        <location filename="../cert_pvd_dlg.cpp" line="381"/>
+        <location filename="../cert_pvd_dlg.cpp" line="380"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
@@ -6617,7 +6617,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="369"/>
+        <location filename="../cert_pvd_dlg.cpp" line="368"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
@@ -6626,27 +6626,27 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="381"/>
+        <location filename="../cert_pvd_dlg.cpp" line="380"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="397"/>
+        <location filename="../cert_pvd_dlg.cpp" line="396"/>
         <source>String value</source>
         <translation>문자 값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="399"/>
+        <location filename="../cert_pvd_dlg.cpp" line="398"/>
         <source>Trust anchor certificate file path</source>
         <translation>신뢰 앵커 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="400"/>
+        <location filename="../cert_pvd_dlg.cpp" line="399"/>
         <source>Intermediate CA certificate file path</source>
         <translation>중간 CA 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="401"/>
+        <location filename="../cert_pvd_dlg.cpp" line="400"/>
         <source>CRL file path</source>
         <translation>CRL 파일 경로</translation>
     </message>
@@ -6655,53 +6655,53 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="369"/>
+        <location filename="../cert_pvd_dlg.cpp" line="368"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="499"/>
+        <location filename="../cert_pvd_dlg.cpp" line="498"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="500"/>
-        <location filename="../cert_pvd_dlg.cpp" line="525"/>
+        <location filename="../cert_pvd_dlg.cpp" line="499"/>
+        <location filename="../cert_pvd_dlg.cpp" line="524"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="501"/>
+        <location filename="../cert_pvd_dlg.cpp" line="500"/>
         <source>Send target</source>
         <translation>타겟 보내기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="665"/>
+        <location filename="../cert_pvd_dlg.cpp" line="664"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 CA 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="725"/>
+        <location filename="../cert_pvd_dlg.cpp" line="724"/>
         <source>The certificate verification (byCA) successful</source>
         <translation>인증서 검증에 성공 하였습니다 (CA검증)</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="730"/>
+        <location filename="../cert_pvd_dlg.cpp" line="729"/>
         <source>The certificate verification (byCA) failed: %1</source>
         <translation>인증서 검증에 실패 하였습니다 (CA검증) : %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1126"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1125"/>
         <source>Trust values ​​are not supported when using a trust list</source>
         <translation>신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1296"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1295"/>
         <source>Select trust CA certificate</source>
         <translation>신뢰 CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1325"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1324"/>
         <source>Select untrust CA certificate</source>
         <translation>비 신뢰 CA 인증서를 선택하세요</translation>
     </message>
@@ -6714,28 +6714,28 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="872"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1090"/>
+        <location filename="../cert_pvd_dlg.cpp" line="871"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1089"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="958"/>
+        <location filename="../cert_pvd_dlg.cpp" line="957"/>
         <source>Policy check successful [Explicit Policy: %1]</source>
         <translation>정책 확인 성공[명시적 정책: %1]</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="966"/>
+        <location filename="../cert_pvd_dlg.cpp" line="965"/>
         <source>Validation Fail because X509_V_FLAG_EXPLICIT_POLICY was requested But policy_oids is empty</source>
         <translation>X509_V_FLAG_EXPLICIT_POLICY가 요청되었지만 policy_oids가 비어 있기 때문에 유효성 검사에 실패했습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="968"/>
+        <location filename="../cert_pvd_dlg.cpp" line="967"/>
         <source>At least one of the certs contains invalid or inconsistent extensions</source>
         <translation>최소한 하나의 인증서에 유효하지 않거나 일관되지 않은 확장자가 포함되어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="970"/>
+        <location filename="../cert_pvd_dlg.cpp" line="969"/>
         <source>Internal Error</source>
         <translation>내부 오류</translation>
     </message>
@@ -6744,12 +6744,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1209"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1208"/>
         <source>The certificate path verification is successful.</source>
         <translation>인증서 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1214"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1213"/>
         <source>The certificate path verification failed [%1]</source>
         <translation>인증서 검증에 실패 하였습니다 [%1]</translation>
     </message>
@@ -6758,14 +6758,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1353"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1352"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1436"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1461"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1486"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1435"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1460"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1485"/>
         <source>failed to read data</source>
         <translation></translation>
     </message>
@@ -21782,13 +21782,13 @@ Only RSA is supported.</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="394"/>
+        <location filename="../settings_dlg.ui" line="281"/>
         <source>OID Config File</source>
         <translation>OID 설정 파일</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="404"/>
-        <location filename="../settings_dlg.ui" line="443"/>
+        <location filename="../settings_dlg.ui" line="291"/>
+        <location filename="../settings_dlg.ui" line="406"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -21797,17 +21797,17 @@ Only RSA is supported.</source>
         <translation type="vanished">신뢰 CA 경로</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="436"/>
+        <location filename="../settings_dlg.ui" line="399"/>
         <source>Certificate Path</source>
         <translation>인증서 경로</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="507"/>
+        <location filename="../settings_dlg.ui" line="457"/>
         <source>Language (need restart)</source>
         <translation>언어(재시동 필요함)</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="334"/>
+        <location filename="../settings_dlg.ui" line="364"/>
         <source>The size of the file to be read at one time</source>
         <translation>한 번에 읽을 수 있는 파일의 크기</translation>
     </message>
@@ -21837,57 +21837,62 @@ Only RSA is supported.</source>
         <translation>PKCS8 PKCS12 암호화 방식</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="327"/>
+        <location filename="../settings_dlg.ui" line="357"/>
         <source>File Read Size</source>
         <translation>파일 읽기 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="354"/>
+        <location filename="../settings_dlg.ui" line="504"/>
         <source>Use fixed hex  and bit value area</source>
         <translation>헥사 및 비트 스트링 정보 넓이 고정</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="361"/>
+        <location filename="../settings_dlg.ui" line="511"/>
         <source>Characters</source>
         <translation>문자</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="524"/>
+        <location filename="../settings_dlg.ui" line="487"/>
         <source>Support for changing original keypair</source>
         <translation>원본 키쌍 변경 지원</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="542"/>
+        <location filename="../settings_dlg.ui" line="533"/>
+        <source>Automatic online import when creating CA and CRL paths</source>
+        <translation>CA와 CRL 경로 생성 시 자동 온라인 가져오기</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="549"/>
         <source>Restore defaults</source>
         <translation>기본값 복원</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="569"/>
+        <location filename="../settings_dlg.ui" line="576"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="562"/>
+        <location filename="../settings_dlg.ui" line="569"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="119"/>
+        <location filename="../settings_dlg.cpp" line="121"/>
         <source>You have changed language. Restart to apply it?</source>
         <translation>언어를 변경 하였습니다. 적용을 위해 다시 시작 할까요?</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="130"/>
+        <location filename="../settings_dlg.cpp" line="132"/>
         <source>This font(%1) is not available</source>
         <translation>이 폰트(%1)은 유용하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="144"/>
+        <location filename="../settings_dlg.cpp" line="146"/>
         <source>Are you sure you want to clear all the saved settings?</source>
         <translation>정말로 저장 된 설정 값을 지우겠습니까?</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="170"/>
+        <location filename="../settings_dlg.cpp" line="172"/>
         <source>Restored to default settings. Restart to apply it?</source>
         <translation>초기 설정 복구 되었습니다. 적용을 위해 다시 시작 하겠습니까?</translation>
     </message>

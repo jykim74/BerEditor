@@ -29,6 +29,7 @@ void SettingsMgr::initialize()
     getShowTTLVSelOnly();
     getUseCertMan();
     getAutoExpand();
+    getOnlineCA_CRL();
 
     getDefaultHash();
     getFileReadSize();
@@ -140,6 +141,27 @@ bool SettingsMgr::getAutoExpand()
     settings.endGroup();
 
     return auto_expand_;
+}
+
+void SettingsMgr::setOnlineCA_CRL( bool val )
+{
+    QSettings settings;
+    online_ca_crl_ = val;
+
+    settings.beginGroup(kBehaviorGroup);
+    settings.setValue( kOnlineCA_CRL, online_ca_crl_ );
+    settings.endGroup();
+}
+
+bool SettingsMgr::getOnlineCA_CRL()
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    online_ca_crl_ = settings.value(kOnlineCA_CRL, false).toBool();
+    settings.endGroup();
+
+    return online_ca_crl_;
 }
 
 void SettingsMgr::setOIDConfigPath( const QString& strPath )
@@ -453,7 +475,7 @@ int SettingsMgr::getHexAreaWidth()
     return hex_area_width_;
 }
 
-void SettingsMgr::setSupportKeyPairChagne( bool val )
+void SettingsMgr::setSupportKeyPairChange( bool val )
 {
     QSettings settings;
     support_keypair_change_ = val;

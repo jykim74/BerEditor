@@ -26,8 +26,8 @@ public:
 
     void setPathList( const BINList *pCAList, const BINList *pCRLList );
 
-    static int getStatusData( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP );
-    static int getStatusDataList( const BIN *pCert, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList );
+    static int getStatusData( const BIN *pCert, bool bOnline, BIN *pCA, BIN *pCRL, BIN *pOCSP );
+    static int getStatusDataList( const BIN *pCert, bool bOnline, BINList **ppCAList, BINList **ppCRLList, BINList **ppOCSPList );
 
 private slots:
     void dragEnterEvent(QDragEnterEvent *event);

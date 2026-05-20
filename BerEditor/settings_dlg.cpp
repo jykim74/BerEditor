@@ -69,6 +69,7 @@ void SettingsDlg::initialize()
         mSupportKeyPairChangeCheck->setEnabled( false );
         mUseCertManCheck->setEnabled( false );
         mPriEncGroup->setEnabled( false );
+        mOnlineCA_CRLCheck->setEnabled( false );
     }
 
     initFontFamily();
@@ -104,8 +105,9 @@ void SettingsDlg::updateSettings()
         mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
         mgr->setCertPath( mCertPathText->text() );
         mgr->makeCertPath();
-        mgr->setSupportKeyPairChagne( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
+        mgr->setSupportKeyPairChange( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
         mgr->setPriEncMethod( mPriEncMethodCombo->currentText() );
+        mgr->setOnlineCA_CRL( mOnlineCA_CRLCheck->isChecked() );
     }
 
     bool language_changed = false;
@@ -240,6 +242,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
         state = mgr->getSupportKeyPairChange() ? Qt::Checked : Qt::Unchecked;
         mSupportKeyPairChangeCheck->setCheckState(state);
+
+        state = mgr->getOnlineCA_CRL() ? Qt::Checked : Qt::Unchecked;
+        mOnlineCA_CRLCheck->setCheckState( state );
     }
 
     mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));

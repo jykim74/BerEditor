@@ -726,14 +726,17 @@ void CertInfoDlg::clickMakeTree()
         ret = CertManDlg::readCA( strCAPath, &binCert, &binCA );
         if( ret != CKR_OK )
         {
-            strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
-            if( strExtValue.length() > 0 )
+            if( berApplet->settingsMgr()->onlineCA_CRL() == true )
             {
-                ret = getCA( strExtValue, &binCA );
-                if( ret != 0 ) break;
+                strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+                if( strExtValue.length() > 0 )
+                {
+                    ret = getCA( strExtValue, &binCA );
+                    if( ret != 0 ) break;
 
-                ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
-                if( ret != JSR_VERIFY ) break;
+                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                    if( ret != JSR_VERIFY ) break;
+                }
             }
         }
         else
@@ -744,18 +747,21 @@ void CertInfoDlg::clickMakeTree()
             {
                 JS_BIN_reset( &binCA );
 
-                strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
-                if( strExtValue.length() > 0 )
+                if( berApplet->settingsMgr()->onlineCA_CRL() == true )
                 {
-                    ret = getCA( strExtValue, &binCA );
-                    if( ret != 0 ) break;
+                    strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+                    if( strExtValue.length() > 0 )
+                    {
+                        ret = getCA( strExtValue, &binCA );
+                        if( ret != 0 ) break;
+                    }
+
+                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                    if( ret != JSR_VERIFY )
+                        break;
+
+                    berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
                 }
-
-                ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
-                if( ret != JSR_VERIFY )
-                    break;
-
-                berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
             }
             else
             {
