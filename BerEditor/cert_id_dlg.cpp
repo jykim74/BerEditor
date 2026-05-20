@@ -46,6 +46,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+    sStatusInfo.nStatus = -1;
 
     JS_BIN_copy( &resp_, pResp );
 
@@ -80,66 +81,81 @@ void CertIDDlg::setResponse( const BIN *pResp )
     mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( strVerify )));
     i++;
 
-    if( ret != JSR_VERIFY && ret != JSR_INVALID )
-        goto end;
+//    if( ret != JSR_VERIFY && ret != JSR_INVALID && ret != JSR_OCSP_NO_SIGNER_CERT )
+//        goto end;
 
-    mIDTable->insertRow(i);
-    mIDTable->setRowHeight(i, 10);
-    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Hash" )));
-    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pHash )));
-    i++;
+    if( sIDInfo.pHash )
+    {
+        mIDTable->insertRow(i);
+        mIDTable->setRowHeight(i, 10);
+        mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Hash" )));
+        mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pHash )));
+        i++;
+    }
 
-    mIDTable->insertRow(i);
-    mIDTable->setRowHeight(i, 10);
-    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "NameHash" )));
-    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pNameHash )));
-    i++;
+    if( sIDInfo.pNameHash )
+    {
+        mIDTable->insertRow(i);
+        mIDTable->setRowHeight(i, 10);
+        mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "NameHash" )));
+        mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pNameHash )));
+        i++;
+    }
 
-    mIDTable->insertRow(i);
-    mIDTable->setRowHeight(i, 10);
-    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "KeyHash" )));
-    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pKeyHash )));
-    i++;
+    if( sIDInfo.pKeyHash )
+    {
+        mIDTable->insertRow(i);
+        mIDTable->setRowHeight(i, 10);
+        mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "KeyHash" )));
+        mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pKeyHash )));
+        i++;
+    }
 
-    mIDTable->insertRow(i);
-    mIDTable->setRowHeight(i, 10);
-    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Serial" )));
-    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pSerial )));
-    i++;
+    if( sIDInfo.pSerial )
+    {
+        mIDTable->insertRow(i);
+        mIDTable->setRowHeight(i, 10);
+        mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Serial" )));
+        mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sIDInfo.pSerial )));
+        i++;
+    }
 
-    i = 0;
-    mStatusTable->insertRow(i);
-    mStatusTable->setRowHeight(i, 10);
-    mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Status" )));
-    mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+    if( sStatusInfo.nStatus >= 0 )
+    {
+        i = 0;
+        mStatusTable->insertRow(i);
+        mStatusTable->setRowHeight(i, 10);
+        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Status" )));
+        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
                                                          .arg( JS_OCSP_getCertStatusName(sStatusInfo.nStatus))
                                                          .arg( sStatusInfo.nStatus )));
-    i++;
-
-    if( sStatusInfo.nStatus != JS_OCSP_CERT_STATUS_GOOD )
-    {
-        mStatusTable->insertRow(i);
-        mStatusTable->setRowHeight(i, 10);
-        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Reason" )));
-        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
-                                                             .arg( JS_OCSP_getRevokeReasonName(sStatusInfo.nReason))
-                                                             .arg( sStatusInfo.nReason )));
         i++;
 
-        JS_UTIL_getDateTime( sStatusInfo.nRevokedTime, sRevokedTime );
-        mStatusTable->insertRow(i);
-        mStatusTable->setRowHeight(i, 10);
-        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
-        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sRevokedTime )));
-        i++;
-
-        if( sStatusInfo.pHoldOID != NULL )
+        if( sStatusInfo.nStatus != JS_OCSP_CERT_STATUS_GOOD )
         {
             mStatusTable->insertRow(i);
             mStatusTable->setRowHeight(i, 10);
-            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "HoldOID" )));
-            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sStatusInfo.pHoldOID )));
+            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Reason" )));
+            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+                                                             .arg( JS_OCSP_getRevokeReasonName(sStatusInfo.nReason))
+                                                             .arg( sStatusInfo.nReason )));
             i++;
+
+            JS_UTIL_getDateTime( sStatusInfo.nRevokedTime, sRevokedTime );
+            mStatusTable->insertRow(i);
+            mStatusTable->setRowHeight(i, 10);
+            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
+            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sRevokedTime )));
+            i++;
+
+            if( sStatusInfo.pHoldOID != NULL )
+            {
+                mStatusTable->insertRow(i);
+                mStatusTable->setRowHeight(i, 10);
+                mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "HoldOID" )));
+                mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sStatusInfo.pHoldOID )));
+                i++;
+            }
         }
     }
 
