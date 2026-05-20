@@ -26,6 +26,7 @@
 #include "time_stamp_dlg.h"
 #include "export_dlg.h"
 #include "data_input_dlg.h"
+#include "cert_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -85,6 +86,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
     connect( mCMSSrcTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcType()));
     connect( mCMSOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputType()));
+    connect( mCMSViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickCMSViewSigner()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -589,6 +591,41 @@ void DocSignerDlg::clickCMSSrcDecode()
 
 end :
     JS_BIN_reset( &binSrc );
+}
+
+void DocSignerDlg::clickCMSViewSigner()
+{
+    int ret = 0;
+    BIN binCMS = {0,0};
+    BIN binCert = {0,0};
+
+    QString strPath = mDstPathText->text();
+    QString strFileName;
+    CertInfoDlg certInfo;
+
+    ret = readCMSOutput( &binCMS );
+    if( ret != 0 ) goto end;
+
+    ret = JS_CMS_getType( &binCMS );
+    if( ret != JS_PKCS7_TYPE_SIGNED )
+    {
+        berApplet->warningBox( tr("This is not a signed data message:%1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_CMS_getSignedDataSigner( &binCMS, &binCert );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr("failed to get signer certifificate: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
+    certInfo.setCertBIN( &binCert );
+    certInfo.exec();
+
+end :
+    JS_BIN_reset( &binCMS );
+    JS_BIN_reset( &binCert );
 }
 
 void DocSignerDlg::clickCMSOutputDecode()

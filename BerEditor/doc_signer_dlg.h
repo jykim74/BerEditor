@@ -72,6 +72,7 @@ private slots:
     void clickCMSSrcView();
     void clickCMSSrcType();
     void clickCMSSrcDecode();
+    void clickCMSViewSigner();
 
     void clickCMSOutputType();
     void clickCMSOutputClear();
