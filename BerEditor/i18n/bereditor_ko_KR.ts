@@ -4847,8 +4847,8 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_info_dlg.cpp" line="256"/>
-        <location filename="../cert_info_dlg.cpp" line="1000"/>
-        <location filename="../cert_info_dlg.cpp" line="1039"/>
+        <location filename="../cert_info_dlg.cpp" line="1006"/>
+        <location filename="../cert_info_dlg.cpp" line="1045"/>
         <source>No avaiable item</source>
         <translation>아이템이 없습니다</translation>
     </message>
@@ -4868,17 +4868,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="869"/>
+        <location filename="../cert_info_dlg.cpp" line="781"/>
+        <source>CA certificate cannot be imported: %1</source>
+        <translation>CA 인증서를 가져 올 수 었습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="875"/>
         <source>Path verification result : %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="899"/>
+        <location filename="../cert_info_dlg.cpp" line="905"/>
         <source>Verification results: %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="928"/>
+        <location filename="../cert_info_dlg.cpp" line="934"/>
         <source>failed to get OCSP response: %1</source>
         <translation>OCSP 응답을 가져오기 실패: %1</translation>
     </message>
@@ -5063,12 +5068,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 검증 결과: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="892"/>
+        <location filename="../cert_info_dlg.cpp" line="898"/>
         <source>failed to get CA certificate [%1]</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="895"/>
+        <location filename="../cert_info_dlg.cpp" line="901"/>
         <source>failed to get CRL [%1]</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5077,7 +5082,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="921"/>
+        <location filename="../cert_info_dlg.cpp" line="927"/>
         <source>failed to get CA certificate: %1</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
@@ -5094,7 +5099,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">OCSP 검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="949"/>
+        <location filename="../cert_info_dlg.cpp" line="955"/>
         <source>failed to get CRL : %1</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5135,12 +5140,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CRL 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="971"/>
+        <location filename="../cert_info_dlg.cpp" line="977"/>
         <source>The certificate is not revoked (STATUS:Good)</source>
         <translation>인증서가 폐기 되지 않았습니다(상태:유효함)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="973"/>
+        <location filename="../cert_info_dlg.cpp" line="979"/>
         <source>The certificate is revoked: (STATUS:Revoked %1:%2)</source>
         <translation>인증서가 폐기 되었습니다(상태:폐기됨 %1%2)</translation>
     </message>

@@ -458,6 +458,13 @@ void CertPVDDlg::addList( const QString strType, const BIN *pData )
             strDN = sCertInfo.pSubjectName;
         }
 
+        if( JS_PKI_isCA( pData ) == 0 )
+        {
+            berApplet->elog( QString( "DN[%1] is not CA certificate" ).arg(sCertInfo.pSubjectName) );
+            JS_PKI_resetCertInfo( &sCertInfo );
+            return;
+        }
+
         if( strType == kTypeTCert )
         {
             if( now_t > sCertInfo.tNotAfter )

@@ -775,6 +775,12 @@ void CertInfoDlg::clickMakeTree()
 
         JS_PKI_resetCertInfo( &sCertInfo );
         if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+
+        if( binCert.nLen <= 0 )
+        {
+            berApplet->warningBox( tr( "CA certificate cannot be imported: %1" ).arg( JERR(ret)), this );
+            break;
+        }
     }
 
     mCertTree->insertTopLevelItem( 0, child );
