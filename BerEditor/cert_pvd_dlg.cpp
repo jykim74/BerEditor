@@ -842,6 +842,8 @@ void CertPVDDlg::clickPolicyCheck()
 
     BIN binCert = {0,0};
     BINList *pCertList = NULL;
+    JStrList *pOIDList = NULL;
+    JStrList *pCurList = NULL;
 
 //    time_t tCheckTime = 0;
 
@@ -956,7 +958,14 @@ void CertPVDDlg::clickPolicyCheck()
 
 //    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
     JS_BIN_addList( &pCertList, &target_ );
-    ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
+    ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy, &pOIDList );
+
+    pCurList = pOIDList;
+    while( pCurList )
+    {
+        berApplet->log( QString( "Policy OID: %1" ).arg( pCurList->pStr ));
+        pCurList = pCurList->pNext;
+    }
 
     berApplet->log( QString( "Check policy results: Ret %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
     if( ret == JSR_VALID )
@@ -978,10 +987,12 @@ void CertPVDDlg::clickPolicyCheck()
         berApplet->warnLog( QString( "%1 [Explicit Policy:%2 Ret:%3]" ).arg( strErr ).arg( nExpPolicy ).arg( ret ), this );
     }
 
+
 end :
     if( pCertList ) JS_BIN_resetList( &pCertList );
     if( pParamList ) JS_UTIL_resetNumValList( &pParamList );
     JS_BIN_reset( &binCert );
+    if( pOIDList ) JS_UTIL_resetStrList( &pOIDList );
 }
 
 void CertPVDDlg::clickPathValidation()
