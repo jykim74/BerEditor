@@ -325,6 +325,8 @@ private:
     void setView( int nAct );
     void unsetView( int nAct );
 
+    void setModaless( QDialog* dlg );
+
     QList<QAction *>  recent_file_list_;
 
     QSplitter       *hsplitter_;
