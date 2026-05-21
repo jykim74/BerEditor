@@ -2661,7 +2661,13 @@ void MainWindow::textView()
 void MainWindow::runBERCompare( const BIN *pA, const BIN *pB )
 {
     if( ber_comp_dlg_ == nullptr )
+    {
         ber_comp_dlg_ = new BERCompareDlg;
+        ber_comp_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = ber_comp_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        ber_comp_dlg_->setWindowTitle( strTitle );
+    }
 
     ber_comp_dlg_->makeTreeA( pA );
     ber_comp_dlg_->makeTreeB( pB );
@@ -2674,7 +2680,13 @@ void MainWindow::runBERCompare( const BIN *pA, const BIN *pB )
 void MainWindow::encDec2( const QString strKey, const QString strIV )
 {
     if( enc_dec_dlg_ == nullptr )
+    {
         enc_dec_dlg_ = new EncDecDlg;
+        enc_dec_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = enc_dec_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        enc_dec_dlg_->setWindowTitle( strTitle );
+    }
 
     enc_dec_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
     enc_dec_dlg_->mKeyText->setText( strKey );
@@ -2690,7 +2702,13 @@ void MainWindow::encDec2( const QString strKey, const QString strIV )
 void MainWindow::signVerify()
 {
     if( sign_verify_dlg_ == nullptr )
+    {
         sign_verify_dlg_ = new SignVerifyDlg;
+        sign_verify_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = sign_verify_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        sign_verify_dlg_->setWindowTitle( strTitle );
+    }
 
     sign_verify_dlg_->show();
     sign_verify_dlg_->raise();
@@ -2700,7 +2718,13 @@ void MainWindow::signVerify()
 void MainWindow::pubEncDec()
 {
     if( pub_enc_dec_dlg_ == nullptr )
+    {
         pub_enc_dec_dlg_ = new PubEncDecDlg;
+        pub_enc_dec_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = pub_enc_dec_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        pub_enc_dec_dlg_->setWindowTitle( strTitle );
+    }
 
     pub_enc_dec_dlg_->show();
     pub_enc_dec_dlg_->raise();
@@ -2710,7 +2734,13 @@ void MainWindow::pubEncDec()
 void MainWindow::pkcs7()
 {
     if( pkcs7_dlg_ == nullptr )
+    {
         pkcs7_dlg_ = new PKCS7Dlg;
+        pkcs7_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = pkcs7_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        pkcs7_dlg_->setWindowTitle( strTitle );
+    }
 
     pkcs7_dlg_->show();
     pkcs7_dlg_->raise();
@@ -2720,7 +2750,13 @@ void MainWindow::pkcs7()
 void MainWindow::sss()
 {
     if( sss_dlg_ == nullptr )
+    {
         sss_dlg_ = new SSSDlg;
+        sss_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = sss_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        sss_dlg_->setWindowTitle( strTitle );
+    }
 
     sss_dlg_->show();
     sss_dlg_->raise();
@@ -2730,7 +2766,13 @@ void MainWindow::sss()
 void MainWindow::certPVD()
 {
     if( cert_pvd_dlg_ == nullptr )
+    {
         cert_pvd_dlg_ = new CertPVDDlg;
+        cert_pvd_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = cert_pvd_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        cert_pvd_dlg_->setWindowTitle( strTitle );
+    }
 
     cert_pvd_dlg_->show();
     cert_pvd_dlg_->raise();
@@ -2740,7 +2782,13 @@ void MainWindow::certPVD()
 void MainWindow::CAVP()
 {
     if( cavp_dlg_ == nullptr )
+    {
         cavp_dlg_ = new CAVPDlg;
+        cavp_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = cavp_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        cavp_dlg_->setWindowTitle( strTitle );
+    }
 
     cavp_dlg_->show();
     cavp_dlg_->raise();
@@ -2750,7 +2798,13 @@ void MainWindow::CAVP()
 void MainWindow::sslCheck()
 {
     if( ssl_check_dlg_ == nullptr )
+    {
         ssl_check_dlg_ = new SSLCheckDlg;
+        ssl_check_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = ssl_check_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        ssl_check_dlg_->setWindowTitle( strTitle );
+    }
 
     ssl_check_dlg_->show();
     ssl_check_dlg_->raise();
@@ -2760,7 +2814,13 @@ void MainWindow::sslCheck()
 void MainWindow::x509Compare()
 {
     if( x509_comp_dlg_ == nullptr )
+    {
         x509_comp_dlg_ = new X509CompareDlg;
+        x509_comp_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = x509_comp_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        x509_comp_dlg_->setWindowTitle( strTitle );
+    }
 
     x509_comp_dlg_->show();
     x509_comp_dlg_->raise();
@@ -2770,7 +2830,13 @@ void MainWindow::x509Compare()
 void MainWindow::docSigner()
 {
     if( doc_signer_dlg_ == nullptr )
+    {
         doc_signer_dlg_ = new DocSignerDlg;
+        doc_signer_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = doc_signer_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        doc_signer_dlg_->setWindowTitle( strTitle );
+    }
 
     doc_signer_dlg_->show();
     doc_signer_dlg_->raise();
@@ -2781,7 +2847,13 @@ void MainWindow::docSigner()
 void MainWindow::pdfSigner()
 {
     if( pdf_signer_dlg_ == nullptr )
+    {
         pdf_signer_dlg_ = new PDFSignerDlg;
+        pdf_signer_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = pdf_signer_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        pdf_signer_dlg_->setWindowTitle( strTitle );
+    }
 
     pdf_signer_dlg_->show();
     pdf_signer_dlg_->raise();
@@ -2792,7 +2864,13 @@ void MainWindow::pdfSigner()
 void MainWindow::genOTP()
 {
     if( gen_otp_dlg_ == nullptr )
+    {
         gen_otp_dlg_ = new GenOTPDlg;
+        gen_otp_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = gen_otp_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        gen_otp_dlg_->setWindowTitle( strTitle );
+    }
 
     gen_otp_dlg_->show();
     gen_otp_dlg_->raise();
@@ -2802,7 +2880,13 @@ void MainWindow::genOTP()
 void MainWindow::VID()
 {
     if( vid_dlg_ == nullptr )
+    {
         vid_dlg_ = new VIDDlg;
+        vid_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = vid_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        vid_dlg_->setWindowTitle( strTitle );
+    }
 
     vid_dlg_->show();
     vid_dlg_->raise();
@@ -2812,7 +2896,13 @@ void MainWindow::VID()
 void MainWindow::BNCalc()
 {
     if( bn_calc_dlg_ == nullptr )
+    {
         bn_calc_dlg_ = new BNCalcDlg;
+        bn_calc_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = bn_calc_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        bn_calc_dlg_->setWindowTitle( strTitle );
+    }
 
     bn_calc_dlg_->show();
     bn_calc_dlg_->raise();
@@ -2825,6 +2915,11 @@ void MainWindow::keyPairMan()
     {
         key_pair_man_dlg_ = new KeyPairManDlg;
         key_pair_man_dlg_->setMode( KeyPairModeBase );
+
+        key_pair_man_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = key_pair_man_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        key_pair_man_dlg_->setWindowTitle( strTitle );
     }
 
     key_pair_man_dlg_->show();
@@ -2835,7 +2930,13 @@ void MainWindow::keyPairMan()
 void MainWindow::ocspClient()
 {
     if( ocsp_client_dlg_ == nullptr )
+    {
         ocsp_client_dlg_ = new OCSPClientDlg;
+        ocsp_client_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = ocsp_client_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        ocsp_client_dlg_->setWindowTitle( strTitle );
+    }
 
     ocsp_client_dlg_->show();
     ocsp_client_dlg_->raise();
@@ -2845,7 +2946,13 @@ void MainWindow::ocspClient()
 void MainWindow::tspClient()
 {
     if( tsp_client_dlg_ == nullptr )
+    {
         tsp_client_dlg_ = new TSPClientDlg;
+        tsp_client_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = tsp_client_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        tsp_client_dlg_->setWindowTitle( strTitle );
+    }
 
     tsp_client_dlg_->show();
     tsp_client_dlg_->raise();
@@ -2855,7 +2962,13 @@ void MainWindow::tspClient()
 void MainWindow::cmpClient()
 {
     if( cmp_client_dlg_ == nullptr )
+    {
         cmp_client_dlg_ = new CMPClientDlg;
+        cmp_client_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = cmp_client_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        cmp_client_dlg_->setWindowTitle( strTitle );
+    }
 
     cmp_client_dlg_->show();
     cmp_client_dlg_->raise();
@@ -2865,7 +2978,13 @@ void MainWindow::cmpClient()
 void MainWindow::scepClient()
 {
     if( scep_client_dlg_ == nullptr )
+    {
         scep_client_dlg_ = new SCEPClientDlg;
+        scep_client_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = scep_client_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        scep_client_dlg_->setWindowTitle( strTitle );
+    }
 
     scep_client_dlg_->show();
     scep_client_dlg_->raise();
@@ -2875,7 +2994,13 @@ void MainWindow::scepClient()
 void MainWindow::acmeClient()
 {
     if( acme_client_dlg_ == nullptr )
+    {
         acme_client_dlg_ = new ACMEClientDlg;
+        acme_client_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = acme_client_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        acme_client_dlg_->setWindowTitle( strTitle );
+    }
 
     acme_client_dlg_->show();
     acme_client_dlg_->raise();
@@ -2889,6 +3014,11 @@ void MainWindow::certMan()
         cert_man_dlg_ = new CertManDlg;
         cert_man_dlg_->setMode( ManModeBase );
         cert_man_dlg_->setTitle( tr( "Certificate Management" ));
+
+        cert_man_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = cert_man_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        cert_man_dlg_->setWindowTitle( strTitle );
     }
 
     cert_man_dlg_->show();
@@ -2902,6 +3032,11 @@ void MainWindow::keyList()
     {
         key_list_dlg_ = new KeyListDlg;
         key_list_dlg_->setManage( true );
+
+        key_list_dlg_->setStyleSheet( kModalessStyle );
+        QString strTitle = key_list_dlg_->windowTitle();
+        strTitle += " [MODALESS]";
+        key_list_dlg_->setWindowTitle( strTitle );
     }
 
     key_list_dlg_->show();

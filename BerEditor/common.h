@@ -77,6 +77,8 @@ const QColor kLenTypeColor( Qt::cyan );
 const QColor kEOCColor( 177, 188, 199 );
 const QColor kUnusedColor( 199, 210, 200 );
 
+const QString kModalessStyle = "QDialog { background:#EAEEE9; }";
+
 const QString kBinaryChars = "[0-1]";
 const QString kHexChars = "[A-Za-f0-9]";
 const QString kDecimalChars = "[0-9]";
