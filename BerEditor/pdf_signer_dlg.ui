@@ -234,7 +234,7 @@
    <item>
     <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mSignTab">
       <attribute name="title">
@@ -850,9 +850,12 @@
   <tabstop>mAddDSSBtn</tabstop>
   <tabstop>mAddDSS_VRIBtn</tabstop>
   <tabstop>mAddDocTSPBtn</tabstop>
+  <tabstop>mVerifyChainCheck</tabstop>
   <tabstop>mCertCheck</tabstop>
   <tabstop>mCAListCheck</tabstop>
   <tabstop>mTrustListCheck</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mViewSignerBtn</tabstop>
   <tabstop>mVerifyDocTSPBtn</tabstop>
   <tabstop>mViewCMSBtn</tabstop>
   <tabstop>mViewDocTSPBtn</tabstop>
