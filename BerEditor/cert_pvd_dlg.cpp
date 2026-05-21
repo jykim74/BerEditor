@@ -174,62 +174,16 @@ int CertPVDDlg::getStatusData( const BIN *pCert, bool bOnline, BIN *pCA, BIN *pC
 
     if( pCert == NULL ) return JSR_ERR;
 
-    ret = JS_PKI_getCertInfo( pCert, &sCertInfo, &pExtInfoList );
-    if( ret != 0 ) goto end;
+    ret = CertInfoDlg::getCA2( pCert, bOnline, pCA );
+    if( ret != 0 ) return ret;
 
-    strAIA_URI = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtInfoList );
-    strCRLDP_URI = CertInfoDlg::getValueFromExtList( kExtNameCRLDP, pExtInfoList );
-
-    CertManDlg::getCA( pCert, pCA );
-    if( pCA->nLen > 0 )
+    if( pOCSP )
     {
-        berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
-    }
-    else
-    {
-        if( bOnline == true )
-        {
-            ;
-            CertInfoDlg::getCA( strAIA_URI, pCA );
-            if( pCA->nLen > 0 )
-            {
-                berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
-            }
-        }
+        CertInfoDlg::getOCSP2( pCert, pCA, pOCSP );
     }
 
-    if( strAIA_URI.length() > 0 )
-    {
-        if( pOCSP )
-        {
-            CertInfoDlg::getOCSP( strAIA_URI, pCA, pCert, pOCSP );
-            if( pOCSP->nLen > 0 )
-            {
-                berApplet->log( QString( "Read OCSP[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
-            }
-        }
-    }
+    CertInfoDlg::getCRL2( pCert, bOnline, pCRL );
 
-    CertManDlg::getCertCRL( pCert, pCRL );
-    if( pCRL->nLen > 0 )
-    {
-        berApplet->log( QString( "Read CRL[%1] from CertMan" ).arg( sCertInfo.pSubjectName ));
-    }
-    else
-    {
-        if( bOnline == true )
-        {
-            CertInfoDlg::getCRL( strCRLDP_URI, pCRL );
-            if( pCRL->nLen > 0 )
-            {
-                berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
-            }
-        }
-    }
-
-end :
-    JS_PKI_resetCertInfo( &sCertInfo );
-    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
     return ret;
 }
 

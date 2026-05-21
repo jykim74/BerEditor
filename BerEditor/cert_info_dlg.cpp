@@ -798,13 +798,11 @@ void CertInfoDlg::clickGetCA()
 {
     int ret = 0;
     BIN binCA = {0,0};
-    QString strExtValue = getValueFromExtList( kExtNameAIA );
 
-    ret = getCA( strExtValue, &binCA );
+    ret = getCA2( &cert_bin_, berApplet->settingsMgr()->onlineCA_CRL(), &binCA );
 
-    if( ret == 0 )
+    if( ret == CKR_OK )
     {
-    //    saveAsPEM( &binCA );
         CertInfoDlg certInfo;
         certInfo.setCertBIN( &binCA );
         certInfo.exec();
@@ -821,13 +819,11 @@ void CertInfoDlg::clickGetCRL()
 {
     int ret = 0;
     BIN binCRL = {0,0};
-    QString strExtValue = getValueFromExtList( kExtNameCRLDP );
 
-    ret = getCRL( strExtValue, &binCRL );
+    ret = getCRL2( &cert_bin_, berApplet->settingsMgr()->onlineCA_CRL(), &binCRL );
 
-    if( ret == 0 )
+    if( ret == CKR_OK )
     {
-    //    saveAsPEM( &binCRL );
         CRLInfoDlg crlInfo;
         crlInfo.setCRL_BIN( &binCRL );
         crlInfo.exec();
@@ -888,16 +884,14 @@ void CertInfoDlg::clickVerifyCert()
     BIN binCRL = {0,0};
 
     char sMsg[1024];
-
-    QString strExtAIA = getValueFromExtList( kExtNameAIA );
-    QString strExtCRLDP = getValueFromExtList( kExtNameCRLDP );
+    bool bOnline = berApplet->settingsMgr()->onlineCA_CRL();
 
     memset( sMsg, 0x00, sizeof(sMsg));
 
-    ret = getCA( strExtAIA, &binCA );
+    ret = getCA2( &cert_bin_, bOnline, &binCA );
     if( ret != 0 ) berApplet->elog( tr( "failed to get CA certificate [%1]").arg( ret ));
 
-    ret = getCRL( strExtCRLDP, &binCRL );
+    ret = getCRL2( &cert_bin_, bOnline, &binCRL );
     if( ret != 0 ) berApplet->elog( tr( "failed to get CRL [%1]").arg( ret ));
 
     ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, sMsg );
@@ -921,7 +915,7 @@ void CertInfoDlg::clickOCSPCheck()
     QString strExtValue = getValueFromExtList( kExtNameAIA );
     berApplet->log( QString( "AIA : %1" ).arg( strExtValue ));
 
-    ret = getCA( strExtValue, &binCA );
+    ret = getCA2( &cert_bin_, berApplet->settingsMgr()->onlineCA_CRL(), &binCA );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "failed to get CA certificate: %1").arg( ret ), this);
@@ -947,12 +941,11 @@ void CertInfoDlg::clickCRLCheck()
 {
     int ret = 0;
     BIN binCRL = {0,0};
-    QString strExtValue = getValueFromExtList( kExtNameCRLDP );
 
-    ret = getCRL( strExtValue, &binCRL );
-    if( ret != 0 )
+    ret = getCRL2( &cert_bin_, berApplet->settingsMgr()->onlineCA_CRL(), &binCRL );
+    if( ret != CKR_OK )
     {
-        berApplet->warningBox( tr( "failed to get CRL : %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to get CRL : %1").arg( JERR(ret) ), this );
     }
     else
     {
@@ -1341,4 +1334,111 @@ const QString CertInfoDlg::getValueFromExtList( const QString strExtName, JExten
     }
 
     return strValue;
+}
+
+int CertInfoDlg::getCA2( const BIN *pCert, bool bOnline, BIN *pCA )
+{
+    int ret = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    int bSelfSign = 0;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    ret = JS_PKI_getCertInfo2( pCert, &sCertInfo, &pExtInfoList, &bSelfSign );
+    if( ret != 0 ) return ret;
+
+    if( bSelfSign == 1 )
+    {
+        ret = JSR_PKI_SELF_SIGN_CERT;
+        goto end;
+    }
+
+    ret = CertManDlg::getCA( pCert, pCA );
+    if( ret != CKR_OK )
+    {
+        if( bOnline == true )
+        {
+            QString strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+            if( strExtValue.length() > 0 )
+            {
+                ret = getCA( strExtValue, pCA );
+                if( ret == CKR_OK )
+                {
+                    berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
+                }
+            }
+        }
+    }
+    else
+    {
+        berApplet->log( QString( "Read CA[%1] from CertMan" ).arg( sCertInfo.pIssuerName ));
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    return ret;
+}
+
+int CertInfoDlg::getCRL2( const BIN *pCert, bool bOnline, BIN *pCRL )
+{
+    int ret = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    int bSelfSign = 0;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    ret = JS_PKI_getCertInfo2( pCert, &sCertInfo, &pExtInfoList, &bSelfSign );
+    if( ret != 0 ) return ret;
+
+    ret = CertManDlg::getCertCRL( pCert, pCRL );
+    if( ret != CKR_OK )
+    {
+        if( bOnline == true )
+        {
+            QString strExtValue = getValueFromExtList( kExtNameCRLDP, pExtInfoList );
+            if( strExtValue.length() > 0 )
+            {
+                ret = getCRL( strExtValue, pCRL );
+                if( ret == CKR_OK )
+                {
+                    berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
+                }
+            }
+        }
+    }
+    else
+    {
+        berApplet->log( QString( "Read CRL[%1] from CertMan" ).arg( sCertInfo.pSubjectName ));
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    return ret;
+}
+
+int CertInfoDlg::getOCSP2( const BIN *pCert, const BIN *pCA, BIN *pOCSP )
+{
+    int ret = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    int bSelfSign = 0;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    ret = JS_PKI_getCertInfo2( pCert, &sCertInfo, &pExtInfoList, &bSelfSign );
+    if( ret != 0 ) return ret;
+
+    QString strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+
+    ret = getOCSP( strExtValue, pCA, pCert, pOCSP );
+    if( pOCSP->nLen > 0 )
+    {
+        berApplet->log( QString( "Read OCSP[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    return ret;
 }

@@ -158,7 +158,7 @@ bool SettingsMgr::getOnlineCA_CRL()
     QSettings settings;
 
     settings.beginGroup(kBehaviorGroup);
-    online_ca_crl_ = settings.value(kOnlineCA_CRL, false).toBool();
+    online_ca_crl_ = settings.value(kOnlineCA_CRL, true).toBool();
     settings.endGroup();
 
     return online_ca_crl_;

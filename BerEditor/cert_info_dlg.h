@@ -38,6 +38,10 @@ public:
     static int getOCSP( const QString strExtAIA, const BIN *pCA, const BIN *pCert, BIN *pOCSP );
     static const QString getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList );
 
+    static int getCA2( const BIN *pCert, bool bOnline, BIN *pCA );
+    static int getCRL2( const BIN *pCert, bool bOnline, BIN *pCRL );
+    static int getOCSP2( const BIN *pCert, const BIN *pCA, BIN *pOCSP );
+
 private slots:
     void showEvent(QShowEvent *event);
     void slotTreeMenuRequested( QPoint pos );

@@ -165,9 +165,9 @@ void CRLInfoDlg::clickVerifyCRL()
         JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binCA );
 
         ret = JS_PKI_getCertInfo( &binCA, &sCertInfo, NULL );
-        if( ret != 0)
+        if( ret != CKR_OK )
         {
-            berApplet->warningBox( tr( "invalid certificate"), this );
+            berApplet->warningBox( tr( "invalid certificate: %1").arg(JERR(ret)), this );
             JS_BIN_reset( &binCA );
             return;
         }
@@ -190,7 +190,7 @@ void CRLInfoDlg::clickVerifyCRL()
         if( ret == 1 )
             berApplet->messageBox( tr( "CRL verification successful" ), this );
         else
-            berApplet->warningBox( tr( "CRL verification failed [%1]").arg( ret ), this );
+            berApplet->warningBox( tr( "CRL verification failed [%1]").arg( JERR(ret) ), this );
 
         JS_BIN_reset( &binCA );
         JS_PKI_resetCertInfo( &sCertInfo );
