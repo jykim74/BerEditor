@@ -141,7 +141,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
                                                              .arg( sStatusInfo.nReason )));
             i++;
 
-            JS_UTIL_getDateTime( sStatusInfo.nRevokedTime, sRevokedTime );
+            JS_UTIL_getDateTime( sStatusInfo.tRevokedTime, sRevokedTime );
             mStatusTable->insertRow(i);
             mStatusTable->setRowHeight(i, 10);
             mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
