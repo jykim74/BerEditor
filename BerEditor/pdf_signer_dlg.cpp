@@ -34,6 +34,7 @@
 #include "tst_info_dlg.h"
 #include "cert_info_dlg.h"
 #include "cert_pvd_dlg.h"
+#include "ocsp_rsp_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -400,9 +401,15 @@ void PDFSignerDlg::viewValue()
     }
     else if( strType == kDSS_OCSP )
     {
+#if 0
         CertIDDlg certID;
         certID.setResponse2( &binData );
         certID.exec();
+#else
+        OCSPRspDlg ocspRsp;
+        ocspRsp.setResponse( &binData );
+        ocspRsp.exec();
+#endif
     }
     else if( strType == kDocTimeStamp )
     {
@@ -528,9 +535,15 @@ void PDFSignerDlg::viewTreeValue()
     }
     else if( strType == kDSS_OCSPs )
     {
+#if 0
         CertIDDlg certID;
         certID.setResponse2( &binData );
         certID.exec();
+#else
+        OCSPRspDlg ocspRsp;
+        ocspRsp.setResponse( &binData );
+        ocspRsp.exec();
+#endif
     }
     else if( strType == kDSS )
     {

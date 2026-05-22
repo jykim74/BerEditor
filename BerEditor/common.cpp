@@ -1577,7 +1577,7 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
         goto end;
     }
 
-    ret = JS_OCSP_decodeResponse( &binRsp, NULL, &sIDInfo, pStatusInfo, &binSigner );
+    ret = JS_OCSP_decodeResponse( &binRsp, NULL, 0, &sIDInfo, pStatusInfo, &binSigner );
     if( ret != 0 )
     {
         fprintf( stderr, "failed to decode respose:%d\n", ret);

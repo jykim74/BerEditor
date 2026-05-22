@@ -22,6 +22,7 @@ public:
 
 private slots:
     void clickViewSigner();
+    void clickDecode();
 
 private:
     void initUI();

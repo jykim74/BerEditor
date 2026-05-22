@@ -425,6 +425,40 @@ end :
     return ret;
 }
 
+int OCSPClientDlg::getFlags()
+{
+    int nFlags = 0;
+
+    if( mFlagGroup->isChecked() == true )
+    {
+        if( mFlagNOCERTSCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOCERTS;
+
+        if( mFlagNOINTERNCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOINTERN;
+
+        if( mFlagNOSIGSCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOSIGS;
+
+        if( mFlagNOCHAINCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOCHAIN;
+
+        if( mFlagNOVERIFYCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOVERIFY;
+
+        if( mFlagNOEXPLICITCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOEXPLICIT;
+
+        if( mFlagNOCASIGNCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NOCASIGN;
+
+        if( mFlagNODELEGATEDCheck->isChecked() )
+            nFlags |= JS_FLAG_OCSP_NODELEGATED;
+    }
+
+    return nFlags;
+}
+
 void OCSPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
@@ -1130,6 +1164,7 @@ void OCSPClientDlg::clickVerify()
     JCertStatusInfo sStatusInfo;
 
     BIN binSigner = {0,0};
+    int nFlags = getFlags();
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
@@ -1163,7 +1198,7 @@ void OCSPClientDlg::clickVerify()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo, &binSigner );
+    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, nFlags, &sIDInfo, &sStatusInfo, &binSigner );
 
     if( ret == JSR_INVALID )
     {

@@ -77,6 +77,8 @@ private:
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
 
+    int getFlags();
+
     BIN cert_;
 };
 

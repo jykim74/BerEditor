@@ -1,39 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CertIDDlg</class>
- <widget class="QDialog" name="CertIDDlg">
+ <class>OCSPRspDlg</class>
+ <widget class="QDialog" name="OCSPRspDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>504</width>
-    <height>367</height>
+    <width>418</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Certificate ID and Status</string>
+   <string>OCSP Response Window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
+    <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="mHeadLabel">
        <property name="text">
-        <string>OCSP Response CertID</string>
+        <string>OCSP Response</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>0</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="pushButton_2">
        <property name="maximumSize">
         <size>
          <width>16</width>
@@ -45,10 +36,7 @@
        </property>
        <property name="icon">
         <iconset resource="bereditor.qrc">
-         <normaloff>:/images/info.png</normaloff>:/images/info.png</iconset>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
+         <normaloff>:/images/ocsp.png</normaloff>:/images/ocsp.png</iconset>
        </property>
       </widget>
      </item>
@@ -62,12 +50,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="mIDTable">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
+    <widget class="QTableWidget" name="mInfoTable">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
      </property>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
@@ -82,30 +67,90 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gridLayout_4">
      <property name="topMargin">
       <number>0</number>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Certificate Status Information</string>
+        <string>Response CertID Tree</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="mStatusTable">
+    <widget class="QTreeWidget" name="mRspTree">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Detail Value</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mInfoText">
      <property name="minimumSize">
       <size>
-       <width>480</width>
+       <width>400</width>
        <height>0</height>
       </size>
      </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -116,10 +161,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="2">
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -133,17 +175,17 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mViewSignerBtn">
        <property name="text">
         <string>View Signer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
        </property>
       </widget>
      </item>
@@ -158,12 +200,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>pushButton</tabstop>
-  <tabstop>mIDTable</tabstop>
-  <tabstop>mStatusTable</tabstop>
-  <tabstop>mCloseBtn</tabstop>
- </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>
