@@ -166,6 +166,149 @@ end :
     JS_BIN_reset( &binSigner );
 }
 
+void CertIDDlg::setResponse2( const BIN *pResp )
+{
+    int i = 0;
+    int ret = 0;
+
+    BIN binSignCert = {0,0};
+    BIN binSigner = {0,0};
+    char sRevokedTime[64];
+    QString strVerify;
+    int nCount = 0;
+
+    JOCSPRspList *pRspList = NULL;
+    JOCSPRspList *pCurList = NULL;
+
+    JS_BIN_copy( &resp_, pResp );
+
+    ret = JS_OCSP_decodeResponse2( &resp_, &binSignCert, &pRspList, &binSigner );
+
+    if( ret == JSR_VERIFY )
+    {
+        strVerify = tr("Verify OK");
+    }
+    else if( ret == JSR_INVALID )
+    {
+        strVerify = tr( "Verify Fail: %1").arg( JERR(ret));
+    }
+    else
+    {
+        strVerify = tr("Error: %1").arg( JERR(ret));
+    }
+
+    if( binSigner.nLen > 0 )
+    {
+        JS_BIN_copy( &signer_, &binSigner );
+        mViewSignerBtn->setEnabled( true );
+    }
+    else
+    {
+        mViewSignerBtn->setEnabled( false );
+    }
+
+    nCount = JS_OCSP_countOCSPRspList( pRspList );
+
+    mIDTable->insertRow(i);
+    mIDTable->setRowHeight(i, 10);
+    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Verify" )));
+    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( strVerify )));
+    i++;
+
+    mIDTable->insertRow(i);
+    mIDTable->setRowHeight(i, 10);
+    mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Rsp Count" )));
+    mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( nCount )));
+    i++;
+
+    pCurList = pRspList;
+
+    while( pCurList )
+    {
+        if( pCurList->ocspRsp.pHash )
+        {
+            mIDTable->insertRow(i);
+            mIDTable->setRowHeight(i, 10);
+            mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Hash" )));
+            mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pCurList->ocspRsp.pHash )));
+            i++;
+        }
+
+        if( pCurList->ocspRsp.pNameHash )
+        {
+            mIDTable->insertRow(i);
+            mIDTable->setRowHeight(i, 10);
+            mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "NameHash" )));
+            mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pCurList->ocspRsp.pNameHash )));
+            i++;
+        }
+
+        if( pCurList->ocspRsp.pKeyHash )
+        {
+            mIDTable->insertRow(i);
+            mIDTable->setRowHeight(i, 10);
+            mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "KeyHash" )));
+            mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pCurList->ocspRsp.pKeyHash )));
+            i++;
+        }
+
+        if( pCurList->ocspRsp.pSerial )
+        {
+            mIDTable->insertRow(i);
+            mIDTable->setRowHeight(i, 10);
+            mIDTable->setItem( i, 0, new QTableWidgetItem( tr( "Serial" )));
+            mIDTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pCurList->ocspRsp.pSerial )));
+            i++;
+        }
+
+        if( pCurList->ocspRsp.nStatus >= 0 )
+        {
+            i = 0;
+            mStatusTable->insertRow(i);
+            mStatusTable->setRowHeight(i, 10);
+            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Status" )));
+            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+                                                             .arg( JS_OCSP_getCertStatusName(pCurList->ocspRsp.nStatus))
+                                                             .arg( pCurList->ocspRsp.nStatus )));
+            i++;
+
+            if( pCurList->ocspRsp.nStatus != JS_OCSP_CERT_STATUS_GOOD )
+            {
+                mStatusTable->insertRow(i);
+                mStatusTable->setRowHeight(i, 10);
+                mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Reason" )));
+                mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+                                                                 .arg( JS_OCSP_getRevokeReasonName(pCurList->ocspRsp.nReason))
+                                                                 .arg( pCurList->ocspRsp.nReason )));
+                i++;
+
+                JS_UTIL_getDateTime( pCurList->ocspRsp.tRevokedTime, sRevokedTime );
+                mStatusTable->insertRow(i);
+                mStatusTable->setRowHeight(i, 10);
+                mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
+                mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sRevokedTime )));
+                i++;
+
+                if( pCurList->ocspRsp.pHoldOID != NULL )
+                {
+                    mStatusTable->insertRow(i);
+                    mStatusTable->setRowHeight(i, 10);
+                    mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "HoldOID" )));
+                    mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pCurList->ocspRsp.pHoldOID )));
+                    i++;
+                }
+            }
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+end :
+    JS_BIN_reset( &binSignCert );
+    JS_BIN_reset( &binSigner );
+    if( pRspList ) JS_OCSP_resetOCSPRspList( &pRspList );
+}
+
 void CertIDDlg::clickViewSigner()
 {
     CertInfoDlg certInfo;

@@ -16,7 +16,9 @@ class CertIDDlg : public QDialog, public Ui::CertIDDlg
 public:
     explicit CertIDDlg(QWidget *parent = nullptr);
     ~CertIDDlg();
+
     void setResponse( const BIN *pResp );
+    void setResponse2( const BIN *pResp );
 
 private slots:
     void clickViewSigner();

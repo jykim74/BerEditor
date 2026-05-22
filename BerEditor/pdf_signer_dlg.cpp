@@ -401,7 +401,7 @@ void PDFSignerDlg::viewValue()
     else if( strType == kDSS_OCSP )
     {
         CertIDDlg certID;
-        certID.setResponse( &binData );
+        certID.setResponse2( &binData );
         certID.exec();
     }
     else if( strType == kDocTimeStamp )
@@ -529,7 +529,7 @@ void PDFSignerDlg::viewTreeValue()
     else if( strType == kDSS_OCSPs )
     {
         CertIDDlg certID;
-        certID.setResponse( &binData );
+        certID.setResponse2( &binData );
         certID.exec();
     }
     else if( strType == kDSS )
