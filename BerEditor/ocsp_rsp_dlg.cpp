@@ -235,12 +235,17 @@ void OCSPRspDlg::clickDecode()
 void OCSPRspDlg::clickInfoTable()
 {
     mInfoText->clear();
-    QTableWidgetItem* item = mInfoTable->currentItem();
+
+    QModelIndex idx = mInfoTable->currentIndex();
+    QTableWidgetItem* item = mInfoTable->item(idx.row(), 0 );
+    QTableWidgetItem* item1 = mInfoTable->item( idx.row(), 1 );
 
     if( item == nullptr ) return;
 
-    QString strText = item->text();
-    mInfoText->setPlainText( strText );
+    QString strField = item->text();
+    QString strValue = item1->text();
+
+    mInfoText->setPlainText( QString( "%1:%2" ).arg( strField ).arg( strValue) );
 }
 
 void OCSPRspDlg::clickRspTree()
