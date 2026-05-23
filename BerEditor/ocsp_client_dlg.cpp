@@ -80,7 +80,6 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
-
     mCACertViewBtn->setFixedWidth(34);
     mCACertDecodeBtn->setFixedWidth(34);
     mCACertTypeBtn->setFixedWidth(34);
@@ -273,6 +272,7 @@ void OCSPClientDlg::clickSetURL()
         if( strFile.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -324,11 +324,12 @@ void OCSPClientDlg::clickSetCACert()
     }
     else
     {
-        QString strFile = mCACertPathText->text();
+        QString strFile = mCertPathText->text();
 
         if( strFile.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
