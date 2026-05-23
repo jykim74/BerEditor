@@ -735,7 +735,11 @@ void CertInfoDlg::clickMakeTree()
                     if( ret != 0 ) break;
 
                     ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
-                    if( ret != JSR_VERIFY ) break;
+                    if( ret != JSR_VERIFY )
+                    {
+                        berApplet->warningBox( QString( "failed to verify cert by CA: %1(%2)").arg(ret).arg(sMsg), this );
+                        break;
+                    }
                 }
             }
         }
@@ -758,7 +762,10 @@ void CertInfoDlg::clickMakeTree()
 
                     ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
                     if( ret != JSR_VERIFY )
+                    {
+                        berApplet->warningBox( QString( "failed to verify cert by CA: %1(%2)").arg(ret).arg(sMsg), this);
                         break;
+                    }
 
                     berApplet->log( QString( "Read CA[%1] from AIA" ).arg( sCertInfo.pIssuerName ));
                 }
