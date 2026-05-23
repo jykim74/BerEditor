@@ -14,6 +14,7 @@
 #include "cms_info_dlg.h"
 #include "passwd_dlg.h"
 #include "cert_id_dlg.h"
+#include "ocsp_rsp_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -427,9 +428,12 @@ void BERCheckDlg::clickView()
         }
         else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
         {
-            CertIDDlg certID;
-            certID.setResponse( &binSrc );
-            certID.exec();
+//            CertIDDlg certID;
+//            certID.setResponse( &binSrc );
+//            certID.exec();
+            OCSPRspDlg ocspRsp;
+            ocspRsp.setResponse( &binSrc );
+            ocspRsp.exec();
         }
     }
     else
