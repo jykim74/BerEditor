@@ -69,7 +69,6 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
     int ret = 0;
 
     BIN binSignCert = {0,0};
-    BIN binSigner = {0,0};
     char sRevokedTime[64];
     QString strVerify;
     int nCount = 0;
@@ -98,9 +97,9 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
         strVerify = tr("Error: %1").arg( JERR(ret));
     }
 
-    if( binSigner.nLen > 0 )
+    if( sRspInfo.binSigner.nLen > 0 )
     {
-        JS_BIN_copy( &signer_, &binSigner );
+        JS_BIN_copy( &signer_, &sRspInfo.binSigner );
         mViewSignerBtn->setEnabled( true );
     }
     else
@@ -201,7 +200,6 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
 
 end :
     JS_BIN_reset( &binSignCert );
-    JS_BIN_reset( &binSigner );
 
     JS_OCSP_resetOCSPInfo( &sRspInfo );
     if( pRspList ) JS_OCSP_resetSingleRspList( &pRspList );

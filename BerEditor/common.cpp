@@ -1515,15 +1515,44 @@ int getDataFromURI( const QString strURI, BIN *pData )
 
     if( strScheme == "http" || strScheme == "https" )
     {
+        BIN binData = {0,0};
+        char *pBuf = NULL;
+
         strHost = url.host();
         nPort = url.port(80);
 
-        ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, pData );
+        ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, &binData );
 
         if( nStatus != 200 )
         {
             ret = JSR_HTTP_STATUS_NOT_OK;
         }
+
+        int nType = JS_BIN_getType( &binData );
+
+        if( nType == JS_BIN_TYPE_BASE64 )
+        {
+            pBuf = (char *)JS_malloc( binData.nLen + 1 );
+            pBuf[binData.nLen] = 0x00;
+
+            ret = JS_BIN_decodeBase64( pBuf, pData );
+        }
+        else if( nType == JS_BIN_TYPE_PEM )
+        {
+            int nPEMType = 0;
+            pBuf = (char *)JS_malloc( binData.nLen + 1 );
+            pBuf[binData.nLen] = 0x00;
+
+            ret = JS_BIN_decodePEM( pBuf, &nPEMType, pData );
+        }
+        else
+        {
+            JS_BIN_copy( pData, &binData );
+            ret = pData->nLen;
+        }
+
+        if( pBuf ) JS_free( pBuf );
+        JS_BIN_reset( &binData );
     }
     else if( strScheme == "ldap" )
     {
@@ -1535,19 +1564,13 @@ int getDataFromURI( const QString strURI, BIN *pData )
     else if( strScheme == "file" )
     {
         ret = JS_BIN_fileReadBER( url.path().toLocal8Bit().toStdString().c_str(), pData );
-        if( ret > 0 )
-            ret = 0;
-        else
-            ret  -1;
     }
     else
     {
         ret = JS_BIN_fileReadBER( strURI.toLocal8Bit().toStdString().c_str(), pData );
-        if( ret > 0 )
-            ret = 0;
-        else
-            ret  -1;
     }
+
+    if( ret > 0 ) ret = JSR_OK;
 
     return ret;
 }

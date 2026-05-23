@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>581</height>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -412,7 +412,7 @@
                <string comment="Certificate path tree validation"/>
               </property>
               <property name="text">
-               <string>Path Validation</string>
+               <string>Cert PVD</string>
               </property>
              </widget>
             </item>
