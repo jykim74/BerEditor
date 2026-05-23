@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>1003</height>
+    <width>624</width>
+    <height>930</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -310,13 +310,6 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line_5">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QGridLayout" name="gridLayout_10">
      <property name="topMargin">
       <number>0</number>
@@ -579,14 +572,23 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Request</string>
-       </property>
-      </widget>
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mHashCombo"/>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="8">
       <widget class="QLineEdit" name="mRequestLenText">
        <property name="minimumSize">
         <size>
@@ -635,31 +637,12 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mRequestClearBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mEncodeBtn">
        <property name="text">
-        <string>C</string>
+        <string>Encode</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mRequestDecodeBtn">
@@ -674,53 +657,30 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QPlainTextEdit" name="mRequestText">
-     <property name="minimumSize">
-      <size>
-       <width>500</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_7">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="6">
+      <widget class="QCheckBox" name="mAutoSendCheck">
+       <property name="text">
+        <string>Auto send</string>
        </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mRequestClearBtn">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Hash</string>
+        <string>Request</string>
        </property>
       </widget>
      </item>
@@ -731,21 +691,20 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mEncodeBtn">
-       <property name="text">
-        <string>Encode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QCheckBox" name="mAutoSendCheck">
-       <property name="text">
-        <string>Auto send</string>
-       </property>
-      </widget>
-     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mRequestText">
+     <property name="minimumSize">
+      <size>
+       <width>600</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_4">
@@ -852,20 +811,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mResponseDecodeBtn">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mResponseLenText">
        <property name="minimumSize">
         <size>
@@ -934,20 +893,27 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mResponseDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mViewCertIDBtn">
        <property name="text">
-        <string>D</string>
+        <string>View CertID</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="6">
       <widget class="QPushButton" name="mVerifyBtn">
        <property name="text">
         <string>Verify</string>
@@ -955,9 +921,9 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mViewCertIDBtn">
+      <widget class="QPushButton" name="mViewRspBtn">
        <property name="text">
-        <string>View CertID</string>
+        <string>View Response</string>
        </property>
       </widget>
      </item>
@@ -1169,10 +1135,6 @@
   <tabstop>mRequestDecodeBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
-  <tabstop>mHashCombo</tabstop>
-  <tabstop>mEncodeBtn</tabstop>
-  <tabstop>mAutoSendCheck</tabstop>
-  <tabstop>mSendBtn</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mViewCertIDBtn</tabstop>

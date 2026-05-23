@@ -8,6 +8,7 @@
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "cert_id_dlg.h"
+#include "ocsp_rsp_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -67,6 +68,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mViewRspBtn, SIGNAL(clicked()), this, SLOT(clickViewRsp()));
     connect( mViewCertIDBtn, SIGNAL(clicked()), this, SLOT(clickViewCertID()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
@@ -1121,6 +1123,33 @@ void OCSPClientDlg::clickSend()
 
 end :
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+}
+
+void OCSPClientDlg::clickViewRsp()
+{
+    BIN binSrvCert = {0,0};
+    BIN binRsp = {0,0};
+
+    QString strSrvCertPath = mSrvCertPathText->text();
+    QString strRspHex = mResponseText->toPlainText();
+
+    OCSPRspDlg ocspRsp;
+
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
+    JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
+
+    ocspRsp.setResponse( &binRsp );
+    ocspRsp.exec();
+
+end :
+    JS_BIN_reset( &binSrvCert );
     JS_BIN_reset( &binRsp );
 }
 

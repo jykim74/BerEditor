@@ -60,6 +60,7 @@ private slots:
 
     void clickEncode();
     void clickSend();
+    void clickViewRsp();
     void clickViewCertID();
     void clickVerify();
     void clickClearAll();

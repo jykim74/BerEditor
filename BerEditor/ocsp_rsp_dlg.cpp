@@ -143,6 +143,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
     {
         QTreeWidgetItem* nameItem = new QTreeWidgetItem;
         nameItem->setText( 0, tr( "NameHash: %1" ).arg( pCurList->singleRsp.pNameHash ) );
+        nameItem->setIcon( 0, QIcon(":/images/hash.png" ));
 
         rootItem->addChild( nameItem );
 
@@ -150,6 +151,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
         {
             QTreeWidgetItem* item = new QTreeWidgetItem;
             item->setText(0, tr( "Algorithm: %1" ).arg( pCurList->singleRsp.pHash ));
+            item->setIcon( 0, QIcon(":/images/nemo.png"));
             nameItem->addChild( item );
         }
 
@@ -157,6 +159,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
         {
             QTreeWidgetItem* item = new QTreeWidgetItem;
             item->setText(0, tr( "KeyHash: %1" ).arg( pCurList->singleRsp.pKeyHash ) );
+            item->setIcon( 0, QIcon(":/images/nemo.png"));
             nameItem->addChild( item );
         }
 
@@ -164,6 +167,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
         {
             QTreeWidgetItem* item = new QTreeWidgetItem;
             item->setText(0, tr("Serial: %1").arg( pCurList->singleRsp.pSerial ) );
+            item->setIcon( 0, QIcon(":/images/nemo.png"));
             nameItem->addChild( item );
         }
 
@@ -171,25 +175,36 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
         {
             QTreeWidgetItem* statusItem = new QTreeWidgetItem;
             statusItem->setText( 0, tr("Status: %1").arg( JS_OCSP_getCertStatusName(pCurList->singleRsp.nStatus) ) );
+
+
             nameItem->addChild( statusItem );
 
             if( pCurList->singleRsp.nStatus != JS_OCSP_CERT_STATUS_GOOD )
             {
+                statusItem->setIcon( 0, QIcon(":/images/revoke.png" ));
+
                 QTreeWidgetItem* reasonItem = new QTreeWidgetItem;
                 reasonItem->setText( 0, tr("Reason: %1").arg( JS_OCSP_getRevokeReasonName(pCurList->singleRsp.nReason) ) );
+                reasonItem->setIcon( 0, QIcon(":/images/circle.png" ));
                 statusItem->addChild( reasonItem );
 
                 JS_UTIL_getDateTime( pCurList->singleRsp.tRevokedTime, sRevokedTime );
                 QTreeWidgetItem* revokedTimeItem = new QTreeWidgetItem;
                 revokedTimeItem->setText( 0, tr("RevokedTime: %1" ).arg( sRevokedTime ) );
+                revokedTimeItem->setIcon( 0, QIcon(":/images/circle.png" ));
                 statusItem->addChild( revokedTimeItem );
 
                 if( pCurList->singleRsp.pHoldOID != NULL )
                 {
                     QTreeWidgetItem* holdItem = new QTreeWidgetItem;
                     holdItem->setText( 0, tr( "Hold OID: %1" ).arg( pCurList->singleRsp.pHoldOID ) );
+                    holdItem->setIcon( 0, QIcon(":/images/circle.png" ));
                     statusItem->addChild( holdItem );
                 }
+            }
+            else
+            {
+                statusItem->setIcon( 0, QIcon(":/images/valid.png" ));
             }
         }
 
