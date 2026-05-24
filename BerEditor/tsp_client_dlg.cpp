@@ -419,6 +419,7 @@ void TSPClientDlg::clickSend()
 
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
+    BIN binDER = {0,0};
 
     QString strReq = mRequestText->toPlainText();
     QString strURL = mURLCombo->currentText();
@@ -476,9 +477,10 @@ void TSPClientDlg::clickSend()
     else
         ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
 
-    if( ret == 0 && nStatus == 200 )
+    if( ret == 0 && nStatus == JS_HTTP_STATUS_OK )
     {
-        mResponseText->setPlainText( getHexString( &binRsp ));
+        JS_BIN_formatToBIN( &binRsp, &binDER );
+        mResponseText->setPlainText( getHexString( &binDER ));
         setUsedURL( strURL );
         berApplet->messageBox( tr("TSP message sent"), this );
     }
@@ -491,6 +493,7 @@ void TSPClientDlg::clickSend()
 end :
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binDER );
 }
 
 void TSPClientDlg::clickVerify()

@@ -1414,6 +1414,7 @@ void CMPClientDlg::clickSend()
     int nStatus = 0;
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
+    BIN binDER = {0,0};
 
     QString strURL = mURLCombo->currentText();
     QString strReq = mRequestText->toPlainText();
@@ -1454,13 +1455,15 @@ void CMPClientDlg::clickSend()
         goto end;
     }
 
-    mResponseText->setPlainText( getHexString( &binRsp ));
+    JS_BIN_formatToBIN( &binRsp, &binDER );
+    mResponseText->setPlainText( getHexString( &binDER ));
     setUsedURL( strURL );
     berApplet->messageBox( tr("CMP message sent"), this );
 
 end :
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binDER );
 }
 
 void CMPClientDlg::clickClearAll()

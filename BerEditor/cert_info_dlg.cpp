@@ -1307,7 +1307,10 @@ int CertInfoDlg::getOCSP( const QString strExtAIA, const BIN *pCA, const BIN *pC
         goto end;
     }
 
-    if( nStatus == 200 ) JS_BIN_copy( pOCSP, &binRsp );
+    if( nStatus == 200 )
+    {
+        ret = JS_BIN_formatToBIN( &binRsp, pOCSP );
+    }
 
 end :
     JS_BIN_reset( &binNonce );

@@ -1081,6 +1081,7 @@ void OCSPClientDlg::clickSend()
 
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
+    BIN binDER = {0,0};
 
     QString strReq = mRequestText->toPlainText();
     QString strURL = mURLCombo->currentText();
@@ -1109,9 +1110,10 @@ void OCSPClientDlg::clickSend()
         goto end;
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK && nStatus == JS_HTTP_STATUS_OK )
     {
-        mResponseText->setPlainText( getHexString( &binRsp ));
+        JS_BIN_formatToBIN( &binRsp, &binDER );
+        mResponseText->setPlainText( getHexString( &binDER ));
         setUsedURL( strURL );
         berApplet->messageBox( tr("OCSP message sent"), this );
     }
@@ -1124,6 +1126,7 @@ void OCSPClientDlg::clickSend()
 end :
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binDER );
 }
 
 void OCSPClientDlg::clickViewRsp()

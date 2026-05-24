@@ -1527,31 +1527,11 @@ int getDataFromURI( const QString strURI, BIN *pData )
         {
             ret = JSR_HTTP_STATUS_NOT_OK;
         }
-
-        int nType = JS_BIN_getType( &binData );
-
-        if( nType == JS_BIN_TYPE_BASE64 )
-        {
-            pBuf = (char *)JS_malloc( binData.nLen + 1 );
-            pBuf[binData.nLen] = 0x00;
-
-            ret = JS_BIN_decodeBase64( pBuf, pData );
-        }
-        else if( nType == JS_BIN_TYPE_PEM )
-        {
-            int nPEMType = 0;
-            pBuf = (char *)JS_malloc( binData.nLen + 1 );
-            pBuf[binData.nLen] = 0x00;
-
-            ret = JS_BIN_decodePEM( pBuf, &nPEMType, pData );
-        }
         else
         {
-            JS_BIN_copy( pData, &binData );
-            ret = pData->nLen;
+            ret = JS_BIN_formatToBIN( &binData, pData );
         }
 
-        if( pBuf ) JS_free( pBuf );
         JS_BIN_reset( &binData );
     }
     else if( strScheme == "ldap" )
@@ -1582,8 +1562,10 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
     BIN binSigner = {0,0};
+    BIN binDER = {0,0};
 
     JCertIDInfo sIDInfo;
+
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
 
     ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, NULL, "SHA256", NULL, NULL, &binReq );
@@ -1600,7 +1582,9 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
         goto end;
     }
 
-    ret = JS_OCSP_decodeResponse( &binRsp, NULL, 0, &sIDInfo, pStatusInfo, &binSigner );
+    JS_BIN_formatToBIN( &binRsp, &binDER );
+
+    ret = JS_OCSP_decodeResponse( &binDER, NULL, 0, &sIDInfo, pStatusInfo, &binSigner );
     if( ret != 0 )
     {
         fprintf( stderr, "failed to decode respose:%d\n", ret);
@@ -1611,6 +1595,7 @@ end :
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
     JS_BIN_reset( &binSigner );
+    JS_BIN_reset( &binDER );
 
     JS_OCSP_resetCertIDInfo( &sIDInfo );
 //    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
