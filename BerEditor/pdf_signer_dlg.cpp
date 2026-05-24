@@ -142,6 +142,8 @@ void PDFSignerDlg::initUI()
     mInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    mInfoTable->setColumnWidth( 0, 120 );
+
     mNameText->setPlaceholderText( tr("String value" ));
     mReasonText->setPlaceholderText( tr( "String value" ));
     mLocationText->setPlaceholderText( tr("String value" ));
