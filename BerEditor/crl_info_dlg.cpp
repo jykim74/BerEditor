@@ -152,49 +152,54 @@ void CRLInfoDlg::clickVerifyCRL()
     BIN binCA = {0,0};
     QString strPath;
 
-    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
-
-    if( strFileName.length() > 0 )
+    ret = CertManDlg::getCRL_CA( &crl_bin_, &binCA );
+    if( ret != CKR_OK )
     {
-        JCertInfo sCertInfo;
-        QString strCertName;
-        QString strCRLName;
+        QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
 
-        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-
-        JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binCA );
-
-        ret = JS_PKI_getCertInfo( &binCA, &sCertInfo, NULL );
-        if( ret != CKR_OK )
+        if( strFileName.length() > 0 )
         {
-            berApplet->warningBox( tr( "invalid certificate: %1").arg(JERR(ret)), this );
-            JS_BIN_reset( &binCA );
-            return;
-        }
+            JCertInfo sCertInfo;
+            QString strCertName;
+            QString strCRLName;
 
-        strCertName = sCertInfo.pSubjectName;
-        strCRLName = crl_info_.pIssuerName;
+            memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-        if( strCertName != strCRLName )
-        {
-            berApplet->warningBox( tr( "The certificate is not issuer of the CRL" ), this );
-            berApplet->elog( QString( "CertName: %1" ).arg( strCertName ) );
-            berApplet->elog( QString( "CRLName: %1").arg( strCRLName) );
+            JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binCA );
 
-            JS_BIN_reset( &binCA );
+            ret = JS_PKI_getCertInfo( &binCA, &sCertInfo, NULL );
+            if( ret != CKR_OK )
+            {
+                berApplet->warningBox( tr( "invalid certificate: %1").arg(JERR(ret)), this );
+                JS_BIN_reset( &binCA );
+                return;
+            }
+
+            strCertName = sCertInfo.pSubjectName;
+            strCRLName = crl_info_.pIssuerName;
+
+            if( strCertName != strCRLName )
+            {
+                berApplet->warningBox( tr( "The certificate is not issuer of the CRL" ), this );
+                berApplet->elog( QString( "CertName: %1" ).arg( strCertName ) );
+                berApplet->elog( QString( "CRLName: %1").arg( strCRLName) );
+
+                JS_BIN_reset( &binCA );
+                JS_PKI_resetCertInfo( &sCertInfo );
+                return;
+            }
+
             JS_PKI_resetCertInfo( &sCertInfo );
-            return;
         }
-
-        ret = JS_PKI_verifyCRL( &crl_bin_, &binCA );
-        if( ret == 1 )
-            berApplet->messageBox( tr( "CRL verification successful" ), this );
-        else
-            berApplet->warningBox( tr( "CRL verification failed [%1]").arg( JERR(ret) ), this );
-
-        JS_BIN_reset( &binCA );
-        JS_PKI_resetCertInfo( &sCertInfo );
     }
+
+    ret = JS_PKI_verifyCRL( &crl_bin_, &binCA );
+    if( ret == 1 )
+        berApplet->messageBox( tr( "CRL verification successful" ), this );
+    else
+        berApplet->warningBox( tr( "CRL verification failed [%1]").arg( JERR(ret) ), this );
+
+    JS_BIN_reset( &binCA );
 }
 
 int CRLInfoDlg::setCRLPath(const QString strPath )

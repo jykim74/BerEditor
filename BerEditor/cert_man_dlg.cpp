@@ -1623,7 +1623,7 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
     if( ret != 0 ) return ret;
 
     QDir dir( strCertPath );
-    for( const QFileInfo &file : dir.entryInfoList(QDir::Files ))
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files, QDir::Time ))
     {
         QString strName = file.baseName();
         QString strSuffix = file.suffix();
@@ -1648,6 +1648,45 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
         if( fileInfo.exists() ) break;
     }
 #endif
+
+    ret = JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), pCA );
+
+    if( ret > 0 && pCA->nLen > 0 )
+        ret = JSR_OK;
+    else
+        ret = JSR_ERR2;
+
+    return ret;
+}
+
+int CertManDlg::readCRL_CA( const QString strCertPath, const BIN *pCRL, BIN *pCA )
+{
+    int ret = 0;
+    unsigned long uHash = 0;
+    if( pCRL == NULL ) return JSR_ERR;
+
+    QString strCAPath;
+
+    ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
+    if( ret != 0 ) return ret;
+
+    QDir dir( strCertPath );
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files ))
+    {
+        QString strName = file.baseName();
+        QString strSuffix = file.suffix();
+
+        if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
+        {
+            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( uHash ).arg(strSuffix );
+            break;
+        }
+    }
+
+    if( strCAPath.length() < 1 )
+    {
+        return JSR_FILE_READ_FAIL;
+    }
 
     ret = JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), pCA );
 
@@ -1738,6 +1777,24 @@ end :
     return ret;
 }
 
+int CertManDlg::getCRL_CA( const BIN *pCRL, BIN *pCA )
+{
+    int ret = 0;
+    BIN binCA = {0,0};
+
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
+    QString strRCAPath = berApplet->settingsMgr()->trustCertPath();
+
+    ret = readCRL_CA( strCAPath, pCRL, pCA );
+    if( ret == JSR_OK ) goto end;
+
+    ret = readCRL_CA( strRCAPath, pCRL, pCA );
+
+end :
+
+    return ret;
+}
+
 int CertManDlg::getChain( const BIN *pCert, BINList *pChainList )
 {
     int ret = 0;
@@ -1780,7 +1837,7 @@ int CertManDlg::getCertCRL( const BIN *pCert, BIN *pCRL )
     ret = JS_PKI_getIssuerNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
     QDir dir( strPath );
-    for( const QFileInfo &file : dir.entryInfoList(QDir::Files ))
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files, QDir::Time ))
     {
         QString strName = file.baseName();
         QString strSuffix = file.suffix();
