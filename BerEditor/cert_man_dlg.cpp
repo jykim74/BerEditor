@@ -1654,7 +1654,7 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
     if( ret > 0 && pCA->nLen > 0 )
         ret = JSR_OK;
     else
-        ret = JSR_ERR2;
+        ret = JSR_PKI_CERTMAN_NO_CERT;
 
     return ret;
 }
@@ -1693,7 +1693,7 @@ int CertManDlg::readCRL_CA( const QString strCertPath, const BIN *pCRL, BIN *pCA
     if( ret > 0 && pCA->nLen > 0 )
         ret = JSR_OK;
     else
-        ret = JSR_ERR2;
+        ret = JSR_PKI_CERTMAN_NO_CERT;
 
     return ret;
 }
@@ -1859,7 +1859,7 @@ int CertManDlg::getCertCRL( const BIN *pCert, BIN *pCRL )
     if( ret > 0 && pCRL->nLen > 0 )
         ret = JSR_OK;
     else
-        ret = JSR_ERR2;
+        ret = JSR_PKI_CERTMAN_NO_CRL;
 
     return ret;
 }
