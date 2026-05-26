@@ -606,7 +606,7 @@ void CertInfoDlg::clickSaveToMan()
     int ret = 0;
     QString strPath = berApplet->settingsMgr()->otherCertPath();
 
-    ret = CertManDlg::writeNameHash( strPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strPath, &cert_bin_, nullptr );
 
     if( ret > 0 )
     {
@@ -616,7 +616,7 @@ void CertInfoDlg::clickSaveToMan()
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     }
     else
-        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
+        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( JERR(ret) ), this );
 }
 
 void CertInfoDlg::clickSaveToCA()
@@ -624,7 +624,7 @@ void CertInfoDlg::clickSaveToCA()
     int ret = 0;
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
-    ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_, nullptr );
 
     if( ret > 0 )
     {
@@ -633,7 +633,7 @@ void CertInfoDlg::clickSaveToCA()
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     }
     else
-        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
+        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( JERR(ret) ), this );
 }
 
 void CertInfoDlg::clickSaveTrustedCA()
@@ -656,7 +656,7 @@ void CertInfoDlg::clickSaveTrustedCA()
         return;
     }
 
-    ret = CertManDlg::writeNameHash( strTrustedCAPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strTrustedCAPath, &cert_bin_, nullptr );
     if( ret > 0 )
     {
         if( berApplet->mainWindow()->certManDlg() )
@@ -664,7 +664,7 @@ void CertInfoDlg::clickSaveTrustedCA()
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     }
     else
-        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(ret), this );
+        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(JERR(ret)), this );
 }
 
 void CertInfoDlg::clickMakeTree()

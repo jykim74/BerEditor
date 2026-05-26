@@ -1698,7 +1698,7 @@ int CertManDlg::readCRL_CA( const QString strCertPath, const BIN *pCRL, BIN *pCA
     return ret;
 }
 
-int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
+int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert, QWidget *parent )
 {
     int i = 0;
     int ret = 0;
@@ -1715,6 +1715,7 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
     ret = JS_PKI_getSubjectNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
 
+#if 0
     for( i = 0; i <= NAME_HASH_MAX_NUM; i++ )
     {
         strFilePath = QString( "%1/%2.%3").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') ).arg( num + i );
@@ -1722,13 +1723,30 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
     }
 
     if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
+#else
+    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') );
+    if( QFileInfo::exists( strFilePath ) == true )
+    {
+        if( parent )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("The same DN certificate already exists. Do you want to overwrite it?"), parent, true );
+            if( bVal == false ) return JSR_FILE_ALREADY_EXIST;
+
+            dir.remove( strFilePath );
+        }
+        else
+        {
+            return JSR_FILE_ALREADY_EXIST;
+        }
+    }
+#endif
 
     ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strFilePath.toLocal8Bit().toStdString().c_str() );
 
     return ret;
 }
 
-int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
+int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL, QWidget *parent )
 {
     int ret = 0;
     int i = 0;
@@ -1744,6 +1762,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
     if( ret != 0 ) return ret;
 
+#if 0
     while( i <= NAME_HASH_MAX_NUM )
     {
         strFilePath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash, 8, 16, QLatin1Char('0')  ).arg(i);
@@ -1753,6 +1772,22 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     }
 
     if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
+#else
+    strFilePath = QString( "%1/%2.0").arg( strCRLPath ).arg( uHash, 8, 16, QLatin1Char('0') );
+    if( QFileInfo::exists( strFilePath ) == true )
+    {
+        if( parent )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("The same issuer DN already exists. Do you want to overwrite it?"), parent, true );
+            if( bVal == false ) return JSR_FILE_ALREADY_EXIST;
+            dir.remove( strFilePath );
+        }
+        else
+        {
+            return JSR_FILE_ALREADY_EXIST;
+        }
+    }
+#endif
 
     ret = JS_BIN_writePEM( pCRL, JS_PEM_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
 
@@ -2624,7 +2659,7 @@ void CertManDlg::clickAddCA()
             goto end;
         }
 
-        ret = writeNameHash( strCAPath, &binCA );
+        ret = writeNameHash( strCAPath, &binCA, nullptr );
         if( ret > 0 )
         {
             loadCAList();
@@ -2815,7 +2850,7 @@ void CertManDlg::clickAddOther()
             goto end;
         }
 
-        ret = writeNameHash( strOtherPath, &binOther );
+        ret = writeNameHash( strOtherPath, &binOther, nullptr );
         if( ret > 0 )
         {
             loadOtherList();
@@ -3038,7 +3073,7 @@ void CertManDlg::clickAddCRL()
         ret = JS_PKI_getCRLInfo( &binCRL, &sCRLInfo, NULL, NULL );
         if( ret != 0 ) goto end;
 
-        ret = writeCRL( strCRLPath, &binCRL );
+        ret = writeCRL( strCRLPath, &binCRL, nullptr );
         if( ret > 0 )
         {
             loadCRLList();

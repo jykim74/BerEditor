@@ -1306,11 +1306,11 @@ void SSLCheckDlg::saveTrustedCA()
         goto end;
     }
 
-    ret = CertManDlg::writeNameHash( strTrustedCAPath, &binCert );
+    ret = CertManDlg::writeNameHash( strTrustedCAPath, &binCert, nullptr );
     if( ret > 0 )
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else
-        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(ret), this );
+        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(JERR(ret)), this );
 
 end :
     JS_BIN_reset( &binCert );

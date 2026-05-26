@@ -129,7 +129,7 @@ void CRLInfoDlg::clickSaveToMan()
     int ret = 0;
     QString strCRLPath = berApplet->settingsMgr()->CRLPath();
 
-    ret = CertManDlg::writeCRL( strCRLPath, &crl_bin_ );
+    ret = CertManDlg::writeCRL( strCRLPath, &crl_bin_, nullptr );
     if( ret > 0 )
     {
         if( berApplet->mainWindow()->certManDlg() )
@@ -138,7 +138,7 @@ void CRLInfoDlg::clickSaveToMan()
         berApplet->messageLog( tr( "The CRL is saved to manager folder" ), this );
     }
     else
-        berApplet->warnLog( tr( "failed to save to manager folder: %1" ).arg( ret ), this );
+        berApplet->warnLog( tr( "failed to save to manager folder: %1" ).arg( JERR(ret) ), this );
 }
 
 void CRLInfoDlg::clickDecodeCRL()
