@@ -2659,10 +2659,7 @@ void PDFSignerDlg::clickVerifyDSS()
         goto end;
     }
 
-
-
-
-    ret = JS_TSP_getTST( &binCMS, &binTST );
+    ret = JS_TSP_getTST( &binTSP, &binTST );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
@@ -2873,7 +2870,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         goto end;
     }
 
-    ret = JS_TSP_getTST( &binCMS, &binTST );
+    ret = JS_TSP_getTST( &binTSP, &binTST );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
