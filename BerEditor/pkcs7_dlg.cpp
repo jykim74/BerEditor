@@ -73,6 +73,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
 
     connect( mEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+    connect( mAtTimeCheck, SIGNAL(clicked()), this, SLOT(checkAtTime()));
 
     initialize();
     mSrcText->setFocus();
@@ -161,6 +162,9 @@ void PKCS7Dlg::dropEvent(QDropEvent *event)
 
 void PKCS7Dlg::initUI()
 {
+    QDateTime dateTime = QDateTime::currentDateTime();
+    mVerifyDateTime->setDateTime(dateTime);
+
     mSrcTypeCombo->addItems( kDataTypeList );
     mCmdCombo->addItems( kEncodeList );
     mOutputText->setPlaceholderText( tr( "Hex value") );
@@ -172,6 +176,7 @@ void PKCS7Dlg::initUI()
     mOutputCmdText->setPlaceholderText( tr("Command Name") );
     checkEncode();
     changeCmd();
+    checkAtTime();
 }
 
 void PKCS7Dlg::initialize()
@@ -596,6 +601,7 @@ void PKCS7Dlg::clickVerifyData()
     char sResMsg[1024];
 
     int nFlags = getFlags();
+    time_t check_t = time(NULL);
 
     memset( sResMsg, 0x00, sizeof(sResMsg));
 
@@ -655,11 +661,15 @@ void PKCS7Dlg::clickVerifyData()
             dataInput.getData( &binData );
     }
 
+    if( mAtTimeCheck->isChecked() == true )
+        check_t = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+
     ret = JS_PKCS7_verifySignedData(
         &binCMS,
         &binCert,
         binData.nLen > 0 ? &binData : NULL,
         nFlags,
+        check_t,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
         &binSrc, sResMsg );
@@ -1695,4 +1705,9 @@ void PKCS7Dlg::clickRun()
             }
         }
     }
+}
+
+void PKCS7Dlg::checkAtTime()
+{
+    mVerifyDateTime->setEnabled( mAtTimeCheck->isChecked() );
 }

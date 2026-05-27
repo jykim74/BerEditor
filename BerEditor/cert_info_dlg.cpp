@@ -734,7 +734,7 @@ void CertInfoDlg::clickMakeTree()
                     ret = getCA( strExtValue, &binCA );
                     if( ret != 0 ) break;
 
-                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, now_t, sMsg );
                     if( ret != JSR_VERIFY )
                     {
                         berApplet->warningBox( QString( "failed to verify cert by CA: %1(%2)").arg(ret).arg(sMsg), this );
@@ -745,7 +745,7 @@ void CertInfoDlg::clickMakeTree()
         }
         else
         {
-            ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+            ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, now_t, sMsg );
 
             if( ret != JSR_VERIFY )
             {
@@ -760,7 +760,7 @@ void CertInfoDlg::clickMakeTree()
                         if( ret != 0 ) break;
                     }
 
-                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                    ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, now_t, sMsg );
                     if( ret != JSR_VERIFY )
                     {
                         berApplet->warningBox( QString( "failed to verify cert by CA: %1(%2)").arg(ret).arg(sMsg), this);
@@ -901,7 +901,7 @@ void CertInfoDlg::clickVerifyCert()
     ret = getCRL2( &cert_bin_, bOnline, &binCRL );
     if( ret != 0 ) berApplet->elog( tr( "failed to get CRL [%1]").arg( ret ));
 
-    ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, sMsg );
+    ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, time(NULL), sMsg );
 
     berApplet->messageBox( tr( "Verification results: %1").arg( sMsg ), this );
 

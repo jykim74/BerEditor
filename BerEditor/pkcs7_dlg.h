@@ -94,6 +94,7 @@ private slots:
 
     void changeCmd();
     void clickRun();
+    void checkAtTime();
 
 private:
     void initUI();

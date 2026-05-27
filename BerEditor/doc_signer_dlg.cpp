@@ -87,6 +87,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSSrcTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcType()));
     connect( mCMSOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputType()));
     connect( mCMSViewSignerBtn, SIGNAL(clicked()), this, SLOT(clickCMSViewSigner()));
+    connect( mCMSAtTimeCheck, SIGNAL(clicked()), this, SLOT(checkCMSAtTime()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -643,6 +644,9 @@ end :
 
 void DocSignerDlg::initUI()
 {
+    QDateTime dateTime = QDateTime::currentDateTime();
+    mCMSVerifyDateTime->setDateTime(dateTime);
+
     mCMSEncodeRadio->setChecked(true);
     mCMSAutoDetectCheck->setChecked(true);
     mCMSCmdCombo->addItems( kCMSEncodeList );
@@ -666,6 +670,7 @@ void DocSignerDlg::initUI()
     checkCMSEncode();
     checkSrcFile();
     checkDstFile();
+    checkCMSAtTime();
 
     checkXML_UseTemplate();
     mXMLSignCheck->setChecked(true);
@@ -1375,6 +1380,7 @@ void DocSignerDlg::clickCMSVerifySign()
     char sResMsg[1024];
 
     int nFlags = getCMSFlags();
+    time_t check_t = time(NULL);
 
     memset( sResMsg, 0x00, sizeof(sResMsg));
 
@@ -1405,11 +1411,15 @@ void DocSignerDlg::clickCMSVerifySign()
             dataInput.getData( &binInput );
     }
 
+    if( mCMSAtTimeCheck->isChecked() == true )
+        check_t = mCMSVerifyDateTime->dateTime().toSecsSinceEpoch();
+
     ret = JS_CMS_verifySignedData(
         &binSrc,
         &binCert,
         binInput.nLen > 0 ? &binInput : NULL,
         nFlags,
+        check_t,
         mCMS_CAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mCMSTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
         &binData, sResMsg );
@@ -1861,6 +1871,11 @@ void DocSignerDlg::clickCMSGetDigest()
 end:
     JS_BIN_reset( &binSrc );
     JS_CMS_resetDigest( &sDigestInfo );
+}
+
+void DocSignerDlg::checkCMSAtTime()
+{
+    mCMSVerifyDateTime->setEnabled( mCMSAtTimeCheck->isChecked() );
 }
 
 void DocSignerDlg::clickJSON_CheckObject()

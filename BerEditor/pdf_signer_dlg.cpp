@@ -2410,13 +2410,18 @@ void PDFSignerDlg::clickVerifyDocTSP()
 
     BIN binCMS = {0,0};
     BIN binData = {0,0};
+    BIN binTST = {0,0};
 
     ExportDlg exportDlg;
     int nFlag = -1;
     char sResMsg[1024];
+    JTSTInfo sTSTInfo;
+
+    time_t check_t = time(NULL);
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( sResMsg, 0x00, sizeof(sResMsg));
+    memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2443,7 +2448,23 @@ void PDFSignerDlg::clickVerifyDocTSP()
         goto end;
     }
 
-    ret = JS_CMS_verifySignedData( &binCMS, NULL, NULL, nFlag, NULL, NULL, &binData, sResMsg );
+    ret = JS_TSP_getTST( &binCMS, &binTST );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
+        goto end;
+    }
+
+    ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    check_t = sTSTInfo.tGenTime;
+
+    ret = JS_CMS_verifySignedData( &binCMS, NULL, NULL, nFlag, check_t, NULL, NULL, &binData, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
@@ -2457,6 +2478,8 @@ void PDFSignerDlg::clickVerifyDocTSP()
 end :
     JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binTST );
+    JS_TSP_resetTSTInfo( &sTSTInfo );
 }
 
 void PDFSignerDlg::clickViewDocTSP_TST()
@@ -2527,19 +2550,29 @@ void PDFSignerDlg::clickVerifyDSS()
     BIN binData = {0,0};
     BIN binOut = {0,0};
     BIN binSigner = {0,0};
+    BIN binTSP = {0,0};
+    BIN binTST = {0,0};
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
     JDSSDataList *pDSSList = NULL;
     JNumBINList *pObjList = NULL;
+    JTSTInfo     sTSTInfo;
 
     JSignLabel  sSignLabel;
     char sResMsg[1024];
+
+    JCMSSigned sSigned;
+    JSignerInfoList *pInfoList = NULL;
+
+    time_t check_t = time(NULL);
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
     memset( sResMsg, 0x00, sizeof(sResMsg));
+    memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
+    memset( &sSigned, 0x00, sizeof(sSigned));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2619,10 +2652,43 @@ void PDFSignerDlg::clickVerifyDSS()
 
     berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
 
+    ret = JS_CMS_getSignedData( &binCMS, &sSigned, &pInfoList, &binTSP );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TSP: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
+
+
+
+    ret = JS_TSP_getTST( &binCMS, &binTST );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
+        goto end;
+    }
+
+    ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    check_t = sTSTInfo.tGenTime;
+
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, &binData, sResMsg );
+    if( ret != JSR_VERIFY )
+    {
+        berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
         goto end;
     }
 
@@ -2645,6 +2711,7 @@ void PDFSignerDlg::clickVerifyDSS()
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
         pDSSList->pDSSData->pOCSPList,
+        check_t,
         &binSigner, sResMsg );
 
     if( ret == JSR_VERIFY )
@@ -2663,9 +2730,14 @@ end :
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binPDF );
     JS_BIN_reset( &binSigner );
+    JS_BIN_reset( &binTSP );
+    JS_BIN_reset( &binTST );
+    JS_TSP_resetTSTInfo( &sTSTInfo );
     JS_PDF_resetSignLabel( &sSignLabel );
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
     if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
+    JS_CMS_resetSigned( &sSigned );
+    if( pInfoList ) JS_CMS_resetSignerInfoList( &pInfoList );
 }
 
 void PDFSignerDlg::clickVerifyDSS_VRI()
@@ -2681,6 +2753,8 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     BIN binData = {0,0};
     BIN binOut = {0,0};
     BIN binSigner = {0,0};
+    BIN binTSP = {0,0};
+    BIN binTST = {0,0};
 
     JByteRange  sRange;
     JPDFInfo    sInfo;
@@ -2694,10 +2768,18 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
 
     char sResMsg[1024];
 
+    JTSTInfo    sTSTInfo;
+    JCMSSigned  sSigned;
+    JSignerInfoList *pInfoList = NULL;
+
+    time_t check_t = time(NULL);
+
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sSignLabel, 0x00, sizeof(sSignLabel));
     memset( sResMsg, 0x00, sizeof(sResMsg));
+    memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
+    memset( &sSigned, 0x00, sizeof(sSigned));
 
     if( strSrcPath.length() < 1 )
     {
@@ -2784,10 +2866,40 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
 
     berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
 
+    ret = JS_CMS_getSignedData( &binCMS, &sSigned, &pInfoList, &binTSP );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TSP: %1" ).arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_TSP_getTST( &binCMS, &binTST );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
+        goto end;
+    }
+
+    ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    check_t = sTSTInfo.tGenTime;
+
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, &binData, sResMsg );
+    if( ret != JSR_VERIFY )
+    {
+        berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
         goto end;
     }
 
@@ -2851,7 +2963,9 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         &binCMS,
         pDSSList->pDSSData->pCertList,
         pDSSList->pDSSData->pCRLList,
-        pDSSList->pDSSData->pOCSPList, &binSigner, sResMsg );
+        pDSSList->pDSSData->pOCSPList,
+        check_t,
+        &binSigner, sResMsg );
 
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );

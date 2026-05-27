@@ -94,6 +94,7 @@ private slots:
 
     void clickCMSGetData();
     void clickCMSGetDigest();
+    void checkCMSAtTime();
 
 
     void clickJSON_CheckObject();

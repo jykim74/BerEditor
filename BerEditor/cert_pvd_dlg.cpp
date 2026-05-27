@@ -635,6 +635,8 @@ void CertPVDDlg::clickVerifyCert()
     BIN binUntrust = {0,0};
     BIN binCRL = {0,0};
 
+    time_t now_t = time(NULL);
+
     QString strTrustPath = mTrustPathText->text();
     QString strUntrustPath = mUntrustPathText->text();
     QString strCLRPath = mCRLPathText->text();
@@ -672,11 +674,11 @@ void CertPVDDlg::clickVerifyCert()
     if( mUseTrustListCheck->isChecked() == true )
     {
         QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
-        ret = JS_PKI_CertVerifyByCAPath( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCRL, &binUntrust, sMsg );
+        ret = JS_PKI_CertVerifyByCAPath( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCRL, &binUntrust, now_t, sMsg );
     }
     else
     {
-        ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, sMsg );
+        ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, now_t, sMsg );
     }
     berApplet->log( QString( "Certificate verification result by CA : %1").arg(ret));
 

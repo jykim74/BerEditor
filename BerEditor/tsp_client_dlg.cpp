@@ -616,6 +616,7 @@ void TSPClientDlg::clickVerifySigned()
     int nStatus = 0;
 
     char sResMsg[1024];
+    time_t check_t = time(NULL);
 
     memset( sResMsg, 0x00, sizeof(sResMsg));
 
@@ -659,7 +660,7 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, NULL, NULL, &binMsg, sResMsg );
+    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, check_t, NULL, NULL, &binMsg, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
