@@ -511,8 +511,16 @@ void TSPClientDlg::clickVerify()
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
     JTSTInfo    sTSTInfo;
+    char        sResMsg[1024];
 
     memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
+
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        goto end;
+    }
 
     if( strCAPath.length() < 1 )
     {
@@ -536,21 +544,24 @@ void TSPClientDlg::clickVerify()
 
     if( strSrvCertPath.length() < 1 )
     {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select TSP server certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
+        if( mCertCheck->isChecked() == true )
+        {
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select TSP server certificate" ));
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
 
-        strSrvCertPath = certMan.getSeletedCertPath();
-        if( strSrvCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a TSP server certificate"), this );
-            goto end;
-        }
-        else
-        {
-            mSrvCertPathText->setText( strSrvCertPath );
+            strSrvCertPath = certMan.getSeletedCertPath();
+            if( strSrvCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "find a TSP server certificate"), this );
+                goto end;
+            }
+            else
+            {
+                mSrvCertPathText->setText( strSrvCertPath );
+            }
         }
     }
 
@@ -561,32 +572,24 @@ void TSPClientDlg::clickVerify()
     if( strSrvCertPath.length() > 0 )
         JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
 
-    if( strRspHex.length() < 1 )
-    {
-        berApplet->warningBox( tr("There is no response" ), this );
-        goto end;
-    }
+
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
     ret = JS_TSP_verifyResponse( &binRsp,
-                                strCAManPath.toLocal8Bit().toStdString().c_str(),
-                                strTrustPath.toLocal8Bit().toStdString().c_str(),
+                                mCAListCheck->isChecked() ? strCAManPath.toLocal8Bit().toStdString().c_str() : NULL,
+                                mTrustListCheck->isChecked() ? strTrustPath.toLocal8Bit().toStdString().c_str() : NULL,
                                 &binCA,
-                                &binSrvCert, &binData, &sTSTInfo );
+                                &binSrvCert, &binData, &sTSTInfo, sResMsg );
     if( ret == JSR_VERIFY )
     {
         berApplet->messageLog( tr( "verify reponse successfully"), this );
     }
-    else if( ret == JSR_INVALID )
-    {
-        berApplet->warnLog( tr( "failed to verify signature"), this );
-    }
     else
     {
-        berApplet->warnLog( QString( "failed to verify response message: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "failed to verify signature: %1(%2)").arg(JERR(ret)).arg(sResMsg), this );
     }
 
 end :
@@ -620,6 +623,12 @@ void TSPClientDlg::clickVerifySigned()
 
     memset( sResMsg, 0x00, sizeof(sResMsg));
 
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        goto end;
+    }
+
     if( strSrvCertPath.length() < 1 )
     {
         CertManDlg certMan;
@@ -641,13 +650,33 @@ void TSPClientDlg::clickVerifySigned()
     }
 
     if( strSrvCertPath.length() > 0 )
-        JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
-
-    if( strRspHex.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no response" ), this );
-        goto end;
+        JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     }
+    else
+    {
+        if( mCertCheck->isChecked() == true )
+        {
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select TSP server certificate" ));
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strSrvCertPath = certMan.getSeletedCertPath();
+            if( strSrvCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "find a TSP server certificate"), this );
+                goto end;
+            }
+            else
+            {
+                mSrvCertPathText->setText( strSrvCertPath );
+            }
+        }
+    }
+
+
 
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
@@ -660,7 +689,16 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, NULL, nFlags, check_t, NULL, NULL, &binMsg, sResMsg );
+    ret = JS_PKCS7_verifySignedData(
+        &binSigned,
+        &binSrvCert,
+        NULL,
+        nFlags,
+        check_t,
+        mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
+        &binMsg,
+        sResMsg );
 
     if( ret == JSR_VERIFY )
     {

@@ -1674,6 +1674,19 @@ void PDFSignerDlg::clickVerifySign()
         goto end;
     }
 
+#if defined(QT_DEBUG)
+    {
+        QString strTmpData = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
+        strTmpData += "_data.bin";
+
+        QString strTmpCMS = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
+        strTmpCMS += "_cms.bin";
+
+        JS_BIN_fileWrite( &binData, strTmpData.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_fileWrite( &binCMS, strTmpCMS.toLocal8Bit().toStdString().c_str() );
+    }
+#endif
+
     if( mVerifyChainCheck->isChecked() )
         nVerifyChain = 1;
     else
@@ -2682,7 +2695,7 @@ void PDFSignerDlg::clickVerifyDSS()
         goto end;
     }
 
-    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, &binData, sResMsg );
+    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
     if( ret != JSR_VERIFY )
     {
         berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
@@ -2702,6 +2715,19 @@ void PDFSignerDlg::clickVerifyDSS()
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
 
     if( binCert.nLen <= 0 ) JS_CMS_getSignedDataSigner( &binCMS, &binCert );
+
+#if defined(QT_DEBUG)
+    {
+        QString strTmpData = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
+        strTmpData += "_dss_data.bin";
+
+        QString strTmpCMS = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
+        strTmpCMS += "_dss_cms.bin";
+
+        JS_BIN_fileWrite( &binData, strTmpData.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_fileWrite( &binCMS, strTmpCMS.toLocal8Bit().toStdString().c_str() );
+    }
+#endif
 
     ret = JS_PDF_verifyCMS_DSS(
         &binData,
@@ -2895,7 +2921,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         goto end;
     }
 
-    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, &binData, sResMsg );
+    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
     if( ret != JSR_VERIFY )
     {
         berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
