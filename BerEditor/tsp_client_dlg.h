@@ -29,6 +29,7 @@ private slots:
     void clearRequest();
     void clearResponse();
 
+    void clickMake();
     void clickEncode();
     void clickSend();
     void clickVerify();
@@ -36,6 +37,7 @@ private slots:
 
     void clickTSTInfo();
     void clickViewCMS();
+    void clickClearAll();
 private:
     void initUI();
     void initialize();

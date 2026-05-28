@@ -34,6 +34,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
+    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
 
@@ -44,17 +45,10 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mVerifySignedBtn, SIGNAL(clicked()), this, SLOT(clickVerifySigned()));
+    connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-
-    mSrvCertDecodeBtn->setFixedWidth(34);
-    mSrvCertViewBtn->setFixedWidth(34);
-    mSrvCertTypeBtn->setFixedWidth(34);
-
-    mCACertDecodeBtn->setFixedWidth(34);
-    mCACertViewBtn->setFixedWidth(34);
-    mCACertTypeBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
@@ -204,6 +198,34 @@ void TSPClientDlg::clearRequest()
 void TSPClientDlg::clearResponse()
 {
     mResponseText->clear();
+}
+
+void TSPClientDlg::clickMake()
+{
+    int ret = 0;
+
+    BIN binInput = {0,0};
+    BIN binHash = {0,0};
+    QString strHash = mHashCombo->currentText();
+    QString strInput = mInputText->toPlainText();
+
+    if( strInput.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no input" ), this );
+        mInputText->setFocus();
+        return;
+    }
+
+    ret = getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
+
+    JS_PKI_genHash( strHash.toStdString().c_str(), &binInput, &binHash );
+
+    mHashText->setText( getHexString(&binHash));
+
+end :
+    JS_BIN_reset( &binInput );
+    JS_BIN_reset( &binHash );
 }
 
 void TSPClientDlg::clickEncode()
@@ -551,4 +573,12 @@ end :
     JS_BIN_reset( &binRsp );
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binTST );
+}
+
+void TSPClientDlg::clickClearAll()
+{
+    mInputText->clear();
+    mHashText->clear();
+    clearRequest();
+    clearResponse();
 }

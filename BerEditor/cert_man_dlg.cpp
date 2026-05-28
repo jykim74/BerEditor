@@ -1630,7 +1630,7 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
 
         if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
         {
-            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( uHash ).arg(strSuffix );
+            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( strName ).arg(strSuffix );
             break;
         }
     }
@@ -1678,7 +1678,7 @@ int CertManDlg::readCRL_CA( const QString strCertPath, const BIN *pCRL, BIN *pCA
 
         if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
         {
-            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( uHash ).arg(strSuffix );
+            strCAPath = QString( "%1/%2.%3").arg( strCertPath ).arg( strName ).arg(strSuffix );
             break;
         }
     }
@@ -1724,7 +1724,7 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert, QWidget 
 
     if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
 #else
-    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') );
+    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash, 0, 16 );
     if( QFileInfo::exists( strFilePath ) == true )
     {
         if( parent )
@@ -1773,7 +1773,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL, QWidget *pa
 
     if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
 #else
-    strFilePath = QString( "%1/%2.0").arg( strCRLPath ).arg( uHash, 8, 16, QLatin1Char('0') );
+    strFilePath = QString( "%1/%2.0").arg( strCRLPath ).arg( uHash, 0, 16 );
     if( QFileInfo::exists( strFilePath ) == true )
     {
         if( parent )
@@ -1879,7 +1879,7 @@ int CertManDlg::getCertCRL( const BIN *pCert, BIN *pCRL )
 
         if( strName == QString( "%1" ).arg( uHash, 0, 16 ) )
         {
-            strCRLPath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash ).arg(strSuffix );
+            strCRLPath = QString( "%1/%2.%3").arg( strPath ).arg( strName ).arg(strSuffix );
             break;
         }
     }
@@ -3110,7 +3110,7 @@ void CertManDlg::clickRemoveCRL()
 
     if( bVal == true )
     {
-        loadCAList();
+        loadCRLList();
         berApplet->messageBox( tr( "The CRL has been deleted"), this );
     }
     else

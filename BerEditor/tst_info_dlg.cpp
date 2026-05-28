@@ -73,7 +73,7 @@ void TSTInfoDlg::initialize()
     mInfoTable->insertRow(i);
     mInfoTable->setRowHeight( i, 10 );
     mInfoTable->setItem( i, 0, new QTableWidgetItem(QString( tr("Serial") )));
-    mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.nSerial)));
+    mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.pSerial)));
     i++;
 
     JS_UTIL_getDateTime( sTSTInfo.tGenTime, sGenTime );
