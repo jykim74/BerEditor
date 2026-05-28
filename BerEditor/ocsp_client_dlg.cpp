@@ -1197,10 +1197,13 @@ void OCSPClientDlg::clickVerify()
     JCertStatusInfo sStatusInfo;
 
     BIN binSigner = {0,0};
+    char sResMsg[1024];
+
     int nFlags = getFlags();
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strRspHex.length() < 1 )
     {
@@ -1231,7 +1234,7 @@ void OCSPClientDlg::clickVerify()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, nFlags, &sIDInfo, &sStatusInfo, &binSigner );
+    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, nFlags, &sIDInfo, &sStatusInfo, &binSigner, sResMsg );
 
     if( ret == JSR_INVALID )
     {
@@ -1247,7 +1250,7 @@ void OCSPClientDlg::clickVerify()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to decode response: %1").arg( JERR(ret) ), this);
+        berApplet->warningBox( tr( "failed to decode response: %1(%2)").arg( JERR(ret) ).arg(sResMsg), this);
     }
 
 end :

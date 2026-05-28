@@ -77,12 +77,14 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
     JOCSPSingleList *pCurList = NULL;
 
     JOCSPRspInfo sRspInfo;
+    char sResMsg[1024];
 
     memset( &sRspInfo, 0x00, sizeof(sRspInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     JS_BIN_copy( &rsp_, pResp );
 
-    ret = JS_OCSP_decodeResponse2( &rsp_, &binSignCert, 0, &sRspInfo, &pRspList );
+    ret = JS_OCSP_decodeResponse2( &rsp_, &binSignCert, 0, &sRspInfo, &pRspList, sResMsg );
 
     if( ret == JSR_VERIFY )
     {

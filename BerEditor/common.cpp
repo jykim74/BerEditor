@@ -1565,8 +1565,10 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     BIN binDER = {0,0};
 
     JCertIDInfo sIDInfo;
+    char sResMsg[1024];
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, NULL, "SHA256", NULL, NULL, &binReq );
     if( ret != 0 )
@@ -1584,10 +1586,10 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
 
     JS_BIN_formatToBIN( &binRsp, &binDER );
 
-    ret = JS_OCSP_decodeResponse( &binDER, NULL, 0, &sIDInfo, pStatusInfo, &binSigner );
-    if( ret != 0 )
+    ret = JS_OCSP_decodeResponse( &binDER, NULL, 0, &sIDInfo, pStatusInfo, &binSigner, sResMsg );
+    if( ret != JSR_VERIFY )
     {
-        fprintf( stderr, "failed to decode respose:%d\n", ret);
+        fprintf( stderr, "failed to decode respose:%d(%s)\n", ret, sResMsg);
         goto end;
     }
 

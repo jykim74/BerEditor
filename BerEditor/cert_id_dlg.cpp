@@ -44,14 +44,17 @@ void CertIDDlg::setResponse( const BIN *pResp )
     BIN binSigner = {0,0};
     char sRevokedTime[64];
     QString strVerify;
+    char sResMsg[1024];
 
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
+
     sStatusInfo.nStatus = -1;
 
     JS_BIN_copy( &resp_, pResp );
 
-    ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, 0, &sIDInfo, &sStatusInfo, &binSigner );
+    ret = JS_OCSP_decodeResponse( &resp_, &binSignCert, 0, &sIDInfo, &sStatusInfo, &binSigner, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
@@ -182,12 +185,14 @@ void CertIDDlg::setResponse2( const BIN *pResp )
     JOCSPSingleList *pCurList = NULL;
 
     JOCSPRspInfo sRspInfo;
+    char sResMsg[1024];
 
     memset( &sRspInfo, 0x00, sizeof(sRspInfo));
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     JS_BIN_copy( &resp_, pResp );
 
-    ret = JS_OCSP_decodeResponse2( &resp_, &binSignCert, 0, &sRspInfo, &pRspList );
+    ret = JS_OCSP_decodeResponse2( &resp_, &binSignCert, 0, &sRspInfo, &pRspList, sResMsg );
 
     if( ret == JSR_VERIFY )
     {
