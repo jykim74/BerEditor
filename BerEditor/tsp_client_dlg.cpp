@@ -40,16 +40,6 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
 
-    connect( mFindSrvCertBtn, SIGNAL(clicked()), this, SLOT(findSrvCert()));
-    connect( mSrvCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSrvCert()));
-    connect( mSrvCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSrvCert()));
-    connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
-
-    connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
-    connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
-    connect( mCACertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCACert()));
-    connect( mCACertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCACert()));
-
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
@@ -102,8 +92,6 @@ void TSPClientDlg::initialize()
 
     mPolicyText->setPlaceholderText( tr("Object Identifier") );
 
-    mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
-    mSrvCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
     mResponseText->setPlaceholderText( tr("Hex value" ));
 }
@@ -216,148 +204,6 @@ void TSPClientDlg::clearRequest()
 void TSPClientDlg::clearResponse()
 {
     mResponseText->clear();
-}
-
-void TSPClientDlg::findSrvCert()
-{
-    QString strPath = mSrvCertPathText->text();
-
-    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 )
-    {
-        mSrvCertPathText->setText( filePath );
-    }
-}
-
-void TSPClientDlg::viewSrvCert()
-{
-    CertInfoDlg certInfo;
-    QString strFile = mSrvCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a server certificate" ), this );
-        mSrvCertPathText->setFocus();
-        return;
-    }
-
-    certInfo.setCertPath( strFile );
-    certInfo.exec();
-}
-
-void TSPClientDlg::decodeSrvCert()
-{
-    BIN binData = {0,0};
-    QString strFile = mSrvCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a server certificate" ), this );
-        mSrvCertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    berApplet->decodeData( &binData, strFile );
-
-    JS_BIN_reset( &binData );
-}
-
-void TSPClientDlg::typeSrvCert()
-{
-    int nType = -1;
-    BIN binData = {0,0};
-    BIN binPubInfo = {0,0};
-    QString strFile = mSrvCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a server certificate" ), this );
-        mSrvCertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
-
-    nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
-
-
-    JS_BIN_reset( &binData );
-    JS_BIN_reset( &binPubInfo );
-}
-
-void TSPClientDlg::findCACert()
-{
-    QString strPath = mCACertPathText->text();
-
-    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 )
-    {
-        mCACertPathText->setText( filePath );
-    }
-}
-
-void TSPClientDlg::viewCACert()
-{
-    CertInfoDlg certInfo;
-
-    QString strFile = mCACertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        mCACertPathText->setFocus();
-        return;
-    }
-
-    certInfo.setCertPath( strFile );
-    certInfo.exec();
-}
-
-void TSPClientDlg::decodeCACert()
-{
-    BIN binData = {0,0};
-    QString strFile = mCACertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        mCACertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    berApplet->decodeData( &binData, strFile );
-
-    JS_BIN_reset( &binData );
-}
-
-void TSPClientDlg::typeCACert()
-{
-    int nType = -1;
-    BIN binData = {0,0};
-    BIN binPubInfo = {0,0};
-    QString strFile = mCACertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        mCACertPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
-
-    nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
-
-
-    JS_BIN_reset( &binData );
-    JS_BIN_reset( &binPubInfo );
 }
 
 void TSPClientDlg::clickEncode()
@@ -504,8 +350,6 @@ void TSPClientDlg::clickVerify()
     BIN binRsp = {0,0};
     BIN binData = {0,0};
 
-    QString strCAPath = mCACertPathText->text();
-    QString strSrvCertPath = mSrvCertPathText->text();
     QString strRspHex = mResponseText->toPlainText();
     QString strCAManPath = berApplet->settingsMgr()->CACertPath();
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
@@ -522,60 +366,22 @@ void TSPClientDlg::clickVerify()
         goto end;
     }
 
-    if( strCAPath.length() < 1 )
+    if( mCertCheck->isChecked() == true )
     {
         CertManDlg certMan;
-        certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
-        certMan.exec();
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select TSP server certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
 
-        strCAPath = certMan.getSeletedCAPath();
-        if( strCAPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a CA certificate" ), this );
-            mCACertPathText->setFocus();
-            return;
-        }
-        else
-        {
-            mCACertPathText->setText( strCAPath );
-        }
-    }
+        certMan.getCert( &binSrvCert );
+    };
 
-    if( strSrvCertPath.length() < 1 )
+    if( binSrvCert.nLen > 0 )
     {
-        if( mCertCheck->isChecked() == true )
-        {
-            CertManDlg certMan;
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select TSP server certificate" ));
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strSrvCertPath = certMan.getSeletedCertPath();
-            if( strSrvCertPath.length() < 1 )
-            {
-                berApplet->warningBox( tr( "find a TSP server certificate"), this );
-                goto end;
-            }
-            else
-            {
-                mSrvCertPathText->setText( strSrvCertPath );
-            }
-        }
+        CertInfoDlg::getCA2( &binSrvCert, berApplet->settingsMgr()->onlineCA_CRL(), &binCA );
     }
 
-    if( strCAPath.length() > 0 )
-        JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-
-
-    if( strSrvCertPath.length() > 0 )
-        JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
-
-
-
-    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
     ret = JS_TSP_verifyResponse( &binRsp,
@@ -610,7 +416,6 @@ void TSPClientDlg::clickVerifySigned()
     BIN binTST = {0,0};
     BIN binMsg = {0,0};
 
-    QString strSrvCertPath = mSrvCertPathText->text();
     QString strRspHex = mResponseText->toPlainText();
     QString strCAManPath = berApplet->settingsMgr()->CACertPath();
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
@@ -629,7 +434,7 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    if( strSrvCertPath.length() < 1 )
+    if( mCertCheck->isChecked() == true )
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
@@ -637,48 +442,9 @@ void TSPClientDlg::clickVerifySigned()
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
-        strSrvCertPath = certMan.getSeletedCertPath();
-        if( strSrvCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a TSP server certificate"), this );
-            goto end;
-        }
-        else
-        {
-            mSrvCertPathText->setText( strSrvCertPath );
-        }
+        certMan.getCert( &binSrvCert );
     }
 
-    if( strSrvCertPath.length() > 0 )
-    {
-        JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
-    }
-    else
-    {
-        if( mCertCheck->isChecked() == true )
-        {
-            CertManDlg certMan;
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select TSP server certificate" ));
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strSrvCertPath = certMan.getSeletedCertPath();
-            if( strSrvCertPath.length() < 1 )
-            {
-                berApplet->warningBox( tr( "find a TSP server certificate"), this );
-                goto end;
-            }
-            else
-            {
-                mSrvCertPathText->setText( strSrvCertPath );
-            }
-        }
-    }
-
-
-
-    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
     ret = JS_TSP_decodeResponse( &binRsp, &nStatus, &binSigned, &binTST );

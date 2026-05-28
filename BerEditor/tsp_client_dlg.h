@@ -29,16 +29,6 @@ private slots:
     void clearRequest();
     void clearResponse();
 
-    void findSrvCert();
-    void viewSrvCert();
-    void decodeSrvCert();
-    void typeSrvCert();
-
-    void findCACert();
-    void viewCACert();
-    void decodeCACert();
-    void typeCACert();
-
     void clickEncode();
     void clickSend();
     void clickVerify();

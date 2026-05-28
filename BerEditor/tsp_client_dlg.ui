@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>713</height>
+    <height>633</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -436,13 +436,6 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_9">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
       <number>0</number>
@@ -502,184 +495,6 @@
    </item>
    <item>
     <widget class="Line" name="line_5">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_10">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mSrvCertViewBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>V</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="6">
-      <widget class="QPushButton" name="mSrvCertTypeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>T</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mCACertDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCACertViewBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>V</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mCACertTypeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>T</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>CA Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="mCACertPathText"/>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mFindSrvCertBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="mSrvCertDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mFindCACertBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="mSrvCertPathText"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>TSP Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="bereditor.qrc">
-         <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="bereditor.qrc">
-         <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_6">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -980,18 +795,6 @@
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mAutoSendCheck</tabstop>
   <tabstop>mSendBtn</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>mCACertPathText</tabstop>
-  <tabstop>mFindCACertBtn</tabstop>
-  <tabstop>mCACertViewBtn</tabstop>
-  <tabstop>mCACertDecodeBtn</tabstop>
-  <tabstop>mCACertTypeBtn</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>mSrvCertPathText</tabstop>
-  <tabstop>mFindSrvCertBtn</tabstop>
-  <tabstop>mSrvCertViewBtn</tabstop>
-  <tabstop>mSrvCertDecodeBtn</tabstop>
-  <tabstop>mSrvCertTypeBtn</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mTSTInfoBtn</tabstop>
