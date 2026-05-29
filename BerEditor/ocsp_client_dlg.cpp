@@ -936,25 +936,6 @@ void OCSPClientDlg::clickEncode()
     QString strCAPath = mCACertPathText->text();
     QString strCertPath = mCertPathText->text();
 
-    if( strCAPath.length() < 1 )
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        strCAPath = certMan.getSeletedCAPath();
-        if( strCAPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a CA certificate" ), this );
-            return;
-        }
-        else
-        {
-            mCACertPathText->setText( strCAPath );
-        }
-    }
 
     if( cert_.nLen > 0 )
     {
@@ -1021,13 +1002,7 @@ void OCSPClientDlg::clickEncode()
         }
     }
 
-//    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-    ret = getDataFromURI( strCAPath, &binCA );
-    if( ret != 0 )
-    {
-        berApplet->warningBox( tr( "failed to get CA: %1").arg(ret), this );
-        goto end;
-    }
+
 
     if( mUseNonceCheck->isChecked() )
     {
@@ -1047,6 +1022,33 @@ void OCSPClientDlg::clickEncode()
         JS_BIN_copy( &binCert, &cert_ );
     else
         JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( strCAPath.length() < 1 )
+    {
+        ret = CertInfoDlg::getCA2( &binCert, berApplet->settingsMgr()->onlineCA_CRL(), &binCA );
+
+        if( binCA.nLen <= 0 )
+        {
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCA);
+            certMan.setTitle( tr( "Select CA certificate" ));
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            ret = certMan.getCACert( &binCA );
+        }
+    }
+    else
+    {
+        ret = getDataFromURI( strCAPath, &binCA );
+    }
+
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "failed to get CA: %1").arg(ret), this );
+        goto end;
+    }
+
 
     if( mUseSignCheck->isChecked() )
         ret = JS_OCSP_encodeRequest( &binCert, &binCA, &binNonce, strHash.toStdString().c_str(), &binSignPriKey, &binSignCert, &binReq );

@@ -60,13 +60,9 @@ void CertIDDlg::setResponse( const BIN *pResp )
     {
         strVerify = tr("Verify OK");
     }
-    else if( ret == JSR_INVALID )
-    {
-        strVerify = tr( "Verify Fail: %1").arg( JERR(ret));
-    }
     else
     {
-        strVerify = tr("Error: %1").arg( JERR(ret));
+        strVerify = tr("Error: %1(%2)").arg( JERR(ret)).arg( sResMsg );
     }
 
     if( binSigner.nLen > 0 )
@@ -198,13 +194,9 @@ void CertIDDlg::setResponse2( const BIN *pResp )
     {
         strVerify = tr("Verify OK");
     }
-    else if( ret == JSR_INVALID )
-    {
-        strVerify = tr( "Verify Fail: %1").arg( JERR(ret));
-    }
     else
     {
-        strVerify = tr("Error: %1").arg( JERR(ret));
+        strVerify = tr("Error: %1").arg( JERR(ret) ).arg( sResMsg );
     }
 
     if( binSigner.nLen > 0 )

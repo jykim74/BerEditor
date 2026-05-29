@@ -4496,8 +4496,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>디코딩</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="58"/>
-        <location filename="../cert_id_dlg.cpp" line="194"/>
+        <location filename="../cert_id_dlg.cpp" line="61"/>
+        <location filename="../cert_id_dlg.cpp" line="195"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
@@ -4506,93 +4506,95 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="62"/>
-        <location filename="../cert_id_dlg.cpp" line="198"/>
         <source>Verify Fail: %1</source>
-        <translation>검증 실패 : %1</translation>
+        <translation type="vanished">검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="66"/>
-        <location filename="../cert_id_dlg.cpp" line="202"/>
+        <location filename="../cert_id_dlg.cpp" line="199"/>
         <source>Error: %1</source>
         <translation>에러: %1</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="81"/>
-        <location filename="../cert_id_dlg.cpp" line="219"/>
+        <location filename="../cert_id_dlg.cpp" line="80"/>
+        <location filename="../cert_id_dlg.cpp" line="216"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="92"/>
-        <location filename="../cert_id_dlg.cpp" line="252"/>
+        <location filename="../cert_id_dlg.cpp" line="65"/>
+        <source>Error: %1(%2)</source>
+        <translation>에러: %1(%2)</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="91"/>
+        <location filename="../cert_id_dlg.cpp" line="249"/>
         <source>Hash</source>
         <translation>해시</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="101"/>
-        <location filename="../cert_id_dlg.cpp" line="261"/>
+        <location filename="../cert_id_dlg.cpp" line="100"/>
+        <location filename="../cert_id_dlg.cpp" line="258"/>
         <source>NameHash</source>
         <translation>이름 해시</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="110"/>
-        <location filename="../cert_id_dlg.cpp" line="270"/>
+        <location filename="../cert_id_dlg.cpp" line="109"/>
+        <location filename="../cert_id_dlg.cpp" line="267"/>
         <source>KeyHash</source>
         <translation>키 해시</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="119"/>
-        <location filename="../cert_id_dlg.cpp" line="279"/>
+        <location filename="../cert_id_dlg.cpp" line="118"/>
+        <location filename="../cert_id_dlg.cpp" line="276"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="129"/>
-        <location filename="../cert_id_dlg.cpp" line="289"/>
+        <location filename="../cert_id_dlg.cpp" line="128"/>
+        <location filename="../cert_id_dlg.cpp" line="286"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="139"/>
-        <location filename="../cert_id_dlg.cpp" line="299"/>
+        <location filename="../cert_id_dlg.cpp" line="138"/>
+        <location filename="../cert_id_dlg.cpp" line="296"/>
         <source>Reason</source>
         <translation>이유</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="148"/>
-        <location filename="../cert_id_dlg.cpp" line="308"/>
+        <location filename="../cert_id_dlg.cpp" line="147"/>
+        <location filename="../cert_id_dlg.cpp" line="305"/>
         <source>RevokedTime</source>
         <translation>폐기된 시간</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="156"/>
-        <location filename="../cert_id_dlg.cpp" line="316"/>
+        <location filename="../cert_id_dlg.cpp" line="155"/>
+        <location filename="../cert_id_dlg.cpp" line="313"/>
         <source>HoldOID</source>
         <translation>중지 OID</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="225"/>
+        <location filename="../cert_id_dlg.cpp" line="222"/>
         <source>Rsp Count</source>
         <translation>응답 개수</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="234"/>
+        <location filename="../cert_id_dlg.cpp" line="231"/>
         <source>Produced At</source>
         <translation>생성 시간</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="240"/>
+        <location filename="../cert_id_dlg.cpp" line="237"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="348"/>
+        <location filename="../cert_id_dlg.cpp" line="345"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../cert_id_dlg.cpp" line="348"/>
+        <location filename="../cert_id_dlg.cpp" line="345"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
@@ -16880,7 +16882,7 @@ Use %2</source>
         <location filename="../ocsp_client_dlg.cpp" line="570"/>
         <location filename="../ocsp_client_dlg.cpp" line="699"/>
         <location filename="../ocsp_client_dlg.cpp" line="802"/>
-        <location filename="../ocsp_client_dlg.cpp" line="977"/>
+        <location filename="../ocsp_client_dlg.cpp" line="958"/>
         <source>Find a certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
@@ -16930,20 +16932,24 @@ Use %2</source>
         <location filename="../ocsp_client_dlg.cpp" line="531"/>
         <location filename="../ocsp_client_dlg.cpp" line="663"/>
         <location filename="../ocsp_client_dlg.cpp" line="768"/>
-        <location filename="../ocsp_client_dlg.cpp" line="950"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
         <location filename="../ocsp_client_dlg.cpp" line="878"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1098"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1100"/>
         <source>No request available</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1028"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1048"/>
         <source>failed to get CA: %1</source>
         <translation>CA 가져오기 실패 :%1</translation>
+    </message>
+    <message>
+        <location filename="../ocsp_client_dlg.cpp" line="1255"/>
+        <source>failed to decode response: %1(%2)</source>
+        <translation>응답 디코딩 실패: %1(%2)</translation>
     </message>
     <message>
         <source>fail to get CA</source>
@@ -16961,7 +16967,7 @@ Use %2</source>
         <location filename="../ocsp_client_dlg.cpp" line="597"/>
         <location filename="../ocsp_client_dlg.cpp" line="720"/>
         <location filename="../ocsp_client_dlg.cpp" line="822"/>
-        <location filename="../ocsp_client_dlg.cpp" line="995"/>
+        <location filename="../ocsp_client_dlg.cpp" line="976"/>
         <source>Find a sign certificate</source>
         <translation>서명용 인증서를 찾으세요</translation>
     </message>
@@ -16975,27 +16981,27 @@ Use %2</source>
         <translation type="vanished">CA 가져오기 실패 :%1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1037"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1012"/>
         <source>Enter a nonce</source>
         <translation>논스를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1059"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1061"/>
         <source>OCSP message encoded</source>
         <translation>OCSP 메세지 인코딩 되었습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1065"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1067"/>
         <source>failed to encode request: %1</source>
         <translation>요청서 인코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1118"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1120"/>
         <source>OCSP message sent</source>
         <translation>OCSP 메세지를 보냈습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1122"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1124"/>
         <source>failed to send a request to OCSP server: %1</source>
         <translation>OCSP 서버에 요청 보내기 실패: %1</translation>
     </message>
@@ -17004,19 +17010,18 @@ Use %2</source>
         <translation type="vanished">성공한 OCSP 응답 메세지가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1238"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1243"/>
         <source>OCSP Verify fail [status: %1(%2)]</source>
         <translation>OCSP 검증 실패 [상테: %1(%2)]</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1244"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1249"/>
         <source>OCSP Verify OK [status: %1(%2)]</source>
         <translation>OCSP 검증 성공 [상테: %1(%2)]</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1250"/>
         <source>failed to decode response: %1</source>
-        <translation>응답 디코딩 실패: %1</translation>
+        <translation type="vanished">응답 디코딩 실패: %1</translation>
     </message>
     <message>
         <location filename="../ocsp_client_dlg.cpp" line="622"/>
@@ -17058,17 +17063,17 @@ Use %2</source>
         <translation>서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="943"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1034"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="969"/>
+        <location filename="../ocsp_client_dlg.cpp" line="950"/>
         <source>Select target certificate</source>
         <translation>대상 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1011"/>
+        <location filename="../ocsp_client_dlg.cpp" line="992"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -17077,7 +17082,7 @@ Use %2</source>
         <translation type="vanished">요청서 인코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1091"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1093"/>
         <source>Insert OCSP URL</source>
         <translation>OCSP URL 을 입력하세요</translation>
     </message>
@@ -17090,20 +17095,20 @@ Use %2</source>
         <translation type="vanished">OCSP 서버에 요청 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1215"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1220"/>
         <source>Select OCSP server certificate</source>
         <translation>OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1222"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1227"/>
         <source>find a OCSP server certificate</source>
         <translation>OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
         <location filename="../ocsp_client_dlg.cpp" line="899"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1144"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1171"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1207"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1146"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1173"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1212"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
@@ -17168,77 +17173,80 @@ Use %2</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="89"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="91"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="93"/>
         <source>Verify Fail: %1</source>
-        <translation>검증 실패 : %1</translation>
+        <translation type="vanished">검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="97"/>
         <source>Error: %1</source>
-        <translation>에러: %1</translation>
+        <translation type="vanished">에러: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="114"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="95"/>
+        <source>Error: %1(%2)</source>
+        <translation>에러: %1(%2)</translation>
+    </message>
+    <message>
+        <location filename="../ocsp_rsp_dlg.cpp" line="112"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="120"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="118"/>
         <source>Rsp Count</source>
         <translation>응답 개수</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="129"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="127"/>
         <source>Produced At</source>
         <translation>생성 시간</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="135"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="133"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="145"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="143"/>
         <source>NameHash: %1</source>
         <translation>이름 해시: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="153"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="151"/>
         <source>Algorithm: %1</source>
         <translation>알고리즘: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="161"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="159"/>
         <source>KeyHash: %1</source>
         <translation>키 해시: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="169"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="167"/>
         <source>Serial: %1</source>
         <translation>일련번호: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="177"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="175"/>
         <source>Status: %1</source>
         <translation>상태: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="187"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="185"/>
         <source>Reason: %1</source>
         <translation>이유: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="193"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="191"/>
         <source>RevokedTime: %1</source>
         <translation>폐기 시간: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_rsp_dlg.cpp" line="200"/>
+        <location filename="../ocsp_rsp_dlg.cpp" line="198"/>
         <source>Hold OID: %1</source>
         <translation>중지 OID: %1</translation>
     </message>
@@ -22896,174 +22904,161 @@ Use %2</source>
         <translation>입력값</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="383"/>
+        <location filename="../tsp_client_dlg.ui" line="273"/>
+        <source>Make</source>
+        <translation>만들기</translation>
+    </message>
+    <message>
+        <location filename="../tsp_client_dlg.ui" line="441"/>
         <source>TSP Server requires authorization</source>
         <translation>TSP 서버 인증 요구</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="412"/>
+        <location filename="../tsp_client_dlg.ui" line="470"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="422"/>
+        <location filename="../tsp_client_dlg.ui" line="480"/>
         <source>Username</source>
         <translation>유저명</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="291"/>
-        <location filename="../tsp_client_dlg.ui" line="817"/>
+        <location filename="../tsp_client_dlg.ui" line="349"/>
+        <location filename="../tsp_client_dlg.ui" line="680"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="311"/>
+        <location filename="../tsp_client_dlg.ui" line="369"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="324"/>
-        <location filename="../tsp_client_dlg.ui" line="550"/>
-        <location filename="../tsp_client_dlg.ui" line="606"/>
-        <location filename="../tsp_client_dlg.ui" line="797"/>
+        <location filename="../tsp_client_dlg.ui" line="382"/>
+        <location filename="../tsp_client_dlg.ui" line="660"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="490"/>
+        <location filename="../tsp_client_dlg.ui" line="531"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="483"/>
+        <location filename="../tsp_client_dlg.ui" line="232"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="453"/>
+        <location filename="../tsp_client_dlg.ui" line="504"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="697"/>
+        <location filename="../tsp_client_dlg.ui" line="560"/>
         <source>CertMan certificate include in verification</source>
         <translation>검증 시 포함 되는 CertMan 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="720"/>
+        <location filename="../tsp_client_dlg.ui" line="583"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="727"/>
+        <location filename="../tsp_client_dlg.ui" line="590"/>
         <source>CA List</source>
         <translation>CA 목록</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="734"/>
+        <location filename="../tsp_client_dlg.ui" line="597"/>
         <source>Trust List</source>
         <translation>신뢰 목록</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="880"/>
+        <location filename="../tsp_client_dlg.ui" line="743"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="824"/>
+        <location filename="../tsp_client_dlg.ui" line="687"/>
         <source>VerifySigned</source>
         <translation>VerifySigned</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="463"/>
+        <location filename="../tsp_client_dlg.ui" line="511"/>
         <source>Use Nonce</source>
         <translation>논스 사용</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="497"/>
+        <location filename="../tsp_client_dlg.ui" line="538"/>
         <source>Auto send</source>
         <translation>자동 보내기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="583"/>
         <source>CA Certificate</source>
-        <translation>CA 인증서</translation>
+        <translation type="vanished">CA 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="524"/>
-        <location filename="../tsp_client_dlg.ui" line="563"/>
         <source>V</source>
-        <translation>V</translation>
+        <translation type="vanished">V</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="623"/>
         <source>TSP Certificate</source>
-        <translation>TSP 인증서</translation>
+        <translation type="vanished">TSP 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="593"/>
-        <location filename="../tsp_client_dlg.ui" line="613"/>
         <source>Find</source>
-        <translation>찾기</translation>
+        <translation type="vanished">찾기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="537"/>
-        <location filename="../tsp_client_dlg.ui" line="576"/>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="vanished">T</translation>
     </message>
     <message>
         <source>Select</source>
         <translation type="vanished">선택</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="771"/>
+        <location filename="../tsp_client_dlg.ui" line="634"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="804"/>
+        <location filename="../tsp_client_dlg.ui" line="667"/>
         <source>TST Information</source>
         <translation>TST 정보</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="764"/>
+        <location filename="../tsp_client_dlg.ui" line="627"/>
         <source>View CMS</source>
         <translation>CMS 보기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="948"/>
+        <location filename="../tsp_client_dlg.ui" line="811"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="955"/>
+        <location filename="../tsp_client_dlg.ui" line="818"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="239"/>
-        <location filename="../tsp_client_dlg.cpp" line="255"/>
-        <location filename="../tsp_client_dlg.cpp" line="276"/>
         <source>Find a server certificate</source>
-        <translation>서버 인증서를 찾으세요</translation>
+        <translation type="vanished">서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="285"/>
-        <location filename="../tsp_client_dlg.cpp" line="356"/>
         <source>The certificate type is %1</source>
-        <translation>인증서 타입은 %1 입니다.</translation>
+        <translation type="vanished">인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="311"/>
-        <location filename="../tsp_client_dlg.cpp" line="327"/>
-        <location filename="../tsp_client_dlg.cpp" line="347"/>
-        <location filename="../tsp_client_dlg.cpp" line="535"/>
         <source>Find a CA certificate</source>
-        <translation>CA 인증서를 찾으세요</translation>
+        <translation type="vanished">CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="377"/>
+        <location filename="../tsp_client_dlg.cpp" line="214"/>
+        <location filename="../tsp_client_dlg.cpp" line="245"/>
         <source>There is no input</source>
         <translation>입력 값이 없습니다</translation>
     </message>
@@ -23072,7 +23067,7 @@ Use %2</source>
         <translation type="vanished">정책 OID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="431"/>
+        <location filename="../tsp_client_dlg.cpp" line="299"/>
         <source>Insert TSP URL</source>
         <translation>TSP URL 을 입력하세요</translation>
     </message>
@@ -23081,71 +23076,69 @@ Use %2</source>
         <translation type="vanished">요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="103"/>
+        <location filename="../tsp_client_dlg.cpp" line="87"/>
         <source>Object Identifier</source>
         <translation>객체 식별자</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="105"/>
-        <location filename="../tsp_client_dlg.cpp" line="106"/>
         <source>Select CertMan certificate</source>
-        <translation>인증서 관리자 인증서 선택</translation>
+        <translation type="vanished">인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="107"/>
-        <location filename="../tsp_client_dlg.cpp" line="108"/>
+        <location filename="../tsp_client_dlg.cpp" line="89"/>
+        <location filename="../tsp_client_dlg.cpp" line="90"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="178"/>
-        <location filename="../tsp_client_dlg.cpp" line="437"/>
+        <location filename="../tsp_client_dlg.cpp" line="160"/>
+        <location filename="../tsp_client_dlg.cpp" line="305"/>
         <source>No request available</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="402"/>
+        <location filename="../tsp_client_dlg.cpp" line="270"/>
         <source>failed to encode TSP request: %1</source>
         <translation>TSP 요청 인코딩 실패하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="407"/>
+        <location filename="../tsp_client_dlg.cpp" line="275"/>
         <source>TSP message encoded</source>
         <translation>TSP 메세지 인코딩 되었습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="451"/>
+        <location filename="../tsp_client_dlg.cpp" line="319"/>
         <source>Enter a username</source>
         <translation>이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="458"/>
+        <location filename="../tsp_client_dlg.cpp" line="326"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="485"/>
+        <location filename="../tsp_client_dlg.cpp" line="353"/>
         <source>TSP message sent</source>
         <translation>TSP 메세지를 보냈습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="489"/>
+        <location filename="../tsp_client_dlg.cpp" line="357"/>
         <source>failed to send a request to TSP server: %1 (STATUS: %2)</source>
         <translation>TSP 서버에 요청 보내기 실패: %1 (상태: %2)</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="592"/>
+        <location filename="../tsp_client_dlg.cpp" line="420"/>
         <source>failed to verify signature: %1(%2)</source>
         <translation>서명 검증에 실패 하였습니다: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="705"/>
+        <location filename="../tsp_client_dlg.cpp" line="493"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="742"/>
-        <location filename="../tsp_client_dlg.cpp" line="777"/>
+        <location filename="../tsp_client_dlg.cpp" line="530"/>
+        <location filename="../tsp_client_dlg.cpp" line="565"/>
         <source>TSP Response error: %1</source>
         <translation>TSP 응답 에러: %1</translation>
     </message>
@@ -23158,23 +23151,19 @@ Use %2</source>
         <translation type="vanished">TSP 서버에 요청 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="551"/>
-        <location filename="../tsp_client_dlg.cpp" line="636"/>
-        <location filename="../tsp_client_dlg.cpp" line="662"/>
+        <location filename="../tsp_client_dlg.cpp" line="395"/>
+        <location filename="../tsp_client_dlg.cpp" line="463"/>
         <source>Select TSP server certificate</source>
         <translation>TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="558"/>
-        <location filename="../tsp_client_dlg.cpp" line="643"/>
-        <location filename="../tsp_client_dlg.cpp" line="669"/>
         <source>find a TSP server certificate</source>
-        <translation>TSP 서버 인증서를 찾으세요</translation>
+        <translation type="vanished">TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="199"/>
-        <location filename="../tsp_client_dlg.cpp" line="521"/>
-        <location filename="../tsp_client_dlg.cpp" line="628"/>
+        <location filename="../tsp_client_dlg.cpp" line="181"/>
+        <location filename="../tsp_client_dlg.cpp" line="387"/>
+        <location filename="../tsp_client_dlg.cpp" line="455"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
@@ -23183,9 +23172,8 @@ Use %2</source>
         <translation type="vanished">TSP 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="529"/>
         <source>Select CA certificate</source>
-        <translation>CA 인증서를 선택하세요</translation>
+        <translation type="vanished">CA 인증서를 선택하세요</translation>
     </message>
     <message>
         <source>Select OCSP server certificate</source>
@@ -23196,7 +23184,7 @@ Use %2</source>
         <translation type="obsolete">OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="588"/>
+        <location filename="../tsp_client_dlg.cpp" line="416"/>
         <source>verify reponse successfully</source>
         <translation>검증에 성공하였습니다</translation>
     </message>
@@ -23205,13 +23193,13 @@ Use %2</source>
         <translation type="vanished">서명 검증에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="687"/>
+        <location filename="../tsp_client_dlg.cpp" line="475"/>
         <source>failed to decode TSP response: %1 (STATUS: %2)</source>
         <translation>응답 디코딩 실패: %1 (상태: %2)</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="733"/>
-        <location filename="../tsp_client_dlg.cpp" line="768"/>
+        <location filename="../tsp_client_dlg.cpp" line="521"/>
+        <location filename="../tsp_client_dlg.cpp" line="556"/>
         <source>There is no TSP response</source>
         <translation>TSP 응답이 없습니다</translation>
     </message>

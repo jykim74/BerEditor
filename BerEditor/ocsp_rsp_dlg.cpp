@@ -90,13 +90,9 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
     {
         strVerify = tr("Verify OK");
     }
-    else if( ret == JSR_INVALID )
-    {
-        strVerify = tr( "Verify Fail: %1").arg( JERR(ret));
-    }
     else
     {
-        strVerify = tr("Error: %1").arg( JERR(ret));
+        strVerify = tr("Error: %1(%2)").arg( JERR(ret)).arg( sResMsg );
     }
 
     if( sRspInfo.binSigner.nLen > 0 )
