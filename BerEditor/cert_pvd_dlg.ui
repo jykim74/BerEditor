@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>718</height>
+    <width>582</width>
+    <height>932</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -480,13 +480,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mListClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QDateTimeEdit" name="mVerifyDateTime"/>
      </item>
@@ -494,6 +487,13 @@
       <widget class="QCheckBox" name="mATTimeCheck">
        <property name="text">
         <string>At Time</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mListClearBtn">
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -509,6 +509,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mMakePathBtn">
+       <property name="text">
+        <string>Make Path</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

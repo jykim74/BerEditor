@@ -37,6 +37,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 {
     setupUi(this);
     setAcceptDrops( true );
+    initUI();
 
     memset( &target_, 0x00, sizeof(BIN));
 
@@ -66,6 +67,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 
     connect( mListClearBtn, SIGNAL(clicked()), this, SLOT(clickListClear()));
     connect( mPathClearBtn, SIGNAL(clicked()), this, SLOT(clickPathClear()));
+    connect( mMakePathBtn, SIGNAL(cicked()), this, SLOT(clickMakePath()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
     connect( mVerifyCertBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCert()));
@@ -319,7 +321,7 @@ void CertPVDDlg::dropEvent(QDropEvent *event)
     }
 }
 
-void CertPVDDlg::initialize()
+void CertPVDDlg::initUI()
 {
     QStringList sPathLabels = { tr( "Type"), tr( "DN" ) };
 
@@ -354,6 +356,20 @@ void CertPVDDlg::initialize()
     mTrustPathText->setPlaceholderText( tr( "Trust anchor certificate file path") );
     mUntrustPathText->setPlaceholderText( tr( "Intermediate CA certificate file path" ));
     mCRLPathText->setPlaceholderText( tr("CRL file path" ));
+
+    mPathTree->clear();
+    mPathTree->header()->setVisible( false );
+    mPathTree->setColumnCount(1);
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
+}
+
+void CertPVDDlg::initialize()
+{
+
 
     checkATTime();
     checkUseTrustList();
@@ -1348,6 +1364,92 @@ void CertPVDDlg::clickCRLAdd()
 void CertPVDDlg::clickListClear()
 {   
     mPathTable->setRowCount( 0 );
+}
+
+void CertPVDDlg::clickMakePath()
+{
+    int ret = 0;
+    int count = 0;
+
+    BIN binTarget = {0,0};
+    BINList *pCAList = NULL;
+    const BINList *pCurList = NULL;
+
+    bool bOnline = berApplet->settingsMgr()->onlineCA_CRL();
+    mPathTree->clear();
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
+
+    QString strTargetDN = mTargetDNText->text();
+    if( strTargetDN.length() < 1 )
+    {
+        CertManDlg certMan;
+
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a certificate") );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert( &binTarget );
+        setTarget( &binTarget );
+        JS_BIN_reset( &binTarget );
+    }
+    else {
+        JS_BIN_copy( &binTarget, &target_ );
+    }
+
+    ret = getStatusDataList( &binTarget, bOnline, &pCAList, NULL, NULL );
+
+    count = JS_BIN_countList( pCAList );
+    for( int i = 0; i < count; i++ )
+    {
+        int bSelf = 0;
+        JCertInfo sCertInfo;
+        BIN binCRL = {0,0};
+        BIN binOCSP = {0,0};
+        BIN binCA = {0,0};
+
+        pCurList = JS_BIN_getListAt( i, pCAList );
+
+        ret = JS_PKI_getCertInfo2( &pCurList->Bin, &sCertInfo, NULL, &bSelf );
+        if( ret != CKR_OK ) continue;
+
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        item->setText( 0, sCertInfo.pSubjectName );
+        item->setData(0, Qt::UserRole, getHexString(&pCurList->Bin));
+
+        pathItem->insertChild(0, item );
+
+        getStatusData( &pCurList->Bin, bOnline, &binCA, &binCRL, &binOCSP );
+
+        if( binCRL.nLen > 0 )
+        {
+            QTreeWidgetItem *crl = new QTreeWidgetItem;
+            crl->setText( 0, "CRL" );
+            crl->setData(0, Qt::UserRole, getHexString(&binCRL ));
+            item->addChild( crl );
+        }
+
+        if( binOCSP.nLen > 0 )
+        {
+            QTreeWidgetItem *ocsp = new QTreeWidgetItem;
+            ocsp->setText( 0, "OCSP" );
+            ocsp->setData(0, Qt::UserRole, getHexString(&binOCSP));
+            item->addChild( ocsp );
+        }
+
+        JS_PKI_resetCertInfo( &sCertInfo );
+        JS_BIN_reset( &binCRL );
+        JS_BIN_reset( &binOCSP );
+    }
+
+end :
+    JS_BIN_reset( &binTarget );
+    if( pCAList ) JS_BIN_resetList( &pCAList );
 }
 
 void CertPVDDlg::clickPathClear()

@@ -60,6 +60,7 @@ private slots:
 
     void clickListClear();
     void clickPathClear();
+    void clickMakePath();
 
     void checkATTime();
 
@@ -80,6 +81,7 @@ private slots:
     void clickClearDataAll();
 
 private:
+    void initUI();
     void initialize();
     void addList( const QString strType, const QString strPath );
     void addList( const QString strType, const BIN *pData );
