@@ -75,6 +75,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 
     connect( mUseSubjectDNCheck, SIGNAL(clicked()), this, SLOT(checkNameSubjectDN()));
     connect( mGetInfoBtn, SIGNAL(clicked()), this, SLOT(clickGetInfo()));
+    connect( mMakePathBtn, SIGNAL(clicked()), this, SLOT(clickMakePath()));
     connect( mInfoClearBtn, SIGNAL(clicked()), this, SLOT(clickClearInfo()));
     connect( mSignBtn, SIGNAL(clicked()), this, SLOT(clickMakeSign()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerifySign()));
@@ -156,10 +157,18 @@ void PDFSignerDlg::initUI()
     QTreeWidgetItem* tItem = new QTreeWidgetItem;
     tItem->setIcon( 0, QIcon(":/images/pdf.png" ));
     tItem->setText( 0, kDSS );
+    mDSSTree->insertTopLevelItem( 0, tItem );
+
+    mPathTree->clear();
+    mPathTree->header()->setVisible( false );
+    mPathTree->setColumnCount(1);
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
 
     checkDSS();
-
-    mDSSTree->insertTopLevelItem( 0, tItem );
     mTypeTab->setCurrentIndex(0);
 }
 
@@ -1272,6 +1281,27 @@ void PDFSignerDlg::clickGetInfo()
 
     if( pDSSList ) JS_PDF_resetDSSDataList( &pDSSList );
     if( pObjList ) JS_UTIL_resetNumBINList( &pObjList );
+}
+
+void PDFSignerDlg::clickMakePath()
+{
+    int ret = 0;
+    BIN binCert = {0,0};
+    BINList *pCertList = NULL;
+
+    CertManDlg certMan;
+    certMan.setMode( ManModeSelCert );
+    certMan.setTitle( tr( "" ) );
+    if( certMan.exec() != QDialog::Accepted )
+        goto end;
+
+    certMan.getCert( &binCert );
+
+    ret = getDSSList( &binCert, &pCertList, NULL, NULL );
+
+end :
+    JS_BIN_reset( &binCert );
+    if( pCertList ) JS_BIN_resetList( &pCertList );
 }
 
 void PDFSignerDlg::clickMakeSign()

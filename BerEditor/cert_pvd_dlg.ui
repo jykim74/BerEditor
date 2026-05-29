@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>670</height>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -487,17 +487,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="2">
       <widget class="QDateTimeEdit" name="mVerifyDateTime"/>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="mATTimeCheck">
        <property name="text">
-        <string>Path List</string>
+        <string>At Time</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -510,29 +510,52 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="mATTimeCheck">
-       <property name="text">
-        <string>At Time</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="mPathTable">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>80</height>
-      </size>
+    <widget class="QTabWidget" name="mPathTab">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
+     <widget class="QWidget" name="mListTab">
+      <attribute name="title">
+       <string>Path List</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableWidget" name="mPathTable">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mTreeTab">
+      <attribute name="title">
+       <string>Path Tree</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTreeWidget" name="mPathTree">
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -1002,7 +1025,6 @@
   <tabstop>mATTimeCheck</tabstop>
   <tabstop>mVerifyDateTime</tabstop>
   <tabstop>mListClearBtn</tabstop>
-  <tabstop>mPathTable</tabstop>
   <tabstop>mUseCheckTimeCheck</tabstop>
   <tabstop>mCRLCheckCheck</tabstop>
   <tabstop>mCRLCheckAllCheck</tabstop>

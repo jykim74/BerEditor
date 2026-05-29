@@ -55,6 +55,7 @@ private slots:
     void checkNameSubjectDN();
 
     void clickGetInfo();
+    void clickMakePath();
     void clickMakeSign();
     void clickVerifySign();
     void clickClearInfo();

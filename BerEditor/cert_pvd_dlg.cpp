@@ -228,12 +228,14 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, bool bOnline, BINList **ppC
             berApplet->log( QString( "%1 certificate is selfsigned" ).arg( sCertInfo.pSubjectName) );
 
             JS_PKI_resetCertInfo( &sCertInfo );
+            ret = JSR_OK;
             break;
         }
 
         JS_PKI_resetCertInfo( &sCertInfo );
         JS_BIN_reset( &binCert );
         JS_BIN_copy( &binCert, &binCA );
+        ret = JSR_PKI_NOT_FULL_CHAIN;
     }
 
 end :
