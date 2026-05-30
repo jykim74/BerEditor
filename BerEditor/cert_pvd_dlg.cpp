@@ -23,6 +23,7 @@
 #include "mainwindow.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
+#include "ocsp_rsp_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 
@@ -43,6 +44,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 
     connect( mPathTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotPathMenu(QPoint)));
     connect( mParamTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotParamMenu(QPoint)));
+    connect( mPathTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPathTreeMenu(QPoint)));
 
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
@@ -67,7 +69,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 
     connect( mListClearBtn, SIGNAL(clicked()), this, SLOT(clickListClear()));
     connect( mPathClearBtn, SIGNAL(clicked()), this, SLOT(clickPathClear()));
-    connect( mMakePathBtn, SIGNAL(cicked()), this, SLOT(clickMakePath()));
+    connect( mMakePathBtn, SIGNAL(clicked()), this, SLOT(clickMakePath()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
     connect( mVerifyCertBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCert()));
@@ -88,6 +90,12 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mFlagGroup->layout()->setSpacing(5);
+
+    mListTab->layout()->setMargin(5);
+    mListTab->layout()->setSpacing(5);
+
+    mTreeTab->layout()->setMargin(5);
+    mTreeTab->layout()->setSpacing(5);
 
     mTrustInfoBtn->setFixedWidth(34);
     mTrustDecodeBtn->setFixedWidth(34);
@@ -176,15 +184,23 @@ int CertPVDDlg::getStatusData( const BIN *pCert, bool bOnline, BIN *pCA, BIN *pC
 
     if( pCert == NULL ) return JSR_ERR;
 
-    ret = CertInfoDlg::getCA2( pCert, bOnline, pCA );
-    if( ret != 0 ) return ret;
+    if( pCA )
+    {
+        ret = CertInfoDlg::getCA2( pCert, bOnline, pCA );
+        if( ret != 0 ) return JSR_PKI_GET_CA_FAIL;
+    }
+
+    if( pCRL )
+    {
+        ret = CertInfoDlg::getCRL2( pCert, bOnline, pCRL );
+        if( ret != 0 ) return JSR_PKI_GET_CRL_FAIL;
+    }
 
     if( pOCSP )
     {
-        CertInfoDlg::getOCSP2( pCert, pCA, pOCSP );
+        ret = CertInfoDlg::getOCSP2( pCert, pCA, pOCSP );
+        if( ret != 0 ) return JSR_PKI_GET_OCSP_FAIL;
     }
-
-    CertInfoDlg::getCRL2( pCert, bOnline, pCRL );
 
     return ret;
 }
@@ -218,13 +234,6 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, bool bOnline, BINList **ppC
         ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, NULL, &bSelf );
         if( ret != JSR_OK ) goto end;
 
-        ret = getStatusData( &binCert, bOnline, &binCA, pCRL, pOCSP );
-        if( ret != JSR_OK ) break;
-
-        if( binCA.nLen > 0 ) JS_BIN_addList( ppCAList, &binCA );
-        if( pCRL && pCRL->nLen > 0 ) JS_BIN_addList( ppCRLList, pCRL );
-        if( pOCSP && pOCSP->nLen > 0 ) JS_BIN_addList( ppOCSPList, pOCSP );
-
         if( bSelf == true )
         {
             berApplet->log( QString( "%1 certificate is selfsigned" ).arg( sCertInfo.pSubjectName) );
@@ -232,6 +241,26 @@ int CertPVDDlg::getStatusDataList( const BIN *pCert, bool bOnline, BINList **ppC
             JS_PKI_resetCertInfo( &sCertInfo );
             ret = JSR_OK;
             break;
+        }
+
+        ret = getStatusData( &binCert, bOnline, &binCA, pCRL, pOCSP );
+        if( binCA.nLen <= 0 )
+        {
+            ret = JSR_PKI_GET_CA_FAIL;
+            break;
+        }
+
+        if( binCA.nLen > 0 ) JS_BIN_addList( ppCAList, &binCA );
+        if( pCRL && pCRL->nLen > 0 )
+        {
+            JS_BIN_addList( ppCRLList, pCRL );
+            JS_BIN_reset( pCRL );
+        }
+
+        if( pOCSP && pOCSP->nLen > 0 )
+        {
+            JS_BIN_addList( ppOCSPList, pOCSP );
+            JS_BIN_reset( pOCSP );
         }
 
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -497,6 +526,21 @@ void CertPVDDlg::slotPathMenu( QPoint pos )
     menu->popup( mPathTable->viewport()->mapToGlobal(pos));
 }
 
+void CertPVDDlg::slotPathTreeMenu( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction* viewAct = new QAction( tr("View" ), this );
+
+    QTreeWidgetItem *item = mPathTree->currentItem();
+    if( item == NULL ) return;
+
+    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewTreeData()));
+
+    menu->addAction( viewAct );
+
+    menu->popup( mPathTable->viewport()->mapToGlobal(pos));
+}
+
 void CertPVDDlg::slotParamMenu( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
@@ -536,6 +580,41 @@ void CertPVDDlg::viewData()
         certInfo.setCertBIN( &binData );
         certInfo.exec();
     }
+
+    JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::viewTreeData()
+{
+    BIN binData = {0,0};
+    QTreeWidgetItem *item = mPathTree->currentItem();
+
+    if( item == NULL ) return;
+
+    QString strData = item->data( 0, Qt::UserRole ).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+    int nType = item->data( 0, 99 ).toInt();
+
+    if( nType == PVD_CRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binData );
+        crlInfo.exec();
+    }
+    else if( nType == PVD_OCSP )
+    {
+        OCSPRspDlg ocspRsp;
+        ocspRsp.setResponse( &binData );
+        ocspRsp.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binData );
+        certInfo.exec();
+    }
+
 
     JS_BIN_reset( &binData );
 }
@@ -1396,11 +1475,12 @@ void CertPVDDlg::clickMakePath()
 
         certMan.getCert( &binTarget );
         setTarget( &binTarget );
-        JS_BIN_reset( &binTarget );
     }
     else {
         JS_BIN_copy( &binTarget, &target_ );
     }
+
+    JS_BIN_addList( &pCAList, &binTarget );
 
     ret = getStatusDataList( &binTarget, bOnline, &pCAList, NULL, NULL );
 
@@ -1422,7 +1502,24 @@ void CertPVDDlg::clickMakePath()
         item->setText( 0, sCertInfo.pSubjectName );
         item->setData(0, Qt::UserRole, getHexString(&pCurList->Bin));
 
-        pathItem->insertChild(0, item );
+        if( i == 0 )
+        {
+            item->setIcon( 0, QIcon( ":/images/cert.png" ));
+            item->setData(0, 99, PVD_CERT );
+        }
+        else
+        {
+            if( bSelf == true )
+            {
+                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+                item->setData(0, 99, PVD_TRUST);
+            }
+            else
+            {
+                item->setIcon( 0, QIcon( ":/images/ca.png" ));
+                item->setData(0, 99, PVD_UNTRUST);
+            }
+        }
 
         getStatusData( &pCurList->Bin, bOnline, &binCA, &binCRL, &binOCSP );
 
@@ -1430,7 +1527,9 @@ void CertPVDDlg::clickMakePath()
         {
             QTreeWidgetItem *crl = new QTreeWidgetItem;
             crl->setText( 0, "CRL" );
+            crl->setIcon( 0, QIcon(":/images/crl.png" ));
             crl->setData(0, Qt::UserRole, getHexString(&binCRL ));
+            crl->setData(0, 99, PVD_CRL );
             item->addChild( crl );
         }
 
@@ -1438,14 +1537,20 @@ void CertPVDDlg::clickMakePath()
         {
             QTreeWidgetItem *ocsp = new QTreeWidgetItem;
             ocsp->setText( 0, "OCSP" );
+            ocsp->setIcon( 0, QIcon(":/images/ocsp.png" ));
             ocsp->setData(0, Qt::UserRole, getHexString(&binOCSP));
+            ocsp->setData(0, 99, PVD_OCSP);
             item->addChild( ocsp );
         }
+
+        pathItem->insertChild( 0, item );
 
         JS_PKI_resetCertInfo( &sCertInfo );
         JS_BIN_reset( &binCRL );
         JS_BIN_reset( &binOCSP );
     }
+
+    mPathTree->expandAll();
 
 end :
     JS_BIN_reset( &binTarget );

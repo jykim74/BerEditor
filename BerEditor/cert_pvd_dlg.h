@@ -14,6 +14,14 @@ namespace Ui {
 class CertPVDDlg;
 }
 
+enum PVD_DATA {
+    PVD_CERT = 0,
+    PVD_TRUST,
+    PVD_UNTRUST,
+    PVD_CRL,
+    PVD_OCSP
+};
+
 class CertPVDDlg : public QDialog, public Ui::CertPVDDlg
 {
     Q_OBJECT
@@ -34,9 +42,11 @@ private slots:
     void dropEvent(QDropEvent *event);
 
     void slotPathMenu( QPoint pos );
+    void slotPathTreeMenu( QPoint pos );
     void slotParamMenu( QPoint pos );
 
     void viewData();
+    void viewTreeData();
     void delPath();
     void sendTarget();
     void delParam();
