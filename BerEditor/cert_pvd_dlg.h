@@ -14,7 +14,7 @@ namespace Ui {
 class CertPVDDlg;
 }
 
-enum PVD_DATA {
+enum {
     PVD_CERT = 0,
     PVD_TRUST,
     PVD_UNTRUST,
@@ -49,6 +49,7 @@ private slots:
     void viewTreeData();
     void delPath();
     void sendTarget();
+    void sendTreePath();
     void delParam();
 
     void clickTrustFind();

@@ -32,11 +32,13 @@ private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     void slotTableMenuRequested( QPoint pos );
+    void slotPathTreeMenuRequest( QPoint pos );
     void slotTreeMenuRequested( QPoint pos );
 
     void copyValue();
     void decodeValue();
     void viewValue();
+    void viewPathTreeData();
 
     void copyTreeValue();
     void decodeTreeValue();

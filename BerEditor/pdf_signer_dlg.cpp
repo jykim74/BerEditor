@@ -68,6 +68,8 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
 
     connect( mInfoTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTableMenuRequested(QPoint)));
     connect( mDSSTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+    connect( mPathTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPathTreeMenuRequest(QPoint)));
+    connect( mPathTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewPathTreeData()));
 
     connect( mDSSCheck, SIGNAL(clicked()), this, SLOT(checkDSS()));
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
@@ -433,6 +435,40 @@ end :
     JS_BIN_reset( &binData );
 }
 
+void PDFSignerDlg::viewPathTreeData()
+{
+    BIN binData = {0,0};
+    QTreeWidgetItem *item = mPathTree->currentItem();
+
+    if( item == NULL ) return;
+
+    QString strData = item->data( 0, Qt::UserRole ).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+    int nType = item->data( 0, 99 ).toInt();
+
+    if( nType == PVD_CRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binData );
+        crlInfo.exec();
+    }
+    else if( nType == PVD_OCSP )
+    {
+        OCSPRspDlg ocspRsp;
+        ocspRsp.setResponse( &binData );
+        ocspRsp.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binData );
+        certInfo.exec();
+    }
+
+    JS_BIN_reset( &binData );
+}
+
 void PDFSignerDlg::slotTableMenuRequested( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
@@ -465,6 +501,26 @@ void PDFSignerDlg::slotTableMenuRequested( QPoint pos )
     }
 
     menu->popup( mInfoTable->viewport()->mapToGlobal(pos));
+}
+
+void PDFSignerDlg::slotPathTreeMenuRequest( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction* viewAct = new QAction( tr("View" ), this );
+
+    QTreeWidgetItem *item = mPathTree->currentItem();
+    if( item == NULL ) return;
+
+    if( item->data(0, Qt::UserRole).toString().length() < 2 )
+        return;
+
+    int nType = item->data(0, 99 ).toInt();
+
+    connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewPathTreeData()));
+
+    menu->addAction( viewAct );
+
+    menu->popup( mPathTree->viewport()->mapToGlobal(pos));
 }
 
 void PDFSignerDlg::copyTreeValue()
@@ -1275,6 +1331,7 @@ void PDFSignerDlg::clickGetInfo()
 
     berApplet->messageBox( tr("PDF information import complete"), this );
     mDSSTree->expandAll();
+    mTabWidget->setCurrentIndex(0);
 
     JS_PDF_resetSignLabel( &sSignLabel );
     JS_BIN_reset( &binTSP );
@@ -1286,8 +1343,18 @@ void PDFSignerDlg::clickGetInfo()
 void PDFSignerDlg::clickMakePath()
 {
     int ret = 0;
+    int count = 0;
     BIN binCert = {0,0};
-    BINList *pCertList = NULL;
+    BINList *pCAList = NULL;
+    const BINList *pCurList = NULL;
+
+    bool bOnline = berApplet->settingsMgr()->onlineCA_CRL();
+    mPathTree->clear();
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
 
     CertManDlg certMan;
     certMan.setMode( ManModeSelCert );
@@ -1297,11 +1364,81 @@ void PDFSignerDlg::clickMakePath()
 
     certMan.getCert( &binCert );
 
-    ret = getDSSList( &binCert, &pCertList, NULL, NULL );
+    JS_BIN_addList( &pCAList, &binCert );
 
+    ret = CertPVDDlg::getStatusDataList( &binCert, bOnline, &pCAList, NULL, NULL );
+    count = JS_BIN_countList( pCAList );
+
+    for( int i = 0; i < count; i++ )
+    {
+        int bSelf = 0;
+        JCertInfo sCertInfo;
+        BIN binCRL = {0,0};
+        BIN binOCSP = {0,0};
+        BIN binCA = {0,0};
+
+        pCurList = JS_BIN_getListAt( i, pCAList );
+
+        ret = JS_PKI_getCertInfo2( &pCurList->Bin, &sCertInfo, NULL, &bSelf );
+        if( ret != CKR_OK ) continue;
+
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        item->setText( 0, sCertInfo.pSubjectName );
+        item->setData(0, Qt::UserRole, getHexString(&pCurList->Bin));
+
+        if( i == 0 )
+        {
+            item->setIcon( 0, QIcon( ":/images/cert.png" ));
+            item->setData(0, 99, PVD_CERT );
+        }
+        else
+        {
+            if( bSelf == true )
+            {
+                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+                item->setData(0, 99, PVD_TRUST);
+            }
+            else
+            {
+                item->setIcon( 0, QIcon( ":/images/ca.png" ));
+                item->setData(0, 99, PVD_UNTRUST);
+            }
+        }
+
+        CertPVDDlg::getStatusData( &pCurList->Bin, bOnline, &binCA, &binCRL, &binOCSP );
+
+        if( binCRL.nLen > 0 )
+        {
+            QTreeWidgetItem *crl = new QTreeWidgetItem;
+            crl->setText( 0, "CRL" );
+            crl->setIcon( 0, QIcon(":/images/crl.png" ));
+            crl->setData(0, Qt::UserRole, getHexString(&binCRL ));
+            crl->setData(0, 99, PVD_CRL );
+            item->addChild( crl );
+        }
+
+        if( binOCSP.nLen > 0 )
+        {
+            QTreeWidgetItem *ocsp = new QTreeWidgetItem;
+            ocsp->setText( 0, "OCSP" );
+            ocsp->setIcon( 0, QIcon(":/images/ocsp.png" ));
+            ocsp->setData(0, Qt::UserRole, getHexString(&binOCSP));
+            ocsp->setData(0, 99, PVD_OCSP);
+            item->addChild( ocsp );
+        }
+
+        pathItem->insertChild( 0, item );
+
+        JS_PKI_resetCertInfo( &sCertInfo );
+        JS_BIN_reset( &binCRL );
+        JS_BIN_reset( &binOCSP );
+    }
+
+    mPathTree->expandAll();
+    mTabWidget->setCurrentIndex(2);
 end :
     JS_BIN_reset( &binCert );
-    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pCAList ) JS_BIN_resetList( &pCAList );
 }
 
 void PDFSignerDlg::clickMakeSign()
