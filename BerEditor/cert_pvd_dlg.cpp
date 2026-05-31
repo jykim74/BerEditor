@@ -63,15 +63,13 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mParamTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotParamMenu(QPoint)));
     connect( mPathTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPathTreeMenu(QPoint)));
 
-    connect( mPathTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewData()));
-    connect( mPathTree, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewTreeData()));
+    connect( mPathTable, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(viewData()));
+    connect( mPathTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewTreeData()));
 
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
     connect( mCRLFindBtn, SIGNAL(clicked()), this, SLOT(clickCRLFind()));
-
-    connect( mPathTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewData()));
 
     connect( mUseTrustListCheck, SIGNAL(clicked()), this, SLOT(checkUseTrustList()));
     connect( mTrustListBtn, SIGNAL(clicked()), this, SLOT(clickTrustList()));
@@ -555,22 +553,28 @@ void CertPVDDlg::slotPathTreeMenu( QPoint pos )
     QMenu *menu = new QMenu(this);
     QAction* viewAct = new QAction( tr("View" ), this );
     QAction* sendPathAct = new QAction( tr("Send Path" ), this );
+    QAction* sendAllPathAct = new QAction( tr( "Send All Path" ), this );
 
     QTreeWidgetItem *item = mPathTree->currentItem();
     if( item == NULL ) return;
 
-    if( item->data(0, Qt::UserRole).toString().length() < 2 )
-        return;
-
-    int nType = item->data(0, 99 ).toInt();
-
     connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewTreeData()));
     connect( sendPathAct, SIGNAL(triggered(bool)), this, SLOT(sendTreePath()));
+    connect( sendAllPathAct, SIGNAL(triggered(bool)), this, SLOT(sendTreeAllPath()));
 
-    menu->addAction( viewAct );
+    if( item->data(0, Qt::UserRole).toString().length() < 2 )
+    {
+        menu->addAction( sendAllPathAct );
+    }
+    else
+    {
+        int nType = item->data(0, 99 ).toInt();
 
-    if( nType == PVD_TRUST || nType == PVD_UNTRUST || nType == PVD_CRL )
-        menu->addAction( sendPathAct );
+        menu->addAction( viewAct );
+
+        if( nType == PVD_TRUST || nType == PVD_UNTRUST || nType == PVD_CRL )
+            menu->addAction( sendPathAct );
+    }
 
     menu->popup( mPathTree->viewport()->mapToGlobal(pos));
 }
@@ -693,6 +697,34 @@ void CertPVDDlg::sendTreePath()
 
     addList( strType, &binData );
     JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::sendTreeAllPath()
+{
+    BIN binData = {0,0};
+    int nType = 0;
+    QString strType;
+    QString strData;
+
+    QTreeWidgetItem *root = mPathTree->topLevelItem(0);
+
+    if( root == NULL ) return;
+
+    int count = root->childCount();
+
+    for( int i = 0; i < count; i++ )
+    {
+        QTreeWidgetItem *child = root->child(i);
+        if( child == NULL ) continue;
+
+        strData = child->data(0, Qt::UserRole).toString();
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+        nType = child->data(0, 99).toInt();
+        strType = _getTypeString( nType );
+
+        addList( strType, &binData );
+        JS_BIN_reset( &binData );
+    }
 }
 
 void CertPVDDlg::delParam()

@@ -47,9 +47,11 @@ private slots:
 
     void viewData();
     void viewTreeData();
+
     void delPath();
     void sendTarget();
     void sendTreePath();
+    void sendTreeAllPath();
     void delParam();
 
     void clickTrustFind();
