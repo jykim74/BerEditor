@@ -71,6 +71,8 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mPathTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPathTreeMenuRequest(QPoint)));
     connect( mPathTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewPathTreeData()));
 
+    connect( mDSSTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewTreeValue()));
+
     connect( mDSSCheck, SIGNAL(clicked()), this, SLOT(checkDSS()));
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
@@ -579,6 +581,8 @@ void PDFSignerDlg::viewTreeValue()
     QString strValue = item->data( 0, Qt::UserRole ).toString();
     BIN binData = {0,0};
 
+    if( strValue.length() < 1 ) return;
+
     JS_BIN_decodeHex( strValue.toStdString().c_str(), &binData );
 
     if( JS_PKI_isBER( &binData ) == false )
@@ -588,19 +592,19 @@ void PDFSignerDlg::viewTreeValue()
     }
 
 
-    if( strType == kDSS_Certs )
+    if( strType == kDSS_Certs || strType == kDSS_Cert )
     {
         CertInfoDlg certInfo;
         certInfo.setCertBIN( &binData, strType );
         certInfo.exec();
     }
-    else if( strType == kDSS_CRLs )
+    else if( strType == kDSS_CRLs || strType == kDSS_CRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRL_BIN( &binData, strType );
         crlInfo.exec();
     }
-    else if( strType == kDSS_OCSPs )
+    else if( strType == kDSS_OCSPs || strType == kDSS_OCSP )
     {
 #if 0
         CertIDDlg certID;
