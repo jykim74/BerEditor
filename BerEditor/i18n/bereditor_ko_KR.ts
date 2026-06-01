@@ -17518,7 +17518,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="70"/>
-        <location filename="../pdf_signer_dlg.ui" line="795"/>
+        <location filename="../pdf_signer_dlg.ui" line="846"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -17564,7 +17564,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="376"/>
-        <location filename="../pdf_signer_dlg.ui" line="613"/>
+        <location filename="../pdf_signer_dlg.ui" line="630"/>
         <source>VRI</source>
         <translation>VRI</translation>
     </message>
@@ -17614,17 +17614,22 @@ Use %2</source>
         <translation>검증 시 포함 되는 CertMan 인증서</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="518"/>
+        <location filename="../pdf_signer_dlg.ui" line="520"/>
         <source>Trust List</source>
         <translation>신뢰 목록</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="525"/>
+        <location filename="../pdf_signer_dlg.ui" line="527"/>
+        <source>At Time</source>
+        <translation>시간 설정</translation>
+    </message>
+    <message>
+        <location filename="../pdf_signer_dlg.ui" line="547"/>
         <source>CA List</source>
         <translation>CA 목록</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="498"/>
+        <location filename="../pdf_signer_dlg.ui" line="513"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -17635,8 +17640,8 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="296"/>
-        <location filename="../pdf_signer_dlg.cpp" line="135"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1012"/>
+        <location filename="../pdf_signer_dlg.cpp" line="136"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1022"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
@@ -17647,19 +17652,19 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="329"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1030"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1040"/>
         <source>Reason</source>
         <translation>이유</translation>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="342"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1039"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1049"/>
         <source>Location</source>
         <translation>위치</translation>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="349"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1047"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1057"/>
         <source>ContactInfo</source>
         <translation>접촉 정보</translation>
     </message>
@@ -17669,7 +17674,7 @@ Use %2</source>
         <translation>일자 시간</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="571"/>
+        <location filename="../pdf_signer_dlg.ui" line="681"/>
         <source>View CMS</source>
         <translation>CMS 보기</translation>
     </message>
@@ -17684,57 +17689,57 @@ Use %2</source>
         <translation>TSP</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="564"/>
+        <location filename="../pdf_signer_dlg.ui" line="589"/>
         <source>Verify DocTSP</source>
         <translation>시간 스탬프 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="532"/>
+        <location filename="../pdf_signer_dlg.ui" line="596"/>
         <source>Verify Chain</source>
         <translation>체인 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="578"/>
+        <location filename="../pdf_signer_dlg.ui" line="733"/>
         <source>View DocTSP</source>
         <translation>시간 스탬프 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="592"/>
+        <location filename="../pdf_signer_dlg.ui" line="661"/>
         <source>View Signer</source>
         <translation>서명자 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="606"/>
+        <location filename="../pdf_signer_dlg.ui" line="617"/>
         <source>Verify VRI</source>
         <translation>VRI 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="620"/>
+        <location filename="../pdf_signer_dlg.ui" line="603"/>
         <source>Verify DSS</source>
         <translation>DSS 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="648"/>
+        <location filename="../pdf_signer_dlg.ui" line="740"/>
         <source>View DocTSP TST</source>
         <translation>시간 스탬프 TST 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="655"/>
+        <location filename="../pdf_signer_dlg.ui" line="713"/>
         <source>Export DocTSP ByteRange</source>
         <translation>시간 스탬프 범위 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="662"/>
+        <location filename="../pdf_signer_dlg.ui" line="695"/>
         <source>Export ByteRange</source>
         <translation>범위 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="669"/>
+        <location filename="../pdf_signer_dlg.ui" line="688"/>
         <source>Export CMS</source>
         <translation>CMS 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="585"/>
+        <location filename="../pdf_signer_dlg.ui" line="569"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
@@ -17744,7 +17749,7 @@ Use %2</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="712"/>
+        <location filename="../pdf_signer_dlg.ui" line="763"/>
         <source>Encryption</source>
         <translation>암호화</translation>
     </message>
@@ -17753,343 +17758,343 @@ Use %2</source>
         <translation type="vanished">만들기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="788"/>
+        <location filename="../pdf_signer_dlg.ui" line="839"/>
         <source>Destination PDF</source>
         <translation>대상 PDF</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="808"/>
+        <location filename="../pdf_signer_dlg.ui" line="859"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="826"/>
+        <location filename="../pdf_signer_dlg.ui" line="877"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="846"/>
+        <location filename="../pdf_signer_dlg.ui" line="897"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="135"/>
+        <location filename="../pdf_signer_dlg.cpp" line="136"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="152"/>
         <location filename="../pdf_signer_dlg.cpp" line="153"/>
         <location filename="../pdf_signer_dlg.cpp" line="154"/>
         <location filename="../pdf_signer_dlg.cpp" line="155"/>
+        <location filename="../pdf_signer_dlg.cpp" line="156"/>
         <source>String value</source>
         <translation>문자 값</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="265"/>
-        <location filename="../pdf_signer_dlg.cpp" line="288"/>
+        <location filename="../pdf_signer_dlg.cpp" line="270"/>
+        <location filename="../pdf_signer_dlg.cpp" line="293"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="720"/>
+        <location filename="../pdf_signer_dlg.ui" line="771"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="727"/>
+        <location filename="../pdf_signer_dlg.ui" line="778"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="340"/>
-        <location filename="../pdf_signer_dlg.cpp" line="359"/>
-        <location filename="../pdf_signer_dlg.cpp" line="388"/>
-        <location filename="../pdf_signer_dlg.cpp" line="483"/>
-        <location filename="../pdf_signer_dlg.cpp" line="534"/>
-        <location filename="../pdf_signer_dlg.cpp" line="550"/>
-        <location filename="../pdf_signer_dlg.cpp" line="576"/>
-        <location filename="../pdf_signer_dlg.cpp" line="645"/>
-        <location filename="../pdf_signer_dlg.cpp" line="778"/>
+        <location filename="../pdf_signer_dlg.cpp" line="345"/>
+        <location filename="../pdf_signer_dlg.cpp" line="364"/>
+        <location filename="../pdf_signer_dlg.cpp" line="393"/>
+        <location filename="../pdf_signer_dlg.cpp" line="488"/>
+        <location filename="../pdf_signer_dlg.cpp" line="539"/>
+        <location filename="../pdf_signer_dlg.cpp" line="555"/>
+        <location filename="../pdf_signer_dlg.cpp" line="581"/>
+        <location filename="../pdf_signer_dlg.cpp" line="650"/>
+        <location filename="../pdf_signer_dlg.cpp" line="783"/>
         <source>No avaiable item</source>
         <translation>아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="347"/>
-        <location filename="../pdf_signer_dlg.cpp" line="541"/>
+        <location filename="../pdf_signer_dlg.cpp" line="352"/>
+        <location filename="../pdf_signer_dlg.cpp" line="546"/>
         <source>The value has been copied.</source>
         <translation>값이 복사 되었습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="369"/>
-        <location filename="../pdf_signer_dlg.cpp" line="400"/>
-        <location filename="../pdf_signer_dlg.cpp" line="560"/>
-        <location filename="../pdf_signer_dlg.cpp" line="590"/>
+        <location filename="../pdf_signer_dlg.cpp" line="374"/>
+        <location filename="../pdf_signer_dlg.cpp" line="405"/>
+        <location filename="../pdf_signer_dlg.cpp" line="565"/>
+        <location filename="../pdf_signer_dlg.cpp" line="595"/>
         <source>No avaiable BER</source>
         <translation>BER 이 없습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="487"/>
-        <location filename="../pdf_signer_dlg.cpp" line="791"/>
+        <location filename="../pdf_signer_dlg.cpp" line="492"/>
+        <location filename="../pdf_signer_dlg.cpp" line="796"/>
         <source>Copy value</source>
         <translation>값 복사</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="488"/>
-        <location filename="../pdf_signer_dlg.cpp" line="792"/>
+        <location filename="../pdf_signer_dlg.cpp" line="493"/>
+        <location filename="../pdf_signer_dlg.cpp" line="797"/>
         <source>Decode value</source>
         <translation>값 디코드</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="489"/>
-        <location filename="../pdf_signer_dlg.cpp" line="793"/>
+        <location filename="../pdf_signer_dlg.cpp" line="494"/>
+        <location filename="../pdf_signer_dlg.cpp" line="798"/>
         <source>View value</source>
         <translation>값 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="511"/>
+        <location filename="../pdf_signer_dlg.cpp" line="516"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="794"/>
+        <location filename="../pdf_signer_dlg.cpp" line="799"/>
         <source>Path Validation</source>
         <translation>경로 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="903"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1489"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1765"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1915"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2000"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2087"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2137"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2178"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2557"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2612"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2688"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2763"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2982"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3200"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3248"/>
+        <location filename="../pdf_signer_dlg.cpp" line="913"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1499"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1771"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1925"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2010"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2097"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2147"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2188"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2567"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2622"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2698"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2773"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2996"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3219"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3267"/>
         <source>find a source pdf</source>
         <translation>소스 PDF를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="911"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1497"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1773"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1923"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2008"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2095"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2145"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2186"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2565"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2620"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2696"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2771"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2997"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3208"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3256"/>
+        <location filename="../pdf_signer_dlg.cpp" line="921"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1507"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1779"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1933"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2018"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2105"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2155"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2196"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2575"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2630"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2706"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2781"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3011"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3227"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3275"/>
         <source>There is no file</source>
         <translation>파일이 없습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="923"/>
+        <location filename="../pdf_signer_dlg.cpp" line="933"/>
         <source>failed to get PDF information: %1</source>
         <translation>PDF 정보 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="933"/>
+        <location filename="../pdf_signer_dlg.cpp" line="943"/>
         <source>FileName</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="939"/>
+        <location filename="../pdf_signer_dlg.cpp" line="949"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="945"/>
+        <location filename="../pdf_signer_dlg.cpp" line="955"/>
         <source>Pages</source>
         <translation>페이지</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="951"/>
+        <location filename="../pdf_signer_dlg.cpp" line="961"/>
         <source>Extension Level</source>
         <translation>확장 레벨</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="957"/>
+        <location filename="../pdf_signer_dlg.cpp" line="967"/>
         <source>Encrypted</source>
         <translation>암호화 됨</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="963"/>
+        <location filename="../pdf_signer_dlg.cpp" line="973"/>
         <source>CMS</source>
         <translation>CMS</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="987"/>
+        <location filename="../pdf_signer_dlg.cpp" line="997"/>
         <source>ByteRange</source>
         <translation>바이트 범위</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="998"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1008"/>
         <source>Hash value</source>
         <translation>해쉬 값</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1021"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1031"/>
         <source>MakeTime</source>
         <translation>생성 시간</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1310"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1320"/>
         <source>TSP ByteRange</source>
         <translation>TSP 범위</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1321"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1331"/>
         <source>DocTSP Hash</source>
         <translation>시간 스탬프 해쉬</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1336"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1346"/>
         <source>PDF information import complete</source>
         <translation>PDF 정보 가져오기 완료</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1525"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1965"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2031"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2327"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2393"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2507"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1535"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1975"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2041"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2337"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2403"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2517"/>
         <source>The target file already exists. Do you want to continue?</source>
         <translation>대상 파일이 이미 존재 합니다. 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1547"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1931"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2016"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1557"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1941"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2026"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1560"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1785"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2783"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3009"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1570"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1791"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2793"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3023"/>
         <source>Invalid PDF file: %1</source>
         <translation>유효하지 않는 PDF 파일: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1567"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1577"/>
         <source>This PDF is already signed</source>
         <translation>이 PDF는 이미 서명 되어 있습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1596"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1606"/>
         <source>failed to make unsigned: %1</source>
         <translation>Unsigned 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1603"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1819"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2817"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3043"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1613"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1825"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2830"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3060"/>
         <source>failed to get byte range: %1</source>
         <translation>바이트 범위 얻기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1610"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1620"/>
         <source>failed to apply byte range: %1</source>
         <translation>바이트 범위 적용 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1623"/>
-        <location filename="../pdf_signer_dlg.cpp" line="1844"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2865"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3091"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1633"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1850"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2878"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3108"/>
         <source>failed to get body: %1</source>
         <translation>바디 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1653"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1658"/>
         <source>failed to apply CMS: %1</source>
         <translation>CMS 적용 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1660"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1665"/>
         <source>failed to write file: %1</source>
         <translation>파일 쓰기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1675"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1680"/>
         <source>failed to append DSS VRI: %1</source>
         <translation>DSS VRI 추가 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1684"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1689"/>
         <source>failed to append DSS: %1</source>
         <translation>DSS 추가 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1705"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2532"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1710"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2542"/>
         <source>failed to append DocTSP: %1</source>
         <translation>문서 시간 스탬프 추가 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1721"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1726"/>
         <source>PDF signing was successful</source>
         <translation>PDF 서명에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1792"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2790"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3016"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1798"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2800"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3030"/>
         <source>This PDF is not signed</source>
         <translation>이 PDF 는 서명 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1802"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2800"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3026"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1808"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2810"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3040"/>
         <source>failed to get the public key: %1</source>
         <translation>공개키 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1835"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2833"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3059"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1841"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2846"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3076"/>
         <source>failed to get CMS: %1</source>
         <translation>CMS 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1878"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2915"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3167"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1888"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2929"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3186"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1880"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2919"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3169"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1890"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2933"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3188"/>
         <source>failed to verify CMS: %1(%2)</source>
         <translation>CMS 검증 실패: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2645"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2856"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3082"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2655"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2869"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3099"/>
         <source>failed to get TST information: %1</source>
         <translation>TST 정보 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2659"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2669"/>
         <source>failed to verify DocTimeStamp: %1(%2)</source>
         <translation>문서 시간 스탬프 검증 실패: %1(%2)</translation>
     </message>
@@ -18098,106 +18103,106 @@ Use %2</source>
         <translation type="vanished">CMS 검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1939"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2042"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1949"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2052"/>
         <source> failed to get PDF information: %1</source>
         <translation>PDF 정보 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1945"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1955"/>
         <source>It&apos;s already encrypted</source>
         <translation>이미 암호화 되어 있습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1951"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1961"/>
         <source>There is an electronic signature. Encryption will result in a signature mismatch. Would you like to continue?</source>
         <translation>전자서명이 있습니다. 암호화는 서명 값이 맞지 않게 됩니다. 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1979"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1989"/>
         <source>PDF encryption successful</source>
         <translation>PDF 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="1983"/>
+        <location filename="../pdf_signer_dlg.cpp" line="1993"/>
         <source>PDF encryption failed: %1</source>
         <translation>PDF 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2048"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2058"/>
         <source>It is not encrypted</source>
         <translation>암호화 되어 있지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2054"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2064"/>
         <source>There is an electronic signature. Decryption will result in a signature mismatch. Would you like to continue?</source>
         <translation>전자서명이 있습니다. 복호화는 서명 값이 맞지 않게 됩니다. 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2064"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2074"/>
         <source>PDF decryption successful</source>
         <translation>PDF 복호화 성공</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2068"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2078"/>
         <source>PDF decryption failed: %1</source>
         <translation>PDF 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2106"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2156"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2197"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2116"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2166"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2207"/>
         <source>Failed to retrieve CMS information: %1</source>
         <translation>CMS 정보 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2113"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2123"/>
         <source>failed to get CMS signer: %1</source>
         <translation>CMS 서명자 가져오기 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2340"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2406"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2350"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2416"/>
         <source>The DSS value already exists.</source>
         <translation>DSS 값이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2348"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2413"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2358"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2423"/>
         <source>failed to get the certificate: %1</source>
         <translation>인증서 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2356"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2433"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2366"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2443"/>
         <source>DSS added successfully</source>
         <translation>DSS 값 추가에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2360"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2437"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2370"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2447"/>
         <source>failed to add DSS: %1</source>
         <translation>DSS 추가 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2424"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2434"/>
         <source>failed to get the CMS contents: %1</source>
         <translation>CMS 내용 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2525"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2535"/>
         <source>append DocTSP successfully</source>
         <translation>문서 시간 스탬프 추가에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2576"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2631"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2707"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2586"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2641"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2717"/>
         <source>failed to get DocTimeStamp: %1</source>
         <translation>문서 시간 스탬프 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2655"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2665"/>
         <source>DocTimeStamp Verify OK</source>
         <translation>문서 시간 스탬프 검증 성공</translation>
     </message>
@@ -18206,48 +18211,48 @@ Use %2</source>
         <translation type="vanished">문서 시간 스탬프 검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2638"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2714"/>
-        <location filename="../pdf_signer_dlg.cpp" line="2849"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3075"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2648"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2724"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2862"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3092"/>
         <source>failed to get TST: %1</source>
         <translation>TST 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2842"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3068"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2855"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3085"/>
         <source>failed to get TSP: %1</source>
         <translation>TSP 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2872"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3098"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2886"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3117"/>
         <source>failed to verify TSP: %1(%2)</source>
         <translation>TSP 검증 실패: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2882"/>
-        <location filename="../pdf_signer_dlg.cpp" line="3108"/>
+        <location filename="../pdf_signer_dlg.cpp" line="2896"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3127"/>
         <source>failed to get DSS: %1</source>
         <translation>DSS 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="2989"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3003"/>
         <source>Enter a VRI</source>
         <translation>VRI를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="3126"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3145"/>
         <source>There is no corresponding VRI value.</source>
         <translation>해당하는 VRI 값이 없습니다</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="3219"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3238"/>
         <source>Failed to retrieve range: %1</source>
         <translation>범위 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.cpp" line="3267"/>
+        <location filename="../pdf_signer_dlg.cpp" line="3286"/>
         <source>Failed to retrieve DocTimeStamp range: %1</source>
         <translation>문서 시간 스탬프 범위 가져오기 실패: %1</translation>
     </message>

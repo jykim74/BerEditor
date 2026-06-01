@@ -55,6 +55,7 @@ private slots:
     void clickTSP();
 
     void checkNameSubjectDN();
+    void checkAtTime();
 
     void clickGetInfo();
     void clickMakePath();

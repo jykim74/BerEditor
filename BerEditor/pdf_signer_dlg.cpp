@@ -72,6 +72,7 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     connect( mPathTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewPathTreeData()));
 
     connect( mDSSTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewTreeValue()));
+    connect( mAtTimeCheck, SIGNAL(clicked()), this, SLOT(checkAtTime()));
 
     connect( mDSSCheck, SIGNAL(clicked()), this, SLOT(checkDSS()));
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
@@ -172,7 +173,11 @@ void PDFSignerDlg::initUI()
     pathItem->setText( 0, "Certificate Path" );
     mPathTree->insertTopLevelItem( 0, pathItem );
 
+    QDateTime dateTime = QDateTime::currentDateTime();
+    mVerifyDateTime->setDateTime(dateTime);
+
     checkDSS();
+    checkAtTime();
     mTypeTab->setCurrentIndex(0);
 }
 
@@ -872,6 +877,11 @@ void PDFSignerDlg::checkNameSubjectDN()
 {
     bool bVal = mUseSubjectDNCheck->isChecked();
     mNameText->setEnabled( !bVal );
+}
+
+void PDFSignerDlg::checkAtTime()
+{
+    mVerifyDateTime->setEnabled( mAtTimeCheck->isChecked() );
 }
 
 void PDFSignerDlg::clickGetInfo()
@@ -1640,11 +1650,6 @@ void PDFSignerDlg::clickMakeSign()
         JS_BIN_copy( &binCMS, &binSignedTSP );
     }
 
-#ifdef QT_DEBUG
-    ret = JS_PDF_verifyCMS( &binData, &binCert, &binCMS, NULL, NULL, 0, NULL, NULL );
-    berApplet->log( QString( "CMS Verify: %1").arg( ret ));
-#endif
-
     berApplet->log( QString( "CMS[Len:%1]: %2").arg( binCMS.nLen).arg( getHexString( &binCMS )));
 
     ret = JS_PDF_applyContentsCMS( &binUnsigned, &binCMS );
@@ -1754,6 +1759,7 @@ void PDFSignerDlg::clickVerifySign()
     JSignLabel  sSignLabel;
 
     char sResMsg[1024];
+    time_t tAtTime = time(NULL);
 
     memset( &sRange, 0x00, sizeof(sRange));
     memset( &sInfo, 0x00, sizeof(sInfo));
@@ -1865,10 +1871,14 @@ void PDFSignerDlg::clickVerifySign()
 
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
 
+    if( mAtTimeCheck->isChecked() == true )
+        tAtTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+
     ret = JS_PDF_verifyCMS(
         &binData,
         &binCert,
         &binCMS,
+        tAtTime,
         mCAListCheck->isChecked() ? berApplet->settingsMgr()->CACertPath().toLocal8Bit().toStdString().c_str() : NULL,
         mTrustListCheck->isChecked() ? berApplet->settingsMgr()->trustCertPath().toLocal8Bit().toStdString().c_str() : NULL,
         nVerifyChain, &binSigner, sResMsg );
@@ -2802,6 +2812,9 @@ void PDFSignerDlg::clickVerifyDSS()
         }
     }
 
+    if( mAtTimeCheck->isChecked() == true )
+        check_t = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+
     ret = JS_PDF_readPlain(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         NULL,
@@ -2865,6 +2878,7 @@ void PDFSignerDlg::clickVerifyDSS()
         berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
         goto end;
     }
+
 
     ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
     if( ret != JSR_VERIFY )
@@ -3028,6 +3042,9 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         }
     }
 
+    if( mAtTimeCheck->isChecked() == true )
+        check_t = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+
     ret = JS_PDF_readPlain(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         NULL,
@@ -3091,6 +3108,8 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
         goto end;
     }
+
+
 
     ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
     if( ret != JSR_VERIFY )
