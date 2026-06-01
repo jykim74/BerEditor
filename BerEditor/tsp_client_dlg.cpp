@@ -41,6 +41,8 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
 
+    connect( mAtTimeCheck, SIGNAL(clicked()), this, SLOT(checkAtTime()));
+
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
@@ -73,6 +75,11 @@ void TSPClientDlg::initUI()
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
     mURLCombo->setFocus();
+
+    QDateTime dateTime = QDateTime::currentDateTime();
+    mVerifyDateTime->setDateTime(dateTime);
+
+    checkAtTime();
 }
 
 void TSPClientDlg::initialize()
@@ -100,6 +107,11 @@ QStringList TSPClientDlg::getUsedURL()
     settings.endGroup();
 
     return retList;
+}
+
+void TSPClientDlg::checkAtTime()
+{
+    mVerifyDateTime->setEnabled( mAtTimeCheck->isChecked() );
 }
 
 void TSPClientDlg::setUsedURL( const QString strURL )
@@ -379,6 +391,8 @@ void TSPClientDlg::clickVerify()
     JTSTInfo    sTSTInfo;
     char        sResMsg[1024];
 
+    time_t tAtTime = time(NULL);
+
     memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
     memset( sResMsg, 0x00, sizeof(sResMsg));
 
@@ -406,11 +420,15 @@ void TSPClientDlg::clickVerify()
 
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
+    if( mAtTimeCheck->isChecked() == true )
+        tAtTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+
+
     ret = JS_TSP_verifyResponse( &binRsp,
                                 mCAListCheck->isChecked() ? strCAManPath.toLocal8Bit().toStdString().c_str() : NULL,
                                 mTrustListCheck->isChecked() ? strTrustPath.toLocal8Bit().toStdString().c_str() : NULL,
                                 &binCA,
-                                &binSrvCert, &binData, &sTSTInfo, sResMsg );
+                                &binSrvCert, tAtTime, &binData, &sTSTInfo, sResMsg );
     if( ret == JSR_VERIFY )
     {
         berApplet->messageLog( tr( "verify reponse successfully"), this );
@@ -466,6 +484,9 @@ void TSPClientDlg::clickVerifySigned()
 
         certMan.getCert( &binSrvCert );
     }
+
+    if( mAtTimeCheck->isChecked() == true )
+        check_t = mVerifyDateTime->dateTime().toSecsSinceEpoch();
 
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 

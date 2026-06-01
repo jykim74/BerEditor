@@ -29,6 +29,8 @@ private slots:
     void clearRequest();
     void clearResponse();
 
+    void checkAtTime();
+
     void clickMake();
     void clickEncode();
     void clickSend();
