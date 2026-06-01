@@ -181,7 +181,7 @@ void CertInfoDlg::showEvent(QShowEvent *event)
     QTreeWidgetItem *item = new QTreeWidgetItem;
 
     item->setText( 0, cert_info_.pSubjectName );
-    item->setIcon(0, QIcon(":/images/cert.png"));
+    item->setIcon(0, getIcon(ICON_CERT));
     mCertTree->insertTopLevelItem(0, item);
 
     QString strAIA = getValueFromExtList( kExtNameAIA );
@@ -700,17 +700,11 @@ void CertInfoDlg::clickMakeTree()
 
         if( bSelfSign == true )
         {
-            if( now_t > sCertInfo.tNotAfter )
-                item->setIcon( 0, QIcon(":/images/rca_expired.png" ));
-            else
-                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+            item->setIcon( 0, getIcon(ICON_TRUST, sCertInfo.tNotAfter ) );
         }
         else
         {
-            if( now_t > sCertInfo.tNotAfter )
-                item->setIcon( 0, QIcon(":/images/cert_expired.png" ));
-            else
-                item->setIcon( 0, QIcon( ":/images/cert.png" ));
+            item->setIcon( 0, getIcon(ICON_CERT, sCertInfo.tNotAfter ) );
         }
 
         JS_BIN_addList( &path_list_, &binCert );

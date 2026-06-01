@@ -1089,7 +1089,7 @@ void PDFSignerDlg::clickGetInfo()
                 nCount = JS_BIN_countList( pCurData->pCertList );
                 QTreeWidgetItem* certItem = new QTreeWidgetItem;
                 certItem->setText( 0, kDSS_Certs );
-                certItem->setIcon(0, QIcon(":/images/cert.png" ));
+                certItem->setIcon(0, getIcon(ICON_CERT));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -1103,7 +1103,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
 
-                    item->setIcon(0, QIcon(":/images/cert.png" ));
+                    item->setIcon(0, getIcon(ICON_CERT));
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                     item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     certItem->addChild( item );
@@ -1119,7 +1119,7 @@ void PDFSignerDlg::clickGetInfo()
                 nCount = JS_BIN_countList( pCurData->pCRLList );
                 QTreeWidgetItem* crlItem = new QTreeWidgetItem;
                 crlItem->setText(0, kDSS_CRLs );
-                crlItem->setIcon(0, QIcon(":/images/crl.png" ));
+                crlItem->setIcon(0, getIcon(ICON_CRL));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -1132,7 +1132,7 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setIcon(0, QIcon(":/images/crl.png" ));
+                    item->setIcon(0, getIcon(ICON_CRL));
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                     item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     crlItem->addChild( item );
@@ -1149,7 +1149,7 @@ void PDFSignerDlg::clickGetInfo()
 
                 QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
                 ocspItem->setText(0, kDSS_OCSPs );
-                ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
+                ocspItem->setIcon(0, getIcon(ICON_OCSP));
 
                 for( int k = 0; k < nCount; k++ )
                 {
@@ -1162,7 +1162,7 @@ void PDFSignerDlg::clickGetInfo()
                     mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                     QTreeWidgetItem *item = new QTreeWidgetItem;
-                    item->setIcon(0, QIcon(":/images/ocsp.png" ));
+                    item->setIcon(0, getIcon(ICON_OCSP));
                     item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                     item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                     ocspItem->addChild( item );
@@ -1203,7 +1203,7 @@ void PDFSignerDlg::clickGetInfo()
                     nCount = JS_BIN_countList( pCurData->pCertList );
                     QTreeWidgetItem* certItem = new QTreeWidgetItem;
                     certItem->setText( 0, kDSS_Cert );
-                    certItem->setIcon(0, QIcon(":/images/cert.png" ));
+                    certItem->setIcon(0, getIcon(ICON_CERT));
 
                     for( int k = 0; k < nCount; k++ )
                     {
@@ -1217,7 +1217,7 @@ void PDFSignerDlg::clickGetInfo()
 
                         QTreeWidgetItem *item = new QTreeWidgetItem;
 
-                        item->setIcon(0, QIcon(":/images/cert.png" ));
+                        item->setIcon(0, getIcon(ICON_CERT));
                         item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                         item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                         certItem->addChild( item );
@@ -1233,7 +1233,7 @@ void PDFSignerDlg::clickGetInfo()
                     nCount = JS_BIN_countList( pCurData->pCRLList );
                     QTreeWidgetItem* crlItem = new QTreeWidgetItem;
                     crlItem->setText(0, kDSS_CRL );
-                    crlItem->setIcon(0, QIcon(":/images/crl.png" ));
+                    crlItem->setIcon(0, getIcon(ICON_CRL));
 
                     for( int k = 0; k < nCount; k++ )
                     {
@@ -1246,7 +1246,7 @@ void PDFSignerDlg::clickGetInfo()
                         mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                         QTreeWidgetItem *item = new QTreeWidgetItem;
-                        item->setIcon(0, QIcon(":/images/crl.png" ));
+                        item->setIcon(0, getIcon(ICON_CRL));
                         item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                         item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                         crlItem->addChild( item );
@@ -1263,7 +1263,7 @@ void PDFSignerDlg::clickGetInfo()
 
                     QTreeWidgetItem* ocspItem = new QTreeWidgetItem;
                     ocspItem->setText(0, kDSS_OCSP );
-                    ocspItem->setIcon(0, QIcon(":/images/ocsp.png" ));
+                    ocspItem->setIcon(0, getIcon(ICON_OCSP));
 
                     for( int k = 0; k < nCount; k++ )
                     {
@@ -1276,7 +1276,7 @@ void PDFSignerDlg::clickGetInfo()
                         mInfoTable->setItem( i, 1, new QTableWidgetItem( getHexString( &pCurList->Bin ) ));
 
                         QTreeWidgetItem *item = new QTreeWidgetItem;
-                        item->setIcon(0, QIcon(":/images/ocsp.png" ));
+                        item->setIcon(0, getIcon(ICON_OCSP));
                         item->setText( 0, QString( "[%1 0 R]" ).arg( nNum ) );
                         item->setData( 0, Qt::UserRole, getHexString( &pCurList->Bin ));
                         ocspItem->addChild( item );
@@ -1402,19 +1402,19 @@ void PDFSignerDlg::clickMakePath()
 
         if( i == 0 )
         {
-            item->setIcon( 0, QIcon( ":/images/cert.png" ));
+            item->setIcon( 0, getIcon(ICON_CERT));
             item->setData(0, 99, PVD_CERT );
         }
         else
         {
             if( bSelf == true )
             {
-                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+                item->setIcon( 0, getIcon(ICON_TRUST));
                 item->setData(0, 99, PVD_TRUST);
             }
             else
             {
-                item->setIcon( 0, QIcon( ":/images/ca.png" ));
+                item->setIcon( 0, getIcon(ICON_CA));
                 item->setData(0, 99, PVD_UNTRUST);
             }
         }
@@ -1425,7 +1425,7 @@ void PDFSignerDlg::clickMakePath()
         {
             QTreeWidgetItem *crl = new QTreeWidgetItem;
             crl->setText( 0, "CRL" );
-            crl->setIcon( 0, QIcon(":/images/crl.png" ));
+            crl->setIcon( 0, getIcon(ICON_CRL));
             crl->setData(0, Qt::UserRole, getHexString(&binCRL ));
             crl->setData(0, 99, PVD_CRL );
             item->addChild( crl );
@@ -1435,7 +1435,7 @@ void PDFSignerDlg::clickMakePath()
         {
             QTreeWidgetItem *ocsp = new QTreeWidgetItem;
             ocsp->setText( 0, "OCSP" );
-            ocsp->setIcon( 0, QIcon(":/images/ocsp.png" ));
+            ocsp->setIcon( 0, getIcon(ICON_OCSP));
             ocsp->setData(0, Qt::UserRole, getHexString(&binOCSP));
             ocsp->setData(0, 99, PVD_OCSP);
             item->addChild( ocsp );

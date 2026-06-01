@@ -36,6 +36,15 @@ enum {
 };
 
 enum {
+    ICON_CERT = 0,
+    ICON_CRL,
+    ICON_CSR,
+    ICON_TRUST,
+    ICON_CA,
+    ICON_OCSP
+};
+
+enum {
     JS_FILE_TYPE_CERT,
     JS_FILE_TYPE_CRL,
     JS_FILE_TYPE_CSR,
@@ -423,5 +432,7 @@ void setFixedLineText( QLineEdit *pEdit, const QString strText );
 void setLineEditHexOnly( QLineEdit *pEdit, const QString strPlaceHolder = "" );
 const QString getShowFileSize( qint64 nFileSize );
 const QString getTmpFile();
+
+const QIcon getIcon( int nType, time_t tExpire = -1 );
 
 #endif // COMMON_H

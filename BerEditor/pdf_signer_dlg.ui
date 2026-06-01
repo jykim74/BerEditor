@@ -147,7 +147,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mInfoTab">
       <attribute name="title">
@@ -263,7 +263,7 @@
    <item>
     <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mSignTab">
       <attribute name="title">
@@ -930,13 +930,23 @@
   <tabstop>mAddDSSBtn</tabstop>
   <tabstop>mAddDSS_VRIBtn</tabstop>
   <tabstop>mAddDocTSPBtn</tabstop>
+  <tabstop>mAtTimeCheck</tabstop>
+  <tabstop>mVerifyDateTime</tabstop>
   <tabstop>mCertCheck</tabstop>
   <tabstop>mCAListCheck</tabstop>
   <tabstop>mTrustListCheck</tabstop>
+  <tabstop>mVerifyChainCheck</tabstop>
   <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mVerifyDSSBtn</tabstop>
   <tabstop>mVerifyDocTSPBtn</tabstop>
   <tabstop>mVRICombo</tabstop>
   <tabstop>mVerifyDSS_VRIBtn</tabstop>
+  <tabstop>mViewSignerBtn</tabstop>
+  <tabstop>mViewCMSBtn</tabstop>
+  <tabstop>mExportCMSBtn</tabstop>
+  <tabstop>mExportByteRangeBtn</tabstop>
+  <tabstop>mViewDocTSPBtn</tabstop>
+  <tabstop>mViewDocTSP_TSTBtn</tabstop>
   <tabstop>mExportDocTSPByteRangeBtn</tabstop>
   <tabstop>mEncryptBtn</tabstop>
   <tabstop>mDecryptBtn</tabstop>
@@ -945,6 +955,8 @@
   <tabstop>mDstPathUpBtn</tabstop>
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
+  <tabstop>mMakePathBtn</tabstop>
+  <tabstop>mPathTree</tabstop>
  </tabstops>
  <resources>
   <include location="bereditor.qrc"/>

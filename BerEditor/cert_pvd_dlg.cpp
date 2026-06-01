@@ -460,11 +460,7 @@ void CertPVDDlg::addList( const QString strType, const BIN *pData )
             strDN = sCRLInfo.pIssuerName;
         }
 
-        if( now_t > sCRLInfo.tNextUpdate )
-            icon = QIcon(":/images/crl_expired.png" );
-        else
-            icon = QIcon(":/images/crl.png" );
-
+        icon = getIcon( ICON_CRL, sCRLInfo.tNextUpdate );
         JS_PKI_resetCRLInfo( &sCRLInfo );
     }
     else
@@ -488,17 +484,11 @@ void CertPVDDlg::addList( const QString strType, const BIN *pData )
 
         if( strType == kTypeTCert )
         {
-            if( now_t > sCertInfo.tNotAfter )
-                icon = QIcon(":/images/rca_expired.png" );
-            else
-                icon = QIcon(":/images/rca.png" );
+            icon = getIcon( ICON_TRUST, sCertInfo.tNotAfter );
         }
         else
         {
-            if( now_t > sCertInfo.tNotAfter )
-                icon = QIcon(":/images/ca_expired.png" );
-            else
-                icon = QIcon(":/images/ca.png" );
+            icon = getIcon( ICON_CA, sCertInfo.tNotAfter );
         }
 
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -1587,19 +1577,19 @@ void CertPVDDlg::clickMakePath()
 
         if( i == 0 )
         {
-            item->setIcon( 0, QIcon( ":/images/cert.png" ));
+            item->setIcon( 0, getIcon(ICON_CERT, sCertInfo.tNotAfter ));
             item->setData(0, 99, PVD_CERT );
         }
         else
         {
             if( bSelf == true )
             {
-                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+                item->setIcon( 0, getIcon(ICON_TRUST, sCertInfo.tNotAfter));
                 item->setData(0, 99, PVD_TRUST);
             }
             else
             {
-                item->setIcon( 0, QIcon( ":/images/ca.png" ));
+                item->setIcon( 0, getIcon(ICON_CA, sCertInfo.tNotAfter ));
                 item->setData(0, 99, PVD_UNTRUST);
             }
         }
@@ -1610,7 +1600,7 @@ void CertPVDDlg::clickMakePath()
         {
             QTreeWidgetItem *crl = new QTreeWidgetItem;
             crl->setText( 0, "CRL" );
-            crl->setIcon( 0, QIcon(":/images/crl.png" ));
+            crl->setIcon( 0, getIcon(ICON_CRL));
             crl->setData(0, Qt::UserRole, getHexString(&binCRL ));
             crl->setData(0, 99, PVD_CRL );
             item->addChild( crl );
@@ -1620,7 +1610,7 @@ void CertPVDDlg::clickMakePath()
         {
             QTreeWidgetItem *ocsp = new QTreeWidgetItem;
             ocsp->setText( 0, "OCSP" );
-            ocsp->setIcon( 0, QIcon(":/images/ocsp.png" ));
+            ocsp->setIcon( 0, getIcon(ICON_OCSP));
             ocsp->setData(0, Qt::UserRole, getHexString(&binOCSP));
             ocsp->setData(0, 99, PVD_OCSP);
             item->addChild( ocsp );

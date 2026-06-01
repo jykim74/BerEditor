@@ -115,18 +115,18 @@ void X509CompareDlg::changeType()
 
     if( strType == JS_PKI_BER_NAME_CRL )
     {
-        mABtn->setIcon( QIcon( ":/images/crl.png") );
-        mBBtn->setIcon( QIcon( ":/images/crl.png") );
+        mABtn->setIcon( getIcon(ICON_CRL) );
+        mBBtn->setIcon( getIcon(ICON_CRL) );
     }
     else if( strType == JS_PKI_BER_NAME_CSR )
     {
-        mABtn->setIcon( QIcon( ":/images/csr.png") );
-        mBBtn->setIcon( QIcon( ":/images/csr.png") );
+        mABtn->setIcon( getIcon(ICON_CSR) );
+        mBBtn->setIcon( getIcon(ICON_CSR) );
     }
     else
     {
-        mABtn->setIcon( QIcon( ":/images/cert.png") );
-        mBBtn->setIcon( QIcon( ":/images/cert.png") );
+        mABtn->setIcon( getIcon(ICON_CERT) );
+        mBBtn->setIcon( getIcon(ICON_CERT) );
     }
 
     mTitleLabel->setText( tr( "%1 comparision" ).arg( strType ));

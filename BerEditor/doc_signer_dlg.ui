@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>676</height>
+    <height>678</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,7 +178,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -1803,6 +1803,8 @@
   <tabstop>mCMSFlagDETACHEDCheck</tabstop>
   <tabstop>mCMSFlagBINARYCheck</tabstop>
   <tabstop>mCMSFlagNOATTRCheck</tabstop>
+  <tabstop>mCMSAtTimeCheck</tabstop>
+  <tabstop>mCMSVerifyDateTime</tabstop>
   <tabstop>mCMS_CertCheck</tabstop>
   <tabstop>mCMS_CAListCheck</tabstop>
   <tabstop>mCMSTrustListCheck</tabstop>
@@ -1816,6 +1818,7 @@
   <tabstop>mCMSOutputDecodeBtn</tabstop>
   <tabstop>mCMSOutputViewBtn</tabstop>
   <tabstop>mCMSOutputTypeBtn</tabstop>
+  <tabstop>mCMSViewSignerBtn</tabstop>
   <tabstop>mCMSExportBtn</tabstop>
   <tabstop>mCMSOutputUpBtn</tabstop>
   <tabstop>mJSONPayloadClearBtn</tabstop>

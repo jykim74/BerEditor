@@ -839,11 +839,12 @@
   <tabstop>mURLClearBtn</tabstop>
   <tabstop>mPolicyText</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
-  <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mHashText</tabstop>
+  <tabstop>mMakeBtn</tabstop>
   <tabstop>mRequestClearBtn</tabstop>
   <tabstop>mRequestDecodeBtn</tabstop>
-  <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
   <tabstop>mAuthGroup</tabstop>
   <tabstop>mUserText</tabstop>
@@ -852,14 +853,17 @@
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mAutoSendCheck</tabstop>
   <tabstop>mSendBtn</tabstop>
+  <tabstop>mAtTimeCheck</tabstop>
+  <tabstop>mVerifyDateTime</tabstop>
+  <tabstop>mCertCheck</tabstop>
+  <tabstop>mCAListCheck</tabstop>
+  <tabstop>mTrustListCheck</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mTSTInfoBtn</tabstop>
   <tabstop>mViewCMSBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>
   <tabstop>mVerifySignedBtn</tabstop>
-  <tabstop>mResponseLenText</tabstop>
-  <tabstop>mResponseText</tabstop>
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

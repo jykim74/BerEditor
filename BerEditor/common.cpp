@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QNetworkInterface>
 #include <QTemporaryFile>
+#include <QIcon>
 
 #include "common.h"
 #include "js_ocsp.h"
@@ -1829,4 +1830,44 @@ const QString getTmpFile()
     tmpFile.close();
 
     return strPath;
+}
+
+const QIcon getIcon( int nType, time_t tExpire )
+{
+    bool bExpired = false;
+
+    if( tExpire > 0 )
+    {
+        time_t now_t = time(NULL);
+        if( now_t > tExpire ) bExpired = true;
+    }
+
+    switch (nType) {
+    case ICON_CERT:
+        if( bExpired )
+            return QIcon( ":/images/cert_expired.png" );
+        else
+            return QIcon( ":/images/cert.png" );
+    case ICON_CRL:
+        if( bExpired )
+            return QIcon( ":/images/crl_expired.png" );
+        else
+            return QIcon( ":/images/crl.png" );
+    case ICON_CSR :
+        return QIcon( ":/images/csr.png" );
+    case ICON_TRUST:
+        if( bExpired )
+            return QIcon( ":/images/rca_expired.png" );
+        else
+            return QIcon( ":/images/rca.png" );
+    case ICON_CA:
+        if( bExpired )
+            return QIcon( ":/images/ca_expired.png" );
+        else
+            return QIcon( ":/images/ca.png" );
+    case ICON_OCSP:
+        return QIcon( ":/images/ocsp.png" );
+    }
+
+    return QIcon( ":/images/cert.png" );
 }

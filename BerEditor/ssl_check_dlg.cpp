@@ -206,6 +206,7 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
     connect( mURLTable, SIGNAL(clicked(QModelIndex)), this, SLOT(selectTable(QModelIndex)));
     connect( mURLTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+    connect( mURLTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewCertTreeMenu()));
 
 
     connect( mUseMutualCheck, SIGNAL(clicked()), this, SLOT(checkUseMutual()));
@@ -1254,6 +1255,7 @@ void SSLCheckDlg::viewCertTreeMenu()
     if( item == NULL ) return;
 
     QString strData = item->data(0, Qt::UserRole).toString();
+    if( strData.length() < 1 ) return;
 
     BIN binCert = {0,0};
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );

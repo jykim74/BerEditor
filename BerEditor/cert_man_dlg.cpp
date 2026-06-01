@@ -924,15 +924,12 @@ void CertManDlg::loadEEList()
 
         mEE_CertTable->insertRow( 0 );
         mEE_CertTable->setRowHeight( 0, 10 );
+
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
         QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
         QTableWidgetItem *item2 = new QTableWidgetItem( sCertInfo.pIssuerName );
 
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_expired.png" ));
-        else
-            item->setIcon(QIcon(":/images/cert.png" ));
-
+        item->setIcon( getIcon(ICON_CERT, sCertInfo.tNotAfter ));
         item->setData(Qt::UserRole, folder.filePath() );
         item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
@@ -1158,11 +1155,7 @@ void CertManDlg::loadCAList()
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
         QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
 
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/ca_expired.png" ));
-        else
-            item->setIcon(QIcon(":/images/ca.png" ));
-
+        item->setIcon( getIcon( ICON_CA, sCertInfo.tNotAfter ));
         item->setData(Qt::UserRole, file.filePath() );
         item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
@@ -1226,11 +1219,7 @@ void CertManDlg::loadCRLList()
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
         QTableWidgetItem *item2 = new QTableWidgetItem( sNextUpdate );
 
-        if( now > sCRLInfo.tNextUpdate )
-            item->setIcon(QIcon(":/images/crl_expired.png" ));
-        else
-            item->setIcon(QIcon(":/images/crl.png" ));
-
+        item->setIcon( getIcon(ICON_CRL, sCRLInfo.tNextUpdate ));
         item->setData(Qt::UserRole, file.filePath() );
         item2->setData(Qt::UserRole, (qint64)sCRLInfo.tNextUpdate );
 

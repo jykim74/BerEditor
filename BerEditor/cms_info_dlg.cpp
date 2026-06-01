@@ -826,11 +826,7 @@ void CMSInfoDlg::setSigned()
         mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
-        else
-            item->setIcon(QIcon(":/images/cert.png" ));
-
+        item->setIcon(getIcon(ICON_CERT, sCertInfo.tNotAfter));
         item->setData(Qt::UserRole, getHexString( &sSignedData.pCertList[i] ));
 
         mCertTable->setItem( i, 0, item );
@@ -1089,11 +1085,7 @@ void CMSInfoDlg::setSignedCMS()
         mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
-        else
-            item->setIcon(QIcon(":/images/cert.png" ));
-
+        item->setIcon(getIcon(ICON_CERT, sCertInfo.tNotAfter));
         item->setData(Qt::UserRole, getHexString( &pCertList->Bin ));
 
         mCertTable->setItem( i, 0, item );
@@ -1338,11 +1330,7 @@ void CMSInfoDlg::setSignedAndEnveloped()
         mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
-        else
-            item->setIcon(QIcon(":/images/cert.png" ));
-
+        item->setIcon(getIcon(ICON_CERT, sCertInfo.tNotAfter));
         item->setData(Qt::UserRole, getHexString( &sSignAndEnveloped.pCertList[i] ));
 
         mCertTable->setItem( i, 0, item );
