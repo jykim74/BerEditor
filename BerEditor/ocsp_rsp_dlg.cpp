@@ -177,7 +177,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
 
             nameItem->addChild( statusItem );
 
-            if( pCurList->singleRsp.nStatus != JS_OCSP_CERT_STATUS_GOOD )
+            if( pCurList->singleRsp.nStatus == JS_OCSP_CERT_STATUS_REVOKED )
             {
                 statusItem->setIcon( 0, QIcon(":/images/revoke.png" ));
 
@@ -200,7 +200,7 @@ void OCSPRspDlg::setResponse( const BIN *pResp )
                     statusItem->addChild( holdItem );
                 }
             }
-            else
+            else if( pCurList->singleRsp.nStatus == JS_OCSP_CERT_STATUS_GOOD )
             {
                 statusItem->setIcon( 0, QIcon(":/images/valid.png" ));
             }

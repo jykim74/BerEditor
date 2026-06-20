@@ -120,42 +120,39 @@ void CertIDDlg::setResponse( const BIN *pResp )
         i++;
     }
 
-    if( sStatusInfo.nStatus >= 0 )
-    {
-        i = 0;
-        mStatusTable->insertRow(i);
-        mStatusTable->setRowHeight(i, 10);
-        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Status" )));
-        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+    i = 0;
+    mStatusTable->insertRow(i);
+    mStatusTable->setRowHeight(i, 10);
+    mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Status" )));
+    mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
                                                          .arg( JS_OCSP_getCertStatusName(sStatusInfo.nStatus))
                                                          .arg( sStatusInfo.nStatus )));
+    i++;
+
+    if( sStatusInfo.nStatus == JS_OCSP_CERT_STATUS_REVOKED )
+    {
+        mStatusTable->insertRow(i);
+        mStatusTable->setRowHeight(i, 10);
+        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Reason" )));
+        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
+                                                             .arg( JS_OCSP_getRevokeReasonName(sStatusInfo.nReason))
+                                                             .arg( sStatusInfo.nReason )));
         i++;
 
-        if( sStatusInfo.nStatus != JS_OCSP_CERT_STATUS_GOOD )
+        JS_UTIL_getDateTime( sStatusInfo.tRevokedTime, sRevokedTime );
+        mStatusTable->insertRow(i);
+        mStatusTable->setRowHeight(i, 10);
+        mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
+        mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sRevokedTime )));
+        i++;
+
+        if( sStatusInfo.pHoldOID != NULL )
         {
             mStatusTable->insertRow(i);
             mStatusTable->setRowHeight(i, 10);
-            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "Reason" )));
-            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1(%2)" )
-                                                             .arg( JS_OCSP_getRevokeReasonName(sStatusInfo.nReason))
-                                                             .arg( sStatusInfo.nReason )));
+            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "HoldOID" )));
+            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sStatusInfo.pHoldOID )));
             i++;
-
-            JS_UTIL_getDateTime( sStatusInfo.tRevokedTime, sRevokedTime );
-            mStatusTable->insertRow(i);
-            mStatusTable->setRowHeight(i, 10);
-            mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "RevokedTime" )));
-            mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sRevokedTime )));
-            i++;
-
-            if( sStatusInfo.pHoldOID != NULL )
-            {
-                mStatusTable->insertRow(i);
-                mStatusTable->setRowHeight(i, 10);
-                mStatusTable->setItem( i, 0, new QTableWidgetItem( tr( "HoldOID" )));
-                mStatusTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sStatusInfo.pHoldOID )));
-                i++;
-            }
         }
     }
 
