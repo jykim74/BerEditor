@@ -43,6 +43,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickRun()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
+    connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
 
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
@@ -652,7 +653,7 @@ end :
 
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
+        berApplet->warnLog( tr( "GENM fail: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset(&binCA);
