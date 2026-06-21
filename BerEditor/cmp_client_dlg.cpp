@@ -1451,8 +1451,6 @@ void CMPClientDlg::clickSend()
     ret = getBINFromString( &binReq, DATA_HEX, strReq );
     FORMAT_WARN_GO(ret);
 
-    strURL += "/pkiclient.exe?operation=PKIOperation";
-
     ret = JS_HTTP_requestPostBin2(
         strURL.toStdString().c_str(),
         NULL,
