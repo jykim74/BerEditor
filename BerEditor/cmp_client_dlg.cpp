@@ -567,6 +567,10 @@ void CMPClientDlg::clickGENM()
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
 
+    char sResMsg[1024];
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
+
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
@@ -624,7 +628,7 @@ void CMPClientDlg::clickGENM()
         goto end;
     }
 
-    ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, &pNameValList );
+    ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, &pNameValList, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -648,14 +652,12 @@ void CMPClientDlg::clickGENM()
         mRegInfoText->setText( strRegInfo );
         berApplet->messageLog( tr( "GENM success" ), this );
     }
-
-end :
-
-    if( ret != 0 )
+    else
     {
-        berApplet->warnLog( tr( "GENM fail: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "GENM fail: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
     }
 
+end :
     JS_BIN_reset(&binCA);
     JS_BIN_reset( &binRef );
     JS_BIN_reset( &binAuth );
@@ -683,11 +685,15 @@ void CMPClientDlg::clickIR()
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
 
+    char sResMsg[1024];
+
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
     QString strDN = mSubjectDNText->text();
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
 
     if( strURL.length() < 1 )
@@ -760,7 +766,7 @@ void CMPClientDlg::clickIR()
         goto end;
     }
 
-    ret = JS_CMP_execIR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+    ret = JS_CMP_execIR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
     setUsedURL( strURL );
 
@@ -772,13 +778,12 @@ void CMPClientDlg::clickIR()
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "IR success" ), this );
     }
+    else
+    {
+        berApplet->warnLog( tr( "IR fail: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
+    }
 
 end :
-
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "IR fail: %1").arg(ret), this );
-    }
 
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binRef );
@@ -807,11 +812,15 @@ void CMPClientDlg::clickCR()
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
 
+    char sResMsg[1024];
+
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
     QString strDN = mSubjectDNText->text();
+
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
 
     if( strURL.length() < 1 )
@@ -884,7 +893,7 @@ void CMPClientDlg::clickCR()
         goto end;
     }
 
-    ret = JS_CMP_execCR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+    ret = JS_CMP_execCR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -897,14 +906,12 @@ void CMPClientDlg::clickCR()
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "CR success" ), this );
     }
-
-end :
-
-    if( ret != 0 )
+    else
     {
-        berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
+        berApplet->warnLog( tr( "CR fail: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
     }
 
+end :
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binRef );
     JS_BIN_reset( &binNewPri );
@@ -942,6 +949,8 @@ void CMPClientDlg::clickP10CR()
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
 
+    char sResMsg[1024];
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strURL.length() < 1 )
     {
@@ -1014,7 +1023,7 @@ void CMPClientDlg::clickP10CR()
         goto end;
     }
 
-    ret = JS_CMP_execP10CSR( pCTX, &binRef, &binAuth, &binCSR, &binNewCert );
+    ret = JS_CMP_execP10CSR( pCTX, &binRef, &binAuth, &binCSR, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1027,14 +1036,12 @@ void CMPClientDlg::clickP10CR()
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "P10CSR success" ), this );
     }
-
-end :
-
-    if( ret != 0 )
+    else
     {
-        berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
+        berApplet->warnLog( tr( "CR fail: %1(%2)").arg(JERR(ret)).arg(sResMsg), this );
     }
 
+end :
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binRef );
     JS_BIN_reset( &binNewPri );
@@ -1066,6 +1073,9 @@ void CMPClientDlg::clickSignGENM()
 
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
+
+    char sResMsg[1024];
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strURL.length() < 1 )
     {
@@ -1131,7 +1141,7 @@ void CMPClientDlg::clickSignGENM()
         goto end;
     }
 
-    ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, &pNameValList );
+    ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, &pNameValList, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1156,14 +1166,12 @@ void CMPClientDlg::clickSignGENM()
         mRegInfoText->setText( strRegInfo );
         berApplet->messageLog( tr( "GENM success" ), this );
     }
-
-end :
-
-    if( ret != 0 )
+    else
     {
-        berApplet->warnLog( tr( "GENM fail: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "GENM fail: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
     }
 
+end :
     JS_BIN_reset(&binCA);
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
@@ -1197,6 +1205,9 @@ void CMPClientDlg::clickKUR()
     QString strPriHex;
 
     GenKeyPairDlg genKeyPair;
+
+    char sResMsg[1024];
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
     if( strURL.length() < 1 )
     {
@@ -1269,7 +1280,7 @@ void CMPClientDlg::clickKUR()
         goto end;
     }
 
-    ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert );
+    ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1282,14 +1293,12 @@ void CMPClientDlg::clickKUR()
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "KUR success" ), this );
     }
-
-end :
-
-    if( ret != 0 )
+    else
     {
-        berApplet->warnLog( tr( "KUR fail: %1").arg(JERR(ret)), this );
+        berApplet->warnLog( tr( "KUR fail: %1(%2)").arg(JERR(ret)).arg( sResMsg ), this );
     }
 
+end :
     JS_BIN_reset(&binCA);
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
@@ -1315,6 +1324,9 @@ void CMPClientDlg::clickRR()
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+
+    char sResMsg[1024];
+    memset( sResMsg, 0x00, sizeof(sResMsg));
 
 
     if( strURL.length() < 1 )
@@ -1381,7 +1393,7 @@ void CMPClientDlg::clickRR()
         goto end;
     }
 
-    ret = JS_CMP_execRR( pCTX, &binPri, &binCert, nReason );
+    ret = JS_CMP_execRR( pCTX, &binPri, &binCert, nReason, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1391,7 +1403,7 @@ void CMPClientDlg::clickRR()
 
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP exec RR fail: %1").arg(JERR(ret) ));
+        berApplet->elog( QString( "CMP exec RR fail: %1(%2)").arg(JERR(ret) ).arg( sResMsg ));
         goto end;
     }
     else
