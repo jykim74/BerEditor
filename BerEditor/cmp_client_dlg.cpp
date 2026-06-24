@@ -33,6 +33,12 @@ const QStringList kCMPCmdList = {
     kCMP_SignGENM, kCMP_KUR, kCMP_RR
 };
 
+const QStringList kITAVList = {
+    JS_CMP_ITAV_OID_ROOT_CA_CERT, JS_CMP_ITAV_OID_CERT_PROFILE,
+    JS_CMP_ITAV_OID_CERT_REQ_TEMPLATE, JS_CMP_ITAV_OID_CURRENT_CRL,
+    JS_CMP_ITAV_OID_SIGN_KEY_PAIR_TYPES
+};
+
 CMPClientDlg::CMPClientDlg(QWidget *parent)
     : QDialog(parent)
 {
@@ -566,6 +572,7 @@ void CMPClientDlg::clickGENM()
     QString strCAPath = mCACertPathText->text();
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
+    JStrList *pITAVList = NULL;
 
     char sResMsg[1024];
 
@@ -628,7 +635,10 @@ void CMPClientDlg::clickGENM()
         goto end;
     }
 
-    ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, &pNameValList, sResMsg );
+    getITAVList( &pITAVList );
+    ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, pITAVList, &pNameValList, sResMsg );
+    if( pITAVList ) JS_UTIL_resetStrList( &pITAVList );
+
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1073,6 +1083,7 @@ void CMPClientDlg::clickSignGENM()
 
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
+    JStrList *pITAVList = NULL;
 
     char sResMsg[1024];
     memset( sResMsg, 0x00, sizeof(sResMsg));
@@ -1141,7 +1152,10 @@ void CMPClientDlg::clickSignGENM()
         goto end;
     }
 
-    ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, &pNameValList, sResMsg );
+    getITAVList( &pITAVList );
+    ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, pITAVList, &pNameValList, sResMsg );
+    JS_UTIL_resetStrList( &pITAVList );
+
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1513,6 +1527,18 @@ const QString CMPClientDlg::getRegInfo()
     }
 
     return strRegInfo;
+}
+
+int CMPClientDlg::getITAVList( JStrList **ppOIDList )
+{
+    int nCount = kITAVList.size();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        JS_UTIL_addStrList( ppOIDList, kITAVList.at(i).toStdString().c_str() );
+    }
+
+    return 0;
 }
 
 int CMPClientDlg::readPrivateKey( BIN *pPriKey )

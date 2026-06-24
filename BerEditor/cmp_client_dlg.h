@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_cmp_client_dlg.h"
 #include "js_bin.h"
+#include "js_util.h"
 
 namespace Ui {
 class CMPClientDlg;
@@ -69,6 +70,8 @@ private:
     int readPrivateKey( BIN *pPriKey );
     void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
     const QString getRegInfo();
+
+    int getITAVList( JStrList **ppOIDList );
 };
 
 #endif // CMP_CLIENT_DLG_H
