@@ -192,6 +192,15 @@ void CMPClientDlg::changeCmd()
 {
     QString strCmd = mCmdCombo->currentText();
 
+    if( strCmd == kCMP_GENM || strCmd == kCMP_SignGENM )
+    {
+        mITAVGroup->setEnabled( true );
+    }
+    else
+    {
+        mITAVGroup->setEnabled( false );
+    }
+
     if( strCmd == kCMP_SignGENM || strCmd == kCMP_KUR || strCmd == kCMP_RR )
     {
         mCertGroup->setEnabled( true );
@@ -1531,12 +1540,31 @@ const QString CMPClientDlg::getRegInfo()
 
 int CMPClientDlg::getITAVList( JStrList **ppOIDList )
 {
+/*
     int nCount = kITAVList.size();
 
     for( int i = 0; i < nCount; i++ )
     {
         JS_UTIL_addStrList( ppOIDList, kITAVList.at(i).toStdString().c_str() );
     }
+*/
+    if( mITAV_CACertsCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CA_CERTS );
+
+    if( mITAV_RootCACertCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_ROOT_CA_CERT );
+
+    if( mITAV_CertProfileCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CERT_PROFILE );
+
+    if( mITAV_CertReqTemplateCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CERT_REQ_TEMPLATE );
+
+    if( mITAV_CurrentCRLCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CURRENT_CRL );
+
+    if( mITAV_SignKeyPairTypesCheck->isChecked() )
+        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_SIGN_KEY_PAIR_TYPES );
 
     return 0;
 }
