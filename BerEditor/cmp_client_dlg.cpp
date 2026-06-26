@@ -34,9 +34,11 @@ const QStringList kCMPCmdList = {
 };
 
 const QStringList kITAVList = {
-    JS_CMP_ITAV_OID_CA_CERTS, JS_CMP_ITAV_OID_ROOT_CA_CERT,
-    JS_CMP_ITAV_OID_CERT_PROFILE, JS_CMP_ITAV_OID_CERT_REQ_TEMPLATE,
-    JS_CMP_ITAV_OID_CURRENT_CRL, JS_CMP_ITAV_OID_SIGN_KEY_PAIR_TYPES
+    JS_CMP_ITAV_OID_CA_CERTS,
+    JS_CMP_ITAV_OID_ROOT_CA_CERT,
+    JS_CMP_ITAV_OID_CERT_PROFILE,
+    JS_CMP_ITAV_OID_CURRENT_CRL,
+    JS_CMP_ITAV_OID_SIGN_KEY_PAIR_TYPES
 };
 
 CMPClientDlg::CMPClientDlg(QWidget *parent)
@@ -1556,9 +1558,6 @@ int CMPClientDlg::getITAVList( JStrList **ppOIDList )
 
     if( mITAV_CertProfileCheck->isChecked() )
         JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CERT_PROFILE );
-
-    if( mITAV_CertReqTemplateCheck->isChecked() )
-        JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CERT_REQ_TEMPLATE );
 
     if( mITAV_CurrentCRLCheck->isChecked() )
         JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_CURRENT_CRL );

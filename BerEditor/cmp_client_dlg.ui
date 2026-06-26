@@ -566,13 +566,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="mITAV_CertReqTemplateCheck">
-          <property name="text">
-           <string>CERT REQ TEMPLATE</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QCheckBox" name="mITAV_CurrentCRLCheck">
           <property name="text">
@@ -580,7 +573,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="0">
          <widget class="QCheckBox" name="mITAV_SignKeyPairTypesCheck">
           <property name="text">
            <string>SIGN KEY PAIR TYPES</string>
