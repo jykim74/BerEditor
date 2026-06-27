@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>724</height>
+    <height>938</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -402,75 +402,110 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line_5">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+    <widget class="QTabWidget" name="mGENMWidget">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
      </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="mGENMTab">
+      <attribute name="title">
+       <string>GENM</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QGroupBox" name="mITAVGroup">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>GENM ITAVS</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="mITAV_CACertsCheck">
+              <property name="text">
+               <string>CA CERTS</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="mITAV_CertProfileCheck">
+              <property name="text">
+               <string>CERT PROFILE</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QCheckBox" name="mITAV_RootCACertCheck">
+              <property name="text">
+               <string>ROOT CA CERT</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QCheckBox" name="mITAV_CurrentCRLCheck">
+              <property name="text">
+               <string>CURRENT CRL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="mITAV_SignKeyPairTypesCheck">
+              <property name="text">
+               <string>SIGN KEY PAIR TYPES</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mGENPTab">
+      <attribute name="title">
+       <string>GENP</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QTableWidget" name="mITAVTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_7">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mRegInfoText">
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Reg Information</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mRegInfoClearBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="Line" name="line_8">
@@ -515,75 +550,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="mITAVGroup">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>GENM ITAVS</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="spacing">
-       <number>5</number>
-      </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="mITAV_CACertsCheck">
-          <property name="text">
-           <string>CA CERTS</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="mITAV_CertProfileCheck">
-          <property name="text">
-           <string>CERT PROFILE</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="mITAV_RootCACertCheck">
-          <property name="text">
-           <string>ROOT CA CERT</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="mITAV_CurrentCRLCheck">
-          <property name="text">
-           <string>CURRENT CRL</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="mITAV_SignKeyPairTypesCheck">
-          <property name="text">
-           <string>SIGN KEY PAIR TYPES</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
    </item>
    <item>
     <widget class="Line" name="line_7">
@@ -938,8 +904,6 @@
   <tabstop>mRefNumText</tabstop>
   <tabstop>mAuthCodeText</tabstop>
   <tabstop>mSubjectDNText</tabstop>
-  <tabstop>mRegInfoText</tabstop>
-  <tabstop>mRegInfoClearBtn</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mRequestClearBtn</tabstop>

@@ -70,7 +70,6 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
     connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
 
-    connect( mRegInfoClearBtn, SIGNAL(clicked()), this, SLOT(clearRegInfo()));
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
 
@@ -95,13 +94,17 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyViewBtn->setFixedWidth(34);
 
-    mRegInfoClearBtn->setFixedWidth(34);
-
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
 
     mResponseClearBtn->setFixedWidth(34);
     mResponseDecodeBtn->setFixedWidth(34);
+
+    mGENMWidget->setCurrentIndex(0);
+    mGENMTab->layout()->setSpacing(5);
+    mGENMTab->layout()->setMargin(5);
+    mGENPTab->layout()->setSpacing(5);
+    mGENPTab->layout()->setMargin(5);
 
     layout()->setSpacing(5);
     mCertGroup->layout()->setSpacing(5);
@@ -132,6 +135,18 @@ void CMPClientDlg::initUI()
     mURLCombo->setFocus();
 
     mCmdCombo->addItems( kCMPCmdList );
+
+    QStringList sBaseLabels = { tr("OID"), tr("Value") };
+    mITAVTable->clear();
+    mITAVTable->horizontalHeader()->setStretchLastSection(true);
+    mITAVTable->setColumnCount(sBaseLabels.size());
+    mITAVTable->setHorizontalHeaderLabels( sBaseLabels );
+    mITAVTable->verticalHeader()->setVisible(false);
+    mITAVTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mITAVTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mITAVTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mITAVTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     changeCmd();
 }
 
@@ -500,10 +515,6 @@ end :
     JS_BIN_reset( &binPri );
 }
 
-void CMPClientDlg::clearRegInfo()
-{
-    mRegInfoText->clear();
-}
 
 void CMPClientDlg::clearRequest()
 {
@@ -582,7 +593,6 @@ void CMPClientDlg::clickGENM()
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
     JNameValList *pNameValList = NULL;
-    JNameValList *pCurList = NULL;
     JStrList *pITAVList = NULL;
 
     char sResMsg[1024];
@@ -659,18 +669,7 @@ void CMPClientDlg::clickGENM()
 
     if( ret == JSR_OK )
     {
-        QString strRegInfo;
-        pCurList = pNameValList;
-
-        while( pCurList )
-        {
-            berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
-            if( strRegInfo.length() > 1 ) strRegInfo += "|";
-            strRegInfo += QString( "%1:%2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue );
-            pCurList = pCurList->pNext;
-        }
-
-        mRegInfoText->setText( strRegInfo );
+        setITAVTable( pNameValList );
         berApplet->messageLog( tr( "GENM success" ), this );
     }
     else
@@ -774,7 +773,6 @@ void CMPClientDlg::clickIR()
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     genKeyPair.setFixName( tr("CMP IR KeyPair" ));
-    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -900,7 +898,6 @@ void CMPClientDlg::clickCR()
     JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
     JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
-    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     genKeyPair.setFixName( tr("CMP CR KeyPair" ));
@@ -1023,7 +1020,6 @@ void CMPClientDlg::clickP10CR()
     JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
     genKeyPair.setFixName( tr("CMP P10CR KeyPair" ));
-    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -1091,9 +1087,7 @@ void CMPClientDlg::clickSignGENM()
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
 
-
     JNameValList *pNameValList = NULL;
-    JNameValList *pCurList = NULL;
     JStrList *pITAVList = NULL;
 
     char sResMsg[1024];
@@ -1177,18 +1171,7 @@ void CMPClientDlg::clickSignGENM()
 
     if( ret == JSR_OK )
     {
-        QString strRegInfo;
-        pCurList = pNameValList;
-
-        while( pCurList )
-        {
-            berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
-            if( strRegInfo.length() > 1 ) strRegInfo += "|";
-            strRegInfo += QString( "%1:%2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue );
-            pCurList = pCurList->pNext;
-        }
-
-        mRegInfoText->setText( strRegInfo );
+        setITAVTable( pNameValList );
         berApplet->messageLog( tr( "GENM success" ), this );
     }
     else
@@ -1264,7 +1247,6 @@ void CMPClientDlg::clickKUR()
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     genKeyPair.setFixName( tr("CMP KUR KeyPair" ));
-    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -1305,7 +1287,7 @@ void CMPClientDlg::clickKUR()
         goto end;
     }
 
-    ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert, sResMsg );
+    ret = JS_CMP_execKUR( pCTX, &binCA, &binPri, &binCert, &binNewPri, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1508,36 +1490,8 @@ void CMPClientDlg::clickClearAll()
     mRefNumText->clear();
     mSubjectDNText->clear();
 
-    clearRegInfo();
     clearRequest();
     clearResponse();
-}
-
-const QString CMPClientDlg::getRegInfo()
-{
-    QString strRegInfo;
-    QString strInfo = mRegInfoText->text();
-
-    QStringList infoList = strInfo.split("|");
-
-    for( int i = 0; i < infoList.size(); i++ )
-    {
-        QString strPart = infoList.at(i);
-        QStringList nameVal = strPart.split(":");
-        if( nameVal.size() < 2 ) continue;
-
-        QString strName = nameVal.at(0);
-        QString strVal = nameVal.at(1);
-
-        if( strName.toLower() == "id-reginfo" )
-        {
-            strRegInfo = strVal;
-            break;
-        }
-
-    }
-
-    return strRegInfo;
 }
 
 int CMPClientDlg::getITAVList( JStrList **ppOIDList )
@@ -1566,6 +1520,32 @@ int CMPClientDlg::getITAVList( JStrList **ppOIDList )
         JS_UTIL_addStrList( ppOIDList, JS_CMP_ITAV_OID_SIGN_KEY_PAIR_TYPES );
 
     return 0;
+}
+
+void CMPClientDlg::setITAVTable( const JNameValList *pNameValList )
+{
+    int i = 0;
+    const JNameValList *pCurList = NULL;
+
+    mGENMWidget->setCurrentIndex(1);
+
+    mITAVTable->setRowCount(0);
+
+    pCurList = pNameValList;
+
+    while( pCurList )
+    {
+        QString strName = pCurList->sNameVal.pName;
+        QString strValue = pCurList->sNameVal.pValue;
+
+        mITAVTable->insertRow(i);
+        mITAVTable->setRowHeight(i,10);
+        mITAVTable->setItem( i, 0, new QTableWidgetItem( strName ));
+        mITAVTable->setItem(i, 1, new QTableWidgetItem( strValue ));
+        i++;
+
+        pCurList = pCurList->pNext;
+    }
 }
 
 int CMPClientDlg::readPrivateKey( BIN *pPriKey )

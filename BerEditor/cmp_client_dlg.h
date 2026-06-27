@@ -48,8 +48,6 @@ private slots:
     void viewPriKey();
     void typePriKey();
 
-    void clearRegInfo();
-
     void clearRequest();
     void decodeRequest();
 
@@ -72,6 +70,7 @@ private:
     const QString getRegInfo();
 
     int getITAVList( JStrList **ppOIDList );
+    void setITAVTable( const JNameValList *pNameValList );
 };
 
 #endif // CMP_CLIENT_DLG_H
