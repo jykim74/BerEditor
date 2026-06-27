@@ -147,6 +147,8 @@ void CMPClientDlg::initUI()
     mITAVTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mITAVTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    mITAVTable->setColumnWidth( 0, 160 );
+
     changeCmd();
 }
 
@@ -1287,7 +1289,7 @@ void CMPClientDlg::clickKUR()
         goto end;
     }
 
-    ret = JS_CMP_execKUR( pCTX, &binCA, &binPri, &binCert, &binNewPri, &binNewCert, sResMsg );
+    ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert, sResMsg );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     setUsedURL( strURL );
@@ -1538,9 +1540,11 @@ void CMPClientDlg::setITAVTable( const JNameValList *pNameValList )
         QString strName = pCurList->sNameVal.pName;
         QString strValue = pCurList->sNameVal.pValue;
 
+        QString strSN = JS_PKI_getSNFromOID( strName.toStdString().c_str() );
+
         mITAVTable->insertRow(i);
         mITAVTable->setRowHeight(i,10);
-        mITAVTable->setItem( i, 0, new QTableWidgetItem( strName ));
+        mITAVTable->setItem( i, 0, new QTableWidgetItem( strSN ));
         mITAVTable->setItem(i, 1, new QTableWidgetItem( strValue ));
         i++;
 
