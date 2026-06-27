@@ -4,6 +4,7 @@
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
 #include "settings_mgr.h"
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
@@ -1004,14 +1005,13 @@ void SCEPClientDlg::clickMakeGetCRL()
 
     QString strURL = mURLCombo->currentText();
     QString strLink;
+    CRLInfoDlg crlInfo;
 
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
-
-
 
     if( strCAPath.length() < 1 )
     {
@@ -1140,6 +1140,8 @@ void SCEPClientDlg::clickMakeGetCRL()
     }
 
     berApplet->log( QString( "CRL: %1").arg( getHexString( &binCRL )));
+    crlInfo.setCRL_BIN( &binCRL );
+    crlInfo.exec();
 
 end :
     JS_BIN_reset( &binNonce );
