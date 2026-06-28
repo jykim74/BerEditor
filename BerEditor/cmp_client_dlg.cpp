@@ -11,6 +11,7 @@
 #include "make_csr_dlg.h"
 #include "new_passwd_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "cmp_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"

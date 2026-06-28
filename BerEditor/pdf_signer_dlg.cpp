@@ -113,6 +113,8 @@ PDFSignerDlg::PDFSignerDlg(QWidget *parent)
     mInfoTab->layout()->setMargin(5);
     mDSSTab->layout()->setSpacing(5);
     mDSSTab->layout()->setMargin(5);
+    mPathTab->layout()->setMargin(5);
+    mPathTab->layout()->setSpacing(5);
 
     mSignTab->layout()->setSpacing(5);
     mSignTab->layout()->setMargin(5);
