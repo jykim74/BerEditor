@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_cmp_info_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class CMPInfoDlg;
@@ -16,8 +17,10 @@ public:
     explicit CMPInfoDlg(QWidget *parent = nullptr);
     ~CMPInfoDlg();
 
-private:
+    void setMsg( const BIN *pMsg );
 
+private:
+    BIN cmp_msg_;
 };
 
 #endif // CMP_INFO_DLG_H

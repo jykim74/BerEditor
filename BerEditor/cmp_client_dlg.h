@@ -50,9 +50,11 @@ private slots:
 
     void clearRequest();
     void decodeRequest();
+    void viewRequest();
 
     void clearResponse();
     void decodeResponse();
+    void viewResponse();
 
     void requestChanged();
     void responseChanged();

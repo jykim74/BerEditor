@@ -73,9 +73,11 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
+    connect( mRequestViewBtn, SIGNAL(clicked()), this, SLOT(viewRequest()));
 
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
+    connect( mResponseViewBtn, SIGNAL(clicked()), this, SLOT(viewResponse()));
 
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
@@ -97,9 +99,11 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
+    mRequestViewBtn->setFixedWidth(34);
 
     mResponseClearBtn->setFixedWidth(34);
     mResponseDecodeBtn->setFixedWidth(34);
+    mResponseViewBtn->setFixedWidth(34);
 
     mGENMWidget->setCurrentIndex(0);
     mGENMTab->layout()->setSpacing(5);
@@ -544,6 +548,27 @@ end :
     JS_BIN_reset( &binData );
 }
 
+void CMPClientDlg::viewRequest()
+{
+    BIN binData = {0,0};
+    QString strHex = mRequestText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "No request available" ), this );
+        mRequestText->setFocus();
+        return;
+    }
+
+    CMPInfoDlg cmpInfo;
+    cmpInfo.exec();
+
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
+
+end :
+    JS_BIN_reset( &binData );
+}
 
 void CMPClientDlg::clearResponse()
 {
@@ -565,6 +590,26 @@ void CMPClientDlg::decodeResponse()
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeTitle( &binData, "CMP Response" );
+
+    JS_BIN_reset( &binData );
+}
+
+void CMPClientDlg::viewResponse()
+{
+    BIN binData = {0,0};
+    QString strHex = mResponseText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no response" ), this );
+        mResponseText->setFocus();
+        return;
+    }
+
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+
+    CMPInfoDlg cmpInfo;
+    cmpInfo.exec();
 
     JS_BIN_reset( &binData );
 }
