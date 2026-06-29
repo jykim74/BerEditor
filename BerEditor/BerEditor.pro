@@ -135,7 +135,8 @@ SOURCES += \
     bin_view_dlg.cpp \
     text_view_dlg.cpp \
     pdf_signer_dlg.cpp \
-    ocsp_rsp_dlg.cpp
+    ocsp_rsp_dlg.cpp \
+    cmp_info_dlg.cpp
 
 
 HEADERS += \
@@ -236,7 +237,8 @@ HEADERS += \
     bin_view_dlg.h \
     text_view_dlg.h \
     pdf_signer_dlg.h \
-    ocsp_rsp_dlg.h
+    ocsp_rsp_dlg.h \
+    cmp_info_dlg.h
 
 
 
@@ -387,7 +389,8 @@ FORMS += \
         bin_view_dlg.ui \
         text_view_dlg.ui \
         pdf_signer_dlg.ui \
-        ocsp_rsp_dlg.ui
+        ocsp_rsp_dlg.ui \
+        cmp_info_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

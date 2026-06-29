@@ -20,6 +20,11 @@ public:
     void setMsg( const BIN *pMsg );
 
 private:
+    void initUI();
+    void initialize();
+
+    void setCMPData( int nType, void *pData );
+
     BIN cmp_msg_;
 };
 

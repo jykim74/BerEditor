@@ -153,6 +153,7 @@ void CMPClientDlg::initUI()
     mITAVTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mITAVTable->setColumnWidth( 0, 160 );
+    mGENMWidget->setCurrentIndex(0);
 
     changeCmd();
 }
@@ -561,6 +562,7 @@ void CMPClientDlg::viewRequest()
     }
 
     CMPInfoDlg cmpInfo;
+    cmpInfo.setMsg( &binData );
     cmpInfo.exec();
 
     int ret = getBINFromString( &binData, DATA_HEX, strHex );
@@ -609,6 +611,7 @@ void CMPClientDlg::viewResponse()
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     CMPInfoDlg cmpInfo;
+    cmpInfo.setMsg( &binData );
     cmpInfo.exec();
 
     JS_BIN_reset( &binData );
