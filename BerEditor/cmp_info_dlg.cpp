@@ -94,15 +94,6 @@ void CMPInfoDlg::setMsg( const BIN *pMsg )
         i++;
     }
 
-    if( sInfo.pSubjectDN )
-    {
-        mGenInfoTable->insertRow(i);
-        mGenInfoTable->setRowHeight(i,10);
-        mGenInfoTable->setItem( i, 0, new QTableWidgetItem( "SubjectDN" ));
-        mGenInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( sInfo.pSubjectDN ) ));
-        i++;
-    }
-
     if( sInfo.binNonce.nLen > 0 )
     {
         mGenInfoTable->insertRow(i);
@@ -127,15 +118,6 @@ void CMPInfoDlg::setMsg( const BIN *pMsg )
         mGenInfoTable->setRowHeight(i,10);
         mGenInfoTable->setItem( i, 0, new QTableWidgetItem( "SendKID" ));
         mGenInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( getHexString( &sInfo.binSendKID) ) ));
-        i++;
-    }
-
-    if( sInfo.binPubKey.nLen > 0 )
-    {
-        mGenInfoTable->insertRow(i);
-        mGenInfoTable->setRowHeight(i,10);
-        mGenInfoTable->setItem( i, 0, new QTableWidgetItem( "PublicKey" ));
-        mGenInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( getHexString( &sInfo.binPubKey) ) ));
         i++;
     }
 
