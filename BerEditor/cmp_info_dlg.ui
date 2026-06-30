@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
+    <width>524</width>
     <height>409</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>CMP Message window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

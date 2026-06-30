@@ -132,6 +132,7 @@ void CMPInfoDlg::setCMPData( int nType, void *pData )
     JNumList *pNumList = NULL;
     JStrBINList *pStrBINList = NULL;
     JStrList *pStrList = NULL;
+    JNameValList *pNameValList = NULL;
 
     if( pData == NULL ) return;
 
@@ -152,6 +153,11 @@ void CMPInfoDlg::setCMPData( int nType, void *pData )
     case JS_CMP_PKIBODY_GENM:
         pStrList = (JStrList *)pData;
         setCMPStrData( pStrList );
+        break;
+
+    case JS_CMP_PKIBODY_GENP:
+        pNameValList = (JNameValList *)pData;
+        setCMPNameValData( pNameValList );
         break;
 
     default:
@@ -178,13 +184,13 @@ void CMPInfoDlg::setCMPNumData( const JNumList *pNumList )
 
     while( pNumList )
     {
-        pNumList = pNumList->pNext;
-
         mDetailInfoTable->insertRow(i);
         mDetailInfoTable->setRowHeight(i,10);
         mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
         mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pNumList->nNum ) ));
         i++;
+
+        pNumList = pNumList->pNext;
     }
 }
 
@@ -207,14 +213,14 @@ void CMPInfoDlg::setCMPStrBINData( const JStrBINList *pStrBINList )
 
     while( pStrBINList )
     {
-        pStrBINList = pStrBINList->pNext;
-
         mDetailInfoTable->insertRow(i);
         mDetailInfoTable->setRowHeight(i,10);
         mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
         mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pStrBINList->sStrBin.pStr ) ));
         mDetailInfoTable->setItem(i, 2, new QTableWidgetItem( QString( "%1" ).arg( getHexString( &pStrBINList->sStrBin.binVal ) ) ));
         i++;
+
+        pStrBINList = pStrBINList->pNext;
     }
 }
 
@@ -237,12 +243,42 @@ void CMPInfoDlg::setCMPStrData( const JStrList *pStrList )
 
     while( pStrList )
     {
-        pStrList = pStrList->pNext;
-
         mDetailInfoTable->insertRow(i);
         mDetailInfoTable->setRowHeight(i,10);
         mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
         mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pStrList->pStr ) ));
         i++;
+
+        pStrList = pStrList->pNext;
+    }
+}
+
+void CMPInfoDlg::setCMPNameValData( const JNameValList *pNameValList )
+{
+    int i = 0;
+    QStringList sBaseLabels = { tr("Position"), tr("Name"), tr("Value") };
+
+    mDetailInfoTable->clear();
+
+    mDetailInfoTable->clear();
+    mDetailInfoTable->horizontalHeader()->setStretchLastSection(true);
+    mDetailInfoTable->setColumnCount(sBaseLabels.size());
+    mDetailInfoTable->setHorizontalHeaderLabels( sBaseLabels );
+    mDetailInfoTable->verticalHeader()->setVisible(false);
+    mDetailInfoTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDetailInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mDetailInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mDetailInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    while( pNameValList )
+    {
+        mDetailInfoTable->insertRow(i);
+        mDetailInfoTable->setRowHeight(i,10);
+        mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
+        mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pNameValList->sNameVal.pName ) ));
+        mDetailInfoTable->setItem(i, 2, new QTableWidgetItem( QString( "%1" ).arg( pNameValList->sNameVal.pValue ) ));
+        i++;
+
+        pNameValList = pNameValList->pNext;
     }
 }

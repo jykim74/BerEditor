@@ -28,6 +28,7 @@ private:
     void setCMPNumData( const JNumList *pNumList );
     void setCMPStrBINData( const JStrBINList *pStrBINList );
     void setCMPStrData( const JStrList *pStrList );
+    void setCMPNameValData( const JNameValList *pNameValList );
 
     BIN cmp_msg_;
 };

@@ -553,6 +553,7 @@ void CMPClientDlg::viewRequest()
 {
     BIN binData = {0,0};
     QString strHex = mRequestText->toPlainText();
+    CMPInfoDlg cmpInfo;
 
     if( strHex.length() < 1)
     {
@@ -561,12 +562,11 @@ void CMPClientDlg::viewRequest()
         return;
     }
 
-    CMPInfoDlg cmpInfo;
-    cmpInfo.setMsg( &binData );
-    cmpInfo.exec();
-
     int ret = getBINFromString( &binData, DATA_HEX, strHex );
     FORMAT_WARN_GO(ret);
+
+    cmpInfo.setMsg( &binData );
+    cmpInfo.exec();
 
 end :
     JS_BIN_reset( &binData );
