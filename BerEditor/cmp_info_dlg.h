@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_cmp_info_dlg.h"
 #include "js_bin.h"
+#include "js_util.h"
 
 namespace Ui {
 class CMPInfoDlg;
@@ -24,6 +25,9 @@ private:
     void initialize();
 
     void setCMPData( int nType, void *pData );
+    void setCMPNumData( const JNumList *pNumList );
+    void setCMPStrBINData( const JStrBINList *pStrBINList );
+    void setCMPStrData( const JStrList *pStrList );
 
     BIN cmp_msg_;
 };

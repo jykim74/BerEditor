@@ -129,5 +129,120 @@ end :
 
 void CMPInfoDlg::setCMPData( int nType, void *pData )
 {
+    JNumList *pNumList = NULL;
+    JStrBINList *pStrBINList = NULL;
+    JStrList *pStrList = NULL;
 
+    if( pData == NULL ) return;
+
+    switch (nType) {
+    case JS_CMP_PKIBODY_IR:
+    case JS_CMP_PKIBODY_CR:
+    case JS_CMP_PKIBODY_P10CR:
+    case JS_CMP_PKIBODY_KUR:
+        pStrBINList = (JStrBINList *)pData;
+        setCMPStrBINData( pStrBINList );
+        break;
+
+    case JS_CMP_PKIBODY_RR:
+        pNumList = (JNumList *)pData;
+        setCMPNumData( pNumList );
+        break;
+
+    case JS_CMP_PKIBODY_GENM:
+        pStrList = (JStrList *)pData;
+        setCMPStrData( pStrList );
+        break;
+
+    default:
+        break;
+    }
+}
+
+void CMPInfoDlg::setCMPNumData( const JNumList *pNumList )
+{
+    int i = 0;
+    QStringList sBaseLabels = { tr("Position"), tr("Reason") };
+
+    mDetailInfoTable->clear();
+
+    mDetailInfoTable->clear();
+    mDetailInfoTable->horizontalHeader()->setStretchLastSection(true);
+    mDetailInfoTable->setColumnCount(sBaseLabels.size());
+    mDetailInfoTable->setHorizontalHeaderLabels( sBaseLabels );
+    mDetailInfoTable->verticalHeader()->setVisible(false);
+    mDetailInfoTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDetailInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mDetailInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mDetailInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    while( pNumList )
+    {
+        pNumList = pNumList->pNext;
+
+        mDetailInfoTable->insertRow(i);
+        mDetailInfoTable->setRowHeight(i,10);
+        mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
+        mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pNumList->nNum ) ));
+        i++;
+    }
+}
+
+void CMPInfoDlg::setCMPStrBINData( const JStrBINList *pStrBINList )
+{
+    int i = 0;
+    QStringList sBaseLabels = { tr("Position"), tr("Name"), tr("Value") };
+
+    mDetailInfoTable->clear();
+
+    mDetailInfoTable->clear();
+    mDetailInfoTable->horizontalHeader()->setStretchLastSection(true);
+    mDetailInfoTable->setColumnCount(sBaseLabels.size());
+    mDetailInfoTable->setHorizontalHeaderLabels( sBaseLabels );
+    mDetailInfoTable->verticalHeader()->setVisible(false);
+    mDetailInfoTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDetailInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mDetailInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mDetailInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    while( pStrBINList )
+    {
+        pStrBINList = pStrBINList->pNext;
+
+        mDetailInfoTable->insertRow(i);
+        mDetailInfoTable->setRowHeight(i,10);
+        mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
+        mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pStrBINList->sStrBin.pStr ) ));
+        mDetailInfoTable->setItem(i, 2, new QTableWidgetItem( QString( "%1" ).arg( getHexString( &pStrBINList->sStrBin.binVal ) ) ));
+        i++;
+    }
+}
+
+void CMPInfoDlg::setCMPStrData( const JStrList *pStrList )
+{
+    int i = 0;
+    QStringList sBaseLabels = { tr("Position"), tr("Value") };
+
+    mDetailInfoTable->clear();
+
+    mDetailInfoTable->clear();
+    mDetailInfoTable->horizontalHeader()->setStretchLastSection(true);
+    mDetailInfoTable->setColumnCount(sBaseLabels.size());
+    mDetailInfoTable->setHorizontalHeaderLabels( sBaseLabels );
+    mDetailInfoTable->verticalHeader()->setVisible(false);
+    mDetailInfoTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDetailInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mDetailInfoTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mDetailInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    while( pStrList )
+    {
+        pStrList = pStrList->pNext;
+
+        mDetailInfoTable->insertRow(i);
+        mDetailInfoTable->setRowHeight(i,10);
+        mDetailInfoTable->setItem( i, 0, new QTableWidgetItem( QString("%1").arg(i+1) ));
+        mDetailInfoTable->setItem(i, 1, new QTableWidgetItem( QString( "%1" ).arg( pStrList->pStr ) ));
+        i++;
+    }
 }
