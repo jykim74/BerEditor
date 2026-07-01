@@ -36,6 +36,7 @@
 #include "text_view_dlg.h"
 #include "cert_id_dlg.h"
 #include "ocsp_rsp_dlg.h"
+#include "cmp_info_dlg.h"
 
 BerModel::BerModel( QObject *parent )
     : QStandardItemModel (parent)
@@ -1355,6 +1356,12 @@ void BerModel::ViewBER()
         OCSPRspDlg ocspRsp;
         ocspRsp.setResponse( &binNode );
         ocspRsp.exec();
+    }
+    else if( ret == JS_PKI_BER_TYPE_CMP_MSG )
+    {
+        CMPInfoDlg cmpInfo;
+        cmpInfo.setMsg( &binNode );
+        cmpInfo.exec();
     }
 
     ret = JSR_OK;

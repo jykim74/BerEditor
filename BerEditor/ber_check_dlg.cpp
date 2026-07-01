@@ -15,6 +15,7 @@
 #include "passwd_dlg.h"
 #include "cert_id_dlg.h"
 #include "ocsp_rsp_dlg.h"
+#include "cmp_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -259,6 +260,8 @@ void BERCheckDlg::clickCheckFormat()
         ret = JS_PKI_checkPKCS7Format( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
         ret = JS_PKI_checkOCSPRspFormat( &binSrc, sError );
+    else if( strFormat == JS_PKI_BER_NAME_CMP_MSG )
+        ret = JS_PKI_checkCMPMsgFormat( &binSrc, sError );
     else
     {
         goto end;
@@ -354,6 +357,8 @@ void BERCheckDlg::clickView()
         ret = JS_PKI_checkPKCS7Format( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_OCSP_RSP )
         ret = JS_PKI_checkOCSPRspFormat( &binSrc, sError );
+    else if( strFormat == JS_PKI_BER_NAME_CMP_MSG )
+        ret = JS_PKI_checkCMPMsgFormat( &binSrc, sError );
 
 
     if( ret == JSR_OK )
@@ -434,6 +439,12 @@ void BERCheckDlg::clickView()
             OCSPRspDlg ocspRsp;
             ocspRsp.setResponse( &binSrc );
             ocspRsp.exec();
+        }
+        else if( strFormat == JS_PKI_BER_NAME_CMP_MSG )
+        {
+            CMPInfoDlg cmpInfo;
+            cmpInfo.setMsg( &binSrc );
+            cmpInfo.exec();
         }
     }
     else

@@ -614,7 +614,8 @@ void SCEPClientDlg::clickGetCA()
         return;
     }
 
-    strURL += "/pkiclient.exe?operation=GetCACert";
+//    strURL += "/pkiclient.exe?operation=GetCACert";
+    strURL += "?operation=GetCACert";
 
     ret = JS_HTTP_requestGetBin2(
         strURL.toStdString().c_str(),
@@ -741,7 +742,8 @@ void SCEPClientDlg::clickMakeIssue()
     }
 
     strLink = strURL;
-    strLink += "/pkiclient.exe?operation=PKIOperation";
+//    strLink += "/pkiclient.exe?operation=PKIOperation";
+    strLink += "?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
         strLink.toStdString().c_str(),
@@ -925,7 +927,8 @@ void SCEPClientDlg::clickMakeUpdate()
     }
 
     strLink = strURL;
-    strLink += "/pkiclient.exe?operation=PKIOperation";
+//    strLink += "/pkiclient.exe?operation=PKIOperation";
+    strLink += "?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
         strLink.toStdString().c_str(),
@@ -1098,7 +1101,8 @@ void SCEPClientDlg::clickMakeGetCRL()
     }
 
     strLink = strURL;
-    strLink += "/pkiclient.exe?operation=PKIOperation";
+//    strLink += "/pkiclient.exe?operation=PKIOperation";
+    strLink += "?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
         strLink.toStdString().c_str(),
@@ -1186,7 +1190,8 @@ void SCEPClientDlg::clickSend()
     FORMAT_WARN_GO(ret);
 
     strLink = strURL;
-    strLink += "/pkiclient.exe?operation=PKIOperation";
+//    strLink += "/pkiclient.exe?operation=PKIOperation";
+    strLink += "?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
         strLink.toStdString().c_str(),
