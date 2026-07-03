@@ -197,6 +197,7 @@ const int kFileMax = 1048576; // 1024 * 1024
 #define ACT_PROTO_CMP               VIEW_PROTO | 0x00000004
 #define ACT_PROTO_SCEP              VIEW_PROTO | 0x00000008
 #define ACT_PROTO_ACME              VIEW_PROTO | 0x00000010
+#define ACT_PROTO_EST               VIEW_PROTO | 0x00000020
 
 #define ACT_KMIP_DECODE_TTLV        VIEW_KMIP | 0x00000001
 #define ACT_KMIP_MAKE_TTLV          VIEW_KMIP | 0x00000002

@@ -125,5 +125,6 @@
         <file>images/bin_view.png</file>
         <file>images/text_view.png</file>
         <file>images/pdf.png</file>
+        <file>images/est.png</file>
     </qresource>
 </RCC>

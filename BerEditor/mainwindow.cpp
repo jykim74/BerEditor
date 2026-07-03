@@ -46,6 +46,7 @@
 #include "cmp_client_dlg.h"
 #include "scep_client_dlg.h"
 #include "acme_client_dlg.h"
+#include "est_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
 #include "decode_ttlv_dlg.h"
@@ -721,6 +722,13 @@ void MainWindow::createViewActions()
     connect( protoACMEAct, &QAction::triggered, this, &MainWindow::viewProtoACME );
     protoMenu->addAction( protoACMEAct );
 
+    QAction *protoESTAct = new QAction( tr( "EST client"), this );
+    bVal = isView( ACT_PROTO_EST );
+    protoESTAct->setCheckable(true);
+    protoESTAct->setChecked(bVal);
+    connect( protoESTAct, &QAction::triggered, this, &MainWindow::viewProtoEST );
+    protoMenu->addAction( protoESTAct );
+
     QAction *kmipDecodeTTLVAct = new QAction( tr( "Decode TTLV"), this );
     bVal = isView( ACT_KMIP_DECODE_TTLV );
     kmipDecodeTTLVAct->setCheckable(true);
@@ -1394,6 +1402,14 @@ void MainWindow::createProtocolActions()
     protoMenu->addAction( acme_act_ );
     if( isView( ACT_PROTO_ACME ) ) proto_tool_->addAction( acme_act_ );
 
+    const QIcon estIcon = QIcon::fromTheme( "est_client", QIcon(":/images/est.png"));
+    est_act_ = new QAction( estIcon, tr( "&EST client"), this );
+    est_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
+    est_act_->setStatusTip( tr( "EST Client Tool" ));
+    connect( est_act_, &QAction::triggered, this, &MainWindow::estClient );
+    protoMenu->addAction( est_act_ );
+    if( isView( ACT_PROTO_EST ) ) proto_tool_->addAction( est_act_ );
+
     if( berApplet->isLicense() == false )
     {
         ocsp_act_->setEnabled( false );
@@ -1401,6 +1417,7 @@ void MainWindow::createProtocolActions()
         cmp_act_->setEnabled( false );
         scep_act_->setEnabled( false );
         acme_act_->setEnabled( false );
+        est_act_->setEnabled( false );
     }
 }
 
@@ -2976,6 +2993,19 @@ void MainWindow::acmeClient()
     acme_client_dlg_->activateWindow();
 }
 
+void MainWindow::estClient()
+{
+    if( est_client_dlg_ == nullptr )
+    {
+        est_client_dlg_ = new ESTClientDlg;
+        setModaless( est_client_dlg_ );
+    }
+
+    est_client_dlg_->show();
+    est_client_dlg_->raise();
+    est_client_dlg_->activateWindow();
+}
+
 void MainWindow::certMan()
 {
     if( cert_man_dlg_ == nullptr )
@@ -3946,13 +3976,27 @@ void MainWindow::viewProtoACME( bool bChecked )
 {
     if( bChecked == true )
     {
-        proto_tool_->addAction( acme_act_ );
+        proto_tool_->insertAction( est_act_, acme_act_ );
         setView( ACT_PROTO_ACME );
     }
     else
     {
         proto_tool_->removeAction( acme_act_ );
         unsetView( ACT_PROTO_ACME );
+    }
+}
+
+void MainWindow::viewProtoEST( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( est_act_ );
+        setView( ACT_PROTO_EST );
+    }
+    else
+    {
+        proto_tool_->removeAction( est_act_ );
+        unsetView( ACT_PROTO_EST );
     }
 }
 
