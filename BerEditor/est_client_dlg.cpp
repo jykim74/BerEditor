@@ -132,8 +132,8 @@ void ESTClientDlg::initialize()
 
     mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
-    mRequestText->setPlaceholderText( tr("Hex value" ));
-    mResponseText->setPlaceholderText( tr("Hex value" ));
+    mRequestText->setPlaceholderText( tr("String value" ));
+    mResponseText->setPlaceholderText( tr("String value" ));
 }
 
 QStringList ESTClientDlg::getUsedURL()
@@ -280,12 +280,129 @@ void ESTClientDlg::clickMakeCACerts()
 
 void ESTClientDlg::clickMakeSimpleEnroll()
 {
+    int ret = 0;
+    GenKeyPairDlg genKeyPair;
+    MakeCSRDlg makeCSR;
 
+    BIN binPriKey = {0,0};
+    BIN binPubKey = {0,0};
+    BIN binCSR = {0,0};
+
+    QString strHex;
+    char *pPEM = NULL;
+
+    genKeyPair.setFixName( tr("EST SimpleEnroll KeyPair" ));
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binPriKey );
+
+    makeCSR.setPriKey( &binPriKey );
+    if( makeCSR.exec() != QDialog::Accepted ) goto end;
+
+    strHex = makeCSR.getCSRHex();
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binCSR );
+
+    JS_BIN_encodePEM( JS_PEM_TYPE_CSR, &binCSR, &pPEM );
+
+    mRequestText->setPlainText( pPEM );
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binPubKey );
+    JS_BIN_reset( &binCSR );
+    if( pPEM ) JS_free( pPEM );
 }
 
 void ESTClientDlg::clickMakeSimpleReenroll()
 {
+    int ret = 0;
+    BIN binPriKey = {0,0};
+    BIN binPubKey = {0,0};
+    BIN binCert = {0,0};
 
+    BIN binNewPri = {0,0};
+    BIN binNewPub = {0,0};
+    BIN binCSR = {0,0};
+
+    int nKeyType = -1;
+    int nParam = -1;
+    JCertInfo sCertInfo;
+    QString strHex;
+    char *pPEM = NULL;
+
+    if( mCertGroup->isChecked() == true )
+    {
+        QString strCertPath = mCertPathText->text();
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        ret = readPrivateKey( &binPriKey );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
+        certMan.setTitle( tr( "Select a certificate") );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPriKey );
+        certMan.getCert( &binCert );
+    }
+
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    ret = JS_PKI_getPubKeyInfo( &binPubKey, &nKeyType, &nParam );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    ret = JS_PKI_genKeyPair( nKeyType, nParam, 65537, &binNewPub, &binNewPri );
+    if( ret != JSR_OK )
+    {
+        goto end;
+    }
+
+    ret = JS_PKI_makeCSR( "SHA256", sCertInfo.pSubjectName, NULL, NULL, &binNewPri, NULL, &binCSR );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binCSR );
+
+    JS_BIN_encodePEM( JS_PEM_TYPE_CSR, &binCSR, &pPEM );
+
+    mRequestText->setPlainText( pPEM );
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binPubKey );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCSR );
+
+    JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binNewPub );
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pPEM ) JS_free( pPEM );
 }
 
 void ESTClientDlg::clickMakeFullCMC()
@@ -601,13 +718,13 @@ void ESTClientDlg::clearResponse()
 
 void ESTClientDlg::requestChanged()
 {
-    QString strLen = getDataLenString( DATA_HEX, mRequestText->toPlainText() );
+    QString strLen = getDataLenString( DATA_STRING, mRequestText->toPlainText() );
     mRequestLenText->setText( QString("%1").arg( strLen ) );
 }
 
 void ESTClientDlg::responseChanged()
 {
-    QString strLen = getDataLenString( DATA_HEX, mResponseText->toPlainText() );
+    QString strLen = getDataLenString( DATA_STRING, mResponseText->toPlainText() );
     mResponseLenText->setText( QString("%1").arg( strLen ) );
 }
 
@@ -622,10 +739,11 @@ void ESTClientDlg::clickGetCA()
     int ret = 0;
     int nStatus = 0;
 
-    BIN binCA = {0,0};
+    BIN binRSP = {0,0};
     QString strURL = mURLCombo->currentText();
 
     CertInfoDlg certInfo;
+    char *pRsp = NULL;
 
     if( strURL.length() < 1 )
     {
@@ -633,15 +751,15 @@ void ESTClientDlg::clickGetCA()
         return;
     }
 
-    //    strURL += "/pkiclient.exe?operation=GetCACert";
-    strURL += "?operation=GetCACert";
+    strURL += "/";
+    strURL += kEST_CACerts;
 
     ret = JS_HTTP_requestGetBin2(
         strURL.toStdString().c_str(),
         NULL,
         NULL,
         &nStatus,
-        &binCA );
+        &binRSP );
 
     if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
     {
@@ -649,14 +767,21 @@ void ESTClientDlg::clickGetCA()
         goto end;
     }
 
+    JS_BIN_string( &binRSP, &pRsp );
+
+    mResponseText->setPlainText( pRsp );
+
+#if 0
     if( mCACertPathText->text().length() < 1 )
         mCACertPathText->setText( strURL );
 
-    certInfo.setCertBIN( &binCA );
+    certInfo.setCertBIN( &binRSP );
     certInfo.exec();
+#endif
 
 end :
-    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binRSP );
+    if( pRsp ) JS_free( pRsp );
 }
 
 void ESTClientDlg::clickSend()
@@ -670,8 +795,10 @@ void ESTClientDlg::clickSend()
     QString strURL = mURLCombo->currentText();
     QString strReq = mRequestText->toPlainText();
     QString strLink;
+    QString strCmd = mCmdCombo->currentText();
 
     CertInfoDlg certInfo;
+    char *pRsp = NULL;
 
     if( strURL.length() < 1 )
     {
@@ -679,28 +806,32 @@ void ESTClientDlg::clickSend()
         return;
     }
 
-    if( strReq.length() < 1 )
-    {
-        berApplet->warningBox( tr("No request available" ), this );
-        goto end;
-    }
-
-//    ret = getBINFromString( &binReq, DATA_HEX, strReq );
-//    FORMAT_WARN_GO(ret);
-    JS_BIN_set( &binReq, (unsigned char *)strReq.toStdString().c_str(), strReq.length() );
-
     strLink = strURL;
-    //    strLink += "/pkiclient.exe?operation=PKIOperation";
-    strLink += "?operation=PKIOperation";
+    strLink += ";";
+    strLink += strCmd;
 
-    ret = JS_HTTP_requestPostBin2(
-        strLink.toStdString().c_str(),
-        NULL,
-        NULL,
-        "application/pkcs7-mime",
-        &binReq,
-        &nStatus,
-        &binRsp );
+    if( strReq.length() > 0 )
+    {
+        JS_BIN_set( &binReq, (unsigned char *)strReq.toStdString().c_str(), strReq.length() );
+
+        ret = JS_HTTP_requestPostBin2(
+            strLink.toStdString().c_str(),
+            NULL,
+            NULL,
+            "application/pkcs10",
+            &binReq,
+            &nStatus,
+            &binRsp );
+    }
+    else
+    {
+        ret = JS_HTTP_requestGetBin2(
+            strLink.toStdString().c_str(),
+            NULL,
+            NULL,
+            &nStatus,
+            &binRsp );
+    }
 
     if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
     {
@@ -708,9 +839,10 @@ void ESTClientDlg::clickSend()
         goto end;
     }
 
-    JS_BIN_formatToBIN( &binRsp, &binDER );
+//    JS_BIN_formatToBIN( &binRsp, &binDER );
 
-    mResponseText->setPlainText( getHexString( &binDER ));
+    JS_BIN_string( &binRsp, &pRsp );
+    mResponseText->setPlainText( pRsp );
     setUsedURL( strURL );
     berApplet->messageBox( tr("SCEP message sent"), this );
 
@@ -718,6 +850,7 @@ end :
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
     JS_BIN_reset( &binDER );
+    if( pRsp ) JS_free( pRsp );
 }
 
 void ESTClientDlg::clickVerify()
