@@ -1060,7 +1060,7 @@ int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 
     if( mDNSList->count() < 1 )
     {
-        berApplet->warningBox( tr( "Enter an identifier" ), this );
+        berApplet->warningBox( tr( "There is no DNS" ), this );
         mDNSText->setFocus();
         return -1;
     }
