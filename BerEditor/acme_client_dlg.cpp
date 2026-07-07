@@ -1401,10 +1401,17 @@ int ACMEClientDlg::clickMake()
     else if( strCmd.toUpper() == kCmdChallenge.toUpper() )
     {
         acmeObj.setPayload( objPayload );
+        ret = JSR_OK;
     }
     else
     {
 
+    }
+
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to make payload: %1" ).arg( ret ), this );
+        return ret;
     }
 
     berApplet->log( QString("Payload: %1").arg( acmeObj.getPayloadJSON() ));
@@ -1505,9 +1512,14 @@ int ACMEClientDlg::clickSend()
     FORMAT_WARN_GO(ret);
 
     if( strMethod == "POST" )
+    {
+        berApplet->log( QString( "Request[%1]: %2" ).arg( strCmdType ).arg( strReq ));
         ret = JS_HTTP_requestPostBin3( strCmdURL.toStdString().c_str(), NULL, NULL, "application/jose+json", &binReq, &nStatus, &pRspHeaderList, &binRsp );
+    }
     else
+    {
         ret = JS_HTTP_requestGetBin3( strCmdURL.toStdString().c_str(), NULL, NULL, &nStatus, &pRspHeaderList, &binRsp );
+    }
 
     mStatusText->setText( QString("%1").arg( nStatus ));
 
@@ -1516,7 +1528,7 @@ int ACMEClientDlg::clickSend()
         QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
         mResponseText->setPlainText( strRsp );
         mRspCmdText->setText( mCmdCombo->currentText() );
-        berApplet->log( QString( "Response: %1").arg( strRsp ));
+        berApplet->log( QString( "Response[%1]: %2").arg( strCmdType ).arg( strRsp ));
 
         if( strCmdType.toUpper() == kCmdKeyChange )
         {
@@ -1541,9 +1553,15 @@ int ACMEClientDlg::clickSend()
         if( strcasecmp( pCurList->sNameVal.pName, "Replay-Nonce" ) == 0 )
         {
             berApplet->log( QString( "Replay-Nonce: %1").arg( pCurList->sNameVal.pValue ));
-            bVal = berApplet->yesOrNoBox( tr( "Change Nonce as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
-            if( bVal == true )
+
+            if( mAutoNonceCheck->isChecked() == true )
                 mNonceText->setText( pCurList->sNameVal.pValue );
+            else
+            {
+                bVal = berApplet->yesOrNoBox( tr( "Change Nonce as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
+                if( bVal == true )
+                    mNonceText->setText( pCurList->sNameVal.pValue );
+            }
         }
 
         if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
