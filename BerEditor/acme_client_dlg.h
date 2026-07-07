@@ -10,6 +10,7 @@ class ACMEClientDlg;
 }
 
 #if 0
+static QString kCmdDirectory = "Directory";
 static QString kCmdLocation = "Location";
 static QString kCmdAccount = "Account";
 static QString kCmdOrder = "Order";
@@ -28,6 +29,9 @@ static QString kCmdCertificate = "Certificate";
 
 static QString kCmdAuthorization = "Authorization";
 static QString kCmdChallenge = "Challenge";
+
+static QString kCmdDeactivate = "Deactivate";
+static QString kCmdUpdateAccount = "UpdateAccount";
 #else
 
 static QString kCmdDirectory = "DIRECTORY";
