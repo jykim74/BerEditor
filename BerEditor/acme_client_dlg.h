@@ -118,6 +118,7 @@ private:
     int parseCertificateRsp( const QString strChain );
     int parseOrdersRsp( QJsonObject& object );
     int parseOrderRsp( QJsonObject& object );
+    int parseLocationRsp( QJsonObject& object );
 
     int addCmd( const QString strCmd, const QString strCmdURL );
 

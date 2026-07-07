@@ -472,6 +472,46 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
     return 0;
 }
 
+int ACMEClientDlg::parseLocationRsp( QJsonObject& object )
+{
+    int ret = 0;
+    QJsonArray jArr = object["authorizations"].toArray();
+    QString strFinalValue = object["finalize"].toString();
+
+    if( strFinalValue.length() > 0 )
+    {
+        ret = addCmd( kCmdFinalize, strFinalValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdFinalize ).arg( strFinalValue ), this);
+        }
+    }
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QString strValue = jArr.at(i).toString();
+
+        ret = addCmd( kCmdAuthorization, strValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdAuthorization ).arg( strValue ), this);
+        }
+    }
+
+    QString strCert = object["certificate"].toString();
+
+    if( strCert.length() > 1 )
+    {
+        ret = addCmd( kCmdCertificate, strCert );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdCertificate ).arg( strCert ), this);
+        }
+    }
+
+    return 0;
+}
+
 int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
 {
     int ret = -1;
@@ -596,12 +636,16 @@ int ACMEClientDlg::clickParse()
         {
             ret = parseNewAccountRsp( object );
         }
+        else if( strCmd.toUpper() == kCmdLocation.toUpper() )
+        {
+            ret = parseLocationRsp( object );
+        }
     }
 
     if( ret == 0 )
-        berApplet->messageBox( tr( "Parsing completed" ), this );
+        berApplet->messageBox( tr( "%1 Parsing completed" ).arg( strCmd ), this );
     else
-        berApplet->warningBox( tr( "failed to parse : %1").arg( ret ), this );
+        berApplet->warningBox( tr( "%1 failed to parse : %1").arg( strCmd ).arg( ret ), this );
 
     return ret;
 }
@@ -1254,7 +1298,7 @@ int ACMEClientDlg::clickMake()
             memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
             certMan.setMode( ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate" ));
+            certMan.setTitle( tr( "Select account certificate" ));
 
             if( certMan.exec() != QDialog::Accepted )
                 return -1;
@@ -1273,7 +1317,7 @@ int ACMEClientDlg::clickMake()
             QString strPriPath;
 
             KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setTitle( tr( "Select account keypair" ));
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )
@@ -1666,6 +1710,9 @@ void ACMEClientDlg::clickIssueCert()
     ret = clickSend();
     if( ret != 0 ) return;
 
+    ret = clickParse();
+    if( ret != 0 ) return;
+
 check :
     mCmdCombo->setCurrentText( kCmdAccount );
     ret = clickMake();
@@ -1678,23 +1725,31 @@ check :
     if( ret != 0 ) return;
 
     ret = clickParse();
-    if( ret != 0 )
-    {
-        bool bVal = berApplet->yesOrNoBox( tr( "No certificate found. Try the account again?" ), this );
-        if( bVal == true )
-        {
-            goto check;
-        }
-        else
-            return;
-    }
-
     if( ret != 0 ) return;
 
-    mCmdCombo->setCurrentText( kCmdCertificate );
+    mCmdCombo->setCurrentText( kCmdLocation );
     ret = clickMake();
     if( ret != 0 ) return;
 
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+        return;
+
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
+
+    mCmdCombo->setCurrentText( kCmdCertificate );
+    if( mCmdCombo->currentText() != kCmdCertificate )
+    {
+        berApplet->warningBox( tr( "There is no certificate command" ), this );
+        return;
+    }
+
+    ret = clickMake();
+    if( ret != 0 ) return;
 
     if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
