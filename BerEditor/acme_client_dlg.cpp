@@ -1438,6 +1438,9 @@ int ACMEClientDlg::clickMake()
     mRspCmdText->clear();
     mStatusText->clear();
 
+    if( mAutoSendCheck->isChecked() == true )
+        clickSend();
+
     return ret;
 }
 
