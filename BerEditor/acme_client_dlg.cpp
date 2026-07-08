@@ -105,6 +105,7 @@ void ACMEClientDlg::initUI()
 {
     mMethodCombo->addItems( kMethodList );
     mHashCombo->addItems( kHashList );
+    mAutoNonceCheck->setChecked(true);
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
