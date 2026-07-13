@@ -575,6 +575,7 @@ int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
 int ACMEClientDlg::clickParse()
 {
     int ret = 0;
+    update();
 
     QString strRsp = mResponseText->toPlainText();
     QString strCmd = mRspCmdText->text();
@@ -1415,6 +1416,7 @@ int ACMEClientDlg::clickMake()
         return ret;
     }
 
+    update();
     berApplet->log( QString("Payload: %1").arg( acmeObj.getPayloadJSON() ));
 
     if( strKID.length() > 0 )
@@ -1566,6 +1568,8 @@ int ACMEClientDlg::clickSend()
                 if( bVal == true )
                     mNonceText->setText( pCurList->sNameVal.pValue );
             }
+
+            update();
         }
 
         if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
