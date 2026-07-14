@@ -609,6 +609,14 @@ int ACMEClientDlg::clickParse()
     {
         QString strStatus = object["status"].toString();
         mRspStatusText->setText( strStatus );
+        nStatus = strStatus.toInt();
+
+        if( nStatus >= 300 )
+        {
+            QString strDetail = object["detail"].toString();
+            berApplet->warningBox( tr("Error: %1 status: %2").arg( strDetail) .arg( nStatus ), this);
+            return -1;
+        }
 
         if( strCmd.toUpper() == kCmdDirectory.toUpper() )
         {
