@@ -438,13 +438,38 @@ int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
 int ACMEClientDlg::parseOrderRsp( QJsonObject& object )
 {
     int ret = 0;
-    QJsonValue jValue = object["orders"];
+    QJsonArray jArr = object["authorizations"].toArray();
+    QString strFinalValue = object["finalize"].toString();
 
-    QString strValue = jValue.toString();
-    ret = addCmd( kCmdOrder, strValue );
-    if( ret > 0 )
+    if( strFinalValue.length() > 0 )
     {
-        berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
+        ret = addCmd( kCmdFinalize, strFinalValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdFinalize ).arg( strFinalValue ), this);
+        }
+    }
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QString strValue = jArr.at(i).toString();
+
+        ret = addCmd( kCmdAuthorization, strValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdAuthorization ).arg( strValue ), this);
+        }
+    }
+
+    QString strCert = object["certificate"].toString();
+
+    if( strCert.length() > 1 )
+    {
+        ret = addCmd( kCmdCertificate, strCert );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdCertificate ).arg( strCert ), this);
+        }
     }
 
     return 0;
@@ -1761,7 +1786,22 @@ check :
     ret = clickParse();
     if( ret != 0 ) return;
 
-    mCmdCombo->setCurrentText( kCmdLocation );
+    mCmdCombo->setCurrentText( kCmdOrders );
+    ret = clickMake();
+    if( ret != 0 ) return;
+
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+        return;
+
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
+
+//    mCmdCombo->setCurrentText( kCmdLocation );
+    mCmdCombo->setCurrentText( kCmdOrder );
     ret = clickMake();
     if( ret != 0 ) return;
 
