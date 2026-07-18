@@ -38,17 +38,20 @@ void ACMEObject::setObjectFromJson( const QString strJson )
     QString strPayload = jObj[kNamePayload].toString();
     QString strSignature = jObj[kNameSignature].toString();
 
-    JS_BIN_decodeBase64URL( strProtected.toStdString().c_str(), &binProtected );
-    JS_BIN_decodeBase64URL( strPayload.toStdString().c_str(), &binPayload );
+    if( strPayload.length() > 0 )
+    {
+        JS_BIN_decodeBase64URL( strPayload.toStdString().c_str(), &binPayload );
+        JS_BIN_string( &binPayload, &pPayload );
+        setPayload( QJsonDocument::fromJson( pPayload ).object() );
+    }
 
-    JS_BIN_string( &binProtected, &pProtected );
-    JS_BIN_string( &binPayload, &pPayload );
+    if( strProtected.length() > 0 )
+    {
+        JS_BIN_decodeBase64URL( strProtected.toStdString().c_str(), &binProtected );
+        JS_BIN_string( &binProtected, &pProtected );
+        setProtected( QJsonDocument::fromJson( pProtected ).object() );
+    }
 
-    setProtected( QJsonDocument::fromJson( pProtected ).object() );
-    setPayload( QJsonDocument::fromJson( pPayload ).object() );
-
-//    json_[kNameProtected] = QJsonDocument::fromJson( pProtected ).object();
-//    json_[kNamePayload] = QJsonDocument::fromJson( pPayload ).object();
     json_[kNameSignature] = strSignature;
 
     JS_BIN_reset( &binProtected );
@@ -209,6 +212,9 @@ int ACMEObject::setSignature( const BIN *pPri,const QString strHash )
         return JSR_INVALID_ALG;
 
     strPayload = getPayloadPacket();
+
+    berApplet->log( QString( "Sign Payload: %1" ).arg( strPayload ));
+
     strProtected = getProtectedPacket();
 
     strJSON = strProtected;
@@ -281,6 +287,9 @@ int ACMEObject::verifySignature( const BIN *pPub )
     if( nKeyType < 0 ) return -1;
 
     strPayload = getPayloadPacket();
+
+    berApplet->log( QString( "Verify Payload: %1" ).arg( strPayload ));
+
     strProtected = getProtectedPacket();
 
     strJSON = strProtected;
