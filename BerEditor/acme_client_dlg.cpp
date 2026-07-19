@@ -96,6 +96,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     mClearRequestBtn->setFixedWidth(34);
     mClearResponseBtn->setFixedWidth(34);
 
+    mLinkTab->layout()->setSpacing(5);
+    mLinkTab->layout()->setMargin(5);
     mUserTab->layout()->setSpacing(5);
     mUserTab->layout()->setMargin(5);
     mCmdTab->layout()->setSpacing(5);
@@ -955,9 +957,6 @@ void ACMEClientDlg::clickGetNonce()
         berApplet->messageBox( tr( "Nonce fetch success" ), this );
     }
 
-//    mRspCmdText->setText( kCmdNewNonce  );
-//    mStatusText->setText( QString("%1").arg( nStatus ));
-//    mResponseText->clear();
 }
 
 void ACMEClientDlg::clickGetLocation()
