@@ -9,31 +9,6 @@ namespace Ui {
 class ACMEClientDlg;
 }
 
-#if 0
-static QString kCmdDirectory = "Directory";
-static QString kCmdLocation = "Location";
-static QString kCmdAccount = "Account";
-static QString kCmdOrder = "Order";
-static QString kCmdOrders = "Orders";
-
-static QString kCmdKeyChange = "keyChange";
-static QString kCmdNewAccount = "newAccount";
-static QString kCmdNewNonce = "newNonce";
-static QString kCmdNewOrder = "newOrder";
-static QString kCmdRenewalInfo = "renewalInfo";
-static QString kCmdRevokeCert = "revokeCert";
-
-static QString kCmdNewAuthz = "NewAuthz";
-static QString kCmdFinalize = "Finalize";
-static QString kCmdCertificate = "Certificate";
-
-static QString kCmdAuthorization = "Authorization";
-static QString kCmdChallenge = "Challenge";
-
-static QString kCmdDeactivate = "Deactivate";
-static QString kCmdUpdateAccount = "UpdateAccount";
-#else
-
 static QString kCmdDirectory = "DIRECTORY";
 static QString kCmdLocation = "LOCATION";
 static QString kCmdAccount = "ACCOUNT";
@@ -56,7 +31,6 @@ static QString kCmdChallenge = "CHALLENGE";
 
 static QString kCmdDeactivate = "DEACTIVATE";
 static QString kCmdUpdateAccount = "UPDATEACCOUNT";
-#endif
 
 
 class ACMEClientDlg : public QDialog, public Ui::ACMEClientDlg
@@ -68,10 +42,15 @@ public:
     ~ACMEClientDlg();
 
 private slots:
+    void slotCmdTableMenuRequested( QPoint pos );
+    void deleteCmd();
+
     void clickGetNonce();
     void clickGetLocation();
     void clickGetDirectory();
     void clickChallTest();
+
+    void clickClearCmd();
 
     void clickClearURL();
     void clickKIDGetPubKey();

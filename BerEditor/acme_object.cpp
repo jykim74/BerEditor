@@ -13,6 +13,21 @@
 #include "js_bin.h"
 #include "js_error.h"
 
+const QString getACME_Status( ACME_STATUS nStatus )
+{
+    switch (nStatus) {
+    case ACME_STATUS_PENDDING : return "pendding";
+    case ACME_STATUS_PROCESSING : return "processing";
+    case ACME_STATUS_VALID : return "valid";
+    case ACME_STATUS_INVALID : return "invalid";
+    case ACME_STATUS_READY : return "ready";
+    case ACME_STATUS_DEACTIVATED :return "deactivated";
+    case ACME_STATUS_EXPIRED : return "expired";
+    }
+
+    return "";
+}
+
 ACMEObject::ACMEObject(QObject *parent)
     : QObject{parent}
 {

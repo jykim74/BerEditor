@@ -12,6 +12,18 @@ const QString kNameProtected = "protected";
 const QString kNamePayload = "payload";
 const QString kNameSignature = "signature";
 
+enum ACME_STATUS {
+    ACME_STATUS_PENDDING = 0,
+    ACME_STATUS_PROCESSING,
+    ACME_STATUS_VALID,
+    ACME_STATUS_INVALID,
+    ACME_STATUS_READY,
+    ACME_STATUS_DEACTIVATED,
+    ACME_STATUS_EXPIRED
+};
+
+const QString getACME_Status( ACME_STATUS nStatus );
+
 class ACMEObject : public QObject
 {
     Q_OBJECT

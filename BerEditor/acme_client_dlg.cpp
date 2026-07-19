@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMenu>
 
 #include "acme_client_dlg.h"
 #include "common.h"
@@ -59,6 +60,9 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     memset( &csr_pri_key_, 0x00, sizeof(BIN));
     memset( &kid_pub_key_, 0x00, sizeof(BIN));
 
+    connect( mCmdTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotCmdTableMenuRequested(QPoint)));
+
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mKIDGetPubBtn, SIGNAL(clicked()), this, SLOT(clickKIDGetPubKey()));
@@ -66,6 +70,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mChallTestBtn, SIGNAL(clicked()), this, SLOT(clickChallTest()));
+    connect( mCmdClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCmd()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mDeactivateBtn, SIGNAL(clicked()), this, SLOT(clickDeactivate()));
     connect( mUpdateAccountBtn, SIGNAL(clicked()), this, SLOT(clickUpdateAccount()));
@@ -90,6 +95,11 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
     mClearRequestBtn->setFixedWidth(34);
     mClearResponseBtn->setFixedWidth(34);
+
+    mUserTab->layout()->setSpacing(5);
+    mUserTab->layout()->setMargin(5);
+    mCmdTab->layout()->setSpacing(5);
+    mCmdTab->layout()->setMargin(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
@@ -131,6 +141,22 @@ void ACMEClientDlg::initUI()
     mRspCmdText->setPlaceholderText( tr( "Command" ));
     mRequestText->setPlaceholderText( tr("JSON String" ));
     mResponseText->setPlaceholderText( tr("JSON or Base64 value") );
+
+    QStringList sBaseLabels = { tr("Command"), tr("Status"), tr( "URL" ) };
+
+    mCmdTable->clear();
+    mCmdTable->horizontalHeader()->setStretchLastSection(true);
+    mCmdTable->setColumnCount(sBaseLabels.size());
+    mCmdTable->setHorizontalHeaderLabels( sBaseLabels );
+    mCmdTable->verticalHeader()->setVisible(false);
+    mCmdTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCmdTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mCmdTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mCmdTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mCmdTable->setColumnWidth( 0, 100 );
+
+    mInfoTab->setCurrentIndex(0);
 }
 
 void ACMEClientDlg::initialize()
@@ -593,6 +619,7 @@ int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
     }
 
     mCmdCombo->addItem( strCmd.toUpper(), strCmdURL );
+//    mCmdCombo->insertItem( 0, strCmdURL );
     berApplet->log( QString( "Add command [%1 : %2]").arg( strCmd.toUpper() ).arg( strCmdURL ));
     return 1;
 }
@@ -635,6 +662,8 @@ int ACMEClientDlg::clickParse()
         QString strStatus = object["status"].toString();
         mRspStatusText->setText( strStatus );
         nStatus = strStatus.toInt();
+
+        mCmdTable->setItem(0, 1, new QTableWidgetItem( strStatus ));
 
         if( nStatus >= 300 )
         {
@@ -744,6 +773,8 @@ void ACMEClientDlg::clickClearAll()
     mLocationText->clear();
     mKIDText->clear();
     mStatusText->clear();
+
+    clickClearCmd();
 
     resetKey();
 }
@@ -866,6 +897,28 @@ void ACMEClientDlg::clickResponseView()
         jsonTree.setJson( strResponse );
         jsonTree.exec();
     }
+}
+
+void ACMEClientDlg::slotCmdTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *deleteCmdAct = new QAction( tr( "Delete Cmd" ), this );
+
+
+    connect( deleteCmdAct, SIGNAL(triggered()), this, SLOT(deleteCmd()));
+
+    menu->addAction( deleteCmdAct );
+
+    menu->popup( mCmdTable->viewport()->mapToGlobal(pos));
+}
+
+void ACMEClientDlg::deleteCmd()
+{
+    QModelIndex idx = mCmdTable->currentIndex();
+    QTableWidgetItem *item = mCmdTable->item(idx.row(), 0);
+    if( item == NULL ) return;
+    mCmdTable->removeRow(idx.row());
 }
 
 void ACMEClientDlg::clickGetNonce()
@@ -1016,6 +1069,11 @@ void ACMEClientDlg::clickChallTest()
     ChallTestDlg challTest;
 //    challTest.mHostText->setText( strHost );
     challTest.exec();
+}
+
+void ACMEClientDlg::clickClearCmd()
+{
+    mCmdTable->setRowCount(0);
 }
 
 int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
@@ -1635,6 +1693,13 @@ int ACMEClientDlg::clickSend()
 
     if( mAutoParseCheck->isChecked() ) clickParse();
 
+    mCmdTable->insertRow(0);
+    mCmdTable->setRowHeight(0,10);
+    mCmdTable->setItem(0, 0, new QTableWidgetItem( strCmdType ));
+    mCmdTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+    mCmdTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+
+
     berApplet->messageBox( tr( "ACME message sent" ), this );
 
 end :
@@ -1800,8 +1865,8 @@ check :
     if( ret != 0 ) return;
 
 
-//    mCmdCombo->setCurrentText( kCmdLocation );
-    mCmdCombo->setCurrentText( kCmdOrder );
+    mCmdCombo->setCurrentText( kCmdLocation );
+//    mCmdCombo->setCurrentText( kCmdOrder );
     ret = clickMake();
     if( ret != 0 ) return;
 
