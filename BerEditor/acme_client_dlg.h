@@ -44,6 +44,7 @@ public:
 private slots:
     void slotCmdTableMenuRequested( QPoint pos );
     void deleteCmd();
+    void remakeCmd();
 
     void clickGetNonce();
     void clickGetLocation();
@@ -62,6 +63,7 @@ private slots:
     void changeCmd( int index );
 
     int clickMake();
+
     int clickDeactivate();
     int clickUpdateAccount();
 
@@ -111,6 +113,7 @@ private:
 
     void resetKey();
     bool isCmd( const QString strName );
+    int makeCmd( const QString strCmd, const QString strURL );
 
     BIN pri_key_;
     BIN pub_key_;

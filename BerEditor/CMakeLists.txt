@@ -238,6 +238,7 @@ add_executable(${PROJECT_NAME}
     ocsp_rsp_dlg.h ocsp_rsp_dlg.cpp ocsp_rsp_dlg.ui
     cmp_info_dlg.h cmp_info_dlg.cpp cmp_info_dlg.ui
     est_client_dlg.h est_client_dlg.cpp est_client_dlg.ui
+    sel_list_dlg.h sel_list_dlg.cpp sel_list_dlg.ui
 
 )
 

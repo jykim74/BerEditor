@@ -1,0 +1,79 @@
+#include "sel_list_dlg.h"
+#include "common.h"
+
+SelListDlg::SelListDlg(QWidget *parent)
+    : QDialog(parent)
+{
+    setupUi(this);
+    initUI();
+
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
+
+    initialize();
+}
+
+SelListDlg::~SelListDlg()
+{
+
+}
+
+void SelListDlg::initUI()
+{
+    QStringList sBaseLabels = { tr("Type"), tr( "URL" ) };
+
+    mListTable->clear();
+    mListTable->horizontalHeader()->setStretchLastSection(true);
+    mListTable->setColumnCount(sBaseLabels.size());
+    mListTable->setHorizontalHeaderLabels( sBaseLabels );
+    mListTable->verticalHeader()->setVisible(false);
+    mListTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mListTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mListTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mListTable->setColumnWidth( 0, 100 );
+}
+
+void SelListDlg::initialize()
+{
+
+}
+
+void SelListDlg::clickOK()
+{
+    type_.clear();
+    url_.clear();
+
+    QModelIndex idx = mListTable->currentIndex();
+    QTableWidgetItem* item = mListTable->item( idx.row(), 0 );
+    QTableWidgetItem* item1 = mListTable->item( idx.row(), 1 );
+
+    if( item == NULL || item1 == NULL ) return;
+
+    type_ = item->text();
+    url_ = item1->text();
+
+    accept();
+}
+
+void SelListDlg::addList( const QString strType, const QString strURL )
+{
+    mListTable->insertRow(0);
+    mListTable->setRowHeight(0,10);
+    mListTable->setItem(0, 0, new QTableWidgetItem( strType ));
+    mListTable->setItem(0, 1, new QTableWidgetItem( strURL ));
+}
+
+const QString SelListDlg::getURL()
+{
+    QString strURL = url_;
+
+    return strURL;
+}

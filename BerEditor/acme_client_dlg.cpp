@@ -25,6 +25,7 @@
 #include "chall_test_dlg.h"
 #include "one_list_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "sel_list_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -905,12 +906,15 @@ void ACMEClientDlg::slotCmdTableMenuRequested( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
 
+    QAction *remakeCmdAct = new QAction( tr( "Remake Cmd" ), this );
     QAction *deleteCmdAct = new QAction( tr( "Delete Cmd" ), this );
 
 
     connect( deleteCmdAct, SIGNAL(triggered()), this, SLOT(deleteCmd()));
+    connect( remakeCmdAct, SIGNAL(triggered()), this, SLOT(remakeCmd()));
 
     menu->addAction( deleteCmdAct );
+    menu->addAction( remakeCmdAct );
 
     menu->popup( mCmdTable->viewport()->mapToGlobal(pos));
 }
@@ -921,6 +925,19 @@ void ACMEClientDlg::deleteCmd()
     QTableWidgetItem *item = mCmdTable->item(idx.row(), 0);
     if( item == NULL ) return;
     mCmdTable->removeRow(idx.row());
+}
+
+void ACMEClientDlg::remakeCmd()
+{
+    QModelIndex idx = mCmdTable->currentIndex();
+    QTableWidgetItem *item = mCmdTable->item(idx.row(), 0);
+    QTableWidgetItem *item2 = mCmdTable->item(idx.row(), 2);
+    if( item == NULL || item2 == NULL ) return;
+
+    QString strCmd = item->text();
+    QString strURL = item2->text();
+
+    makeCmd( strCmd, strURL );
 }
 
 void ACMEClientDlg::clickGetNonce()
@@ -1363,10 +1380,25 @@ int ACMEClientDlg::makeUpadateAccount( QJsonObject& object )
 int ACMEClientDlg::clickMake()
 {
     int ret = 0;
+
+    QString strCmd = mCmdCombo->currentText();
+    QString strURL = mCmdText->text();
+
+    ret = makeCmd( strCmd, strURL );
+
+    return ret;
+}
+
+
+int ACMEClientDlg::makeCmd( const QString strCmd, const QString strURL )
+{
+    int ret = 0;
     int nKeyType = -1;
 
     ACMEObject acmeObj;
-    QString strCmd = mCmdCombo->currentText();
+//    QString strCmd = mCmdCombo->currentText();
+//    QString strURL = mCmdText->text();
+
     QString strHash = mHashCombo->currentText();
     QString strKID = mKIDText->text();
 
@@ -1377,7 +1409,7 @@ int ACMEClientDlg::clickMake()
 
     QString strNonce = mNonceText->text();
     QString strAlg;
-    QString strURL = mCmdText->text();
+
 
     if( pri_key_.nLen <= 0 )
     {
@@ -1589,6 +1621,35 @@ int ACMEClientDlg::clickSend()
     JNameValList *pRspHeaderList = NULL;
     JNameValList *pCurList = NULL;
 
+    int nCount = mCmdCombo->count();
+    QStringList listLink;
+    for( int i = 0; i < nCount; i++ )
+    {
+        QString strType = mCmdCombo->itemText(i);
+
+        if( strType == strCmdType )
+        {
+            strLink = mCmdCombo->itemData( i, Qt::UserRole ).toString();
+            listLink.append( strLink );
+        }
+    }
+
+    if( listLink.size() > 1 )
+    {
+        SelListDlg selList;
+        for( int i = 0; i < listLink.size(); i++ )
+        {
+            selList.addList( strCmdType, listLink.at(i));
+        }
+
+        if( selList.exec() != QDialog::Accepted )
+        {
+            goto end;
+        }
+
+        strCmdURL = selList.getURL();
+    }
+
     if( strCmdURL.length() < 1 )
     {
         berApplet->warningBox( tr( "No command URL available"), this );
@@ -1758,13 +1819,16 @@ void ACMEClientDlg::clickIssueCert()
     if( mNonceText->text().length() < 1 )
     {
         berApplet->warningBox( tr( "Click Get Nonce" ), this );
+        mInfoTab->setCurrentIndex(0);
         mGetNonceBtn->setFocus();
+
         return;
     }
 
     if( mEmailText->text().length() < 1 )
     {
         berApplet->warningBox( tr( "Enter an email" ), this );
+        mInfoTab->setCurrentIndex(1);
         mEmailText->setFocus();
         return;
     }
@@ -1772,6 +1836,7 @@ void ACMEClientDlg::clickIssueCert()
     if( mDNSList->count() < 1 )
     {
         berApplet->warningBox( tr( "Add a DNS record" ), this );
+        mInfoTab->setCurrentIndex(1);
         mDNSText->setFocus();
         return;
     }
