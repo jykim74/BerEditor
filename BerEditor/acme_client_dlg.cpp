@@ -1637,6 +1637,7 @@ int ACMEClientDlg::clickSend()
     if( listLink.size() > 1 )
     {
         SelListDlg selList;
+        selList.setHeadLabel( tr( "Select %1 URL" ).arg( strCmdType ));
         for( int i = 0; i < listLink.size(); i++ )
         {
             selList.addList( strCmdType, listLink.at(i));
@@ -1740,11 +1741,11 @@ int ACMEClientDlg::clickSend()
             QString strCmd = mCmdCombo->currentText();
             if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
             {
-                addCmd( kCmdOrder, mLocationText->text() );
+                addCmd( kCmdAccount, mLocationText->text() );
             }
             else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
             {
-                addCmd( kCmdAccount, mLocationText->text() );
+                addCmd( kCmdOrder, mLocationText->text() );
             }
         }
 

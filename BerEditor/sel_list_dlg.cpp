@@ -24,6 +24,11 @@ SelListDlg::~SelListDlg()
 
 }
 
+void SelListDlg::setHeadLabel( const QString strLabel )
+{
+    mHeadLabel->setText( strLabel );
+}
+
 void SelListDlg::initUI()
 {
     QStringList sBaseLabels = { tr("Type"), tr( "URL" ) };

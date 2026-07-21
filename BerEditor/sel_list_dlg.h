@@ -15,6 +15,7 @@ class SelListDlg : public QDialog, public Ui::SelListDlg
 public:
     explicit SelListDlg(QWidget *parent = nullptr);
     ~SelListDlg();
+    void setHeadLabel( const QString strLabel );
     void addList( const QString strType, const QString strURL );
     const QString getURL();
 
