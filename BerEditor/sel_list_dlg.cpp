@@ -70,10 +70,13 @@ void SelListDlg::clickOK()
 
 void SelListDlg::addList( const QString strType, const QString strURL )
 {
+    QTableWidgetItem* item1 = new QTableWidgetItem( strURL );
+    item1->setToolTip( strURL );
+
     mListTable->insertRow(0);
     mListTable->setRowHeight(0,10);
     mListTable->setItem(0, 0, new QTableWidgetItem( strType ));
-    mListTable->setItem(0, 1, new QTableWidgetItem( strURL ));
+    mListTable->setItem(0, 1, item1 );
 }
 
 const QString SelListDlg::getURL()

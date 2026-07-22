@@ -1621,34 +1621,39 @@ int ACMEClientDlg::clickSend()
     JNameValList *pRspHeaderList = NULL;
     JNameValList *pCurList = NULL;
 
-    int nCount = mCmdCombo->count();
-    QStringList listLink;
-    for( int i = 0; i < nCount; i++ )
+
+    /* Challenge 는 Make 때 Url 이 지정 되어서 선택 값 사용 */
+    if( strCmdType != kCmdChallenge )
     {
-        QString strType = mCmdCombo->itemText(i);
-
-        if( strType == strCmdType )
+        int nCount = mCmdCombo->count();
+        QStringList listLink;
+        for( int i = 0; i < nCount; i++ )
         {
-            strLink = mCmdCombo->itemData( i, Qt::UserRole ).toString();
-            listLink.append( strLink );
-        }
-    }
+            QString strType = mCmdCombo->itemText(i);
 
-    if( listLink.size() > 1 )
-    {
-        SelListDlg selList;
-        selList.setHeadLabel( tr( "Select %1 URL" ).arg( strCmdType ));
-        for( int i = 0; i < listLink.size(); i++ )
-        {
-            selList.addList( strCmdType, listLink.at(i));
+            if( strType == strCmdType )
+            {
+                strLink = mCmdCombo->itemData( i, Qt::UserRole ).toString();
+                listLink.append( strLink );
+            }
         }
 
-        if( selList.exec() != QDialog::Accepted )
+        if( listLink.size() > 1 )
         {
-            goto end;
-        }
+            SelListDlg selList;
+            selList.setHeadLabel( tr( "Select %1 URL" ).arg( strCmdType ));
+            for( int i = 0; i < listLink.size(); i++ )
+            {
+                selList.addList( strCmdType, listLink.at(i));
+            }
 
-        strCmdURL = selList.getURL();
+            if( selList.exec() != QDialog::Accepted )
+            {
+                goto end;
+            }
+
+            strCmdURL = selList.getURL();
+        }
     }
 
     if( strCmdURL.length() < 1 )
@@ -1657,6 +1662,8 @@ int ACMEClientDlg::clickSend()
         ret = -1;
         goto end;
     }
+
+    berApplet->log( QString( "Request URL: %1" ).arg( strCmdURL ));
 
     if( strMethod == "POST" && strReq.length() < 1 )
     {
