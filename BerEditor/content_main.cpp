@@ -5,6 +5,8 @@
 #include <QtPrintSupport/qtprintsupportglobal.h>
 #include <QtHelp/QHelpEngine>
 #include <QDesktopServices>
+#include <QShortcut>
+#include <QInputDialog>
 
 #include "content_main.h"
 #include "common.h"
@@ -105,6 +107,10 @@ void ContentMain::initialize()
 
     mContentBroswer->append( kLink );
     mContentBroswer->append( QString( "%1\n" ).arg( kLinkDesc ));
+
+    QShortcut *shortcut = new QShortcut(QKeySequence::Find, this);
+
+    connect(shortcut, &QShortcut::activated, this, &ContentMain::find );
 }
 
 void ContentMain::actSave()
@@ -265,6 +271,34 @@ void ContentMain::printPreview(QPrinter *printer)
     txtEdit.setText(strText);
     txtEdit.print(printer);
 #endif
+}
+
+void ContentMain::find()
+{
+    bool ok;
+    QString text = QInputDialog::getText(
+        this,
+        tr("Find"),
+        tr("Search:"),
+        QLineEdit::Normal,
+        "",
+        &ok);
+
+    if (ok && !text.isEmpty())
+        findText(text);
+}
+
+void ContentMain::findText( const QString& text )
+{
+    if( mContentBroswer->find( text ))
+    {
+        // 끝까지 찾았으면 처음부터 다시 검색
+        QTextCursor cursor = mContentBroswer->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        mContentBroswer->setTextCursor(cursor);
+
+        mContentBroswer->find(text);
+    }
 }
 
 void ContentMain::createActions()

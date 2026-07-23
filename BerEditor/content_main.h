@@ -38,6 +38,8 @@ private slots:
     void actLinkMan();
 
     void printPreview(QPrinter *printer);
+    void find();
+
 
 private:
     void createActions();
@@ -51,6 +53,7 @@ private:
     void makeLinkMenu( QTreeWidgetItem* parent );
 
     void initialize();
+    void findText( const QString& text );
 
 
     QHelpEngine* help_;
