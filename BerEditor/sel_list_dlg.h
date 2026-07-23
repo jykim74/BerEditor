@@ -17,6 +17,7 @@ public:
     ~SelListDlg();
     void setHeadLabel( const QString strLabel );
     void addList( const QString strType, const QString strURL );
+    void selectURL( const QString strURL );
     const QString getURL();
 
 private slots:

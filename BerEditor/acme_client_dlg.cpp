@@ -1621,39 +1621,36 @@ int ACMEClientDlg::clickSend()
     JNameValList *pRspHeaderList = NULL;
     JNameValList *pCurList = NULL;
 
-
-    /* Challenge 는 Make 때 Url 이 지정 되어서 선택 값 사용 */
-    if( strCmdType != kCmdChallenge )
+    int nCount = mCmdCombo->count();
+    QStringList listLink;
+    for( int i = 0; i < nCount; i++ )
     {
-        int nCount = mCmdCombo->count();
-        QStringList listLink;
-        for( int i = 0; i < nCount; i++ )
-        {
-            QString strType = mCmdCombo->itemText(i);
+        QString strType = mCmdCombo->itemText(i);
 
-            if( strType == strCmdType )
-            {
-                strLink = mCmdCombo->itemData( i, Qt::UserRole ).toString();
-                listLink.append( strLink );
-            }
+        if( strType == strCmdType )
+        {
+            strLink = mCmdCombo->itemData( i, Qt::UserRole ).toString();
+            listLink.append( strLink );
+        }
+    }
+
+    if( listLink.size() > 1 )
+    {
+        SelListDlg selList;
+        selList.setHeadLabel( tr( "Select %1 URL" ).arg( strCmdType ));
+        for( int i = 0; i < listLink.size(); i++ )
+        {
+            selList.addList( strCmdType, listLink.at(i));
         }
 
-        if( listLink.size() > 1 )
+        selList.selectURL( strCmdURL );
+
+        if( selList.exec() != QDialog::Accepted )
         {
-            SelListDlg selList;
-            selList.setHeadLabel( tr( "Select %1 URL" ).arg( strCmdType ));
-            for( int i = 0; i < listLink.size(); i++ )
-            {
-                selList.addList( strCmdType, listLink.at(i));
-            }
-
-            if( selList.exec() != QDialog::Accepted )
-            {
-                goto end;
-            }
-
-            strCmdURL = selList.getURL();
+            goto end;
         }
+
+        strCmdURL = selList.getURL();
     }
 
     if( strCmdURL.length() < 1 )

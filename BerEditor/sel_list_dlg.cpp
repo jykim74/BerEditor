@@ -38,6 +38,7 @@ void SelListDlg::initUI()
     mListTable->setColumnCount(sBaseLabels.size());
     mListTable->setHorizontalHeaderLabels( sBaseLabels );
     mListTable->verticalHeader()->setVisible(false);
+    mListTable->setStyleSheet( kSelectStyle );
     mListTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mListTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mListTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -77,6 +78,21 @@ void SelListDlg::addList( const QString strType, const QString strURL )
     mListTable->setRowHeight(0,10);
     mListTable->setItem(0, 0, new QTableWidgetItem( strType ));
     mListTable->setItem(0, 1, item1 );
+}
+
+void SelListDlg::selectURL( const QString strURL )
+{
+    int nCount = mListTable->rowCount();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        QTableWidgetItem *item = mListTable->item( i, 1 );
+        if( item->text() == strURL )
+        {
+            item->setSelected( true );
+            break;
+        }
+    }
 }
 
 const QString SelListDlg::getURL()
