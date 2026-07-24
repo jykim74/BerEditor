@@ -1812,6 +1812,23 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
     return ret;
 }
 
+int ACMEClientDlg::runCmd( const QString strCmd )
+{
+    int ret = 0;
+
+    mCmdCombo->setCurrentText( strCmd );
+    ret = clickMake();
+    if( ret != 0 ) return ret;
+
+    ret = clickSend();
+    if( ret != 0 ) return ret;
+
+    ret = clickParse();
+    if( ret != 0 ) return ret;
+
+    return JSR_OK;
+}
+
 void ACMEClientDlg::clickIssueCert()
 {
     if( mCmdCombo->count() < 1 )
@@ -1847,107 +1864,49 @@ void ACMEClientDlg::clickIssueCert()
     }
 
     int ret = 0;
-    mCmdCombo->setCurrentText( kCmdNewAccount );
-    ret = clickMake();
-    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdNewAccount ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdNewAccount ) != JSR_OK ) return;
 
-    mCmdCombo->setCurrentText( kCmdNewOrder );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdNewOrder ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdNewOrder ) != JSR_OK ) return;
 
-    ret = clickParse();
-    if( ret != 0 ) return;
-
-    mCmdCombo->setCurrentText( kCmdAuthorization );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdAuthorization ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdAuthorization ) != JSR_OK ) return;
 
-    ret = clickParse();
-    if( ret != 0 ) return;
-
-    mCmdCombo->setCurrentText( kCmdChallenge );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdChallenge ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdChallenge ) != JSR_OK ) return;
 
-    mCmdCombo->setCurrentText( kCmdFinalize );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdFinalize ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdFinalize ) != JSR_OK ) return;
 
-    ret = clickParse();
-    if( ret != 0 ) return;
+//    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdAccount ), this) == false )
+//        return;
 
-check :
-    mCmdCombo->setCurrentText( kCmdAccount );
-    ret = clickMake();
-    if( ret != 0 ) return;
+//    if( runCmd( kCmdAccount ) != JSR_OK ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdOrders ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdOrders ) != JSR_OK ) return;
 
-    ret = clickParse();
-    if( ret != 0 ) return;
-
-    mCmdCombo->setCurrentText( kCmdOrders );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdOrder ), this) == false )
         return;
 
-    ret = clickSend();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdOrder ) != JSR_OK ) return;
 
-    ret = clickParse();
-    if( ret != 0 ) return;
-
-
-    mCmdCombo->setCurrentText( kCmdLocation );
-//    mCmdCombo->setCurrentText( kCmdOrder );
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdCertificate ), this) == false )
         return;
-
-    ret = clickSend();
-    if( ret != 0 ) return;
-
-    ret = clickParse();
-    if( ret != 0 ) return;
-
 
     mCmdCombo->setCurrentText( kCmdCertificate );
     if( mCmdCombo->currentText() != kCmdCertificate )
@@ -1956,17 +1915,7 @@ check :
         return;
     }
 
-    ret = clickMake();
-    if( ret != 0 ) return;
-
-    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
-        return;
-
-    ret = clickSend();
-    if( ret != 0 ) return;
-
-    ret = clickParse();
-    if( ret != 0 ) return;
+    if( runCmd( kCmdCertificate ) != JSR_OK ) return;
 
     berApplet->messageBox( tr( "Certificate issuance completed"), this );
 }

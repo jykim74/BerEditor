@@ -114,6 +114,7 @@ private:
     void resetKey();
     bool isCmd( const QString strName );
     int makeCmd( const QString strCmd, const QString strURL );
+    int runCmd( const QString strCmd );
 
     BIN pri_key_;
     BIN pub_key_;

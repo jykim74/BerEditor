@@ -86,10 +86,14 @@ void SelListDlg::selectURL( const QString strURL )
 
     for( int i = 0; i < nCount; i++ )
     {
-        QTableWidgetItem *item = mListTable->item( i, 1 );
-        if( item->text() == strURL )
+        QTableWidgetItem *item = mListTable->item( i, 0 );
+        QTableWidgetItem *item1 = mListTable->item( i, 1 );
+
+        if( item1->text() == strURL )
         {
-            item->setSelected( true );
+//            item->setSelected( true );
+//            item1->setSelected( true );
+            mListTable->setCurrentItem( item1 );
             break;
         }
     }
