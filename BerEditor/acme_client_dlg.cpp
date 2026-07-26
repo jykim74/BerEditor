@@ -118,6 +118,7 @@ void ACMEClientDlg::initUI()
 {
     mMethodCombo->addItems( kMethodList );
     mHashCombo->addItems( kHashList );
+
     mAutoNonceCheck->setChecked(true);
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
@@ -734,7 +735,9 @@ void ACMEClientDlg::changeCmd( int index )
 void ACMEClientDlg::clickAddDNS()
 {
     int i = 0;
+
     QString strDNS = mDNSText->text();
+
     if( strDNS.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a DNS name" ), this );
@@ -744,11 +747,11 @@ void ACMEClientDlg::clickAddDNS()
 
     for( i = 0; i < mDNSList->count(); i++ )
     {
-        QString strValue = mDNSList->item(i)->text();
+        QString strLine = mDNSList->item(i)->text();
 
-        if( strValue == strDNS )
+        if( strLine == strDNS )
         {
-            berApplet->warningBox( tr("%1 already exists" ).arg( strDNS), this );
+            berApplet->warningBox( tr("%1 already exists" ).arg( strDNS ), this );
             return;
         }
     }

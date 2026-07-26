@@ -382,10 +382,10 @@ const QJsonObject ACMEObject::getIdentifiers( const QStringList strNameList )
 
     for( int i = 0; i < strNameList.size(); i++ )
     {
-        QString strName = strNameList.at(i);
+        QString strLine = strNameList.at(i);
 
         jSubObj["type"] = "dns";
-        jSubObj["value"] = strName;
+        jSubObj["value"] = strLine;
 
         jArr.append( jSubObj );
     }
