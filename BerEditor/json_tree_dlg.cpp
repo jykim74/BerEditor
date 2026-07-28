@@ -60,6 +60,14 @@ void JSONTreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
     int nCount = object.count();
     QStringList listKeys = object.keys();
 
+    if( nCount <= 0 )
+    {
+        QTreeWidgetItem* pItem = new QTreeWidgetItem;
+        pItem->setText( 0, QString( "{}") );
+        pParentItem->addChild( pItem );
+        return;
+    }
+
     for( int i = 0; i < nCount; i++ )
     {
         QTreeWidgetItem* pItem = new QTreeWidgetItem;
@@ -108,6 +116,14 @@ void JSONTreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
 void JSONTreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
 {
     int nCount = array.count();
+
+    if( nCount <= 0 )
+    {
+        QTreeWidgetItem* pItem = new QTreeWidgetItem;
+        pItem->setText( 0, QString( "[]") );
+        pParentItem->addChild( pItem );
+        return;
+    }
 
     for( int i = 0; i < nCount; i++ )
     {
