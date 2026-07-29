@@ -52,6 +52,9 @@ private slots:
     void clickChallTest();
 
     void clickClearCmd();
+    void clickClearAuth();
+    void clickClearChall();
+    void clickClearOrder();
 
     void clickClearURL();
     void clickKIDGetPubKey();

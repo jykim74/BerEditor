@@ -71,7 +71,12 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mChallTestBtn, SIGNAL(clicked()), this, SLOT(clickChallTest()));
+
     connect( mCmdClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCmd()));
+    connect( mAuthClearBtn, SIGNAL(clicked()), this, SLOT(clickClearAuth()));
+    connect( mChallClearBtn, SIGNAL(clicked()), this, SLOT(clickClearChall()));
+    connect( mOrderClearBtn, SIGNAL(clicked()), this, SLOT(clickClearOrder()));
+
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mDeactivateBtn, SIGNAL(clicked()), this, SLOT(clickDeactivate()));
     connect( mUpdateAccountBtn, SIGNAL(clicked()), this, SLOT(clickUpdateAccount()));
@@ -103,7 +108,12 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     mUserTab->layout()->setMargin(5);
     mCmdTab->layout()->setSpacing(5);
     mCmdTab->layout()->setMargin(5);
+    mAuthTab->layout()->setSpacing(5);
+    mAuthTab->layout()->setMargin(5);
+    mOrderTab->layout()->setSpacing(5);
+    mOrderTab->layout()->setMargin(5);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
     mMakeBtn->setDefault(true);
@@ -159,6 +169,42 @@ void ACMEClientDlg::initUI()
     mCmdTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mCmdTable->setColumnWidth( 0, 100 );
+
+    mAuthTable->clear();
+    mAuthTable->horizontalHeader()->setStretchLastSection(true);
+    mAuthTable->setColumnCount(sBaseLabels.size());
+    mAuthTable->setHorizontalHeaderLabels( sBaseLabels );
+    mAuthTable->verticalHeader()->setVisible(false);
+    mAuthTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mAuthTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mAuthTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mAuthTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mAuthTable->setColumnWidth( 0, 100 );
+
+    mChallTable->clear();
+    mChallTable->horizontalHeader()->setStretchLastSection(true);
+    mChallTable->setColumnCount(sBaseLabels.size());
+    mChallTable->setHorizontalHeaderLabels( sBaseLabels );
+    mChallTable->verticalHeader()->setVisible(false);
+    mChallTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mChallTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mChallTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mChallTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mChallTable->setColumnWidth( 0, 100 );
+
+    mOrderTable->clear();
+    mOrderTable->horizontalHeader()->setStretchLastSection(true);
+    mOrderTable->setColumnCount(sBaseLabels.size());
+    mOrderTable->setHorizontalHeaderLabels( sBaseLabels );
+    mOrderTable->verticalHeader()->setVisible(false);
+    mOrderTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mOrderTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mOrderTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mOrderTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mOrderTable->setColumnWidth( 0, 100 );
 
     mInfoTab->setCurrentIndex(0);
 }
@@ -428,6 +474,12 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdAuthorization ).arg( strValue ), this);
+
+            mAuthTable->insertRow(0);
+            mAuthTable->setRowHeight(0,10);
+            mAuthTable->setItem(0, 0, new QTableWidgetItem( kCmdAuthorization ));
+            mAuthTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+            mAuthTable->setItem(0, 2, new QTableWidgetItem( strValue ));
         }
     }
 
@@ -449,6 +501,12 @@ int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
             if( ret > 0 )
             {
                 berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
+
+                mOrderTable->insertRow(0);
+                mOrderTable->setRowHeight(0,10);
+                mOrderTable->setItem(0, 0, new QTableWidgetItem( kCmdOrder ));
+                mOrderTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+                mOrderTable->setItem(0, 2, new QTableWidgetItem( strValue ));
             }
         }
     }
@@ -522,6 +580,12 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdChallenge ).arg( strURL ), this);
+
+            mChallTable->insertRow(0);
+            mChallTable->setRowHeight(0,10);
+            mChallTable->setItem(0, 0, new QTableWidgetItem( kCmdChallenge ));
+            mChallTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+            mChallTable->setItem(0, 2, new QTableWidgetItem( strURL ));
         }
     }
 
@@ -781,6 +845,9 @@ void ACMEClientDlg::clickClearAll()
     mStatusText->clear();
 
     clickClearCmd();
+    clickClearAuth();
+    clickClearChall();
+    clickClearOrder();
 
     resetKey();
 }
@@ -1093,6 +1160,21 @@ void ACMEClientDlg::clickChallTest()
 void ACMEClientDlg::clickClearCmd()
 {
     mCmdTable->setRowCount(0);
+}
+
+void ACMEClientDlg::clickClearAuth()
+{
+    mAuthTable->setRowCount(0);
+}
+
+void ACMEClientDlg::clickClearChall()
+{
+    mChallTable->setRowCount(0);
+}
+
+void ACMEClientDlg::clickClearOrder()
+{
+    mOrderTable->setRowCount(0);
 }
 
 int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
