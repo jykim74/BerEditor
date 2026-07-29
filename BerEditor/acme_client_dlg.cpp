@@ -474,12 +474,6 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdAuthorization ).arg( strValue ), this);
-
-            mAuthTable->insertRow(0);
-            mAuthTable->setRowHeight(0,10);
-            mAuthTable->setItem(0, 0, new QTableWidgetItem( kCmdAuthorization ));
-            mAuthTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-            mAuthTable->setItem(0, 2, new QTableWidgetItem( strValue ));
         }
     }
 
@@ -501,12 +495,6 @@ int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
             if( ret > 0 )
             {
                 berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
-
-                mOrderTable->insertRow(0);
-                mOrderTable->setRowHeight(0,10);
-                mOrderTable->setItem(0, 0, new QTableWidgetItem( kCmdOrder ));
-                mOrderTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-                mOrderTable->setItem(0, 2, new QTableWidgetItem( strValue ));
             }
         }
     }
@@ -682,12 +670,39 @@ int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
 {
     for( int i = 0; i < mCmdCombo->count(); i++ )
     {
-        if( mCmdCombo->itemData( i ).toString().toUpper() == strCmdURL.toUpper() )
+        QString strItemURL = mCmdCombo->itemData(i).toString();
+
+        if( strItemURL.compare( strCmdURL, Qt::CaseInsensitive ) == 0 )
             return 0;
     }
 
     mCmdCombo->addItem( strCmd.toUpper(), strCmdURL );
-//    mCmdCombo->insertItem( 0, strCmdURL );
+
+    if( strCmd == kCmdAuthorization )
+    {
+        mAuthTable->insertRow(0);
+        mAuthTable->setRowHeight(0,10);
+        mAuthTable->setItem(0, 0, new QTableWidgetItem( kCmdAuthorization ));
+        mAuthTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+        mAuthTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+    }
+    else if( strCmd == kCmdChallenge )
+    {
+        mChallTable->insertRow(0);
+        mChallTable->setRowHeight(0,10);
+        mChallTable->setItem(0, 0, new QTableWidgetItem( kCmdChallenge ));
+        mChallTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+        mChallTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+    }
+    else if( strCmd == kCmdOrder )
+    {
+        mOrderTable->insertRow(0);
+        mOrderTable->setRowHeight(0,10);
+        mOrderTable->setItem(0, 0, new QTableWidgetItem( kCmdOrder ));
+        mOrderTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
+        mOrderTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+    }
+
     berApplet->log( QString( "Add command [%1 : %2]").arg( strCmd.toUpper() ).arg( strCmdURL ));
     return 1;
 }
