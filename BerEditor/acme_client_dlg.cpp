@@ -62,7 +62,9 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     memset( &kid_pub_key_, 0x00, sizeof(BIN));
 
     connect( mCmdTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotCmdTableMenuRequested(QPoint)));
-
+    connect( mAuthTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotAuthTableMenuRequested(QPoint)));
+    connect( mChallTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotChallTableMenuRequested(QPoint)));
+    connect( mOrderTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotOrderTableMenuRequested(QPoint)));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
@@ -130,6 +132,8 @@ void ACMEClientDlg::initUI()
     mHashCombo->addItems( kHashList );
 
     mAutoNonceCheck->setChecked(true);
+    mAutoSendCheck->setChecked(true);
+    mAutoParseCheck->setChecked(true);
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
@@ -1004,6 +1008,57 @@ void ACMEClientDlg::slotCmdTableMenuRequested( QPoint pos )
     menu->popup( mCmdTable->viewport()->mapToGlobal(pos));
 }
 
+void ACMEClientDlg::slotAuthTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *remakeAuthAct = new QAction( tr( "Remake Auth" ), this );
+    QAction *deleteAuthAct = new QAction( tr( "Delete Auth" ), this );
+
+
+    connect( deleteAuthAct, SIGNAL(triggered()), this, SLOT(deleteAuth()));
+    connect( remakeAuthAct, SIGNAL(triggered()), this, SLOT(remakeAuth()));
+
+    menu->addAction( deleteAuthAct );
+    menu->addAction( remakeAuthAct );
+
+    menu->popup( mAuthTable->viewport()->mapToGlobal(pos));
+}
+
+void ACMEClientDlg::slotChallTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *remakeChallAct = new QAction( tr( "Remake Challenge" ), this );
+    QAction *deleteChallAct = new QAction( tr( "Delete Challenge" ), this );
+
+
+    connect( deleteChallAct, SIGNAL(triggered()), this, SLOT(deleteChall()));
+    connect( remakeChallAct, SIGNAL(triggered()), this, SLOT(remakeChall()));
+
+    menu->addAction( deleteChallAct );
+    menu->addAction( remakeChallAct );
+
+    menu->popup( mChallTable->viewport()->mapToGlobal(pos));
+}
+
+void ACMEClientDlg::slotOrderTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *remakeAct = new QAction( tr( "Remake Order" ), this );
+    QAction *deleteAct = new QAction( tr( "Delete Order" ), this );
+
+
+    connect( deleteAct, SIGNAL(triggered()), this, SLOT(deleteOrder()));
+    connect( remakeAct, SIGNAL(triggered()), this, SLOT(remakeOrder()));
+
+    menu->addAction( deleteAct );
+    menu->addAction( remakeAct );
+
+    menu->popup( mOrderTable->viewport()->mapToGlobal(pos));
+}
+
 void ACMEClientDlg::deleteCmd()
 {
     QModelIndex idx = mCmdTable->currentIndex();
@@ -1017,6 +1072,69 @@ void ACMEClientDlg::remakeCmd()
     QModelIndex idx = mCmdTable->currentIndex();
     QTableWidgetItem *item = mCmdTable->item(idx.row(), 0);
     QTableWidgetItem *item2 = mCmdTable->item(idx.row(), 2);
+    if( item == NULL || item2 == NULL ) return;
+
+    QString strCmd = item->text();
+    QString strURL = item2->text();
+
+    makeCmd( strCmd, strURL );
+}
+
+void ACMEClientDlg::deleteAuth()
+{
+    QModelIndex idx = mAuthTable->currentIndex();
+    QTableWidgetItem *item = mAuthTable->item(idx.row(), 0);
+    if( item == NULL ) return;
+    mAuthTable->removeRow(idx.row());
+}
+
+void ACMEClientDlg::remakeAuth()
+{
+    QModelIndex idx = mAuthTable->currentIndex();
+    QTableWidgetItem *item = mAuthTable->item(idx.row(), 0);
+    QTableWidgetItem *item2 = mAuthTable->item(idx.row(), 2);
+    if( item == NULL || item2 == NULL ) return;
+
+    QString strCmd = item->text();
+    QString strURL = item2->text();
+
+    makeCmd( strCmd, strURL );
+}
+
+void ACMEClientDlg::deleteChall()
+{
+    QModelIndex idx = mChallTable->currentIndex();
+    QTableWidgetItem *item = mChallTable->item(idx.row(), 0);
+    if( item == NULL ) return;
+    mChallTable->removeRow(idx.row());
+}
+
+void ACMEClientDlg::remakeChall()
+{
+    QModelIndex idx = mChallTable->currentIndex();
+    QTableWidgetItem *item = mChallTable->item(idx.row(), 0);
+    QTableWidgetItem *item2 = mChallTable->item(idx.row(), 2);
+    if( item == NULL || item2 == NULL ) return;
+
+    QString strCmd = item->text();
+    QString strURL = item2->text();
+
+    makeCmd( strCmd, strURL );
+}
+
+void ACMEClientDlg::deleteOrder()
+{
+    QModelIndex idx = mOrderTable->currentIndex();
+    QTableWidgetItem *item = mOrderTable->item(idx.row(), 0);
+    if( item == NULL ) return;
+    mOrderTable->removeRow(idx.row());
+}
+
+void ACMEClientDlg::remakeOrder()
+{
+    QModelIndex idx = mOrderTable->currentIndex();
+    QTableWidgetItem *item = mOrderTable->item(idx.row(), 0);
+    QTableWidgetItem *item2 = mOrderTable->item(idx.row(), 2);
     if( item == NULL || item2 == NULL ) return;
 
     QString strCmd = item->text();

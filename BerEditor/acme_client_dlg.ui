@@ -182,7 +182,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mLinkTab">
       <attribute name="title">
@@ -496,6 +496,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mAuthTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="verticalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
@@ -544,6 +547,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mChallTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
@@ -592,6 +598,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mOrderTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>

@@ -43,8 +43,21 @@ public:
 
 private slots:
     void slotCmdTableMenuRequested( QPoint pos );
+    void slotAuthTableMenuRequested( QPoint pos );
+    void slotChallTableMenuRequested( QPoint pos );
+    void slotOrderTableMenuRequested( QPoint pos );
+
     void deleteCmd();
     void remakeCmd();
+
+    void deleteAuth();
+    void remakeAuth();
+
+    void deleteChall();
+    void remakeChall();
+
+    void deleteOrder();
+    void remakeOrder();
 
     void clickGetNonce();
     void clickGetLocation();
