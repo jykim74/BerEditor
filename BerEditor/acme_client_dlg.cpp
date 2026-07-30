@@ -112,6 +112,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     mCmdTab->layout()->setMargin(5);
     mAuthTab->layout()->setSpacing(5);
     mAuthTab->layout()->setMargin(5);
+    mChallTab->layout()->setSpacing(5);
+    mChallTab->layout()->setMargin(5);
     mOrderTab->layout()->setSpacing(5);
     mOrderTab->layout()->setMargin(5);
 #endif
@@ -160,7 +162,7 @@ void ACMEClientDlg::initUI()
     mRequestText->setPlaceholderText( tr("JSON String" ));
     mResponseText->setPlaceholderText( tr("JSON or Base64 value") );
 
-    QStringList sBaseLabels = { tr("Command"), tr("Status"), tr( "URL" ) };
+    QStringList sBaseLabels = { tr("Command"), tr( "URL" ) };
 
     mCmdTable->clear();
     mCmdTable->horizontalHeader()->setStretchLastSection(true);
@@ -172,43 +174,39 @@ void ACMEClientDlg::initUI()
     mCmdTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCmdTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mCmdTable->setColumnWidth( 0, 100 );
+    mCmdTable->setColumnWidth( 0, 120 );
+
+    QStringList sLabels = { tr( "URL" ) };
 
     mAuthTable->clear();
     mAuthTable->horizontalHeader()->setStretchLastSection(true);
-    mAuthTable->setColumnCount(sBaseLabels.size());
-    mAuthTable->setHorizontalHeaderLabels( sBaseLabels );
+    mAuthTable->setColumnCount(sLabels.size());
+    mAuthTable->setHorizontalHeaderLabels( sLabels );
     mAuthTable->verticalHeader()->setVisible(false);
     mAuthTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mAuthTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mAuthTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mAuthTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mAuthTable->setColumnWidth( 0, 100 );
-
     mChallTable->clear();
     mChallTable->horizontalHeader()->setStretchLastSection(true);
-    mChallTable->setColumnCount(sBaseLabels.size());
-    mChallTable->setHorizontalHeaderLabels( sBaseLabels );
+    mChallTable->setColumnCount(sLabels.size());
+    mChallTable->setHorizontalHeaderLabels( sLabels );
     mChallTable->verticalHeader()->setVisible(false);
     mChallTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mChallTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mChallTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mChallTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mChallTable->setColumnWidth( 0, 100 );
-
     mOrderTable->clear();
     mOrderTable->horizontalHeader()->setStretchLastSection(true);
-    mOrderTable->setColumnCount(sBaseLabels.size());
-    mOrderTable->setHorizontalHeaderLabels( sBaseLabels );
+    mOrderTable->setColumnCount(sLabels.size());
+    mOrderTable->setHorizontalHeaderLabels( sLabels );
     mOrderTable->verticalHeader()->setVisible(false);
     mOrderTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mOrderTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mOrderTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mOrderTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    mOrderTable->setColumnWidth( 0, 100 );
 
     mInfoTab->setCurrentIndex(0);
 }
@@ -558,6 +556,8 @@ int ACMEClientDlg::parseOrderRsp( QJsonObject& object )
 int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 {
     int ret = 0;
+
+    QString strStatus = object["status"].toString();
     QJsonArray jArr = object["challenges"].toArray();
 
     for( int i = 0; i < jArr.count(); i++ )
@@ -686,25 +686,19 @@ int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
     {
         mAuthTable->insertRow(0);
         mAuthTable->setRowHeight(0,10);
-        mAuthTable->setItem(0, 0, new QTableWidgetItem( kCmdAuthorization ));
-        mAuthTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-        mAuthTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+        mAuthTable->setItem(0, 0, new QTableWidgetItem( strCmdURL ));
     }
     else if( strCmd == kCmdChallenge )
     {
         mChallTable->insertRow(0);
         mChallTable->setRowHeight(0,10);
-        mChallTable->setItem(0, 0, new QTableWidgetItem( kCmdChallenge ));
-        mChallTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-        mChallTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+        mChallTable->setItem(0, 0, new QTableWidgetItem( strCmdURL ));
     }
     else if( strCmd == kCmdOrder )
     {
         mOrderTable->insertRow(0);
         mOrderTable->setRowHeight(0,10);
-        mOrderTable->setItem(0, 0, new QTableWidgetItem( kCmdOrder ));
-        mOrderTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-        mOrderTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+        mOrderTable->setItem(0, 0, new QTableWidgetItem( strCmdURL ));
     }
 
     berApplet->log( QString( "Add command [%1 : %2]").arg( strCmd.toUpper() ).arg( strCmdURL ));
@@ -1071,11 +1065,11 @@ void ACMEClientDlg::remakeCmd()
 {
     QModelIndex idx = mCmdTable->currentIndex();
     QTableWidgetItem *item = mCmdTable->item(idx.row(), 0);
-    QTableWidgetItem *item2 = mCmdTable->item(idx.row(), 2);
-    if( item == NULL || item2 == NULL ) return;
+    QTableWidgetItem *item1 = mCmdTable->item(idx.row(), 1);
+    if( item == NULL || item1 == NULL ) return;
 
     QString strCmd = item->text();
-    QString strURL = item2->text();
+    QString strURL = item1->text();
 
     makeCmd( strCmd, strURL );
 }
@@ -1092,13 +1086,12 @@ void ACMEClientDlg::remakeAuth()
 {
     QModelIndex idx = mAuthTable->currentIndex();
     QTableWidgetItem *item = mAuthTable->item(idx.row(), 0);
-    QTableWidgetItem *item2 = mAuthTable->item(idx.row(), 2);
-    if( item == NULL || item2 == NULL ) return;
 
-    QString strCmd = item->text();
-    QString strURL = item2->text();
+    if( item == NULL ) return;
 
-    makeCmd( strCmd, strURL );
+    QString strURL = item->text();
+
+    makeCmd( kCmdAuthorization, strURL );
 }
 
 void ACMEClientDlg::deleteChall()
@@ -1113,13 +1106,11 @@ void ACMEClientDlg::remakeChall()
 {
     QModelIndex idx = mChallTable->currentIndex();
     QTableWidgetItem *item = mChallTable->item(idx.row(), 0);
-    QTableWidgetItem *item2 = mChallTable->item(idx.row(), 2);
-    if( item == NULL || item2 == NULL ) return;
+    if( item == NULL ) return;
 
-    QString strCmd = item->text();
-    QString strURL = item2->text();
+    QString strURL = item->text();
 
-    makeCmd( strCmd, strURL );
+    makeCmd( kCmdChallenge, strURL );
 }
 
 void ACMEClientDlg::deleteOrder()
@@ -1134,13 +1125,12 @@ void ACMEClientDlg::remakeOrder()
 {
     QModelIndex idx = mOrderTable->currentIndex();
     QTableWidgetItem *item = mOrderTable->item(idx.row(), 0);
-    QTableWidgetItem *item2 = mOrderTable->item(idx.row(), 2);
-    if( item == NULL || item2 == NULL ) return;
 
-    QString strCmd = item->text();
-    QString strURL = item2->text();
+    if( item == NULL ) return;
 
-    makeCmd( strCmd, strURL );
+    QString strURL = item->text();
+
+    makeCmd( kCmdOrder, strURL );
 }
 
 void ACMEClientDlg::clickGetNonce()
@@ -1979,8 +1969,7 @@ int ACMEClientDlg::clickSend()
     mCmdTable->insertRow(0);
     mCmdTable->setRowHeight(0,10);
     mCmdTable->setItem(0, 0, new QTableWidgetItem( strCmdType ));
-    mCmdTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-    mCmdTable->setItem(0, 2, new QTableWidgetItem( strCmdURL ));
+    mCmdTable->setItem(0, 1, new QTableWidgetItem( strCmdURL ));
 
 
     berApplet->messageBox( tr( "ACME message sent" ), this );
