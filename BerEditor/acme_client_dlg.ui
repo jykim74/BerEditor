@@ -182,7 +182,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="mLinkTab">
       <attribute name="title">
@@ -735,6 +735,13 @@
       <widget class="QCheckBox" name="mAutoSendCheck">
        <property name="text">
         <string>Auto Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mThumbPrintBtn">
+       <property name="text">
+        <string>Thumb Print</string>
        </property>
       </widget>
      </item>

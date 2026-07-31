@@ -80,6 +80,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mOrderClearBtn, SIGNAL(clicked()), this, SLOT(clickClearOrder()));
 
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
+    connect( mThumbPrintBtn, SIGNAL(clicked()), this, SLOT(clickThumbPrint()));
     connect( mDeactivateBtn, SIGNAL(clicked()), this, SLOT(clickDeactivate()));
     connect( mUpdateAccountBtn, SIGNAL(clicked()), this, SLOT(clickUpdateAccount()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
@@ -2123,6 +2124,19 @@ void ACMEClientDlg::clickIssueCert()
     if( runCmd( kCmdCertificate ) != JSR_OK ) return;
 
     berApplet->messageBox( tr( "Certificate issuance completed"), this );
+}
+
+void ACMEClientDlg::clickThumbPrint()
+{
+    if( pub_key_.nLen <= 0 )
+    {
+        berApplet->warningBox( tr("There is no key for the account"), this );
+        return;
+    }
+
+    QString strTP = ACMEObject::getThumbPrint( &pub_key_ );
+    if( strTP.length() > 0 )
+        berApplet->messageBox( tr( "Thumb Print: %1").arg( strTP ), this );
 }
 
 void ACMEClientDlg::clickTest()

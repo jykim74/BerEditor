@@ -491,7 +491,7 @@ const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, co
         if( strAlg.length() > 0 ) jObj["alg"] = strAlg;
         jObj["n"] = getBase64URL_FromHex( sRSAVal.pN );
         jObj["e"] = getBase64URL_FromHex( sRSAVal.pE );
-        jObj["kid"] = strName;
+        if( strName.length() > 0 ) jObj["kid"] = strName;
 
         JS_PKI_resetRSAKeyVal( &sRSAVal );
     }
@@ -506,7 +506,7 @@ const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, co
     //    if( strAlg.length() > 0 ) jObj["alg"] = strAlg;
         jObj["x"] = getBase64URL_FromHex( sECVal.pPubX );
         jObj["y"] = getBase64URL_FromHex( sECVal.pPubY );
-        jObj["kid"] = strName;
+        if( strName.length() > 0 ) jObj["kid"] = strName;
 
         JS_PKI_resetECKeyVal( &sECVal );
     }
@@ -627,6 +627,35 @@ int ACMEObject::getPubKey( QJsonObject objKey, BIN *pPub )
     }
 
     return 0;
+}
+
+const QString ACMEObject::getThumbPrint( const BIN *pPub )
+{
+    QString strTP;
+    QJsonObject objPub;
+    QJsonDocument jDoc;
+    BIN binSrc = {0,0};
+    BIN binHash = {0,0};
+    char *pThumbPrint = NULL;
+
+    objPub = getJWK( pPub, "SHA256" );
+    jDoc.setObject( objPub );
+    QString strJson = jDoc.toJson();
+
+    JS_BIN_set( &binSrc, (unsigned char *)strJson.toUtf8().toStdString().c_str(), strJson.length() );
+    JS_PKI_genHash( "SHA256", &binSrc, &binHash );
+    JS_BIN_encodeBase64URL( &binHash, &pThumbPrint );
+
+    if( pThumbPrint )
+    {
+        strTP = pThumbPrint;
+        JS_free( pThumbPrint );
+    }
+
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binHash );
+
+    return strTP;
 }
 
 

@@ -95,6 +95,7 @@ private slots:
     void clickResponseView();
 
     void clickIssueCert();
+    void clickThumbPrint();
     void clickTest();
 
 private:
