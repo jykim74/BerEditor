@@ -744,8 +744,6 @@ int ACMEClientDlg::clickParse()
         mRspStatusText->setText( strStatus );
         nStatus = strStatus.toInt();
 
-        mCmdTable->setItem(0, 1, new QTableWidgetItem( strStatus ));
-
         if( nStatus >= 300 )
         {
             QString strDetail = object["detail"].toString();
@@ -790,7 +788,7 @@ int ACMEClientDlg::clickParse()
     if( ret == 0 )
         berApplet->messageBox( tr( "%1 Parsing completed" ).arg( strCmd ), this );
     else
-        berApplet->warningBox( tr( "%1 failed to parse : %1").arg( strCmd ).arg( ret ), this );
+        berApplet->warningBox( tr( "%1 failed to parse : %2").arg( strCmd ).arg( ret ), this );
 
     return ret;
 }
