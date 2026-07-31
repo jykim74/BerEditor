@@ -189,10 +189,12 @@ void ACMEClientDlg::initUI()
     mAuthTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mAuthTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    QStringList sChallLabels = { tr( "URL" ) };
+
     mChallTable->clear();
     mChallTable->horizontalHeader()->setStretchLastSection(true);
-    mChallTable->setColumnCount(sLabels.size());
-    mChallTable->setHorizontalHeaderLabels( sLabels );
+    mChallTable->setColumnCount(sChallLabels.size());
+    mChallTable->setHorizontalHeaderLabels( sChallLabels );
     mChallTable->verticalHeader()->setVisible(false);
     mChallTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mChallTable->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -576,9 +578,8 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 
             mChallTable->insertRow(0);
             mChallTable->setRowHeight(0,10);
-            mChallTable->setItem(0, 0, new QTableWidgetItem( kCmdChallenge ));
-            mChallTable->setItem(0, 1, new QTableWidgetItem( "Request" ));
-            mChallTable->setItem(0, 2, new QTableWidgetItem( strURL ));
+            mChallTable->setItem(0, 0, new QTableWidgetItem( strType ));
+            mChallTable->setItem(0, 1, new QTableWidgetItem( strURL ));
         }
     }
 
@@ -1104,7 +1105,7 @@ void ACMEClientDlg::deleteChall()
 void ACMEClientDlg::remakeChall()
 {
     QModelIndex idx = mChallTable->currentIndex();
-    QTableWidgetItem *item = mChallTable->item(idx.row(), 0);
+    QTableWidgetItem *item = mChallTable->item(idx.row(), 1);
     if( item == NULL ) return;
 
     QString strURL = item->text();
