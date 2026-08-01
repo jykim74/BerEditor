@@ -2070,6 +2070,12 @@ void ACMEClientDlg::clickIssueCert()
         return;
     }
 
+    if( mDNSList->count() > 1 )
+    {
+        berApplet->warningBox( tr( "Only 1 DNS is supported" ), this );
+        return;
+    }
+
     int ret = 0;
 
     if( berApplet->yesOrNoBox( tr("Continue %1?").arg( kCmdNewAccount ), this) == false )
