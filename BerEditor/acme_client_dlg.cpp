@@ -1965,9 +1965,6 @@ int ACMEClientDlg::clickSend()
     mCmdTable->setItem(0, 0, new QTableWidgetItem( strCmdType ));
     mCmdTable->setItem(0, 1, new QTableWidgetItem( strCmdURL ));
 
-
-    berApplet->messageBox( tr( "ACME message sent" ), this );
-
 end :
     if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );
     JS_BIN_reset( &binReq );
