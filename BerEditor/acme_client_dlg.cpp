@@ -189,7 +189,7 @@ void ACMEClientDlg::initUI()
     mAuthTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mAuthTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    QStringList sChallLabels = { tr( "URL" ) };
+    QStringList sChallLabels = { tr( "Type" ), tr( "URL" ) };
 
     mChallTable->clear();
     mChallTable->horizontalHeader()->setStretchLastSection(true);
@@ -689,12 +689,6 @@ int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
         mAuthTable->insertRow(0);
         mAuthTable->setRowHeight(0,10);
         mAuthTable->setItem(0, 0, new QTableWidgetItem( strCmdURL ));
-    }
-    else if( strCmd == kCmdChallenge )
-    {
-        mChallTable->insertRow(0);
-        mChallTable->setRowHeight(0,10);
-        mChallTable->setItem(0, 0, new QTableWidgetItem( strCmdURL ));
     }
     else if( strCmd == kCmdOrder )
     {
@@ -2027,11 +2021,17 @@ int ACMEClientDlg::runCmd( const QString strCmd )
     ret = clickMake();
     if( ret != 0 ) return ret;
 
-    ret = clickSend();
-    if( ret != 0 ) return ret;
+    if( mAutoSendCheck->isChecked() == false )
+    {
+        ret = clickSend();
+        if( ret != 0 ) return ret;
+    }
 
-    ret = clickParse();
-    if( ret != 0 ) return ret;
+    if( mAutoParseCheck->isChecked() == false )
+    {
+        ret = clickParse();
+        if( ret != 0 ) return ret;
+    }
 
     return JSR_OK;
 }
