@@ -64,6 +64,8 @@ private slots:
     void clickGetDirectory();
     void clickChallTest();
 
+    void clickDNSCheck();
+
     void clickClearCmd();
     void clickClearAuth();
     void clickClearChall();

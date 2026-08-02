@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>660</width>
-    <height>920</height>
+    <height>925</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -182,7 +182,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mLinkTab">
       <attribute name="title">
@@ -265,6 +265,9 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mNonceText"/>
          </item>
@@ -342,17 +345,10 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_11">
+        <layout class="QGridLayout" name="gridLayout_12">
          <property name="topMargin">
-          <number>20</number>
+          <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mDNSAddBtn">
-           <property name="text">
-            <string>Add</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_13">
            <property name="minimumSize">
@@ -363,6 +359,43 @@
            </property>
            <property name="text">
             <string>DNS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mDNSCheckBtn">
+           <property name="text">
+            <string>DNS Check</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mDNSAddBtn">
+           <property name="text">
+            <string>Add</string>
            </property>
           </widget>
          </item>

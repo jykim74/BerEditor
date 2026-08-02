@@ -26,6 +26,7 @@
 #include "one_list_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "sel_list_dlg.h"
+#include "dns_check_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -73,6 +74,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mChallTestBtn, SIGNAL(clicked()), this, SLOT(clickChallTest()));
+
+    connect( mDNSCheckBtn, SIGNAL(clicked()), this, SLOT(clickDNSCheck()));
 
     connect( mCmdClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCmd()));
     connect( mAuthClearBtn, SIGNAL(clicked()), this, SLOT(clickClearAuth()));
@@ -216,7 +219,7 @@ void ACMEClientDlg::initUI()
 
 void ACMEClientDlg::initialize()
 {
-
+    mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
 }
 
 QStringList ACMEClientDlg::getUsedURL()
@@ -1282,6 +1285,25 @@ void ACMEClientDlg::clickChallTest()
     ChallTestDlg challTest;
 //    challTest.mHostText->setText( strHost );
     challTest.exec();
+}
+
+void ACMEClientDlg::clickDNSCheck()
+{
+    DNSCheckDlg dnsCheck;
+
+    if( pub_key_.nLen > 0 )
+    {
+        dnsCheck.setPubKey( &pub_key_ );
+    }
+
+    int nCount = mDNSList->count();
+    for( int i = 0; i < nCount; i++ )
+    {
+        QListWidgetItem *item = mDNSList->item(i);
+        dnsCheck.addDNS( item->text() );
+    }
+
+    dnsCheck.exec();
 }
 
 void ACMEClientDlg::clickClearCmd()

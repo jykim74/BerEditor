@@ -137,7 +137,8 @@ SOURCES += \
     pdf_signer_dlg.cpp \
     ocsp_rsp_dlg.cpp \
     cmp_info_dlg.cpp \
-    sel_list_dlg.cpp
+    sel_list_dlg.cpp \
+    dns_check_dlg.cpp
 
 
 HEADERS += \
@@ -240,7 +241,8 @@ HEADERS += \
     pdf_signer_dlg.h \
     ocsp_rsp_dlg.h \
     cmp_info_dlg.h \
-    sel_list_dlg.h
+    sel_list_dlg.h \
+    dns_check_dlg.h
 
 
 
@@ -393,7 +395,8 @@ FORMS += \
         pdf_signer_dlg.ui \
         ocsp_rsp_dlg.ui \
         cmp_info_dlg.ui \
-        sel_list_dlg.ui
+        sel_list_dlg.ui \
+        dns_check_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
