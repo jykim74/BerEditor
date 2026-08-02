@@ -722,12 +722,22 @@ int ACMEClientDlg::clickParse()
     berApplet->log( jsonDoc.toJson() );
     QJsonObject object = jsonDoc.object();
 
+    if( object["status"].isString() == false )
+    {
+        nStatus = object["status"].toInt();
+        QString strDetail = object["detail"].toString();
+        berApplet->warningBox( tr("Error: %1 status: %2").arg( strDetail) .arg( nStatus ), this);
+        return -1;
+    }
+
+    /*
     if( nStatus >= 300 )
     {
         QString strDetail = object["detail"].toString();
         berApplet->warningBox( tr("Error: %1 status: %2").arg( strDetail) .arg( nStatus ), this);
         return -1;
     }
+    */
 
     if( strCmd.toUpper() == kCmdCertificate.toUpper() )
     {
