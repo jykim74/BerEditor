@@ -127,9 +127,8 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strCID, co
 {
     int ret = 0;
     int nSockFd = JS_NET_connectTimeout( strDNS.toStdString().c_str(), 443, 5 );
-    SSL_CTX *pCTX = NULL;
 
-    ret = JS_SSL_ALPNClient( &pCTX, nSockFd, strDNS.toStdString().c_str() );
+    ret = JS_SSL_ALPNClient( nSockFd, strDNS.toStdString().c_str() );
 
     return ret;
 }
