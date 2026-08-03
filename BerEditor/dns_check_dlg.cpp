@@ -6,10 +6,15 @@
 #include "settings_mgr.h".h"
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
+#include "cert_info_dlg.h"
 
 #include "acme_object.h"
 
+#include "js_pki_key.h"
+#include "js_pki.h"
 #include "js_http.h"
+#include "js_net.h"
+#include "js_ssl.h"
 
 DNSCheckDlg::DNSCheckDlg(QWidget *parent)
     : QDialog(parent)
@@ -23,6 +28,7 @@ DNSCheckDlg::DNSCheckDlg(QWidget *parent)
     connect( mHTTP01Btn, SIGNAL(clicked()), this, SLOT(clickHTTP01()));
     connect( mDNS01Btn, SIGNAL(clicked()), this, SLOT(clickDNS01()));
     connect( mTLS_ALPN01Btn, SIGNAL(clicked()), this, SLOT(clickTLS_ALPN01()));
+    connect( mMakeSelfCertBtn, SIGNAL(clicked()), this, SLOT(clickMakeSelfSignCert()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -119,73 +125,33 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 
 int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strCID, const BIN *pPub )
 {
-    return 0;
+    int ret = 0;
+    int nSockFd = JS_NET_connectTimeout( strDNS.toStdString().c_str(), 443, 5 );
+    SSL_CTX *pCTX = NULL;
+
+    ret = JS_SSL_ALPNClient( &pCTX, nSockFd, strDNS.toStdString().c_str() );
+
+    return ret;
 }
 
 void DNSCheckDlg::clickHTTP01()
 {
-    QString strDNS = mDNSCombo->currentText();
-    if( strDNS.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a DNS"), this );
-        mDNSCombo->setFocus();
-        return;
-    }
-
-    QString strToken = mTokenText->text();
-    if( strToken.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a Token"), this );
-        mTokenText->setFocus();
-        return;
-    }
-
-    if( pub_key_.nLen > 0 )
-    {
-        if( mUseCertManCheck->isChecked() == true )
-        {
-            BIN binCert = {0,0};
-            CertManDlg certMan;
-
-            certMan.setMode( ManModeSelCert );
-            certMan.setTitle( tr( "Select a certificate" ));
-
-            if( certMan.exec() != QDialog::Accepted )
-                return;
-
-            certMan.getCert( &binCert );
-            JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
-            JS_BIN_reset( &binCert );
-        }
-        else
-        {
-            KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
-            keyPairMan.setMode( KeyPairModeSelect );
-
-            if( keyPairMan.exec() != QDialog::Accepted )
-                return;
-
-            QString strPubPath = keyPairMan.getPubPath();
-
-            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
-        }
-    }
-
-    int ret = checkHTTP01( strDNS, strToken, &pub_key_ );
-
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr( "DNS check OK" ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "failed to check DNS: %1").arg(ret), this );
-    }
+    checkDNS( ACME_HTTP_01 );
 }
 
 void DNSCheckDlg::clickDNS01()
 {
+    checkDNS( ACME_DNS_01 );
+}
+
+void DNSCheckDlg::clickTLS_ALPN01()
+{
+    checkDNS( ACME_TLS_ALPN_01 );
+}
+
+void DNSCheckDlg::checkDNS( ACME_CheckType type )
+{
+    int ret = 0;
     QString strDNS = mDNSCombo->currentText();
     if( strDNS.length() < 1 )
     {
@@ -234,7 +200,16 @@ void DNSCheckDlg::clickDNS01()
         }
     }
 
-    int ret = checkDNS01( strDNS, strToken, &pub_key_ );
+    if( type == ACME_HTTP_01 )
+        ret = checkHTTP01( strDNS, strToken, &pub_key_ );
+    else if( type == ACME_DNS_01 )
+        ret = checkDNS01( strDNS, strToken, &pub_key_ );
+    else if( type == ACME_TLS_ALPN_01 )
+        ret = checkTLS_ALPN01( strDNS, strToken, &pub_key_ );
+    else
+    {
+        ret = JSR_INVALID;
+    }
 
     if( ret == JSR_OK )
     {
@@ -246,64 +221,49 @@ void DNSCheckDlg::clickDNS01()
     }
 }
 
-void DNSCheckDlg::clickTLS_ALPN01()
+void DNSCheckDlg::clickMakeSelfSignCert()
 {
-    QString strDNS = mDNSCombo->currentText();
-    if( strDNS.length() < 1 )
+    int ret = 0;
+    BIN binPub = {0,0};
+    BIN binPri = {0,0};
+    BIN binAuth = {0,0};
+    BIN binCert = {0,0};
+
+    int nParam = -1;
+    int nKeyType = -1;
+    char *pDNS = "www.test.com";
+
+    CertInfoDlg certInfo;
+
+    JS_PKI_getPubKeyInfo( &pub_key_, &nKeyType, &nParam );
+    JS_PKI_genRandom( 32, &binAuth );
+
+    if( nKeyType < 0 )
     {
-        berApplet->warningBox( tr( "Enter a DNS"), this );
-        mDNSCombo->setFocus();
-        return;
+        nKeyType = JS_PKI_KEY_TYPE_RSA;
+        nParam = 2048;
     }
 
-    QString strToken = mTokenText->text();
-    if( strToken.length() < 1 )
+    ret = JS_PKI_genKeyPair( nKeyType, nParam, 65537, &binPub, &binPri );
+    if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Enter a Token"), this );
-        mTokenText->setFocus();
-        return;
+        berApplet->warningBox( tr("failed to generate keypair: %1").arg(ret), this );
+        goto end;
     }
 
-    if( pub_key_.nLen > 0 )
+    ret = JS_PKI_makeALPNSelfSignCert( &binPri, pDNS, &binAuth, &binCert );
+    if( ret != 0 )
     {
-        if( mUseCertManCheck->isChecked() == true )
-        {
-            BIN binCert = {0,0};
-            CertManDlg certMan;
-
-            certMan.setMode( ManModeSelCert );
-            certMan.setTitle( tr( "Select a certificate" ));
-
-            if( certMan.exec() != QDialog::Accepted )
-                return;
-
-            certMan.getCert( &binCert );
-            JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
-            JS_BIN_reset( &binCert );
-        }
-        else
-        {
-            KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
-            keyPairMan.setMode( KeyPairModeSelect );
-
-            if( keyPairMan.exec() != QDialog::Accepted )
-                return;
-
-            QString strPubPath = keyPairMan.getPubPath();
-
-            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
-        }
+        berApplet->warningBox( tr("failed to make self signed certificate:%1").arg(ret), this);
+        goto end;
     }
 
-    int ret = checkTLS_ALPN01( strDNS, strToken, &pub_key_ );
+    certInfo.setCertBIN( &binCert );
+    certInfo.exec();
 
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr( "DNS check OK" ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "failed to check DNS: %1").arg(ret), this );
-    }
+end :
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binAuth );
+    JS_BIN_reset( &binCert );
 }
