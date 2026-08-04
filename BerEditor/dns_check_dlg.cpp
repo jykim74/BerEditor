@@ -47,6 +47,8 @@ void DNSCheckDlg::initUI()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
     mDNSCombo->setEditable( true );
+    mHashCombo->addItems( kSHA12HashList );
+    mHashCombo->setCurrentText( setMgr->defaultHash() );
 }
 
 void DNSCheckDlg::initialize()
@@ -167,7 +169,7 @@ void DNSCheckDlg::checkDNS( ACME_CheckType type )
         return;
     }
 
-    if( pub_key_.nLen > 0 )
+    if( pub_key_.nLen <= 0 )
     {
         if( mUseCertManCheck->isChecked() == true )
         {
@@ -227,15 +229,85 @@ void DNSCheckDlg::clickMakeSelfSignCert()
     BIN binPri = {0,0};
     BIN binAuth = {0,0};
     BIN binCert = {0,0};
+    BIN binSrc = {0,0};
 
     int nParam = -1;
     int nKeyType = -1;
-    char *pDNS = "www.test.com";
+
+    QString strDNS = mDNSCombo->currentText();
+    QString strHash = mHashCombo->currentText();
+    QString strDN = mDNText->text();
+    QString strSerial = mSerialText->text();
+    QString strToken = mTokenText->text();
 
     CertInfoDlg certInfo;
 
+    if( strToken.length() < 1 )
+    {
+        berApplet->warningBox( tr("Enter a Token" ), this );
+        mTokenText->setFocus();
+        return;
+    }
+
+    if( strDNS.length() < 1 )
+    {
+        berApplet->warningBox( tr("Enter a DNS" ), this );
+        mDNSCombo->setFocus();
+        return;
+    }
+
+    if( strSerial.length() < 1 )
+    {
+        berApplet->warningBox( tr("Enter a serial" ), this );
+        mSerialText->setFocus();
+        return;
+    }
+
+    if( strDN.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a DN" ), this );
+        mDNText->setFocus();
+        return;
+    }
+
+    if( pub_key_.nLen <= 0 )
+    {
+        if( mUseCertManCheck->isChecked() == true )
+        {
+            BIN binCert = {0,0};
+            CertManDlg certMan;
+
+            certMan.setMode( ManModeSelCert );
+            certMan.setTitle( tr( "Select a certificate" ));
+
+            if( certMan.exec() != QDialog::Accepted )
+                return;
+
+            certMan.getCert( &binCert );
+            JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
+            JS_BIN_reset( &binCert );
+        }
+        else
+        {
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
+
+            if( keyPairMan.exec() != QDialog::Accepted )
+                return;
+
+            QString strPubPath = keyPairMan.getPubPath();
+
+            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
+        }
+    }
+
+    QString strThumbPrint = ACMEObject::getThumbPrint( &pub_key_ );
+    QString strSrc = QString( "%1.%2" ).arg( strThumbPrint ).arg( strToken );
+    JS_BIN_set( &binSrc, (unsigned char *)strSrc.toStdString().c_str(), strSrc.length() );
+
     JS_PKI_getPubKeyInfo( &pub_key_, &nKeyType, &nParam );
-    JS_PKI_genRandom( 32, &binAuth );
+    JS_PKI_genHash( "SHA256", &binSrc, &binAuth );
 
     if( nKeyType < 0 )
     {
@@ -250,7 +322,15 @@ void DNSCheckDlg::clickMakeSelfSignCert()
         goto end;
     }
 
-    ret = JS_PKI_makeALPNSelfSignCert( &binPri, pDNS, &binAuth, &binCert );
+    ret = JS_PKI_makeALPNSelfSignCert(
+        strHash.toStdString().c_str(),
+        strSerial.toStdString().c_str(),
+        strDN.toStdString().c_str(),
+        &binPri,
+        strDNS.toStdString().c_str(),
+        &binAuth,
+        &binCert );
+
     if( ret != 0 )
     {
         berApplet->warningBox( tr("failed to make self signed certificate:%1").arg(ret), this);
@@ -265,4 +345,5 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSrc );
 }
