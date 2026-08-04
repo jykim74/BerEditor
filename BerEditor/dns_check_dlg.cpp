@@ -7,6 +7,8 @@
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
 #include "cert_info_dlg.h"
+#include "export_dlg.h"
+#include "new_passwd_dlg.h"
 
 #include "acme_object.h"
 
@@ -15,6 +17,9 @@
 #include "js_http.h"
 #include "js_net.h"
 #include "js_ssl.h"
+#include "js_pki_ext.h"
+#include "js_pki_x509.h"
+#include "js_pki_tools.h"
 
 DNSCheckDlg::DNSCheckDlg(QWidget *parent)
     : QDialog(parent)
@@ -337,6 +342,8 @@ void DNSCheckDlg::clickMakeSelfSignCert()
         goto end;
     }
 
+    savePriKeyCert( &binPri, &binCert );
+
     certInfo.setCertBIN( &binCert );
     certInfo.exec();
 
@@ -346,4 +353,41 @@ end :
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binSrc );
+}
+
+int DNSCheckDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
+{
+    int ret = 0;
+
+    bool bVal = false;
+    bVal = berApplet->yesOrNoBox( tr( "Do you want to save the private key and certificate"), this, true );
+    if( bVal == true )
+    {
+        int nKeyType = -1;
+        BIN binEncPri = {0,0};
+        CertManDlg certMan;
+        NewPasswdDlg newPass;
+        int nPBE = -1;
+        nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
+
+        if( newPass.exec() == QDialog::Accepted )
+        {
+            QString strPass = newPass.mPasswdText->text();
+            nKeyType = JS_PKI_getPriKeyType( pPriKey );
+
+            ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            if( ret == 0 )
+            {
+                ret = certMan.writePriKeyCert( &binEncPri, pCert );
+                if( ret == 0 )
+                    berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
+                else
+                    berApplet->warnLog( tr( "failed to save the private key and certificate" ), this );
+            }
+        }
+
+        JS_BIN_reset( &binEncPri );
+    }
+
+    return ret;
 }
