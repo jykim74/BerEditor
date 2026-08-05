@@ -38,6 +38,9 @@ private:
     void initUI();
     void initialize();
 
+    QString getDefault();
+    void setDefault( const QString strDefault );
+
     int checkHTTP01( const QString strDNS, const QString strToken, const BIN *pPub );
     int checkDNS01( const QString strDNS, const QString strToken, const BIN *pPub );
     int checkTLS_ALPN01( const QString strDNS, const QString strToken, const BIN *pPub );

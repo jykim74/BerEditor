@@ -1,4 +1,5 @@
 #include <QDnsLookup>
+#include <QSettings>
 
 #include "dns_check_dlg.h"
 #include "common.h"
@@ -20,6 +21,8 @@
 #include "js_pki_ext.h"
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
+
+const QString kDNSDefault = "DNSDefault";
 
 DNSCheckDlg::DNSCheckDlg(QWidget *parent)
     : QDialog(parent)
@@ -58,8 +61,45 @@ void DNSCheckDlg::initUI()
 
 void DNSCheckDlg::initialize()
 {
+    QString strDefault = getDefault();
+    QStringList listDefault;
+
+    if( strDefault.length() > 4 ) listDefault = strDefault.split(":");
+
+    if( listDefault.size() >= 3 )
+    {
+        int nServerGroup = listDefault.at(0).toInt();
+        QString strHost = listDefault.at(1);
+        QString strPort = listDefault.at(2);
+
+        mServerGroup->setChecked( nServerGroup );
+        mHostText->setText( strHost );
+        mPortText->setText( strPort );
+    }
+
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
 }
+
+QString DNSCheckDlg::getDefault()
+{
+    QSettings settings;
+    QString strDefault;
+
+    settings.beginGroup( kSettingBer );
+    strDefault = settings.value( kDNSDefault ).toString();
+    settings.endGroup();
+
+    return strDefault;
+}
+
+void DNSCheckDlg::setDefault( const QString strDefault )
+{
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kDNSDefault, strDefault );
+    settings.endGroup();
+}
+
 
 void DNSCheckDlg::addDNS( const QString strDNS )
 {
@@ -87,7 +127,19 @@ int DNSCheckDlg::checkHTTP01( const QString strDNS, const QString strToken, cons
     QString strURL;
     QString strThumbPrint = ACMEObject::getThumbPrint( pPub );
 
-    strURL = QString( "http://%1/.well-known/acme-challenge/%2" ).arg( strDNS ).arg( strToken );
+    if( mServerGroup->isChecked() == true )
+    {
+        QString strHost = mHostText->text();
+        int nPort = mPortText->text().toInt();
+        if( nPort <= 0 ) nPort = 80;
+
+        strURL = QString( "http://%1:%2/.well-known/acme-challenge/%3" ).arg( strHost ).arg( nPort ).arg( strToken );
+    }
+    else
+    {
+        strURL = QString( "http://%1/.well-known/acme-challenge/%2" ).arg( strDNS ).arg( strToken );
+    }
+
     strKeyAuth = QString("%1.%2").arg( strToken ).arg( strThumbPrint );
 
     berApplet->log( QString( "keyAuthorization: %1").arg( strKeyAuth ));
@@ -158,6 +210,12 @@ void DNSCheckDlg::clickTLS_ALPN01()
 void DNSCheckDlg::checkDNS( ACME_CheckType type )
 {
     int ret = 0;
+
+    QString strDefault;
+    int nServerGroup = mServerGroup->isChecked();
+    QString strHost = mHostText->text();
+    QString strPort = mPortText->text();
+
     QString strDNS = mDNSCombo->currentText();
     if( strDNS.length() < 1 )
     {
@@ -216,6 +274,9 @@ void DNSCheckDlg::checkDNS( ACME_CheckType type )
     {
         ret = JSR_INVALID;
     }
+
+    strDefault = QString( "%1:%2:%3" ).arg( nServerGroup ).arg( strHost ).arg( strPort );
+    setDefault( strDefault );
 
     if( ret == JSR_OK )
     {

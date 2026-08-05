@@ -347,6 +347,59 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="mStatusText">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="mResponseClearBtn">
        <property name="minimumSize">
@@ -379,20 +432,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="4">
+     <item row="0" column="6">
       <widget class="QLineEdit" name="mResponseLenText">
        <property name="maximumSize">
         <size>
@@ -435,10 +475,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="5">
       <widget class="QPushButton" name="mResponseViewBtn">
        <property name="text">
         <string>View</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Status</string>
        </property>
       </widget>
      </item>

@@ -365,6 +365,9 @@ int ChallTestDlg::clickSend()
 
     QString strRequest = mRequestText->toPlainText();
 
+    mStatusText->clear();
+    mResponseText->clear();
+
     if( strRequest.length() < 1 )
     {
         berApplet->warningBox( tr( "No request available" ), this );
@@ -382,10 +385,17 @@ int ChallTestDlg::clickSend()
 
     ret = JS_HTTP_requestPostBin2( strURL.toStdString().c_str(), NULL, NULL, "application/json", &binReq, &nStatus, &binRsp );
 
-    if( ret == 0 )
+    mStatusText->setText( QString("%1").arg( nStatus ));
+
+    if( ret == JSR_OK )
     {
-        QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
-        mResponseText->setPlainText( strRsp );
+        if( binRsp.nLen > 0 )
+        {
+            QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
+            mResponseText->setPlainText( strRsp );
+        }
+
+        berApplet->messageBox( tr( "Request message sent complete [status:%1]" ).arg(nStatus ), this );
     }
     else
     {
