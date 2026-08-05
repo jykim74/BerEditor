@@ -147,10 +147,20 @@ int DNSCheckDlg::checkHTTP01( const QString strDNS, const QString strToken, cons
     ret = JS_HTTP_requestGet( strURL.toStdString().c_str(), &status, &pRsp );
     if( ret != JSR_OK ) return ret;
 
-    if( strKeyAuth.compare( QString("%1").arg(pRsp), Qt::CaseInsensitive ) != 0 )
-        return JSR_ERR;
+    berApplet->log( QString( "Rsp: %1").arg( pRsp ));
 
-    return JSR_OK;
+    if( strKeyAuth.compare( QString("%1").arg(pRsp), Qt::CaseInsensitive ) != 0 )
+    {
+        ret = JSR_ERR;
+        goto end;
+    }
+
+    ret = JSR_OK;
+
+end :
+    if( pRsp ) JS_free( pRsp );
+
+    return ret;
 }
 
 int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const BIN *pPub )
