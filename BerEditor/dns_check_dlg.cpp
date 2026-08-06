@@ -199,19 +199,48 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
     JS_BIN_encodeBase64URL( &binHash, &pAuthKey );
 
     QString strExpected = pAuthKey;
-
     strURL = QString( "_acme-challenge.%1").arg( strDNS );
-    dns.setType(QDnsLookup::TXT);
-    dns.setName( strURL );
-    dns.lookup();
 
-    QList<QDnsTextRecord> dnsList = dns.textRecords();
-
-    for( int i = 0; i < dnsList.size(); i++ )
+    if( mServerGroup->isChecked() == true )
     {
-        if( strExpected.compare( dnsList.at(i).name(), Qt::CaseInsensitive ) == 0 )
+        QString strHost = mHostText->text();
+        int nPort = mPortText->text().toInt();
+        if( nPort <= 0 ) nPort = 53;
+
+        QUdpSocket socket;
+
+        QByteArray query = DnsQuery::buildQuery( strURL );
+
+        socket.writeDatagram(query, QHostAddress(strHost), nPort);
+
+        if (socket.waitForReadyRead(3000))
         {
-            ret = JSR_OK;
+            QByteArray response;
+            response.resize(socket.pendingDatagramSize());
+
+            socket.readDatagram(response.data(), response.size());
+
+            DnsQuery::parseResponse(response);
+        }
+        else
+        {
+            qDebug() << "Timeout";
+        }
+    }
+    else
+    {
+        dns.setType(QDnsLookup::TXT);
+        dns.setName( strURL );
+        dns.lookup();
+
+        QList<QDnsTextRecord> dnsList = dns.textRecords();
+
+        for( int i = 0; i < dnsList.size(); i++ )
+        {
+            if( strExpected.compare( dnsList.at(i).name(), Qt::CaseInsensitive ) == 0 )
+            {
+                ret = JSR_OK;
+            }
         }
     }
 
