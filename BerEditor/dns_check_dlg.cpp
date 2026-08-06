@@ -12,6 +12,7 @@
 #include "new_passwd_dlg.h"
 
 #include "acme_object.h"
+#include "dns_lookup.h"
 
 #include "js_pki_key.h"
 #include "js_pki.h"
@@ -165,12 +166,39 @@ end :
 
 int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const BIN *pPub )
 {
+#if 0
+    DnsLookup *dns = new DnsLookup(this);
+
+    connect(dns,&DnsLookup::finished,
+            [](const QStringList& txts)
+            {
+                qDebug()<<"TXT Records";
+
+                for(const auto& s : txts)
+                    qDebug()<<s;
+            });
+
+    dns->lookup("8.8.8.8", 5053,
+                "_acme-challenge.example.com");
+#endif
+
+    int ret = JSR_ERR;
     QString strKeyAuth;
     QDnsLookup dns;
     QString strURL;
+    BIN binSrc = {0,0};
+    BIN binHash = {0,0};
+    char *pAuthKey = NULL;
 
     QString strThumbPrint = ACMEObject::getThumbPrint( pPub );
     strKeyAuth = QString("%1.%2").arg( strToken ).arg( strThumbPrint );
+    berApplet->log( QString( "keyAuthorization: %1").arg( strKeyAuth ));
+
+    JS_BIN_set( &binSrc, (unsigned char *)strKeyAuth.toStdString().c_str(), strKeyAuth.length() );
+    JS_PKI_genHash( "SHA256", &binSrc, &binHash );
+    JS_BIN_encodeBase64URL( &binHash, &pAuthKey );
+
+    QString strExpected = pAuthKey;
 
     strURL = QString( "_acme-challenge.%1").arg( strDNS );
     dns.setType(QDnsLookup::TXT);
@@ -181,15 +209,19 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 
     for( int i = 0; i < dnsList.size(); i++ )
     {
-        if( strDNS == dnsList.at(i).name() )
+        if( strExpected.compare( dnsList.at(i).name(), Qt::CaseInsensitive ) == 0 )
         {
-            return JSR_OK;
+            ret = JSR_OK;
         }
     }
 
-    berApplet->log( QString( "keyAuthorization: %1").arg( strKeyAuth ));
 
-    return JSR_ERR;
+end :
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binHash );
+    if( pAuthKey ) JS_free( pAuthKey );
+
+    return ret;
 }
 
 int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strCID, const BIN *pPub )
