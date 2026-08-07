@@ -118,7 +118,6 @@ bool DnsLookup::lookup(const QString& dnsServer,
     data.resize(socket_.pendingDatagramSize());
 
     socket_.readDatagram(data.data(),data.size());
-
     if(data.size()<12)
     {
         error_="Invalid DNS packet";

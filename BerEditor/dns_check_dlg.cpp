@@ -168,7 +168,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 {
     int ret = JSR_ERR;
     QString strKeyAuth;
-    QDnsLookup dns;
+
     QString strURL;
     BIN binSrc = {0,0};
     BIN binHash = {0,0};
@@ -183,7 +183,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
     JS_BIN_encodeBase64URL( &binHash, &pAuthKey );
 
     QString strExpected = pAuthKey;
-    strURL = QString( "_acme-challenge.%1").arg( strDNS );
+    strURL = QString( "_acme-challenge.%1.").arg( strDNS );
 
     if( mServerGroup->isChecked() == true )
     {
@@ -215,6 +215,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
     }
     else
     {
+        QDnsLookup dns;
         dns.setType(QDnsLookup::TXT);
         dns.setName( strURL );
         dns.lookup();
