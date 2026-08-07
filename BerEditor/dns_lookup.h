@@ -1,39 +1,35 @@
-#ifndef DNS_LOOKUP_H
-#define DNS_LOOKUP_H
+#ifndef DNSLOOKUP_H
+#define DNSLOOKUP_H
 
-#include <QObject>
+#include <QString>
+#include <QStringList>
 #include <QUdpSocket>
-#include <QHostAddress>
 
-class DnsLookup : public QObject
+class DnsLookup
 {
-    Q_OBJECT
-
 public:
-    explicit DnsLookup(QObject *parent=nullptr);
+    DnsLookup();
 
-    void lookup(const QString& dnsServer, int port,
-                const QString& domain);
+    bool lookup(const QString& dnsServer,
+                int nPort,
+                const QString& domain,
+                QStringList& txtRecords,
+                int timeout = 3000);
 
-signals:
-
-    void finished(QStringList txtRecords);
-    void error(QString msg);
-
-private slots:
-
-    void readyRead();
+    QString lastError() const;
 
 private:
 
     QByteArray createQuery(const QString& domain);
 
-    QString readName(const QByteArray& data,int& offset);
+    QString readName(const QByteArray& data,
+                     int& offset);
 
-    QUdpSocket udp_;
+private:
 
+    QUdpSocket socket_;
     quint16 id_;
+    QString error_;
 };
 
-
-#endif // DNS_LOOKUP_H
+#endif

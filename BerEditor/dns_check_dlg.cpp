@@ -166,22 +166,6 @@ end :
 
 int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const BIN *pPub )
 {
-#if 0
-    DnsLookup *dns = new DnsLookup(this);
-
-    connect(dns,&DnsLookup::finished,
-            [](const QStringList& txts)
-            {
-                qDebug()<<"TXT Records";
-
-                for(const auto& s : txts)
-                    qDebug()<<s;
-            });
-
-    dns->lookup("8.8.8.8", 5053,
-                "_acme-challenge.example.com");
-#endif
-
     int ret = JSR_ERR;
     QString strKeyAuth;
     QDnsLookup dns;
@@ -207,24 +191,26 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         int nPort = mPortText->text().toInt();
         if( nPort <= 0 ) nPort = 53;
 
-        QUdpSocket socket;
+        DnsLookup dns;
+        QStringList txts;
 
-        QByteArray query = DnsQuery::buildQuery( strURL );
-
-        socket.writeDatagram(query, QHostAddress(strHost), nPort);
-
-        if (socket.waitForReadyRead(3000))
+        if(dns.lookup( strHost, nPort, strURL, txts ))
         {
-            QByteArray response;
-            response.resize(socket.pendingDatagramSize());
+            qDebug() << "Success";
 
-            socket.readDatagram(response.data(), response.size());
-
-            DnsQuery::parseResponse(response);
+            for(const QString& txt : txts)
+            {
+                qDebug() << txt;
+                if( strExpected.compare( txt, Qt::CaseInsensitive ) == 0 )
+                {
+                    ret = JSR_OK;
+                    break;
+                }
+            }
         }
         else
         {
-            qDebug() << "Timeout";
+            qDebug() << dns.lastError();
         }
     }
     else
@@ -240,6 +226,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
             if( strExpected.compare( dnsList.at(i).name(), Qt::CaseInsensitive ) == 0 )
             {
                 ret = JSR_OK;
+                break;
             }
         }
     }
