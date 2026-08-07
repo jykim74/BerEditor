@@ -241,10 +241,30 @@ end :
     return ret;
 }
 
-int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strCID, const BIN *pPub )
+int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, const BIN *pPub )
 {
     int ret = 0;
-    int nSockFd = JS_NET_connectTimeout( strDNS.toStdString().c_str(), 443, 5 );
+    int nSockFd = -1;
+    QString strKeyAuth;
+    QString strURL;
+    QString strThumbPrint = ACMEObject::getThumbPrint( pPub );
+
+    if( mServerGroup->isChecked() == true )
+    {
+        QString strHost = mHostText->text();
+        int nPort = mPortText->text().toInt();
+        if( nPort <= 0 ) nPort = 443;
+
+        nSockFd = JS_NET_connectTimeout( strHost.toStdString().c_str(), nPort, 5 );
+    }
+    else
+    {
+        nSockFd = JS_NET_connectTimeout( strDNS.toStdString().c_str(), 443, 5 );
+    }
+
+    strKeyAuth = QString("%1.%2").arg( strToken ).arg( strThumbPrint );
+
+    berApplet->log( QString( "keyAuthorization: %1").arg( strKeyAuth ));
 
     ret = JS_SSL_ALPNClient( nSockFd, strDNS.toStdString().c_str() );
 
@@ -343,7 +363,7 @@ void DNSCheckDlg::checkDNS( ACME_CheckType type )
     }
     else
     {
-        berApplet->warningBox( tr( "failed to check DNS: %1").arg(ret), this );
+        berApplet->warningBox( tr( "failed to check DNS: %1").arg(JERR(ret)), this );
     }
 }
 
