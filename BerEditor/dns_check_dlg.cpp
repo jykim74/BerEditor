@@ -22,6 +22,7 @@
 #include "js_pki_ext.h"
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
+#include "dns.h"
 
 const QString kDNSDefault = "DNSDefault";
 
@@ -190,7 +191,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         QString strHost = mHostText->text();
         int nPort = mPortText->text().toInt();
         if( nPort <= 0 ) nPort = 53;
-
+#if 0
         DnsLookup dns;
         QStringList txts;
 
@@ -212,6 +213,24 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         {
             qDebug() << dns.lastError();
         }
+#else
+        unsigned char response[BUFLEN];
+        unsigned char *packet;
+
+        DNS_header *header = create_request_header();
+        DNS_question *question = create_question( strURL.toStdString().c_str() );
+        size_t packet_length = build_packet(header, question, &packet);
+
+        free(header);
+        free(question);
+
+        ret = JS_NET_sendTo( strHost.toStdString().c_str(), nPort, packet, packet_length );
+
+        ret = JS_NET_recvFrom( strHost.toStdString().c_str(), nPort, response, BUFLEN );
+
+        parse_packet(packet_length, response);
+        free(packet);
+#endif
     }
     else
     {

@@ -3,6 +3,9 @@
 #include <QRandomGenerator>
 #include <QDataStream>
 
+#include "ber_applet.h"
+#include "common.h"
+
 DnsLookup::DnsLookup()
 {
     id_ = QRandomGenerator::global()->generate();
@@ -117,12 +120,16 @@ bool DnsLookup::lookup(const QString& dnsServer,
     QByteArray data;
     data.resize(socket_.pendingDatagramSize());
 
+
+
     socket_.readDatagram(data.data(),data.size());
     if(data.size()<12)
     {
         error_="Invalid DNS packet";
         return false;
     }
+
+    berApplet->log( QString( "Data: %1" ).arg( getHexString( (unsigned char *)data.data(), data.size() )));
 
     int pos=0;
 
