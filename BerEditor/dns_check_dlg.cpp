@@ -216,6 +216,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 #else
         unsigned char response[BUFLEN];
         unsigned char *packet;
+        int nSockFd = -1;
 
         DNS_header *header = create_request_header();
         DNS_question *question = create_question( strURL.toStdString().c_str() );
@@ -223,13 +224,41 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 
         free(header);
         free(question);
+#ifdef WIN32
+        WSADATA			wsaData;
 
-        ret = JS_NET_sendTo( strHost.toStdString().c_str(), nPort, packet, packet_length );
+        int err = WSAStartup(MAKEWORD(1, 1), &wsaData);
+        if (err != 0)
+        {
+            fprintf(stderr, "WSAStartup fail(%d)\n", err);
+            return JSR_ERR;
+        }
+#endif
 
-        ret = JS_NET_recvFrom( strHost.toStdString().c_str(), nPort, response, BUFLEN );
+        nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+        if( nSockFd < 0 )
+        {
+            ret = JSR_ERR2;
+            goto end;
+        }
+
+        ret = JS_NET_sendTo( nSockFd, strHost.toStdString().c_str(), nPort, packet, packet_length );
+        if( ret < 0 )
+        {
+            ret = JSR_ERR3;
+            goto end;
+        }
+
+        ret = JS_NET_recvFrom( nSockFd, strHost.toStdString().c_str(), nPort, response, BUFLEN );
+        if( ret < 0 )
+        {
+            ret = JSR_ERR4;
+            goto end;
+        }
 
         parse_packet(packet_length, response);
         free(packet);
+        ret = JSR_OK;
 #endif
     }
     else
