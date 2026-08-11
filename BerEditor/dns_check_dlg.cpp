@@ -190,7 +190,6 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         QString strHost = mHostText->text();
         int nPort = mPortText->text().toInt();
         if( nPort <= 0 ) nPort = 53;
-        int nSockFd = -1;
 
         BIN binQuery = {0,0};
         BIN binRsp = {0,0};
@@ -205,7 +204,7 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         ret = JS_DNS_makeQuery( JS_DNS_TYPE_TXT, strDNS.toStdString().c_str(), &binQuery );
 
 #if 0
-        nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+        int nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if( nSockFd < 0 )
         {
             ret = JSR_ERR2;
@@ -233,7 +232,10 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         binRsp.pVal = packet;
         binRsp.nLen = sizeof(packet);
 #else
-        ret = JS_DNS_askQuery( strHost.toStdString().c_str(), nPort, &binQuery, 3, 5, &binRsp );
+        int nRetry = 3;
+        int nTimeout = 5; //secs
+
+        ret = JS_DNS_askQuery( strHost.toStdString().c_str(), nPort, &binQuery, nRetry, nTimeout, &binRsp );
         if( ret != JSR_OK )
         {
             goto end;
