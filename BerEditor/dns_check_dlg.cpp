@@ -22,7 +22,8 @@
 #include "js_pki_ext.h"
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
-#include "dns.h"
+//#include "dns.h"
+#include "js_dns.h"
 
 const QString kDNSDefault = "DNSDefault";
 
@@ -191,39 +192,19 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         QString strHost = mHostText->text();
         int nPort = mPortText->text().toInt();
         if( nPort <= 0 ) nPort = 53;
-#if 0
-        DnsLookup dns;
-        QStringList txts;
-
-        if(dns.lookup( strHost, nPort, strURL, txts ))
-        {
-            qDebug() << "Success";
-
-            for(const QString& txt : txts)
-            {
-                qDebug() << txt;
-                if( strExpected.compare( txt, Qt::CaseInsensitive ) == 0 )
-                {
-                    ret = JSR_OK;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            qDebug() << dns.lastError();
-        }
-#else
-        unsigned char response[BUFLEN];
-        unsigned char *packet;
         int nSockFd = -1;
 
-        DNS_header *header = create_request_header();
-        DNS_question *question = create_question( strURL.toStdString().c_str() );
-        size_t packet_length = build_packet(header, question, &packet);
+        BIN binQuery = {0,0};
+        BIN binRsp = {0,0};
+        int nType = -1;
+        JStrList *pStrList = NULL;
+        JStrList *pCurList = NULL;
 
-        free(header);
-        free(question);
+        unsigned char packet[4096];
+
+        memset( packet, 0x00, sizeof(packet));
+
+
 #ifdef WIN32
         WSADATA			wsaData;
 
@@ -234,32 +215,50 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
             return JSR_ERR;
         }
 #endif
+        ret = JS_DNS_makeQuery( JS_DNS_TYPE_TXT, strDNS.toStdString().c_str(), &binQuery );
 
         nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if( nSockFd < 0 )
         {
             ret = JSR_ERR2;
+            JS_BIN_reset( &binQuery );
             goto end;
         }
 
-        ret = JS_NET_sendTo( nSockFd, strHost.toStdString().c_str(), nPort, packet, packet_length );
+        ret = JS_NET_sendTo( nSockFd, strHost.toStdString().c_str(), nPort, binQuery.pVal, binQuery.nLen );
         if( ret < 0 )
         {
             ret = JSR_ERR3;
+            JS_BIN_reset( &binQuery );
             goto end;
         }
 
-        ret = JS_NET_recvFrom( nSockFd, strHost.toStdString().c_str(), nPort, response, BUFLEN );
+        ret = JS_NET_recvFrom( nSockFd, strHost.toStdString().c_str(), nPort, packet, sizeof(packet) );
         if( ret < 0 )
         {
             ret = JSR_ERR4;
+            JS_BIN_reset( &binQuery );
             goto end;
         }
 
-        parse_packet(packet_length, response);
-        free(packet);
-        ret = JSR_OK;
-#endif
+        binRsp.pVal = packet;
+        binRsp.nLen = sizeof(packet);
+
+        ret = JS_DNS_parseRsp( &binRsp, &nType, &pStrList );
+
+        pCurList = pStrList;
+        while( pCurList )
+        {
+            if( strExpected.compare( pCurList->pStr, Qt::CaseInsensitive ) == 0 )
+            {
+                ret = JSR_OK;
+                break;
+            }
+
+            pCurList = pCurList->pNext;
+        }
+
+        if( pStrList ) JS_UTIL_resetStrList( &pStrList );
     }
     else
     {
