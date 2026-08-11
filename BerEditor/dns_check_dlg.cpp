@@ -12,7 +12,6 @@
 #include "new_passwd_dlg.h"
 
 #include "acme_object.h"
-#include "dns_lookup.h"
 
 #include "js_pki_key.h"
 #include "js_pki.h"
@@ -22,7 +21,6 @@
 #include "js_pki_ext.h"
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
-//#include "dns.h"
 #include "js_dns.h"
 
 const QString kDNSDefault = "DNSDefault";
@@ -295,6 +293,15 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
     QString strKeyAuth;
     QString strURL;
     QString strThumbPrint = ACMEObject::getThumbPrint( pPub );
+    BIN binCert = {0,0};
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    JExtensionInfoList *pCurList = NULL;
+
+    int bSelf = 0;
+    const QString strAuthOID = "1.3.6.1.5.5.7.1.31";
+    BIN binThumb = {0,0};
+    BIN binExt = {0,0};
 
     if( mServerGroup->isChecked() == true )
     {
@@ -313,7 +320,47 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
 
     berApplet->log( QString( "keyAuthorization: %1").arg( strKeyAuth ));
 
-    ret = JS_SSL_ALPNClient( nSockFd, strDNS.toStdString().c_str() );
+    ret = JS_SSL_ALPNClient( nSockFd, strDNS.toStdString().c_str(), &binCert );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, &pExtInfoList, &bSelf );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    pCurList = pExtInfoList;
+    while( pCurList )
+    {
+        if( strAuthOID.compare( pCurList->sExtensionInfo.pOID, Qt::CaseInsensitive) == 0 )
+        {
+            JS_BIN_decodeBase64URL( strThumbPrint.toStdString().c_str(), &binThumb );
+            JS_BIN_decodeHex( pCurList->sExtensionInfo.pValue, &binExt );
+
+            if( JS_BIN_cmp( &binThumb, &binExt ) == 0 )
+            {
+                ret = JSR_OK;
+            }
+            else
+            {
+                ret = JSR_INVALID_VALUE;
+            }
+
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    JS_BIN_reset( &binThumb );
+    JS_BIN_reset( &binExt );
 
     return ret;
 }

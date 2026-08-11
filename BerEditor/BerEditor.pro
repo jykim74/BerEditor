@@ -138,8 +138,7 @@ SOURCES += \
     ocsp_rsp_dlg.cpp \
     cmp_info_dlg.cpp \
     sel_list_dlg.cpp \
-    dns_check_dlg.cpp \
-    dns_lookup.cpp
+    dns_check_dlg.cpp
 
 
 HEADERS += \
@@ -243,8 +242,7 @@ HEADERS += \
     ocsp_rsp_dlg.h \
     cmp_info_dlg.h \
     sel_list_dlg.h \
-    dns_check_dlg.h \
-    dns_lookup.h
+    dns_check_dlg.h
 
 
 

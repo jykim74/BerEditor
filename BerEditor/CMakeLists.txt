@@ -240,8 +240,8 @@ add_executable(${PROJECT_NAME}
     est_client_dlg.h est_client_dlg.cpp est_client_dlg.ui
     sel_list_dlg.h sel_list_dlg.cpp sel_list_dlg.ui
     dns_check_dlg.h dns_check_dlg.cpp dns_check_dlg.ui
-    dns_lookup.h
-    dns_lookup.cpp
+
+
 
 )
 
