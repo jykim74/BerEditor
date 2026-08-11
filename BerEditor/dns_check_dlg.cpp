@@ -202,19 +202,9 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
 
         memset( packet, 0x00, sizeof(packet));
 
-
-#ifdef WIN32
-        WSADATA			wsaData;
-
-        int err = WSAStartup(MAKEWORD(1, 1), &wsaData);
-        if (err != 0)
-        {
-            fprintf(stderr, "WSAStartup fail(%d)\n", err);
-            return JSR_ERR;
-        }
-#endif
         ret = JS_DNS_makeQuery( JS_DNS_TYPE_TXT, strDNS.toStdString().c_str(), &binQuery );
 
+#if 0
         nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if( nSockFd < 0 )
         {
@@ -239,8 +229,16 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
             goto end;
         }
 
+
         binRsp.pVal = packet;
         binRsp.nLen = sizeof(packet);
+#else
+        ret = JS_DNS_askQuery( strHost.toStdString().c_str(), nPort, &binQuery, 3, 5, &binRsp );
+        if( ret != JSR_OK )
+        {
+            goto end;
+        }
+#endif
 
         ret = JS_DNS_parseRsp( &binRsp, &nType, &pStrList );
 
