@@ -302,6 +302,9 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
     const QString strAuthOID = "1.3.6.1.5.5.7.1.31";
     BIN binThumb = {0,0};
     BIN binExt = {0,0};
+    BIN binExtVal = {0,0};
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
     if( mServerGroup->isChecked() == true )
     {
@@ -323,12 +326,14 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
     ret = JS_SSL_ALPNClient( nSockFd, strDNS.toStdString().c_str(), &binCert );
     if( ret != 0 )
     {
+        berApplet->elog( QString( "failed to run ALPNclient: %1" ).arg(ret));
         goto end;
     }
 
     ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, &pExtInfoList, &bSelf );
     if( ret != 0 )
     {
+        berApplet->elog( QString( "failed to get self sign certificate info: %1" ).arg(ret));
         goto end;
     }
 
@@ -339,13 +344,26 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
         {
             JS_BIN_decodeBase64URL( strThumbPrint.toStdString().c_str(), &binThumb );
             JS_BIN_decodeHex( pCurList->sExtensionInfo.pValue, &binExt );
+            char *pExt = NULL;
+            JS_PKI_getOctetValue( &binExt, &pExt );
 
-            if( JS_BIN_cmp( &binThumb, &binExt ) == 0 )
+            if( pExt )
+            {
+                JS_BIN_decodeHex( pExt, &binExtVal );
+                JS_free( pExt );
+            }
+
+
+            if( JS_BIN_cmp( &binThumb, &binExtVal ) == 0 )
             {
                 ret = JSR_OK;
             }
             else
             {
+                berApplet->elog( QString( "Auth Value is bad [%1 : %2]" )
+                                    .arg( getHexString( &binThumb ))
+                                    .arg( getHexString( &binExtVal )));
+
                 ret = JSR_INVALID_VALUE;
             }
 
@@ -361,6 +379,8 @@ end :
     if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
     JS_BIN_reset( &binThumb );
     JS_BIN_reset( &binExt );
+    JS_BIN_reset( &binExtVal );
+    if( nSockFd >= 0 ) JS_NET_close( nSockFd );
 
     return ret;
 }

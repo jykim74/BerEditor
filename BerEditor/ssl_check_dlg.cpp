@@ -533,7 +533,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, QString& strMsg, B
     if( nSockFd < 0 )
     {
         berApplet->elog( QString("failed to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
-        ret = ret = JSR_SERVER_CONNECT_FAIL;
+        ret = ret = JSR_CONNECT_SERVER_FAIL;
         goto end;
     }
 
