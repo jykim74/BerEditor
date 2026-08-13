@@ -202,6 +202,11 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         memset( packet, 0x00, sizeof(packet));
 
         ret = JS_DNS_makeQuery( JS_DNS_TYPE_TXT, strDNS.toStdString().c_str(), &binQuery );
+        if( ret != JSR_OK )
+        {
+            berApplet->elog( QString( "makeQuery failed: %1" ).arg(ret));
+            goto end;
+        }
 
 #if 0
         int nSockFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -238,11 +243,17 @@ int DNSCheckDlg::checkDNS01( const QString strDNS, const QString strToken, const
         ret = JS_DNS_askQuery( strHost.toStdString().c_str(), nPort, &binQuery, nRetry, nTimeout, &binRsp );
         if( ret != JSR_OK )
         {
+            berApplet->elog( QString( "askQuery failed: %1" ).arg(ret));
             goto end;
         }
 #endif
 
         ret = JS_DNS_parseRsp( &binRsp, &nType, &pStrList );
+        if( ret != JSR_OK )
+        {
+            berApplet->elog( QString( "parseRsp failed: %1" ).arg(ret));
+            goto end;
+        }
 
         pCurList = pStrList;
         while( pCurList )
