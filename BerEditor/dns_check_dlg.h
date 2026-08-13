@@ -47,7 +47,7 @@ private:
 
     int checkHTTP01( const QString strDNS, const QString strToken, const BIN *pPub );
     int checkDNS01( const QString strDNS, const QString strToken, const BIN *pPub );
-    int checkTLS_ALPN01( const QString strDNS, const QString strToken, const BIN *pPub );
+    int checkTLS_ALPN01( const QString strDNS, const QString strToken );
     void checkDNS( ACME_CheckType type );
     int savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
 
