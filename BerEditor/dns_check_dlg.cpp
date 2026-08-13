@@ -304,6 +304,7 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
     BIN binExt = {0,0};
     BIN binExtVal = {0,0};
 
+
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
     if( mServerGroup->isChecked() == true )
@@ -328,6 +329,13 @@ int DNSCheckDlg::checkTLS_ALPN01( const QString strDNS, const QString strToken, 
     {
         berApplet->elog( QString( "failed to run ALPNclient: %1" ).arg(ret));
         goto end;
+    }
+
+    if( mShowCertCheck->isChecked() == true )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCert );
+        certInfo.exec();
     }
 
     ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, &pExtInfoList, &bSelf );
