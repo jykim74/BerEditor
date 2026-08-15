@@ -2158,15 +2158,64 @@ void ACMEClientDlg::clickIssueCert()
 
 void ACMEClientDlg::clickThumbPrint()
 {
+    /*
     if( pub_key_.nLen <= 0 )
     {
         berApplet->warningBox( tr("There is no key for the account"), this );
         return;
     }
+    */
+
+    if( pri_key_.nLen <= 0 )
+    {
+        if( mUseCertManCheck->isChecked() == true )
+        {
+            BIN binCert = {0,0};
+            JCertInfo sCertInfo;
+            CertManDlg certMan;
+
+            memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+            certMan.setMode( ManModeSelBoth );
+            certMan.setTitle( tr( "Select account certificate" ));
+
+            if( certMan.exec() != QDialog::Accepted )
+                return;
+
+            certMan.getPriKey( &pri_key_ );
+            certMan.getCert( &binCert );
+            JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+            key_name_ = sCertInfo.pSubjectName;
+            JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
+            JS_BIN_reset( &binCert );
+            JS_PKI_resetCertInfo( &sCertInfo );
+        }
+        else
+        {
+            QString strPubPath;
+            QString strPriPath;
+
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select account keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
+
+            if( keyPairMan.exec() != QDialog::Accepted )
+                return;
+
+            strPubPath = keyPairMan.getPubPath();
+            strPriPath = keyPairMan.getPriPath();
+            key_name_ = keyPairMan.getName();
+
+            JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &pri_key_ );
+            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
+        }
+
+        mKeyNameLabel->setText( QString( " | KeyName: %1" ).arg( key_name_ ));
+    }
 
     QString strTP = ACMEObject::getThumbPrint( &pub_key_ );
     if( strTP.length() > 0 )
-        berApplet->messageBox( tr( "Thumb Print: %1").arg( strTP ), this );
+        berApplet->messageLog( tr( "Thumb Print: %1").arg( strTP ), this );
 }
 
 void ACMEClientDlg::clickTest()

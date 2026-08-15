@@ -1,6 +1,16 @@
 #include <QDnsLookup>
 #include <QSettings>
 
+#ifdef WIN32
+#include <ws2tcpip.h>
+#include <Windows.h>
+#include <winsock.h>
+#else
+#include <netdb.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#endif
+
 #include "dns_check_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
