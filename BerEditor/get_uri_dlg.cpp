@@ -315,15 +315,17 @@ const QString GetURIDlg::getValidURL()
     QString strLink;
     QString strURL = mURICombo->currentText();
 
-    QStringList strList = strURL.split( "=" );
-    if( strList.size() < 1 )
-        strLink.clear();
-    else if( strList.size() == 1 )
-        strLink = strList.at(0);
+    if( strURL.startsWith( "URL=", Qt::CaseInsensitive ) )
+    {
+        strLink = strURL.replace( "URL=", "" );
+    }
+    else if( strURL.startsWith( "URI=", Qt::CaseInsensitive ) )
+    {
+        strLink = strURL.replace( "URI=", "" );
+    }
     else
     {
-        if( strList.at(0).toUpper() == "URL" || strList.at(0).toUpper() == "URI" )
-            strLink = strList.at(1);
+        strLink = strURL;
     }
 
     return strLink.simplified();
