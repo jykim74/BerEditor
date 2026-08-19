@@ -41,6 +41,11 @@ private:
     int updateLCN( const QString strEmail, const QString strKey, BIN *pLCN, QString& strError );
     void settingsLCN( const QString strSID, const BIN *pLCN );
 
+    void notifyCheck();
+    QString getUUID();
+    void setUUID( const QString strUUID );
+    QString getSysInfo();
+
     QString SID_;
 };
 
