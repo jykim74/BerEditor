@@ -147,7 +147,6 @@ void LCNInfoDlg::initialize()
     }
 
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
-//    mUseFileCheck->click();
     tabWidget->setCurrentIndex(0);
     mCloseBtn->setDefault(true);
 
@@ -181,12 +180,14 @@ void LCNInfoDlg::notifyCheck()
     }
 
     QString strSysInfo = getSysInfo();
+    QString strProduct = berApplet->getBrand();
 
     strURL = getLicenseURI();
     strURL += JS_LCN_NOTIFY_PATH;
 
-    QString strBody = QString( "uuid=%1&sysinfo=%2")
+    QString strBody = QString( "uuid=%1&product=%2&sysinfo=%3")
                           .arg( strUUID.simplified() )
+                          .arg( strProduct.simplified() )
                           .arg( strSysInfo.simplified() );
 
     ret = JS_HTTP_requestPost2(
