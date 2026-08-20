@@ -144,13 +144,13 @@ void LCNInfoDlg::initialize()
         mCurGroup->setEnabled( false );
         time_t tLastTime = berApplet->settingsMgr()->getStopMessage();
         if( tLastTime > 0 ) mStopMessageCheck->setChecked(true);
+
+        notifyCheck();
     }
 
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
     tabWidget->setCurrentIndex(0);
     mCloseBtn->setDefault(true);
-
-    notifyCheck();
 }
 
 void LCNInfoDlg::settingsLCN( const QString strUser, const BIN *pLCN )
