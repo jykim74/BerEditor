@@ -14,6 +14,7 @@
 #include <QNetworkInterface>
 #include <QTemporaryFile>
 #include <QIcon>
+#include <QLocale>
 
 #include "common.h"
 #include "js_ocsp.h"
@@ -1870,4 +1871,10 @@ const QIcon getIcon( int nType, time_t tExpire )
     }
 
     return QIcon( ":/images/cert.png" );
+}
+
+const QString getCountryString()
+{
+    QLocale locale;
+    return QLocale::countryToString( locale.country() );
 }

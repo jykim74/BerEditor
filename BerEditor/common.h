@@ -435,5 +435,6 @@ const QString getShowFileSize( qint64 nFileSize );
 const QString getTmpFile();
 
 const QIcon getIcon( int nType, time_t tExpire = -1 );
+const QString getCountryString();
 
 #endif // COMMON_H

@@ -174,8 +174,10 @@ void LCNInfoDlg::notifyCheck()
     QString strURL;
     QString strUUID = getUUID();
     time_t now_t = time(NULL);
-
     time_t notify_t = getNotifyTime();
+
+    JCC_NameVal sNameVal;
+    memset( &sNameVal, 0x00, sizeof(sNameVal));
 
     // 12 hours check
     if( now_t < ( notify_t + kCheckSecs ) ) return;
@@ -207,13 +209,16 @@ void LCNInfoDlg::notifyCheck()
         &status,
         &pRsp );
 
-    QString strRsp = pRsp;
-    if( strRsp.length() > 1 && status == 200 )
+    if( pRsp && status == 200 )
     {
-        if( strRsp.compare( "None", Qt::CaseInsensitive ) != 0 )
+        JS_CC_decodeNameVal( pRsp, &sNameVal );
+
+        if( sNameVal.pValue && strcasecmp( sNameVal.pName, "NOTIFY") == 0 )
         {
             QString strLabel = mMessageLabel->text();
-            strLabel += QString( "\nNotify: %1" ).arg( strRsp );
+            strLabel += "\n";
+            strLabel += tr( "Notice: " );
+            strLabel += sNameVal.pValue;
             mMessageLabel->setText( strLabel );
         }
     }
@@ -222,6 +227,7 @@ void LCNInfoDlg::notifyCheck()
 
 end :
     if( pRsp ) JS_free( pRsp );
+    JS_UTIL_resetNameVal( &sNameVal );
 }
 
 QString LCNInfoDlg::getUUID()
@@ -272,12 +278,13 @@ QString LCNInfoDlg::getSysInfo()
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
 
     QSysInfo sysInfo;
-    QString strInfo = QString( "%1_%2_%3_%4_%5")
+    QString strInfo = QString( "%1_%2_%3_%4_%5_%6")
                           .arg( strProduct )
                           .arg( strVersion )
                           .arg( sysInfo.currentCpuArchitecture())
                           .arg( sysInfo.productType() )
-                          .arg( sysInfo.productVersion());
+                          .arg( sysInfo.productVersion())
+                          .arg( getCountryString() );
 
     return strInfo;
 }
@@ -294,13 +301,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     QString strProduct = berApplet->getBrand();
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
 
-    QSysInfo sysInfo;
-    QString strInfo = QString( "%1_%2_%3_%4_%5")
-                          .arg( strProduct )
-                          .arg( strVersion )
-                          .arg( sysInfo.currentCpuArchitecture())
-                          .arg( sysInfo.productType() )
-                          .arg( sysInfo.productVersion());
+    QString strSysInfo = getSysInfo();
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
 
@@ -312,7 +313,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
                           .arg( strKey.simplified() )
                           .arg(strProduct).arg( SID_.simplified() )
                           .arg( strVersion )
-                          .arg( strInfo.simplified() );
+                          .arg( strSysInfo.simplified() );
 #ifdef QT_DEBUG
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
 #endif
@@ -371,13 +372,7 @@ int LCNInfoDlg::getFreeLCN( const QString& strEmail, BIN *pLCN, QString& strErro
     QString strProduct = berApplet->getBrand();
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
 
-    QSysInfo sysInfo;
-    QString strInfo = QString( "%1_%2_%3_%4_%5")
-                          .arg( strProduct )
-                          .arg( strVersion )
-                          .arg( sysInfo.currentCpuArchitecture())
-                          .arg( sysInfo.productType() )
-                          .arg( sysInfo.productVersion());
+    QString strSysInfo = getSysInfo();
 
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
@@ -389,7 +384,7 @@ int LCNInfoDlg::getFreeLCN( const QString& strEmail, BIN *pLCN, QString& strErro
                           .arg( strEmail.simplified() )
                           .arg(strProduct).arg( SID_.simplified() )
                           .arg( strVersion )
-                          .arg(strInfo.simplified());
+                          .arg(strSysInfo.simplified());
 
 #ifdef QT_DEBUG
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
@@ -451,14 +446,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     QString strProduct = berApplet->getBrand();
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
 
-    QSysInfo sysInfo;
-    QString strInfo = QString( "%1_%2_%3_%4_%5")
-                          .arg( strProduct )
-                          .arg( strVersion )
-                          .arg( sysInfo.currentCpuArchitecture())
-                          .arg( sysInfo.productType() )
-                          .arg( sysInfo.productVersion());
-
+    QString strSysInfo = getSysInfo();
 
 #ifndef _USE_LCN_SRV
     berApplet->warningBox( tr( "This service is not yet supported." ), this );
@@ -475,7 +463,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
                           .arg( strEmail.simplified() )
                           .arg( strKey.simplified() )
                           .arg(strProduct).arg( SID_.simplified() )
-                          .arg( strInfo.simplified() );
+                          .arg( strSysInfo.simplified() );
 
 #ifdef QT_DEBUG
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
