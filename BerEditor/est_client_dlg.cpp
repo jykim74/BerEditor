@@ -1,6 +1,5 @@
 #include <QSettings>
 
-#include "scep_client_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
@@ -683,7 +682,7 @@ void ESTClientDlg::decodeRequest()
     int ret = getBINFromString( &binData, DATA_HEX, strHex );
     FORMAT_WARN_GO(ret);
 
-    berApplet->decodeTitle( &binData, "SCEP Request" );
+    berApplet->decodeTitle( &binData, "EST Request" );
 end :
     JS_BIN_reset( &binData );
 }
@@ -702,7 +701,7 @@ void ESTClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeTitle( &binData, "SCEP Response" );
+    berApplet->decodeTitle( &binData, "EST Response" );
     JS_BIN_reset( &binData );
 }
 
@@ -747,7 +746,7 @@ void ESTClientDlg::clickGetCA()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SCEP URL"), this );
+        berApplet->warningBox( tr( "Enter EST URL"), this );
         return;
     }
 
@@ -802,7 +801,7 @@ void ESTClientDlg::clickSend()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SCEP URL"), this );
+        berApplet->warningBox( tr( "Enter EST URL"), this );
         return;
     }
 
@@ -844,7 +843,7 @@ void ESTClientDlg::clickSend()
     JS_BIN_string( &binRsp, &pRsp );
     mResponseText->setPlainText( pRsp );
     setUsedURL( strURL );
-    berApplet->messageBox( tr("SCEP message sent"), this );
+    berApplet->messageBox( tr("EST message sent"), this );
 
 end :
     JS_BIN_reset( &binReq );

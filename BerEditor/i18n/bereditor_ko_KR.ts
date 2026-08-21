@@ -9271,6 +9271,252 @@ mailto : jykim74@gmail.com</translation>
     </message>
 </context>
 <context>
+    <name>ESTClientDlg</name>
+    <message>
+        <location filename="../est_client_dlg.ui" line="14"/>
+        <source>EST Client</source>
+        <translation>EST 클라이언트</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="22"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="49"/>
+        <source>EST URL</source>
+        <translation>EST URL</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="83"/>
+        <location filename="../est_client_dlg.ui" line="251"/>
+        <location filename="../est_client_dlg.ui" line="317"/>
+        <source>V</source>
+        <translation>V</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="90"/>
+        <location filename="../est_client_dlg.ui" line="238"/>
+        <location filename="../est_client_dlg.ui" line="304"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="103"/>
+        <location filename="../est_client_dlg.ui" line="284"/>
+        <location filename="../est_client_dlg.ui" line="297"/>
+        <location filename="../est_client_dlg.ui" line="447"/>
+        <location filename="../est_client_dlg.ui" line="567"/>
+        <source>D</source>
+        <translation>D</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="130"/>
+        <source>CA Cert</source>
+        <translation>CA 인증서</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="146"/>
+        <location filename="../est_client_dlg.ui" line="330"/>
+        <location filename="../est_client_dlg.ui" line="343"/>
+        <source>T</source>
+        <translation>T</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="167"/>
+        <source>Get CA</source>
+        <translation>CA 가져오기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="174"/>
+        <source>Make</source>
+        <translation>만들기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="209"/>
+        <source>Select each certificate and private key</source>
+        <translation>인증서와 개인키 각각 선택</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="261"/>
+        <source>Private Key</source>
+        <translation>개인 키</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="271"/>
+        <source>Certificate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="357"/>
+        <source>Enc PrivateKey</source>
+        <translation>암호화 개인키</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="364"/>
+        <source>Password</source>
+        <translation>암호</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="434"/>
+        <source>Request</source>
+        <translation>요청</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="454"/>
+        <source>Send</source>
+        <translation>보내기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="467"/>
+        <location filename="../est_client_dlg.ui" line="580"/>
+        <source>C</source>
+        <translation>C</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="507"/>
+        <source>Response</source>
+        <translation>응답</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="514"/>
+        <source>Verify</source>
+        <translation>검증</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="651"/>
+        <source>Clear All</source>
+        <translation>전체 지우기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="658"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="130"/>
+        <location filename="../est_client_dlg.cpp" line="133"/>
+        <source>Select CertMan certificate</source>
+        <translation>인증서 관리자 인증서 선택</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="132"/>
+        <source>Select CertMan private key</source>
+        <translation>인증서 관리자 개인키 선택</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="134"/>
+        <location filename="../est_client_dlg.cpp" line="135"/>
+        <source>String value</source>
+        <translation>문자 값</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="189"/>
+        <source>select a private key</source>
+        <translation>개인키를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="197"/>
+        <source>failed to read a private key: %1</source>
+        <translation>개인키 읽기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="207"/>
+        <source>Enter a password</source>
+        <translation>암호를 입력해야 합니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="216"/>
+        <source>failed to decrypt private key:%1</source>
+        <translation>개인키 복호화 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="293"/>
+        <source>EST SimpleEnroll KeyPair</source>
+        <translation>EST 간단등록 키 쌍</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="338"/>
+        <location filename="../est_client_dlg.cpp" line="525"/>
+        <location filename="../est_client_dlg.cpp" line="565"/>
+        <location filename="../est_client_dlg.cpp" line="586"/>
+        <location filename="../est_client_dlg.cpp" line="639"/>
+        <source>Find a certificate</source>
+        <translation>인증서를 찾으세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="351"/>
+        <source>Select a certificate</source>
+        <translation>인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="427"/>
+        <source>Do you want to save the private key and certificate</source>
+        <translation>개인키와 인증서를 저장하겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="447"/>
+        <source>The private key and certificate are saved successfully</source>
+        <translation>개인키와 인증서가 성공적으로 저장하였습니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="449"/>
+        <source>failed to save the private key and certificate</source>
+        <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="499"/>
+        <location filename="../est_client_dlg.cpp" line="619"/>
+        <source>Find a CA certificate</source>
+        <translation>CA 인증서를 찾으세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="509"/>
+        <location filename="../est_client_dlg.cpp" line="534"/>
+        <source>The certificate type is %1</source>
+        <translation>인증서 타입은 %1 입니다.</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="550"/>
+        <source>The private key type is %1</source>
+        <translation>개인키 타입은 %1 입니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="658"/>
+        <source>Find a private key</source>
+        <translation>개인키를 찾으세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="677"/>
+        <source>No request available</source>
+        <translation>요청서가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="697"/>
+        <source>There is no response</source>
+        <translation>응답이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="749"/>
+        <location filename="../est_client_dlg.cpp" line="804"/>
+        <source>Enter EST URL</source>
+        <translation>EST URL을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="846"/>
+        <source>EST message sent</source>
+        <translation>EST 메세지를 보냈습니다</translation>
+    </message>
+    <message>
+        <source>Enter SCEP URL</source>
+        <translation type="obsolete">SCEP URL을 입력하세요</translation>
+    </message>
+    <message>
+        <source>SCEP message sent</source>
+        <translation type="obsolete">SCEP 메세지를 보냈습니다</translation>
+    </message>
+</context>
+<context>
     <name>EditTTLVDlg</name>
     <message>
         <location filename="../edit_ttlv_dlg.ui" line="14"/>
