@@ -21,6 +21,8 @@
 #include "js_error.h"
 
 const QString kUUID = "UUID";
+const QString kNotifyTime = "NotifyTime";
+const int kCheckSecs = 43200;
 
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -171,11 +173,17 @@ void LCNInfoDlg::notifyCheck()
     char *pRsp = NULL;
     QString strURL;
     QString strUUID = getUUID();
+    time_t now_t = time(NULL);
+
+    time_t notify_t = getNotifyTime();
+
+    // 12 hours check
+    if( now_t < ( notify_t + kCheckSecs ) ) return;
 
     if( strUUID.length() < 1 )
     {
         QUuid uuid = QUuid::createUuid();
-        strUUID = uuid.toString();
+        strUUID = uuid.toString(QUuid::WithoutBraces);
         setUUID( strUUID );
     }
 
@@ -210,6 +218,8 @@ void LCNInfoDlg::notifyCheck()
         }
     }
 
+    setNotifyTime( now_t );
+
 end :
     if( pRsp ) JS_free( pRsp );
 }
@@ -231,6 +241,28 @@ void LCNInfoDlg::setUUID( const QString strUUID )
     QSettings settings;
     settings.beginGroup( kSettingBer );
     settings.setValue( kUUID, strUUID );
+    settings.endGroup();
+}
+
+time_t LCNInfoDlg::getNotifyTime()
+{
+    QSettings settings;
+    time_t notify_t;
+
+    settings.beginGroup( kSettingBer );
+    notify_t = settings.value( kNotifyTime ).toLongLong();
+    settings.endGroup();
+
+    return notify_t;
+}
+
+void LCNInfoDlg::setNotifyTime( time_t time )
+{
+    long long notify_t = time;
+
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kNotifyTime, notify_t );
     settings.endGroup();
 }
 
