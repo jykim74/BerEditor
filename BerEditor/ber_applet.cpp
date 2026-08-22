@@ -308,7 +308,6 @@ void BerApplet::messageBox(const QString& msg, QWidget *parent)
     box.setIcon(QMessageBox::Information);
     box.addButton(tr("OK"), QMessageBox::YesRole);
     box.exec();
-    qDebug("%s", msg.toUtf8().data());
 }
 
 bool BerApplet::yesOrNoBox(const QString& msg, QWidget *parent, bool default_val)

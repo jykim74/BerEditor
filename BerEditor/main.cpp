@@ -15,6 +15,12 @@
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
 
+#if defined(QT_DEBUG)
+int g_nVerbose = 1;
+#else
+int g_nVerbose = 0;
+#endif
+
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(bereditor);
