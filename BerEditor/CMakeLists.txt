@@ -6,7 +6,6 @@ project(BerEditor
     LANGUAGES CXX )
 
 set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Set up AUTOMOC and some sensible defaults for runtime execution
