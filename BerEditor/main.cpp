@@ -14,6 +14,7 @@
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
+#include "js_gen.h"
 
 #if defined(QT_DEBUG)
 int g_nVerbose = 1;
@@ -21,9 +22,12 @@ int g_nVerbose = 1;
 int g_nVerbose = 0;
 #endif
 
+
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(bereditor);
+
+
 
     QApplication app(argc, argv);
 
