@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument( "file", "The file to open" );
     parser.process(app);
 
-    qDebug( "command : %s\n", argv[0] );
     I18NHelper::getInstance()->init();
 
     BerApplet mApplet;
@@ -52,8 +51,6 @@ int main(int argc, char *argv[])
     berApplet->start();
 
     static QFont font;
-
-
 
     QString strFont = berApplet->settingsMgr()->getFontFamily();
     font.setFamily( strFont );
