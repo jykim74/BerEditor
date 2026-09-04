@@ -2348,7 +2348,7 @@ void CertManDlg::clickViewPriKey()
             bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
             if( bVal == true )
             {
-                ret = JS_PKI_encryptPrivateKey2( nPBE, strPass.toStdString().c_str(), &binRead, NULL, &binEnc );
+                ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), &binRead, NULL, &binEnc );
                 if( ret == 0 )
                 {
                     ret = writePriKeyCert( &binEnc, &binCert );
