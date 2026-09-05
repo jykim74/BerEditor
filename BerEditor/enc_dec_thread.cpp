@@ -9,6 +9,8 @@
 
 #include <QFileInfo>
 
+extern int g_nVerbose;
+
 static bool isCCM( const QString strMode )
 {
     if( strMode == "ccm" || strMode == "CCM" )
@@ -87,7 +89,7 @@ void EncDecThread::run()
     FILE *fp = fopen( src_file_.toLocal8Bit().toStdString().c_str(), "rb" );
     if( fp == NULL )
     {
-        fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
+        if( g_nVerbose ) fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
         goto end;
     }
 
@@ -99,7 +101,7 @@ void EncDecThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            fprintf( stderr, "failed to read file: %d\n", nRead );
+            if( g_nVerbose ) fprintf( stderr, "failed to read file: %d\n", nRead );
             goto end;
         }
 
@@ -133,7 +135,7 @@ void EncDecThread::run()
 
         if( ret != 0 )
         {
-            fprintf( stderr, "Encryption/decryption update failed [%d]\n", ret );
+            if( g_nVerbose ) fprintf( stderr, "Encryption/decryption update failed [%d]\n", ret );
             break;
         }
 
@@ -142,7 +144,7 @@ void EncDecThread::run()
             ret = JS_BIN_fileAppend( &binDst, dst_file_.toLocal8Bit().toStdString().c_str() );
             if( ret != binDst.nLen )
             {
-                fprintf( stderr, "failed to append file: %d\n", ret );
+                if( g_nVerbose ) fprintf( stderr, "failed to append file: %d\n", ret );
                 goto end;
             }
 

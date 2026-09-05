@@ -1108,7 +1108,7 @@ void OCSPClientDlg::clickSend()
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
-        fprintf( stderr, "failed to request : %d\n", ret );
+        berApplet->warnLog( tr( "failed to request : %1)" ).arg( ret ), this );
         goto end;
     }
 

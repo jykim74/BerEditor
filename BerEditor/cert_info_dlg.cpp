@@ -1303,7 +1303,7 @@ int CertInfoDlg::getOCSP( const QString strExtAIA, const BIN *pCA, const BIN *pC
     ret = JS_HTTP_requestPostBin( strURI.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
-        fprintf( stderr, "failed to request : %d\n", ret );
+        berApplet->elog( QString("failed to request : %1" ).arg( ret ) );
         goto end;
     }
 

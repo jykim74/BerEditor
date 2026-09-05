@@ -26,6 +26,9 @@
 #include "js_pqc.h"
 #include "js_error.h"
 
+extern int g_nVerbose;
+
+
 const QString GetSystemID()
 {
     QString strID;
@@ -1575,14 +1578,14 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, NULL, "SHA256", NULL, NULL, &binReq );
     if( ret != 0 )
     {
-        fprintf( stderr, "failed to encode OCSP request: %d\n", ret );
+        if( g_nVerbose ) fprintf( stderr, "failed to encode OCSP request: %d\n", ret );
         goto end;
     }
 
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
-        fprintf( stderr, "failed to request : %d\n", ret );
+        if( g_nVerbose ) fprintf( stderr, "failed to request : %d\n", ret );
         goto end;
     }
 
@@ -1591,7 +1594,7 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     ret = JS_OCSP_decodeResponse( &binDER, NULL, 0, &sIDInfo, pStatusInfo, &binSigner, sResMsg );
     if( ret != JSR_VERIFY )
     {
-        fprintf( stderr, "failed to decode respose:%d(%s)\n", ret, sResMsg);
+        if( g_nVerbose ) fprintf( stderr, "failed to decode respose:%d(%s)\n", ret, sResMsg);
         goto end;
     }
 

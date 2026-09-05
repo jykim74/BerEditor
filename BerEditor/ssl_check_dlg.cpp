@@ -146,7 +146,7 @@ int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
     X509_NAME* iname = cert ? X509_get_issuer_name(cert) : NULL;
     X509_NAME* sname = cert ? X509_get_subject_name(cert) : NULL;
 
-    fprintf(stdout, "verify_callback (depth=%d)(preverify=%d)\n", depth, preverify);
+    berApplet->log( QString( "verify_callback (depth=%1)(preverify=%2)").arg( depth ).arg( preverify) );
 
     /* Issuer is the authority we trust that warrants nothing useful */
     print_cn_name("SSL Issuer (cn)", iname);

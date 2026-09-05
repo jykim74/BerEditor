@@ -1817,28 +1817,28 @@ mailto : jykim74@gmail.com</translation>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="320"/>
-        <location filename="../ber_applet.cpp" line="334"/>
-        <location filename="../ber_applet.cpp" line="366"/>
-        <location filename="../ber_applet.cpp" line="390"/>
+        <location filename="../ber_applet.cpp" line="319"/>
+        <location filename="../ber_applet.cpp" line="333"/>
+        <location filename="../ber_applet.cpp" line="365"/>
+        <location filename="../ber_applet.cpp" line="389"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="321"/>
-        <location filename="../ber_applet.cpp" line="367"/>
-        <location filename="../ber_applet.cpp" line="391"/>
+        <location filename="../ber_applet.cpp" line="320"/>
+        <location filename="../ber_applet.cpp" line="366"/>
+        <location filename="../ber_applet.cpp" line="390"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="335"/>
-        <location filename="../ber_applet.cpp" line="368"/>
+        <location filename="../ber_applet.cpp" line="334"/>
+        <location filename="../ber_applet.cpp" line="367"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="356"/>
+        <location filename="../ber_applet.cpp" line="355"/>
         <source>There is an invalid format character: %1</source>
         <translation>형식에 맞지 않는 문자가 있습니다: %1</translation>
     </message>
@@ -5194,45 +5194,45 @@ mailto : jykim74@gmail.com</translation>
         <translation>폐기 사유</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="256"/>
-        <location filename="../cert_info_dlg.cpp" line="1000"/>
-        <location filename="../cert_info_dlg.cpp" line="1039"/>
+        <location filename="../cert_info_dlg.cpp" line="261"/>
+        <location filename="../cert_info_dlg.cpp" line="1006"/>
+        <location filename="../cert_info_dlg.cpp" line="1045"/>
         <source>No avaiable item</source>
         <translation>아이템이 없습니다</translation>
     </message>
     <message>
         <location filename="../cert_info_dlg.ui" line="415"/>
-        <location filename="../cert_info_dlg.cpp" line="264"/>
+        <location filename="../cert_info_dlg.cpp" line="269"/>
         <source>Cert PVD</source>
         <translation>인증서 경로검증</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="265"/>
+        <location filename="../cert_info_dlg.cpp" line="270"/>
         <source>View Cert</source>
         <translation>인증서 보기</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="655"/>
+        <location filename="../cert_info_dlg.cpp" line="660"/>
         <source>The file(%1) already exists</source>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="782"/>
+        <location filename="../cert_info_dlg.cpp" line="788"/>
         <source>CA certificate cannot be imported: %1</source>
         <translation>CA 인증서를 가져 올 수 었습니다: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="872"/>
+        <location filename="../cert_info_dlg.cpp" line="878"/>
         <source>Path verification result : %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="900"/>
+        <location filename="../cert_info_dlg.cpp" line="906"/>
         <source>Verification results: %1</source>
         <translation>검증 결과: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="929"/>
+        <location filename="../cert_info_dlg.cpp" line="935"/>
         <source>failed to get OCSP response: %1</source>
         <translation>OCSP 응답을 가져오기 실패: %1</translation>
     </message>
@@ -5250,126 +5250,126 @@ mailto : jykim74@gmail.com</translation>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="206"/>
-        <location filename="../cert_info_dlg.cpp" line="207"/>
-        <location filename="../cert_info_dlg.cpp" line="208"/>
         <location filename="../cert_info_dlg.cpp" line="209"/>
         <location filename="../cert_info_dlg.cpp" line="210"/>
         <location filename="../cert_info_dlg.cpp" line="211"/>
+        <location filename="../cert_info_dlg.cpp" line="212"/>
+        <location filename="../cert_info_dlg.cpp" line="213"/>
+        <location filename="../cert_info_dlg.cpp" line="214"/>
         <source>There is no CA url</source>
         <translation>CA url 이 없습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="220"/>
-        <location filename="../cert_info_dlg.cpp" line="221"/>
-        <location filename="../cert_info_dlg.cpp" line="222"/>
+        <location filename="../cert_info_dlg.cpp" line="225"/>
+        <location filename="../cert_info_dlg.cpp" line="226"/>
+        <location filename="../cert_info_dlg.cpp" line="227"/>
         <source>There is no CRL url</source>
         <translation>CRL url 이 없습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="228"/>
-        <location filename="../cert_info_dlg.cpp" line="230"/>
+        <location filename="../cert_info_dlg.cpp" line="233"/>
+        <location filename="../cert_info_dlg.cpp" line="235"/>
         <source>There is no OCSP url</source>
         <translation>OCSP url 이 없습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="301"/>
+        <location filename="../cert_info_dlg.cpp" line="306"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="311"/>
+        <location filename="../cert_info_dlg.cpp" line="316"/>
         <source>failed to get certificate information</source>
         <translation>인증서 정보 읽기에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="319"/>
+        <location filename="../cert_info_dlg.cpp" line="324"/>
         <source>Certificate [Expired]</source>
         <translation>인증서 [만료됨]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="336"/>
+        <location filename="../cert_info_dlg.cpp" line="341"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="344"/>
+        <location filename="../cert_info_dlg.cpp" line="349"/>
         <source>Serial</source>
         <translation>일련 번호</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="352"/>
+        <location filename="../cert_info_dlg.cpp" line="357"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="359"/>
+        <location filename="../cert_info_dlg.cpp" line="364"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="378"/>
+        <location filename="../cert_info_dlg.cpp" line="383"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="401"/>
-        <location filename="../cert_info_dlg.cpp" line="529"/>
+        <location filename="../cert_info_dlg.cpp" line="406"/>
+        <location filename="../cert_info_dlg.cpp" line="534"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="367"/>
+        <location filename="../cert_info_dlg.cpp" line="372"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="419"/>
+        <location filename="../cert_info_dlg.cpp" line="424"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="428"/>
+        <location filename="../cert_info_dlg.cpp" line="433"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="471"/>
+        <location filename="../cert_info_dlg.cpp" line="476"/>
         <source>FingerPrint</source>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="484"/>
+        <location filename="../cert_info_dlg.cpp" line="489"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="484"/>
+        <location filename="../cert_info_dlg.cpp" line="489"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="485"/>
+        <location filename="../cert_info_dlg.cpp" line="490"/>
         <source>All</source>
         <translation>전체</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="485"/>
+        <location filename="../cert_info_dlg.cpp" line="490"/>
         <source>Version1 Only</source>
         <translation>버전1 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="485"/>
+        <location filename="../cert_info_dlg.cpp" line="490"/>
         <source>Extension Only</source>
         <translation>확장 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="485"/>
+        <location filename="../cert_info_dlg.cpp" line="490"/>
         <source>Critical Extension Only</source>
         <translation>중요 확장 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="485"/>
+        <location filename="../cert_info_dlg.cpp" line="490"/>
         <source>Attribute Only</source>
         <translation>속성만</translation>
     </message>
@@ -5382,19 +5382,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">파일 내보내기</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="569"/>
+        <location filename="../cert_info_dlg.cpp" line="574"/>
         <source>Save a certificate or CRL as a PEM file</source>
         <translation>인증서나 CRL 을 PEM 으로 저장</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="616"/>
-        <location filename="../cert_info_dlg.cpp" line="633"/>
+        <location filename="../cert_info_dlg.cpp" line="621"/>
+        <location filename="../cert_info_dlg.cpp" line="638"/>
         <source>The certificate is saved to manager folder</source>
         <translation>인증서를 관리 폴더에 저장 하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="619"/>
-        <location filename="../cert_info_dlg.cpp" line="636"/>
+        <location filename="../cert_info_dlg.cpp" line="624"/>
+        <location filename="../cert_info_dlg.cpp" line="641"/>
         <source>failed to save to manager foler: %1</source>
         <translation>관리 폴더에 저장 실패 : %1</translation>
     </message>
@@ -5403,12 +5403,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="664"/>
+        <location filename="../cert_info_dlg.cpp" line="669"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="667"/>
+        <location filename="../cert_info_dlg.cpp" line="672"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
@@ -5417,12 +5417,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 검증 결과: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="893"/>
+        <location filename="../cert_info_dlg.cpp" line="899"/>
         <source>failed to get CA certificate [%1]</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="896"/>
+        <location filename="../cert_info_dlg.cpp" line="902"/>
         <source>failed to get CRL [%1]</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5431,7 +5431,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="922"/>
+        <location filename="../cert_info_dlg.cpp" line="928"/>
         <source>failed to get CA certificate: %1</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
@@ -5448,7 +5448,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">OCSP 검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="949"/>
+        <location filename="../cert_info_dlg.cpp" line="955"/>
         <source>failed to get CRL : %1</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -5489,12 +5489,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CRL 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="971"/>
+        <location filename="../cert_info_dlg.cpp" line="977"/>
         <source>The certificate is not revoked (STATUS:Good)</source>
         <translation>인증서가 폐기 되지 않았습니다(상태:유효함)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="973"/>
+        <location filename="../cert_info_dlg.cpp" line="979"/>
         <source>The certificate is revoked: (STATUS:Revoked %1:%2)</source>
         <translation>인증서가 폐기 되었습니다(상태:폐기됨 %1%2)</translation>
     </message>
@@ -7081,12 +7081,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1439"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1440"/>
         <source>Select trust CA certificate</source>
         <translation>신뢰 CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1468"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1469"/>
         <source>Select untrust CA certificate</source>
         <translation>비 신뢰 CA 인증서를 선택하세요</translation>
     </message>
@@ -7101,7 +7101,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../cert_pvd_dlg.cpp" line="1006"/>
         <location filename="../cert_pvd_dlg.cpp" line="1233"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1544"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1545"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -7130,12 +7130,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1352"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1353"/>
         <source>The certificate path verification is successful.</source>
         <translation>인증서 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1357"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1358"/>
         <source>The certificate path verification failed [%1]</source>
         <translation>인증서 검증에 실패 하였습니다 [%1]</translation>
     </message>
@@ -7144,14 +7144,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1496"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1497"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1692"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1717"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1742"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1693"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1718"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1743"/>
         <source>failed to read data</source>
         <translation></translation>
     </message>
@@ -17723,6 +17723,11 @@ Use %2</source>
         <translation>CA 가져오기 실패 :%1</translation>
     </message>
     <message>
+        <location filename="../ocsp_client_dlg.cpp" line="1111"/>
+        <source>failed to request : %1)</source>
+        <translation>요청하기 실패하였습니다: %1</translation>
+    </message>
+    <message>
         <location filename="../ocsp_client_dlg.cpp" line="1255"/>
         <source>failed to decode response: %1(%2)</source>
         <translation>응답 디코딩 실패: %1(%2)</translation>
@@ -18272,7 +18277,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../pdf_signer_dlg.ui" line="70"/>
-        <location filename="../pdf_signer_dlg.ui" line="846"/>
+        <location filename="../pdf_signer_dlg.ui" line="854"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -18317,73 +18322,73 @@ Use %2</source>
         <translation>소스 PDF 암호</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="376"/>
-        <location filename="../pdf_signer_dlg.ui" line="630"/>
+        <location filename="../pdf_signer_dlg.ui" line="391"/>
+        <location filename="../pdf_signer_dlg.ui" line="645"/>
         <source>VRI</source>
         <translation>VRI</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="390"/>
+        <location filename="../pdf_signer_dlg.ui" line="405"/>
         <source>DSS</source>
         <translation>DSS</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="404"/>
+        <location filename="../pdf_signer_dlg.ui" line="419"/>
         <source>DocTimeStamp</source>
         <translation>문서 시간 스탬프</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="448"/>
+        <location filename="../pdf_signer_dlg.ui" line="463"/>
         <source>Add DSS VRI</source>
         <translation>DSS VRI 추가</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="455"/>
+        <location filename="../pdf_signer_dlg.ui" line="470"/>
         <source>Add DocTSP</source>
         <translation>문서 시간 스탬프 추가</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="462"/>
+        <location filename="../pdf_signer_dlg.ui" line="477"/>
         <source>Add DSS</source>
         <translation>DSS 추가</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="469"/>
+        <location filename="../pdf_signer_dlg.ui" line="484"/>
         <source>Sign</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="476"/>
+        <location filename="../pdf_signer_dlg.ui" line="491"/>
         <source>Compress</source>
         <translation>압축</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="486"/>
+        <location filename="../pdf_signer_dlg.ui" line="501"/>
         <source>Verification</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="492"/>
+        <location filename="../pdf_signer_dlg.ui" line="507"/>
         <source>CertMan certificate include in verification</source>
         <translation>검증 시 포함 되는 CertMan 인증서</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="520"/>
+        <location filename="../pdf_signer_dlg.ui" line="535"/>
         <source>Trust List</source>
         <translation>신뢰 목록</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="527"/>
+        <location filename="../pdf_signer_dlg.ui" line="542"/>
         <source>At Time</source>
         <translation>시간 설정</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="547"/>
+        <location filename="../pdf_signer_dlg.ui" line="562"/>
         <source>CA List</source>
         <translation>CA 목록</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="513"/>
+        <location filename="../pdf_signer_dlg.ui" line="528"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -18393,107 +18398,107 @@ Use %2</source>
         <translation>서명 라벨</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="296"/>
+        <location filename="../pdf_signer_dlg.ui" line="311"/>
         <location filename="../pdf_signer_dlg.cpp" line="138"/>
         <location filename="../pdf_signer_dlg.cpp" line="1024"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="306"/>
+        <location filename="../pdf_signer_dlg.ui" line="321"/>
         <source>Use Subject DN</source>
         <translation>주체자 DN 사용</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="329"/>
+        <location filename="../pdf_signer_dlg.ui" line="344"/>
         <location filename="../pdf_signer_dlg.cpp" line="1042"/>
         <source>Reason</source>
         <translation>이유</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="342"/>
+        <location filename="../pdf_signer_dlg.ui" line="357"/>
         <location filename="../pdf_signer_dlg.cpp" line="1051"/>
         <source>Location</source>
         <translation>위치</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="349"/>
+        <location filename="../pdf_signer_dlg.ui" line="364"/>
         <location filename="../pdf_signer_dlg.cpp" line="1059"/>
         <source>ContactInfo</source>
         <translation>접촉 정보</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="359"/>
+        <location filename="../pdf_signer_dlg.ui" line="374"/>
         <source>Date Time</source>
         <translation>일자 시간</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="681"/>
+        <location filename="../pdf_signer_dlg.ui" line="696"/>
         <source>View CMS</source>
         <translation>CMS 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="383"/>
+        <location filename="../pdf_signer_dlg.ui" line="398"/>
         <source>Use Timestamp</source>
         <translation>타임스탬프 사용</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="397"/>
+        <location filename="../pdf_signer_dlg.ui" line="412"/>
         <source>TSP</source>
         <translation>TSP</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="589"/>
+        <location filename="../pdf_signer_dlg.ui" line="604"/>
         <source>Verify DocTSP</source>
         <translation>시간 스탬프 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="596"/>
+        <location filename="../pdf_signer_dlg.ui" line="611"/>
         <source>Verify Chain</source>
         <translation>체인 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="733"/>
+        <location filename="../pdf_signer_dlg.ui" line="741"/>
         <source>View DocTSP</source>
         <translation>시간 스탬프 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="661"/>
+        <location filename="../pdf_signer_dlg.ui" line="676"/>
         <source>View Signer</source>
         <translation>서명자 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="617"/>
+        <location filename="../pdf_signer_dlg.ui" line="632"/>
         <source>Verify VRI</source>
         <translation>VRI 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="603"/>
+        <location filename="../pdf_signer_dlg.ui" line="618"/>
         <source>Verify DSS</source>
         <translation>DSS 검증</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="740"/>
+        <location filename="../pdf_signer_dlg.ui" line="748"/>
         <source>View DocTSP TST</source>
         <translation>시간 스탬프 TST 보기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="713"/>
+        <location filename="../pdf_signer_dlg.ui" line="721"/>
         <source>Export DocTSP ByteRange</source>
         <translation>시간 스탬프 범위 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="695"/>
+        <location filename="../pdf_signer_dlg.ui" line="710"/>
         <source>Export ByteRange</source>
         <translation>범위 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="688"/>
+        <location filename="../pdf_signer_dlg.ui" line="703"/>
         <source>Export CMS</source>
         <translation>CMS 내보내기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="569"/>
+        <location filename="../pdf_signer_dlg.ui" line="584"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
@@ -18503,7 +18508,7 @@ Use %2</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="763"/>
+        <location filename="../pdf_signer_dlg.ui" line="771"/>
         <source>Encryption</source>
         <translation>암호화</translation>
     </message>
@@ -18512,22 +18517,22 @@ Use %2</source>
         <translation type="vanished">만들기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="839"/>
+        <location filename="../pdf_signer_dlg.ui" line="847"/>
         <source>Destination PDF</source>
         <translation>대상 PDF</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="859"/>
+        <location filename="../pdf_signer_dlg.ui" line="867"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="877"/>
+        <location filename="../pdf_signer_dlg.ui" line="885"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="897"/>
+        <location filename="../pdf_signer_dlg.ui" line="905"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
@@ -18551,12 +18556,12 @@ Use %2</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="771"/>
+        <location filename="../pdf_signer_dlg.ui" line="779"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../pdf_signer_dlg.ui" line="778"/>
+        <location filename="../pdf_signer_dlg.ui" line="786"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
@@ -20581,107 +20586,107 @@ Only RSA is supported.</source>
         <translation type="vanished">파일 저장</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="505"/>
+        <location filename="../ber_applet.cpp" line="504"/>
         <source>Cert Files</source>
         <translation>인증서 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="510"/>
+        <location filename="../ber_applet.cpp" line="509"/>
         <source>CRL Files</source>
         <translation>CRL 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="515"/>
+        <location filename="../ber_applet.cpp" line="514"/>
         <source>CSR Files</source>
         <translation>요청서 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="520"/>
-        <location filename="../ber_applet.cpp" line="585"/>
+        <location filename="../ber_applet.cpp" line="519"/>
+        <location filename="../ber_applet.cpp" line="584"/>
         <source>PrivateKey Files</source>
         <translation>개인키 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="525"/>
-        <location filename="../ber_applet.cpp" line="589"/>
+        <location filename="../ber_applet.cpp" line="524"/>
+        <location filename="../ber_applet.cpp" line="588"/>
         <source>PKCS8 Files</source>
         <translation>PKCS8 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="530"/>
+        <location filename="../ber_applet.cpp" line="529"/>
         <source>Text Files</source>
         <translation>텍스트 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="535"/>
+        <location filename="../ber_applet.cpp" line="534"/>
         <source>BER Files</source>
         <translation>BER 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="540"/>
+        <location filename="../ber_applet.cpp" line="539"/>
         <source>Config Files</source>
         <translation>설정 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="545"/>
-        <location filename="../ber_applet.cpp" line="593"/>
+        <location filename="../ber_applet.cpp" line="544"/>
+        <location filename="../ber_applet.cpp" line="592"/>
         <source>PFX Files</source>
         <translation>PFX 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="550"/>
+        <location filename="../ber_applet.cpp" line="549"/>
         <source>Binary Files</source>
         <translation>바이너리 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="555"/>
+        <location filename="../ber_applet.cpp" line="554"/>
         <source>PKCS7 Files</source>
         <translation>PKCS7 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="560"/>
+        <location filename="../ber_applet.cpp" line="559"/>
         <source>JSON Files</source>
         <translation>JSON 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="565"/>
+        <location filename="../ber_applet.cpp" line="564"/>
         <source>XML Files</source>
         <translation>XML 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="570"/>
+        <location filename="../ber_applet.cpp" line="569"/>
         <source>PDF Files</source>
         <translation>PDF 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="575"/>
+        <location filename="../ber_applet.cpp" line="574"/>
         <source>License Files</source>
         <translation>라이선스 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="580"/>
+        <location filename="../ber_applet.cpp" line="579"/>
         <source>DH Parameter Files</source>
         <translation>DH 파라미터 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="598"/>
+        <location filename="../ber_applet.cpp" line="597"/>
         <source>All Files (*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="617"/>
-        <location filename="../ber_applet.cpp" line="641"/>
+        <location filename="../ber_applet.cpp" line="616"/>
+        <location filename="../ber_applet.cpp" line="640"/>
         <source>Open %1</source>
         <translation>%1 열기</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="666"/>
-        <location filename="../ber_applet.cpp" line="695"/>
+        <location filename="../ber_applet.cpp" line="665"/>
+        <location filename="../ber_applet.cpp" line="694"/>
         <source>Save %1</source>
         <translation>%1 저장 하기</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="716"/>
+        <location filename="../ber_applet.cpp" line="715"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>

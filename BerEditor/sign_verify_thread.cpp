@@ -9,6 +9,8 @@
 
 #include <QFileInfo>
 
+extern int g_nVerbose;
+
 SignVerifyThread::SignVerifyThread()
 {
     sctx_ = NULL;
@@ -54,7 +56,7 @@ void SignVerifyThread::run()
     FILE *fp = fopen( src_file_.toLocal8Bit().toStdString().c_str(), "rb" );
     if( fp == NULL )
     {
-        fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
+        if( g_nVerbose ) fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
         goto end;
     }
 
@@ -68,7 +70,7 @@ void SignVerifyThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            fprintf( stderr, "failed to read file: %d\n", nRead );
+            if( g_nVerbose ) fprintf( stderr, "failed to read file: %d\n", nRead );
             goto end;
         }
 

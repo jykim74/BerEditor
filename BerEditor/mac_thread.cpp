@@ -8,6 +8,8 @@
 
 #include <QFileInfo>
 
+extern int g_nVerbose;
+
 MacThread::MacThread()
 {
     hctx_ = NULL;
@@ -53,7 +55,7 @@ void MacThread::run()
 
     if( fp == NULL )
     {
-        fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
+        if( g_nVerbose ) fprintf( stderr, "failed to read file:%s\n", src_file_.toStdString().c_str());
         goto end;
     }
 
@@ -67,7 +69,7 @@ void MacThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 )
         {
-            fprintf( stderr, "failed to read file: %d\n", nRead );
+            if( g_nVerbose ) fprintf( stderr, "failed to read file: %d\n", nRead );
             goto end;
         }
 
@@ -86,7 +88,7 @@ void MacThread::run()
 
         if( ret != 0 )
         {
-            fprintf( stderr, "failed to update : %d\n", ret);
+            if( g_nVerbose ) fprintf( stderr, "failed to update : %d\n", ret);
             break;
         }
 
