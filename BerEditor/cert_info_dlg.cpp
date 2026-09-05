@@ -176,6 +176,7 @@ void CertInfoDlg::showEvent(QShowEvent *event)
 {
     getFields();
     bool bCA = false;
+    BIN binCA = {0,0};
 
     mCertTree->clear();
     QTreeWidgetItem *item = new QTreeWidgetItem;
@@ -194,7 +195,9 @@ void CertInfoDlg::showEvent(QShowEvent *event)
 
     bCA = isCA( strBC );
 
-    if( strCA.length() < 4 )
+    CertManDlg::getCA( &cert_bin_, &binCA );
+
+    if( strCA.length() < 4 && binCA.nLen <= 0 )
     {
         mGetCABtn->setEnabled( false );
         mOCSPCheckBtn->setEnabled( false );
@@ -210,6 +213,8 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         mVerifyCertBtn->setToolTip( tr( "There is no CA url" ));
         mGetURL_CABtn->setToolTip( tr( "There is no CA url" ));
     }
+
+    JS_BIN_reset( &binCA );
 
     if( strCRL.length() < 4 )
     {
