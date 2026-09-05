@@ -722,7 +722,8 @@ void CertInfoDlg::clickMakeTree()
             break;
         }
 
-        ret = CertManDlg::readCA( strCAPath, &binCert, &binCA );
+//        ret = CertManDlg::readCA( strCAPath, &binCert, &binCA );
+        ret = CertManDlg::getCA( &binCert, &binCA );
         if( ret != CKR_OK )
         {
             if( berApplet->settingsMgr()->onlineCA_CRL() == true )
