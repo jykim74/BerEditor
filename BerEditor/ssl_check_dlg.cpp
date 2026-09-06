@@ -431,6 +431,8 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, QString& strMsg, B
     long uFlags = getFlags();
     int nVerifyDepth = mVerifyDepthText->text().toInt();
 
+    int nSockFd = -1;
+
     QDateTime dateTime;
     dateTime.setSecsSinceEpoch(time(NULL));
 
@@ -476,7 +478,6 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, QString& strMsg, B
 
     if( mUseMutualCheck->isChecked() )
     {
-
         QString strClientCAPath = mClientCAPathText->text();
 
         if( strClientCAPath.length() < 1 )
@@ -523,13 +524,19 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, QString& strMsg, B
                 JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binClientCert );
             }
         }
+
+        if( binClientCert.nLen <= 0 || binClientPriKey.nLen <= 0 )
+        {
+            ret = JSR_PKI_GET_CERT_FAIL;
+            goto end;
+        }
     }
 
     log( "===================================================================");
     log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
     log( "-------------------------------------------------------------------");
 
-    int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
+    nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
     {
         berApplet->elog( QString("failed to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
