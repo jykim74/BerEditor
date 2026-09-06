@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>591</width>
-    <height>428</height>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BER check</string>
+   <string>BER format check</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>848</height>
+    <height>842</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -263,7 +263,7 @@
    <item>
     <widget class="QTabWidget" name="mTypeTab">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mSignTab">
       <attribute name="title">
@@ -578,6 +578,27 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_17">
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mVerifyDSSBtn">
+           <property name="text">
+            <string>Verify DSS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mVerifyDocTSPBtn">
+           <property name="text">
+            <string>Verify DocTSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mVerifyChainCheck">
+           <property name="text">
+            <string>Verify Chain</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="mVerifyBtn">
            <property name="text">
@@ -598,24 +619,10 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mVerifyDocTSPBtn">
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mVerifyDSS_VRIBtn">
            <property name="text">
-            <string>Verify DocTSP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="mVerifyChainCheck">
-           <property name="text">
-            <string>Verify Chain</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mVerifyDSSBtn">
-           <property name="text">
-            <string>Verify DSS</string>
+            <string>Verify VRI</string>
            </property>
           </widget>
          </item>
@@ -626,13 +633,6 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mVerifyDSS_VRIBtn">
-           <property name="text">
-            <string>Verify VRI</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_11">
            <property name="minimumSize">
@@ -948,7 +948,6 @@
   <tabstop>mVerifyDSSBtn</tabstop>
   <tabstop>mVerifyDocTSPBtn</tabstop>
   <tabstop>mVRICombo</tabstop>
-  <tabstop>mVerifyDSS_VRIBtn</tabstop>
   <tabstop>mViewSignerBtn</tabstop>
   <tabstop>mViewCMSBtn</tabstop>
   <tabstop>mExportCMSBtn</tabstop>
