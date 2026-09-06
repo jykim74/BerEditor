@@ -1257,6 +1257,8 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
 {
     int ret = 0;
     QString strURI;
+    QString strCRL = "certificateRevocationList";
+    QString strARL = "authorityRevocationList";
 
 //    berApplet->log( QString( "CRLDP : %1" ).arg( strExtCRLDP ));
     strURI = getCRL_URIFromExt( strExtCRLDP );
@@ -1265,6 +1267,11 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     {
         berApplet->elog( "failed to get CRL URI address" );
         return JSR_SSL_NO_CRLDP_INFO;
+    }
+
+    if( (strURI.contains( strCRL, Qt::CaseInsensitive ) == false) && ( strURI.contains( strARL, Qt::CaseInsensitive ) == false ) )
+    {
+        strURI += QString( "?%1").arg( strCRL );
     }
 
     berApplet->log( QString( "CRL URI: %1").arg( strURI));

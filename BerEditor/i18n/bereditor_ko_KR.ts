@@ -9431,6 +9431,14 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
+        <location filename="../est_client_dlg.cpp" line="277"/>
+        <location filename="../est_client_dlg.cpp" line="409"/>
+        <location filename="../est_client_dlg.cpp" line="414"/>
+        <location filename="../est_client_dlg.cpp" line="419"/>
+        <source>It is not supported</source>
+        <translation>지원하지 않습니다</translation>
+    </message>
+    <message>
         <location filename="../est_client_dlg.cpp" line="293"/>
         <source>EST SimpleEnroll KeyPair</source>
         <translation>EST 간단등록 키 쌍</translation>

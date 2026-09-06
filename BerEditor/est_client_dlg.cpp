@@ -274,7 +274,7 @@ void ESTClientDlg::clickMake()
 
 void ESTClientDlg::clickMakeCACerts()
 {
-
+    berApplet->warningBox( tr("It is not supported"), this );
 }
 
 void ESTClientDlg::clickMakeSimpleEnroll()
@@ -406,17 +406,17 @@ end :
 
 void ESTClientDlg::clickMakeFullCMC()
 {
-
+    berApplet->warningBox( tr("It is not supported"), this );
 }
 
 void ESTClientDlg::clickMakeServerKeyGen()
 {
-
+    berApplet->warningBox( tr("It is not supported"), this );
 }
 
 void ESTClientDlg::clickMakeCSRAttrs()
 {
-
+    berApplet->warningBox( tr("It is not supported"), this );
 }
 
 void ESTClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
