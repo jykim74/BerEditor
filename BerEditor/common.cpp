@@ -25,6 +25,7 @@
 #include "js_scep.h"
 #include "js_pqc.h"
 #include "js_error.h"
+#include "js_nid.h"
 
 extern int g_nVerbose;
 
@@ -80,10 +81,14 @@ int setOIDList( const QString& strOIDPath )
     QString strSN;
     QString strLN;
 
+    JS_NID_init();
+
     QFile file( strOIDPath );
 
     if( !file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
         return -1;
+    }
 
     QTextStream in( &file );
     QString line = in.readLine();
@@ -138,7 +143,7 @@ int setOIDList( const QString& strOIDPath )
     }
 
     file.close();
-    JS_SCEP_init();
+
     return nCount;
 }
 

@@ -17,6 +17,7 @@ PasswdDlg::PasswdDlg(QWidget *parent)
     layout()->setSpacing(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+    mPasswdText->setFocus();
 }
 
 PasswdDlg::~PasswdDlg()

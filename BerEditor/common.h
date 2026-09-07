@@ -258,7 +258,7 @@ const QStringList kSymAlgList = {
 
 const QString kSymGeneric = "Generic";
 
-const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096", "8192" };
+const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096", "8192", "16384" };
 
 const QStringList kECDSAOptionList = { "prime256v1",
     "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",

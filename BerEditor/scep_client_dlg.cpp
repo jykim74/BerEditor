@@ -18,6 +18,7 @@
 #include "js_http.h"
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
+#include "js_nid.h"
 
 const QString kSCEPUsedURL = "SCEPUsedURL";
 
@@ -130,7 +131,7 @@ void SCEPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    JS_SCEP_init();
+    JS_NID_init();
     checkEncPriKey();
 
     mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
