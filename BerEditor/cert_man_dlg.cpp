@@ -4135,7 +4135,9 @@ void CertManDlg::clickTLViewPubKey()
 {
     int ret = -1;
     PriKeyInfoDlg priKeyInfo;
-    BIN binData = {0,0};
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+
     QString strFile = mTLCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -4144,15 +4146,24 @@ void CertManDlg::clickTLViewPubKey()
         return;
     }
 
-    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binCert );
     if( ret < 0 )
     {
         berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
-        return;
+        goto end;
     }
 
-    priKeyInfo.setPublicKey( &binData );
+    ret = JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "failed to get public key : %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
+
+    priKeyInfo.setPublicKey( &binPubKey );
     priKeyInfo.exec();
 
-    JS_BIN_reset( &binData );
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
 }
