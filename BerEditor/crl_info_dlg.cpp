@@ -129,6 +129,9 @@ void CRLInfoDlg::clickSaveToMan()
     int ret = 0;
     QString strCRLPath = berApplet->settingsMgr()->CRLPath();
 
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to save it?"), this, true );
+    if( bVal == false ) return;
+
     ret = CertManDlg::writeCRL( strCRLPath, &crl_bin_, nullptr );
     if( ret > 0 )
     {

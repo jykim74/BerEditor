@@ -96,7 +96,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -389,6 +389,13 @@
              <widget class="QPushButton" name="mDelCertBtn">
               <property name="text">
                <string>Delete Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QPushButton" name="mDecodePriKeyInfoBtn">
+              <property name="text">
+               <string>Decode PriKey Info</string>
               </property>
              </widget>
             </item>
@@ -1525,17 +1532,31 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="mTLSavePFXBtn">
-              <property name="text">
-               <string>Save PFX to EE</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="4">
              <widget class="QPushButton" name="mTLViewPubKeyBtn">
               <property name="text">
                <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mTLDecodePriInfoBtn">
+              <property name="text">
+               <string>Decode PriKeyInfo</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mTLGetRandomBtn">
+              <property name="text">
+               <string>Get Random</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mTLSavePFXBtn">
+              <property name="text">
+               <string>Save PFX to EE</string>
               </property>
              </widget>
             </item>
@@ -1692,7 +1713,6 @@
   <tabstop>mTLEncryptPFXBtn</tabstop>
   <tabstop>mTLDecryptPFXBtn</tabstop>
   <tabstop>mTLViewPubKeyBtn</tabstop>
-  <tabstop>mTLSavePFXBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -94,6 +94,7 @@ private slots:
     void clickDeleteCert();
     void clickDecodeCert();
     void clickDecodePriKey();
+    void clickDecodePriKeyInfo();
     void clickCheckKeyPair();
     void clickImport();
     void clickExport();
@@ -157,6 +158,8 @@ private slots:
     void clickTLSavePFX();
     void clickTLViewPriKey();
     void clickTLViewPubKey();
+    void clickTLDecodePriInfo();
+    void clickTLGetRandom();
 
 private:
     void initUI();

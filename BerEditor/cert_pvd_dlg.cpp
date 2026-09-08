@@ -205,19 +205,31 @@ int CertPVDDlg::getStatusData( const BIN *pCert, bool bOnline, BIN *pCA, BIN *pC
     if( pCA )
     {
         ret = CertInfoDlg::getCA2( pCert, bOnline, pCA );
-        if( ret != 0 ) return JSR_PKI_GET_CA_FAIL;
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "failed to get CA: %1" ).arg( JERR(ret)));
+            return JSR_PKI_GET_CA_FAIL;
+        }
     }
 
     if( pCRL )
     {
         ret = CertInfoDlg::getCRL2( pCert, bOnline, pCRL );
-        if( ret != 0 ) return JSR_PKI_GET_CRL_FAIL;
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "failed to get CRL: %1" ).arg( JERR(ret)));
+            return JSR_PKI_GET_CRL_FAIL;
+        }
     }
 
     if( pOCSP )
     {
         ret = CertInfoDlg::getOCSP2( pCert, pCA, pOCSP );
-        if( ret != 0 ) return JSR_PKI_GET_OCSP_FAIL;
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "failed to get OCSP: %1" ).arg( JERR(ret)));
+            return JSR_PKI_GET_OCSP_FAIL;
+        }
     }
 
     return ret;

@@ -611,6 +611,9 @@ void CertInfoDlg::clickSaveToMan()
     int ret = 0;
     QString strPath = berApplet->settingsMgr()->otherCertPath();
 
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to save it?"), this, true );
+    if( bVal == false ) return;
+
     ret = CertManDlg::writeNameHash( strPath, &cert_bin_, nullptr );
 
     if( ret > 0 )
@@ -628,6 +631,9 @@ void CertInfoDlg::clickSaveToCA()
 {
     int ret = 0;
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
+
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to save it?"), this, true );
+    if( bVal == false ) return;
 
     ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_, nullptr );
 
@@ -647,6 +653,9 @@ void CertInfoDlg::clickSaveTrustedCA()
     unsigned long uHash = 0;
 
     QString strTrustedCAPath = berApplet->settingsMgr()->trustCertPath();
+
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to save it?"), this, true );
+    if( bVal == false ) return;
 
     if( QDir( strTrustedCAPath ).exists() == false )
         QDir().mkdir( strTrustedCAPath );
@@ -1385,6 +1394,10 @@ int CertInfoDlg::getCA2( const BIN *pCert, bool bOnline, BIN *pCA )
                 }
             }
         }
+        else
+        {
+            ret = JSR_NEED_ONLINE_CHECK;
+        }
     }
     else
     {
@@ -1422,6 +1435,10 @@ int CertInfoDlg::getCRL2( const BIN *pCert, bool bOnline, BIN *pCRL )
                     berApplet->log( QString( "Read CRL[%1] from AIA" ).arg( sCertInfo.pSubjectName ));
                 }
             }
+        }
+        else
+        {
+            ret = JSR_NEED_ONLINE_CHECK;
         }
     }
     else

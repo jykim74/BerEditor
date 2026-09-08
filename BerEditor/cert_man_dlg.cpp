@@ -72,6 +72,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mDelCertBtn, SIGNAL(clicked()), this, SLOT(clickDeleteCert()));
     connect( mDecodeCertBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCert()));
     connect( mDecodePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickDecodePriKey()));
+    connect( mDecodePriKeyInfoBtn, SIGNAL(clicked()), this, SLOT(clickDecodePriKeyInfo()));
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mImportBtn, SIGNAL(clicked()), this, SLOT(clickImport()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
@@ -132,6 +133,8 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLSavePFXBtn, SIGNAL(clicked()), this, SLOT(clickTLSavePFX()));
     connect( mTLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPriKey()));
     connect( mTLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPubKey()));
+    connect( mTLDecodePriInfoBtn, SIGNAL(clicked()), this, SLOT(clickTLDecodePriInfo()));
+    connect( mTLGetRandomBtn, SIGNAL(clicked()), this, SLOT(clickTLGetRandom()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -584,6 +587,9 @@ void CertManDlg::initUI()
     mTLPriKeyPathText->setPlaceholderText( tr("Find a private key") );
     mTLCertPathText->setPlaceholderText( tr("Find a certificate") );
     mTLPFXPathText->setPlaceholderText( tr("Find a PFX") );
+
+    mTLDecodePriInfoBtn->setEnabled( false );
+    mTLGetRandomBtn->setEnabled( false );
 }
 
 void CertManDlg::initialize()
@@ -2067,6 +2073,47 @@ end :
     JS_BIN_reset( &binCert );
 }
 
+void CertManDlg::clickDecodePriKeyInfo()
+{
+    int ret = 0;
+
+    BIN binPriKey = {0,0};
+    BIN binEncPriKey = {0,0};
+    BIN binPriKeyInfo = {0,0};
+    BIN binCert = {0,0};
+
+    QString strPass = mEE_PasswdText->text();
+
+    if( strPass.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        mEE_PasswdText->setFocus();
+        return;
+    }
+
+    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, &binPriKeyInfo, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "failed to decrypt private key: %1").arg( JERR(ret) ), this );
+        goto end;
+    }
+
+    berApplet->decodeTitle( &binPriKeyInfo, tr("PrivateKey Information") );
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPriKeyInfo );
+}
+
 void CertManDlg::clickCheckKeyPair()
 {
     int ret = 0;
@@ -3488,6 +3535,9 @@ void CertManDlg::checkTLEncPriKey()
         mTLPriKeyLabel->setText( tr("EncPrivateKey") );
     else
         mTLPriKeyLabel->setText( tr("PrivateKey" ) );
+
+    mTLDecodePriInfoBtn->setEnabled( bVal );
+    mTLGetRandomBtn->setEnabled( bVal );
 }
 
 void CertManDlg::clickTLCheckKeyPair()
@@ -3946,6 +3996,139 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binEncPri );
 
+}
+
+void CertManDlg::clickTLDecodePriInfo()
+{
+    int ret = 0;
+
+    BIN binPri = {0,0};
+    BIN binEncPri = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mTLPriKeyPathText->text();
+    PriKeyInfoDlg priKeyInfo;
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find private key"), this );
+        return;
+    }
+
+
+    if( mTLEncPriKeyCheck->isChecked() )
+    {
+        PasswdDlg passDlg;
+        QString strPass;
+
+
+        passDlg.setTitle( tr("Enter private key password") );
+
+        if( passDlg.exec() != QDialog::Accepted )
+            goto end;
+
+        strPass = passDlg.mPasswdText->text();
+
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, &binInfo, &binPri );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "failed to decrypt the private key: %1").arg( ret ), this );
+            goto end;
+        }
+
+        berApplet->decodeTitle( &binInfo, tr("PrivateKey Information") );
+    }
+    else
+    {
+        berApplet->warningBox( tr("Only encrypted keys are supported."), this );
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binInfo );
+}
+
+void CertManDlg::clickTLGetRandom()
+{
+    int ret = 0;
+
+    BIN binPri = {0,0};
+    BIN binEncPri = {0,0};
+    BIN binInfo = {0,0};
+    BIN binRand = {0,0};
+
+    QString strPriPath = mTLPriKeyPathText->text();
+    PriKeyInfoDlg priKeyInfo;
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find private key"), this );
+        return;
+    }
+
+
+    if( mTLEncPriKeyCheck->isChecked() )
+    {
+        PasswdDlg passDlg;
+        QString strPass;
+
+
+        passDlg.setTitle( tr("Enter private key password") );
+
+        if( passDlg.exec() != QDialog::Accepted )
+            goto end;
+
+        strPass = passDlg.mPasswdText->text();
+
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, &binInfo, &binPri );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "failed to decrypt the private key: %1").arg( ret ), this );
+            goto end;
+        }
+
+        JS_BIN_reset( &binPri );
+
+        ret = JS_PKI_decodePrivateKeyInfo2( &binInfo, &binPri, &binRand );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to decode privateKeyInfo : %1" ).arg( JERR(ret)), this );
+            return;
+        }
+
+        if( binRand.nLen > 0 )
+            berApplet->messageLog( QString( "Random: %1").arg(getHexString( &binRand)), this );
+        else
+            berApplet->warningBox( tr( "There is no random value" ), this );
+
+    }
+    else
+    {
+        berApplet->warningBox( tr("Only encrypted keys are supported."), this );
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binRand );
+    JS_BIN_reset( &binInfo );
 }
 
 void CertManDlg::clickTLViewPubKey()
