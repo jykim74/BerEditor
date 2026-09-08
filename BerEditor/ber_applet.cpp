@@ -340,14 +340,14 @@ bool BerApplet::yesOrCancelBox(const QString& msg, QWidget *parent, bool default
 
 void BerApplet::messageLog( const QString strLog, QWidget *parent )
 {
-    messageBox( strLog, parent );
     log( strLog );
+    messageBox( strLog, parent );
 }
 
 void BerApplet::warnLog( const QString strLog, QWidget *parent )
 {
-    warningBox( strLog, parent );
     elog( strLog );
+    warningBox( strLog, parent );
 }
 
 void BerApplet::formatWarn( int rv, QWidget *parent )
