@@ -2288,6 +2288,7 @@ void CertManDlg::clickChangePasswd()
 
     BIN binPriKey = {0,0};
     BIN binEncPriKey = {0,0};
+    BIN binP8Info = {0,0};
     BIN binNewEncPriKey = {0,0};
     BIN binCert = {0,0};
 
@@ -2308,7 +2309,7 @@ void CertManDlg::clickChangePasswd()
         goto end;
     }
 
-    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, &binP8Info, &binPriKey );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "failed to decrypt private key: %1").arg( JERR(ret) ), this );
@@ -2322,7 +2323,8 @@ void CertManDlg::clickChangePasswd()
     {
         QString strNewPass = newPasswd.mPasswdText->text();
 
-        ret = JS_PKI_encryptPrivateKey( nPBE, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
+//        ret = JS_PKI_encryptPrivateKey( nPBE, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
+        ret = JS_PKI_encryptPrivateKeyInfo( nPBE, strNewPass.toStdString().c_str(), &binP8Info, &binNewEncPriKey );
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "failed to encrypt private key: %1").arg( JERR(ret) ), this );
@@ -2343,6 +2345,7 @@ void CertManDlg::clickChangePasswd()
 end :
     JS_BIN_reset( &binPriKey );
     JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binP8Info );
     JS_BIN_reset( &binNewEncPriKey );
     JS_BIN_reset( &binCert );
 }
