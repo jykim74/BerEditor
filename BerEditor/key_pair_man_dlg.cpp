@@ -1652,7 +1652,7 @@ void KeyPairManDlg::clickImport()
 
         strPasswd = passDlg.mPasswdText->text();
 
-        ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
+        ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert, NULL );
         if( ret != 0 )
         {
             berApplet->warningBox( tr( "failed to decrypt PFX: %1" ).arg(JERR(ret)), this );

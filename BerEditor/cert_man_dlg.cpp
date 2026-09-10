@@ -2186,7 +2186,7 @@ void CertManDlg::clickImport()
 
     strPass = passwdDlg.mPasswdText->text();
 
-    ret = JS_PKI_decodePFX( &binPFX, strPass.toStdString().c_str(), &binPri, &binCert );
+    ret = JS_PKI_decodePFX( &binPFX, strPass.toStdString().c_str(), &binPri, &binCert, NULL );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "failed to decrypt PFX: %1").arg( JERR(ret) ), this);
@@ -3736,7 +3736,7 @@ void CertManDlg::clickTLEncryptPFX()
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    ret = JS_PKI_encodePFX( &binPFX, strPFXPasswd.toStdString().c_str(), nPBE, &binPri, &binCert );
+    ret = JS_PKI_encodePFX( &binPFX, strPFXPasswd.toStdString().c_str(), nPBE, &binPri, &binCert, NULL );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "failed to make PFX: %1").arg(ret), this);
@@ -3799,7 +3799,7 @@ void CertManDlg::clickTLDecryptPFX()
         goto end;
     }
 
-    ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert );
+    ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert, NULL );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "failed to decrypt PFX: %1").arg(JERR(ret)), this);
@@ -3904,7 +3904,7 @@ void CertManDlg::clickTLSavePFX()
         goto end;
     }
 
-    ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
+    ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert, NULL );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "failed to decrypt PFX: %1").arg(JERR(ret)), this);

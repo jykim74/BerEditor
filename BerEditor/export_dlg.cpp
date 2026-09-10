@@ -779,7 +779,7 @@ int ExportDlg::exportPFX()
     strPass = newPass.mPasswdText->text();
     nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
 
-    ret = JS_PKI_encodePFX( &binPFX, strPass.toStdString().c_str(), nPBE, &data_, &data2_ );
+    ret = JS_PKI_encodePFX( &binPFX, strPass.toStdString().c_str(), nPBE, &data_, &data2_, NULL );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "failed to encrypt PFX: %1").arg(ret), this);
