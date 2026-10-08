@@ -96,7 +96,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -1114,6 +1114,13 @@
              <widget class="QPushButton" name="mAddTrustBtn">
               <property name="text">
                <string>Add Trust</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mLoadSystemTrustBtn">
+              <property name="text">
+               <string>Load System Trust</string>
               </property>
              </widget>
             </item>

@@ -139,6 +139,7 @@ private slots:
     void clickDecodeTrust();
     void clickViewPubKeyTrust();
     void clickExportTrust();
+    void clickLoadSytemTrust();
 
     void decodeTLPriKey();
     void decodeTLCert();

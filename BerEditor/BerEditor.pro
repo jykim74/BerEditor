@@ -317,7 +317,7 @@ win32 {
     LIBS += -L"../../lib/win64/xmlsec1/libxslt/bin -lxslt"
     LIBS += -L"../../lib/win64 -lltdl -lldap -llber"
     LIBS += -L"../../lib/win64/winsparkle/lib -lWinSparkle"
-    LIBS += -lws2_32
+    LIBS += -lws2_32 -lcrypt32
 }
 
 FORMS += \

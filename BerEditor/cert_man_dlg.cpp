@@ -2,6 +2,19 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QMenu>
+#include <QFile>
+#include <QSslCertificate>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <wincrypt.h>
+#pragma comment(lib, "Crypt32.lib")
+#endif
+
+#ifdef Q_OS_MAC
+#include <Security/Security.h>
+#include <CoreFoundation/CoreFoundation.h>
+#endif
 
 #include "cert_man_dlg.h"
 #include "common.h"
@@ -112,6 +125,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mDecodeTrustBtn, SIGNAL(clicked()), this, SLOT(clickDecodeTrust()));
     connect( mViewPubKeyTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyTrust()));
     connect( mExportTrustBtn, SIGNAL(clicked()), this, SLOT(clickExportTrust()));
+    connect( mLoadSystemTrustBtn, SIGNAL(clicked()), this, SLOT(clickLoadSytemTrust()));
 
     connect( mFindTLPriKeyBtn, SIGNAL(clicked()), this, SLOT(findTLPriKey()));
     connect( mFindTLCertBtn, SIGNAL(clicked()), this, SLOT(findTLCert()));
@@ -3420,6 +3434,219 @@ void CertManDlg::clickExportTrust()
 
     JS_PKI_resetCertInfo( &sCertInfo );
     JS_BIN_reset( &binCert );
+}
+
+#ifdef Q_OS_WIN
+QList<QSslCertificate> loadWindowsRootCertificates()
+{
+    int ret = 0;
+    QList<QSslCertificate> result;
+
+    HCERTSTORE hStore = CertOpenStore(
+        CERT_STORE_PROV_SYSTEM_W,
+        0,
+        0,
+        CERT_SYSTEM_STORE_CURRENT_USER,
+        L"ROOT"
+        );
+    /*
+    HCERTSTORE hStore = CertOpenStore(
+        CERT_STORE_PROV_SYSTEM_W,
+        0,
+        0,
+        CERT_SYSTEM_STORE_LOCAL_MACHINE,
+        L"ROOT"
+        );
+    */
+
+    if (!hStore)
+        return result;
+
+    PCCERT_CONTEXT ctx = nullptr;
+
+
+    while ((ctx = CertEnumCertificatesInStore(hStore, ctx)) != nullptr) {
+
+        const unsigned char *data =
+            ctx->pbCertEncoded;
+
+        const int len =
+            static_cast<int>(ctx->cbCertEncoded);
+
+        QSslCertificate cert(
+            QByteArray(
+                reinterpret_cast<const char *>(data),
+                len),
+            QSsl::Der
+            );
+
+        if (!cert.isNull())
+        {
+            result.append(cert);
+        }
+    }
+
+    CertCloseStore(hStore, 0);
+
+    return result;
+}
+
+#endif
+
+#ifdef Q_OS_MAC
+
+#include <Security/Security.h>
+#include <CoreFoundation/CoreFoundation.h>
+#include <QSslCertificate>
+
+QList<QSslCertificate> loadMacRootCertificates()
+{
+    QList<QSslCertificate> result;
+
+    SecKeychainRef keychain = nullptr;
+
+    CFURLRef url =
+        CFURLCreateFromFileSystemRepresentation(
+            nullptr,
+            reinterpret_cast<const UInt8 *>(
+                "/System/Library/Keychains/SystemRootCertificates.keychain"),
+            strlen(
+                "/System/Library/Keychains/SystemRootCertificates.keychain"),
+            false
+            );
+
+    if (!url)
+        return result;
+
+    OSStatus status =
+        SecKeychainOpen(
+            "/System/Library/Keychains/SystemRootCertificates.keychain",
+            &keychain
+            );
+
+    if (status != errSecSuccess) {
+        CFRelease(url);
+        return result;
+    }
+
+    SecKeychainSearchRef search = nullptr;
+
+    status = SecKeychainSearchCreateFromAttributes(
+        keychain,
+        kSecCertificateItemClass,
+        nullptr,
+        &search
+        );
+
+    if (status != errSecSuccess) {
+        CFRelease(keychain);
+        CFRelease(url);
+        return result;
+    }
+
+    SecKeychainItemRef item = nullptr;
+
+    while (SecKeychainSearchCopyNext(search, &item)
+           == errSecSuccess) {
+
+        SecCertificateRef cert =
+            reinterpret_cast<SecCertificateRef>(item);
+
+        CFDataRef data =
+            SecCertificateCopyData(cert);
+
+        if (data) {
+
+            const UInt8 *bytes =
+                CFDataGetBytePtr(data);
+
+            CFIndex length =
+                CFDataGetLength(data);
+
+            QSslCertificate qcert(
+                QByteArray(
+                    reinterpret_cast<const char *>(bytes),
+                    static_cast<int>(length)),
+                QSsl::Der
+                );
+
+            if (!qcert.isNull())
+                result.append(qcert);
+
+            CFRelease(data);
+        }
+
+        CFRelease(item);
+    }
+
+    CFRelease(search);
+    CFRelease(keychain);
+    CFRelease(url);
+
+    return result;
+}
+
+#endif
+
+#ifdef Q_OS_LINUX
+QList<QSslCertificate> loadLinuxRootCertificates()
+{
+    QList<QSslCertificate> result;
+
+    QStringList paths = {
+        "/etc/ssl/certs/ca-certificates.crt",
+        "/etc/pki/tls/certs/ca-bundle.crt",
+        "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+    };
+
+    for (const QString &path : paths) {
+
+        QFile file(path);
+
+        if (!file.open(QIODevice::ReadOnly))
+            continue;
+
+        QByteArray data = file.readAll();
+
+        const QList<QSslCertificate> certs =
+            QSslCertificate::fromData(
+                data,
+                QSsl::Pem
+                );
+
+        result.append(certs);
+
+        if (!result.isEmpty())
+            break;
+    }
+
+    return result;
+}
+#endif
+
+QList<QSslCertificate> loadSystemRootCertificates()
+{
+    QList<QSslCertificate> certList;
+#ifdef Q_OS_WIN
+    certList = loadWindowsRootCertificates();
+#elif defined(Q_OS_MAC)
+    certList = loadMacRootCertificates();
+#elif defined(Q_OS_LINUX)
+    certList = loadLinuxRootCertificates();
+#else
+    certList = QSslSocket::defaultCaCertificates();
+#endif
+    for( int i = 0; i < certList.size(); i++ )
+    {
+        QSslCertificate cert = certList.at(i);
+    }
+}
+
+void CertManDlg::clickLoadSytemTrust()
+{
+    bool bVal = berApplet->yesOrCancelBox( tr("Do you really want to retrieve the system trust list?"), this, true );
+
+    if( bVal == true ) loadSystemRootCertificates();
 }
 
 void CertManDlg::decodeTLPriKey()
