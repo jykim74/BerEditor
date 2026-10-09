@@ -332,7 +332,10 @@ elseif(APPLE)
         "-framework Carbon"
         "-framework Foundation"
         "-framework ApplicationServices"
-        "-framework Sparkle" )
+        "-framework Sparkle"
+        "-framework Security"
+        "-framework CoreFoundation"
+    )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 

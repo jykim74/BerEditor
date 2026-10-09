@@ -264,6 +264,8 @@ mac {
     LIBS += -framework Foundation
     LIBS += -framework ApplicationServices
     LIBS += -framework Sparkle
+    LIBS += -framework Security
+    LIBS += -framework CoreFoundation
     INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
 
     INCLUDEPATH += "/usr/local/include"

@@ -3627,6 +3627,7 @@ QList<QSslCertificate> loadLinuxRootCertificates()
 QList<QSslCertificate> loadSystemRootCertificates()
 {
     QList<QSslCertificate> certList;
+
 #ifdef Q_OS_WIN
     certList = loadWindowsRootCertificates();
 #elif defined(Q_OS_MAC)
@@ -3636,17 +3637,67 @@ QList<QSslCertificate> loadSystemRootCertificates()
 #else
     certList = QSslSocket::defaultCaCertificates();
 #endif
-    for( int i = 0; i < certList.size(); i++ )
-    {
-        QSslCertificate cert = certList.at(i);
-    }
+
+    return certList;
 }
 
 void CertManDlg::clickLoadSytemTrust()
 {
-    bool bVal = berApplet->yesOrCancelBox( tr("Do you really want to retrieve the system trust list?"), this, true );
+    int ret = 0;
+    QList<QSslCertificate> trustList;
+    QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
-    if( bVal == true ) loadSystemRootCertificates();
+    bool bVal = berApplet->yesOrCancelBox( tr("Do you really want to retrieve the system trust list?"), this, true );
+    if( bVal == false ) return;
+
+    QDir dir;
+
+    if( dir.exists( strTrustPath ) == false )
+    {
+        if( dir.mkdir( strTrustPath ) == false )
+        {
+            berApplet->warningBox( tr( "failed to make TrustCA folder: %1").arg( strTrustPath ), this );
+            return;
+        }
+    }
+
+    trustList = loadSystemRootCertificates();
+
+    for( int i = 0; i < trustList.size(); i++ )
+    {
+        unsigned long uHash = 0;
+        BIN binCA = {0,0};
+        QSslCertificate cert = trustList.at(i);
+
+        QByteArray der = cert.toDer();
+        JS_BIN_set( &binCA, (unsigned char *)der.data(), der.length() );
+
+        ret = JS_PKI_getSubjectNameHash( &binCA, &uHash );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binCA );
+            continue;
+        }
+
+        QString strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
+        QString strSaveName = QString( "%1/%2" ).arg( strTrustPath ).arg( strFileName );
+        if( QFileInfo::exists( strFileName ) == true )
+        {
+            berApplet->elog( QString( "The file(%1) already exists").arg( strSaveName ) );
+            JS_BIN_reset( &binCA );
+            continue;
+        }
+
+        ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
+        if( ret <= 0 )
+        {
+            berApplet->elog( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(JERR(ret)) );
+        }
+
+        JS_BIN_reset( &binCA );
+    }
+
+    loadTrustList();
 }
 
 void CertManDlg::decodeTLPriKey()
