@@ -3651,6 +3651,7 @@ void CertManDlg::clickLoadSytemTrust()
     if( bVal == false ) return;
 
     QDir dir;
+    int nCount = 0;
 
     if( dir.exists( strTrustPath ) == false )
     {
@@ -3681,7 +3682,7 @@ void CertManDlg::clickLoadSytemTrust()
 
         QString strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
         QString strSaveName = QString( "%1/%2" ).arg( strTrustPath ).arg( strFileName );
-        if( QFileInfo::exists( strFileName ) == true )
+        if( QFileInfo::exists( strSaveName ) == true )
         {
             berApplet->elog( QString( "The file(%1) already exists").arg( strSaveName ) );
             JS_BIN_reset( &binCA );
@@ -3693,11 +3694,20 @@ void CertManDlg::clickLoadSytemTrust()
         {
             berApplet->elog( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(JERR(ret)) );
         }
+        else
+        {
+            nCount++;
+        }
 
         JS_BIN_reset( &binCA );
     }
 
-    loadTrustList();
+    if( nCount > 0 )
+    {
+        loadTrustList();
+    }
+
+    berApplet->messageBox( tr( "%1 certificate(s) added." ).arg(nCount), this );
 }
 
 void CertManDlg::decodeTLPriKey()
