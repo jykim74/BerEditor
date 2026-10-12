@@ -8,7 +8,6 @@
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <wincrypt.h>
-#pragma comment(lib, "Crypt32.lib")
 #endif
 
 #ifdef Q_OS_MAC
@@ -3437,11 +3436,11 @@ void CertManDlg::clickExportTrust()
 }
 
 #ifdef Q_OS_WIN
-QList<QSslCertificate> loadWindowsRootCertificates()
+int loadWindowsRootCertificates( BINList **ppCertList )
 {
     int ret = 0;
-    QList<QSslCertificate> result;
 
+#if 1
     HCERTSTORE hStore = CertOpenStore(
         CERT_STORE_PROV_SYSTEM_W,
         0,
@@ -3449,7 +3448,7 @@ QList<QSslCertificate> loadWindowsRootCertificates()
         CERT_SYSTEM_STORE_CURRENT_USER,
         L"ROOT"
         );
-    /*
+#else
     HCERTSTORE hStore = CertOpenStore(
         CERT_STORE_PROV_SYSTEM_W,
         0,
@@ -3457,38 +3456,36 @@ QList<QSslCertificate> loadWindowsRootCertificates()
         CERT_SYSTEM_STORE_LOCAL_MACHINE,
         L"ROOT"
         );
-    */
+#endif
 
-    if (!hStore)
-        return result;
+    if (!hStore) return -1;
 
     PCCERT_CONTEXT ctx = nullptr;
+    int nIndex = 0;
 
 
-    while ((ctx = CertEnumCertificatesInStore(hStore, ctx)) != nullptr) {
-
-        const unsigned char *data =
-            ctx->pbCertEncoded;
-
-        const int len =
-            static_cast<int>(ctx->cbCertEncoded);
-
-        QSslCertificate cert(
-            QByteArray(
-                reinterpret_cast<const char *>(data),
-                len),
-            QSsl::Der
+    while ((ctx = CertEnumCertificatesInStore(hStore, ctx)) != nullptr)
+    {
+        /*
+        QByteArray der(
+            reinterpret_cast<const char *>(ctx->pbCertEncoded),
+            static_cast<int>(ctx->cbCertEncoded)
             );
+        */
 
-        if (!cert.isNull())
+        BIN binCert = {0,0};
+        binCert.nLen = ctx->cbCertEncoded;
+        binCert.pVal = ctx->pbCertEncoded;
+        if( binCert.nLen > 0 )
         {
-            result.append(cert);
+            JS_BIN_addList( ppCertList, &binCert );
+            nIndex++;
         }
     }
 
     CertCloseStore(hStore, 0);
 
-    return result;
+    return nIndex;
 }
 
 #endif
@@ -3499,10 +3496,9 @@ QList<QSslCertificate> loadWindowsRootCertificates()
 #include <CoreFoundation/CoreFoundation.h>
 #include <QSslCertificate>
 
-QList<QSslCertificate> loadMacRootCertificates()
+int loadMacRootCertificates( BINList **ppCertLIst )
 {
-    QList<QSslCertificate> result;
-
+    int nIndex = 0;
     SecKeychainRef keychain = nullptr;
 
     CFURLRef url =
@@ -3515,8 +3511,7 @@ QList<QSslCertificate> loadMacRootCertificates()
             false
             );
 
-    if (!url)
-        return result;
+    if (!url) return -1;
 
     OSStatus status =
         SecKeychainOpen(
@@ -3526,7 +3521,7 @@ QList<QSslCertificate> loadMacRootCertificates()
 
     if (status != errSecSuccess) {
         CFRelease(url);
-        return result;
+        return -2;
     }
 
     SecKeychainSearchRef search = nullptr;
@@ -3541,7 +3536,7 @@ QList<QSslCertificate> loadMacRootCertificates()
     if (status != errSecSuccess) {
         CFRelease(keychain);
         CFRelease(url);
-        return result;
+        return -3;
     }
 
     SecKeychainItemRef item = nullptr;
@@ -3556,22 +3551,21 @@ QList<QSslCertificate> loadMacRootCertificates()
             SecCertificateCopyData(cert);
 
         if (data) {
-
+            BIN binCert = {0,0};
             const UInt8 *bytes =
                 CFDataGetBytePtr(data);
 
             CFIndex length =
                 CFDataGetLength(data);
 
-            QSslCertificate qcert(
-                QByteArray(
-                    reinterpret_cast<const char *>(bytes),
-                    static_cast<int>(length)),
-                QSsl::Der
-                );
+            binCert.pVal = bytes;
+            binCert.nLen = length;
 
-            if (!qcert.isNull())
-                result.append(qcert);
+            if( binCert.nLen > 0 )
+            {
+                JS_BIN_addList( ppCertList, &binCert );
+                nIndex++;
+            }
 
             CFRelease(data);
         }
@@ -3583,14 +3577,15 @@ QList<QSslCertificate> loadMacRootCertificates()
     CFRelease(keychain);
     CFRelease(url);
 
-    return result;
+    return nIndex;
 }
 
 #endif
 
 #ifdef Q_OS_LINUX
-QList<QSslCertificate> loadLinuxRootCertificates()
+int loadLinuxRootCertificates( BINList **ppCertList )
 {
+    int nIndex = 0;
     QList<QSslCertificate> result;
 
     QStringList paths = {
@@ -3614,37 +3609,47 @@ QList<QSslCertificate> loadLinuxRootCertificates()
                 QSsl::Pem
                 );
 
-        result.append(certs);
+        for( int i = 0; i < certs.size(); i++ )
+        {
+            BIN binCert = {0,0};
+            QSslCertificate cert = certs.at(i);
+            QByteArray der = cert.toDer();
 
-        if (!result.isEmpty())
-            break;
+            binCert.pVal = (unsigned char *)der.data();
+            binCert.nLen = der.length();
+
+            if( binCert.nLen > 0 )
+            {
+                JS_BIN_addList( ppCertList, &binCert );
+                nIndex++;
+            }
+        }
     }
 
-    return result;
+    return nIndex;
 }
 #endif
 
-QList<QSslCertificate> loadSystemRootCertificates()
+int loadSystemRootCertificates( BINList **ppCertList )
 {
-    QList<QSslCertificate> certList;
-
+    int ret = 0;
 #ifdef Q_OS_WIN
-    certList = loadWindowsRootCertificates();
+    ret = loadWindowsRootCertificates( ppCertList );
 #elif defined(Q_OS_MAC)
-    certList = loadMacRootCertificates();
+    ret = loadMacRootCertificates( ppCertList );
 #elif defined(Q_OS_LINUX)
-    certList = loadLinuxRootCertificates();
-#else
-    certList = QSslSocket::defaultCaCertificates();
+    ret = loadLinuxRootCertificates( ppCertList );
 #endif
 
-    return certList;
+    return ret;
 }
 
 void CertManDlg::clickLoadSytemTrust()
 {
     int ret = 0;
-    QList<QSslCertificate> trustList;
+    BINList *pTrustList = NULL;
+    const BINList *pCurList = NULL;
+
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
     bool bVal = berApplet->yesOrCancelBox( tr("Do you really want to retrieve the system trust list?"), this, true );
@@ -3652,6 +3657,7 @@ void CertManDlg::clickLoadSytemTrust()
 
     QDir dir;
     int nCount = 0;
+    int nListCount = 0;
 
     if( dir.exists( strTrustPath ) == false )
     {
@@ -3662,21 +3668,19 @@ void CertManDlg::clickLoadSytemTrust()
         }
     }
 
-    trustList = loadSystemRootCertificates();
+    ret = loadSystemRootCertificates( &pTrustList );
+    nListCount = JS_BIN_countList( pTrustList );
 
-    for( int i = 0; i < trustList.size(); i++ )
+    for( int i = 0; i < nListCount; i++ )
     {
         unsigned long uHash = 0;
-        BIN binCA = {0,0};
-        QSslCertificate cert = trustList.at(i);
 
-        QByteArray der = cert.toDer();
-        JS_BIN_set( &binCA, (unsigned char *)der.data(), der.length() );
+        pCurList = JS_BIN_getListAt( i, pTrustList );
 
-        ret = JS_PKI_getSubjectNameHash( &binCA, &uHash );
+
+        ret = JS_PKI_getSubjectNameHash( &pCurList->Bin, &uHash );
         if( ret != 0 )
         {
-            JS_BIN_reset( &binCA );
             continue;
         }
 
@@ -3685,11 +3689,10 @@ void CertManDlg::clickLoadSytemTrust()
         if( QFileInfo::exists( strSaveName ) == true )
         {
             berApplet->elog( QString( "The file(%1) already exists").arg( strSaveName ) );
-            JS_BIN_reset( &binCA );
             continue;
         }
 
-        ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_writePEM( &pCurList->Bin, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
         if( ret <= 0 )
         {
             berApplet->elog( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(JERR(ret)) );
@@ -3698,8 +3701,6 @@ void CertManDlg::clickLoadSytemTrust()
         {
             nCount++;
         }
-
-        JS_BIN_reset( &binCA );
     }
 
     if( nCount > 0 )
@@ -3707,6 +3708,7 @@ void CertManDlg::clickLoadSytemTrust()
         loadTrustList();
     }
 
+    if( pTrustList ) JS_BIN_resetList( &pTrustList );
     berApplet->messageBox( tr( "%1 certificate(s) added." ).arg(nCount), this );
 }
 
