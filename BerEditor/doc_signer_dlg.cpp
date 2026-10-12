@@ -685,6 +685,8 @@ void DocSignerDlg::initialize()
     changeCMSCmd();
     checkUseTSP();
 
+    mCMSTrustListCheck->setChecked(true);
+
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
     checkUseCertMan();
 }

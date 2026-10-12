@@ -177,6 +177,7 @@ void PKCS7Dlg::initUI()
     checkEncode();
     changeCmd();
     checkAtTime();
+    mTrustListCheck->setChecked(true);
 }
 
 void PKCS7Dlg::initialize()

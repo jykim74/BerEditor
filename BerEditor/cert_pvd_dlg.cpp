@@ -430,9 +430,8 @@ void CertPVDDlg::initUI()
 
 void CertPVDDlg::initialize()
 {
-
-
     checkATTime();
+    mUseTrustListCheck->setChecked(true);
     checkUseTrustList();
 }
 

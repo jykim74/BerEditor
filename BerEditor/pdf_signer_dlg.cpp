@@ -187,6 +187,7 @@ void PDFSignerDlg::initialize()
 {
     QDateTime dateTime = QDateTime::currentDateTime();
     mDateTime->setDateTime( dateTime );
+    mTrustListCheck->setChecked(true);
 }
 
 int PDFSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )

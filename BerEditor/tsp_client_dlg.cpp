@@ -95,6 +95,8 @@ void TSPClientDlg::initialize()
 
     mRequestText->setPlaceholderText( tr("Hex value" ));
     mResponseText->setPlaceholderText( tr("Hex value" ));
+
+    mTrustListCheck->setChecked(true);
 }
 
 QStringList TSPClientDlg::getUsedURL()
