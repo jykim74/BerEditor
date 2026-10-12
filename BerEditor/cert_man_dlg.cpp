@@ -3440,7 +3440,6 @@ int loadWindowsRootCertificates( BINList **ppCertList )
 {
     int ret = 0;
 
-#if 1
     HCERTSTORE hStore = CertOpenStore(
         CERT_STORE_PROV_SYSTEM_W,
         0,
@@ -3448,31 +3447,14 @@ int loadWindowsRootCertificates( BINList **ppCertList )
         CERT_SYSTEM_STORE_CURRENT_USER,
         L"ROOT"
         );
-#else
-    HCERTSTORE hStore = CertOpenStore(
-        CERT_STORE_PROV_SYSTEM_W,
-        0,
-        0,
-        CERT_SYSTEM_STORE_LOCAL_MACHINE,
-        L"ROOT"
-        );
-#endif
 
     if (!hStore) return -1;
 
     PCCERT_CONTEXT ctx = nullptr;
     int nIndex = 0;
 
-
     while ((ctx = CertEnumCertificatesInStore(hStore, ctx)) != nullptr)
     {
-        /*
-        QByteArray der(
-            reinterpret_cast<const char *>(ctx->pbCertEncoded),
-            static_cast<int>(ctx->cbCertEncoded)
-            );
-        */
-
         BIN binCert = {0,0};
         binCert.nLen = ctx->cbCertEncoded;
         binCert.pVal = ctx->pbCertEncoded;
