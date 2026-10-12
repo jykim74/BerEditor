@@ -3478,7 +3478,7 @@ int loadWindowsRootCertificates( BINList **ppCertList )
 #include <CoreFoundation/CoreFoundation.h>
 #include <QSslCertificate>
 
-int loadMacRootCertificates( BINList **ppCertLIst )
+int loadMacRootCertificates( BINList **ppCertList )
 {
     int nIndex = 0;
     SecKeychainRef keychain = nullptr;
@@ -3540,7 +3540,7 @@ int loadMacRootCertificates( BINList **ppCertLIst )
             CFIndex length =
                 CFDataGetLength(data);
 
-            binCert.pVal = bytes;
+            binCert.pVal = (unsigned char *)bytes;
             binCert.nLen = length;
 
             if( binCert.nLen > 0 )
