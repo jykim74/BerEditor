@@ -283,6 +283,7 @@ private slots:
 
     void bugIssueReport();
     void qnaDiscussion();
+    void openManual();
 
     void print();
     void printPreview(QPrinter *printer);
@@ -474,6 +475,7 @@ private:
     QAction* halt_log_act_;
     QAction* content_act_;
     QAction* lcn_act_;
+    QAction* man_act_;
     QAction* bug_issue_act_;
     QAction* qna_act_;
     QAction* about_act_;

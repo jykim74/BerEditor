@@ -1507,12 +1507,19 @@ void MainWindow::createHelpActions()
     helpMenu->addAction( content_act_ );
     if( isView( ACT_HELP_CONTENT ) ) help_tool_->addAction( content_act_ );
 
-    const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
+    const QIcon lcnIcon = QIcon::fromTheme("bereditor-license", QIcon(":/images/license.png"));
     lcn_act_ = new QAction( lcnIcon, tr("License Information"), this);
     connect( lcn_act_, &QAction::triggered, this, &MainWindow::licenseInfo);
     helpMenu->addAction( lcn_act_ );
     lcn_act_->setStatusTip(tr("License Information and Registration"));
     if( isView( ACT_HELP_LICENSE_INFO ) ) help_tool_->addAction( lcn_act_ );
+
+    const QIcon manIcon = QIcon::fromTheme("bereditor_manual", QIcon(":/images/manual.png"));
+    man_act_ = new QAction( manIcon, tr("Manual"), this);
+    connect( man_act_, &QAction::triggered, this, &MainWindow::openManual);
+    helpMenu->addAction( man_act_ );
+    man_act_->setStatusTip(tr("BerEditor manual"));
+    if( isView( ACT_HELP_MANUAL ) ) help_tool_->addAction( man_act_ );
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
 
@@ -4292,7 +4299,12 @@ void MainWindow::bugIssueReport()
 void MainWindow::qnaDiscussion()
 {
     QString link = "https://github.com/jykim74/BerEditor/discussions";
-//    QString link = "https://groups.google.com/g/bereditor";
+    QDesktopServices::openUrl(QUrl(link));
+}
+
+void MainWindow::openManual()
+{
+    QString link = "https://jykim74.github.io/bereditor_manual";
     QDesktopServices::openUrl(QUrl(link));
 }
 
