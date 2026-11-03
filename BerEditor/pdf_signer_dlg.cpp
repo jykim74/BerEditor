@@ -1637,7 +1637,7 @@ void PDFSignerDlg::clickMakeSign()
         goto end;
     }
 
-    berApplet->log( QString( "PDF Data[Len:%1]: %2").arg( binData.nLen).arg( getHexString( &binData )));
+    berApplet->log( QString( "PDF Data[Len:%1]").arg( binData.nLen));
 
     ret = JS_PDF_makeCMS( &binData, &binPri, &binCert, &binCMS );
 
@@ -1653,7 +1653,7 @@ void PDFSignerDlg::clickMakeSign()
         JS_BIN_copy( &binCMS, &binSignedTSP );
     }
 
-    berApplet->log( QString( "CMS[Len:%1]: %2").arg( binCMS.nLen).arg( getHexString( &binCMS )));
+    berApplet->log( QString( "CMS[Len:%1]").arg( binCMS.nLen));
 
     ret = JS_PDF_applyContentsCMS( &binUnsigned, &binCMS );
     if( ret != 0 )
@@ -1854,19 +1854,6 @@ void PDFSignerDlg::clickVerifySign()
         goto end;
     }
 
-#if defined(QT_DEBUG)
-    {
-        QString strTmpData = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
-        strTmpData += "_data.bin";
-
-        QString strTmpCMS = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
-        strTmpCMS += "_cms.bin";
-
-        JS_BIN_fileWrite( &binData, strTmpData.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_fileWrite( &binCMS, strTmpCMS.toLocal8Bit().toStdString().c_str() );
-    }
-#endif
-
     if( mVerifyChainCheck->isChecked() )
         nVerifyChain = 1;
     else
@@ -1911,6 +1898,7 @@ void PDFSignerDlg::clickClearInfo()
     tItem->setText( 0, kDSS );
 
     mDSSTree->insertTopLevelItem( 0, tItem );
+    mPathTree->clear();
 }
 
 void PDFSignerDlg::clickEncrypt()
@@ -2859,34 +2847,44 @@ void PDFSignerDlg::clickVerifyDSS()
         goto end;
     }
 
-    ret = JS_TSP_getTST( &binTSP, &binTST );
-    if( ret != JSR_OK )
+    if( binTSP.nLen > 0 )
     {
-        berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
-        goto end;
+        ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
+        if( ret != JSR_VERIFY )
+        {
+            berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
+            goto end;
+        }
+
+        ret = JS_TSP_getTST( &binTSP, &binTST );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
+            goto end;
+        }
+
+        if( ret == JSR_OK )
+        {
+            ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
+            if( ret != JSR_OK )
+            {
+                berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
+                goto end;
+            }
+
+            check_t = sTSTInfo.tGenTime;
+        }
+    }
+    else
+    {
+        berApplet->log( "There is no TSP" );
     }
 
-    ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
-        goto end;
-    }
-
-    check_t = sTSTInfo.tGenTime;
 
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
     if( ret != JSR_OK )
     {
         berApplet->warningBox( tr("failed to get body: %1").arg(JERR(ret)), this );
-        goto end;
-    }
-
-
-    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
-    if( ret != JSR_VERIFY )
-    {
-        berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
         goto end;
     }
 
@@ -2903,19 +2901,6 @@ void PDFSignerDlg::clickVerifyDSS()
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
 
     if( binCert.nLen <= 0 ) JS_CMS_getSignedDataSigner( &binCMS, &binCert );
-
-#if defined(QT_DEBUG)
-    {
-        QString strTmpData = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
-        strTmpData += "_dss_data.bin";
-
-        QString strTmpCMS = QString( "%1/%2" ).arg( fileInfo.path()).arg( fileInfo.baseName() );
-        strTmpCMS += "_dss_cms.bin";
-
-        JS_BIN_fileWrite( &binData, strTmpData.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_fileWrite( &binCMS, strTmpCMS.toLocal8Bit().toStdString().c_str() );
-    }
-#endif
 
     ret = JS_PDF_verifyCMS_DSS(
         &binData,
@@ -3089,21 +3074,35 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         goto end;
     }
 
-    ret = JS_TSP_getTST( &binTSP, &binTST );
-    if( ret != JSR_OK )
+    if( binTSP.nLen > 0 )
     {
-        berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
-        goto end;
-    }
+        ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
+        if( ret != JSR_VERIFY )
+        {
+            berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
+            goto end;
+        }
 
-    ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
-    if( ret != JSR_OK )
+        ret = JS_TSP_getTST( &binTSP, &binTST );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get TST: %1" ).arg(JERR(ret)), this);
+            goto end;
+        }
+
+        ret = JS_TSP_decodeTSTInfo( &binTST, &sTSTInfo );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
+            goto end;
+        }
+
+        check_t = sTSTInfo.tGenTime;
+    }
+    else
     {
-        berApplet->warningBox( tr( "failed to get TST information: %1").arg(JERR(ret)), this );
-        goto end;
+        berApplet->log( "There is no TSP" );
     }
-
-    check_t = sTSTInfo.tGenTime;
 
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
     if( ret != JSR_OK )
@@ -3114,12 +3113,7 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
 
 
 
-    ret = JS_CMS_verifySignedData( &binTSP, NULL, NULL, -1, check_t, NULL, NULL, NULL, sResMsg );
-    if( ret != JSR_VERIFY )
-    {
-        berApplet->warningBox( tr( "failed to verify TSP: %1(%2)" ).arg(JERR(ret)).arg(sResMsg), this );
-        goto end;
-    }
+
 
     ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
                             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
