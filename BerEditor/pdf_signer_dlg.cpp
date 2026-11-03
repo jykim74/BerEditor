@@ -1845,7 +1845,7 @@ void PDFSignerDlg::clickVerifySign()
         goto end;
     }
 
-    berApplet->log( QString( "Verify CMS[Len:%1]: %2").arg(binCMS.nLen).arg( getHexString( &binCMS )));
+    berApplet->log( QString( "Verify CMS[Len:%1]").arg(binCMS.nLen));
 
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
     if( ret != JSR_OK )
@@ -1872,7 +1872,7 @@ void PDFSignerDlg::clickVerifySign()
     else
         nVerifyChain = 0;
 
-    berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
+    berApplet->log( QString( "Verify PDF Data[Len:%1]").arg(binData.nLen));
 
     if( mAtTimeCheck->isChecked() == true )
         tAtTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
