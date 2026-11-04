@@ -1375,7 +1375,7 @@ void PDFSignerDlg::clickMakePath()
 
     CertManDlg certMan;
     certMan.setMode( ManModeSelCert );
-    certMan.setTitle( tr( "" ) );
+    certMan.setTitle( tr( "Select the certificate for which to build a path tree." ) );
     if( certMan.exec() != QDialog::Accepted )
         goto end;
 
@@ -2315,6 +2315,13 @@ void PDFSignerDlg::clickAddDSS()
     JDSSDataList *pDSSList = NULL;
     JNumBINList *pObjList = NULL;
 
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr("Select a PDF file"), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
@@ -2380,6 +2387,13 @@ void PDFSignerDlg::clickAddDSS_VRI()
     QString strSrcPath = mSrcPathText->text();
     QString strDstPath = mDstPathText->text();
     QString strPasswd = mPasswdText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr("Select a PDF file"), this );
+        mSrcPathText->setFocus();
+        return;
+    }
 
     if( strDstPath.length() < 1 )
     {
@@ -2494,6 +2508,13 @@ void PDFSignerDlg::clickAddDocTSP()
     QString strDstPath = mDstPathText->text();
 
     memset( &sRange, 0x00, sizeof(sRange));
+
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr("Select a PDF file"), this );
+        mSrcPathText->setFocus();
+        return;
+    }
 
     if( strDstPath.length() < 1 )
     {
