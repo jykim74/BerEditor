@@ -3132,10 +3132,6 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
         goto end;
     }
 
-
-
-
-
     ret = JS_PDF_getDSS_VRI( strSrcPath.toLocal8Bit().toStdString().c_str(),
                             strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
                             &pDSSList, &pObjList );

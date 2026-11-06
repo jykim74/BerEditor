@@ -665,6 +665,8 @@ void DocSignerDlg::initUI()
     mCMSSrcTypeCombo->addItems( kDataTypeList );
     mCMSSrcTypeCombo->setCurrentText( kDataHex );
 
+    mCMSFlagNOCHAINCheck->setChecked(true);
+
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
     checkCMSEncode();

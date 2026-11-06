@@ -178,6 +178,8 @@ void PKCS7Dlg::initUI()
     changeCmd();
     checkAtTime();
     mTrustListCheck->setChecked(true);
+
+    mFlagNOCHAINCheck->setChecked(true);
 }
 
 void PKCS7Dlg::initialize()
