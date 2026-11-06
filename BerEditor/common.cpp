@@ -1549,10 +1549,7 @@ int getDataFromURI( const QString strURI, int nLDAPType, BIN *pData )
         strHost = url.host();
         nPort = url.port( 389 );
 
-        if( nLDAPType >= 0 )
-            ret = JS_LDAP_getDataFromTypeURI( strURI.toStdString().c_str(), nLDAPType, pData );
-        else
-            ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), pData );
+        ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), nLDAPType, pData );
     }
     else if( strScheme == "file" )
     {
