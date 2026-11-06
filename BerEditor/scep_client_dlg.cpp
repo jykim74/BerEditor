@@ -178,7 +178,7 @@ int SCEPClientDlg::getCA( BIN *pCA )
 
     if( strCAPath.length() < 1 ) return -1;
 
-    ret = getDataFromURI( strCAPath, pCA );
+    ret = getCAFromURI( strCAPath, pCA );
 
     return ret;
 }
@@ -364,7 +364,7 @@ void SCEPClientDlg::typeCACert()
         return;
     }
 
-    getDataFromURI( strFile, &binData );
+    getCAFromURI( strFile, &binData );
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
@@ -430,7 +430,7 @@ void SCEPClientDlg::viewCACert()
         return;
     }
 
-    getDataFromURI( strFile, &binData );
+    getCAFromURI( strFile, &binData );
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     certInfo.setCertBIN( &binData );
@@ -484,7 +484,7 @@ void SCEPClientDlg::decodeCACert()
         return;
     }
 
-    getDataFromURI( strFile, &binData );
+    getCAFromURI( strFile, &binData );
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, strFile );

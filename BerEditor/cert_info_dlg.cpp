@@ -17,6 +17,7 @@
 #include "js_util.h"
 #include "js_http.h"
 #include "js_error.h"
+#include "js_ldap.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
@@ -1257,7 +1258,7 @@ int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )
     }
 
     berApplet->log( QString( "CA URI: %1").arg( strURI));
-    ret = getDataFromURI( strURI, pCA );
+    ret = getDataFromURI( strURI, JS_LDAP_TYPE_CA_CERTIFICATE, pCA );
 
     return ret;
 }
@@ -1284,7 +1285,7 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     }
 
     berApplet->log( QString( "CRL URI: %1").arg( strURI));
-    ret = getDataFromURI( strURI, pCRL );
+    ret = getDataFromURI( strURI, JS_LDAP_TYPE_CERTIFICATE_REVOCATION_LIST, pCRL );
 
     return ret;
 }

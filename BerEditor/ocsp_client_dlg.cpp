@@ -534,7 +534,7 @@ void OCSPClientDlg::typeCACert()
     }
 
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    ret = getDataFromURI( strFile, &binData );
+    ret = getCAFromURI( strFile, &binData );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "failed to get CA"), this );
@@ -666,7 +666,7 @@ void OCSPClientDlg::viewCACert()
     }
 
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    ret = getDataFromURI( strFile, &binData );
+    ret = getCAFromURI( strFile, &binData );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "failed to get CA"), this );
@@ -771,7 +771,7 @@ void OCSPClientDlg::decodeCACert()
     }
 
 //    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    ret = getDataFromURI( strFile, &binData );
+    ret = getCAFromURI( strFile, &binData );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "failed to get CA"), this );
@@ -1040,7 +1040,7 @@ void OCSPClientDlg::clickEncode()
     }
     else
     {
-        ret = getDataFromURI( strCAPath, &binCA );
+        ret = getCAFromURI( strCAPath, &binCA );
     }
 
     if( ret != 0 )

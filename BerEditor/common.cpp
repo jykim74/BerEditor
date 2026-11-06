@@ -1511,7 +1511,7 @@ bool isValidNumFormat( const QString strInput, int nNumber )
     return strReg.exactMatch( strInput );
 }
 
-int getDataFromURI( const QString strURI, BIN *pData )
+int getDataFromURI( const QString strURI, int nLDAPType, BIN *pData )
 {
     int ret = 0;
     int nStatus = 0;
@@ -1549,7 +1549,10 @@ int getDataFromURI( const QString strURI, BIN *pData )
         strHost = url.host();
         nPort = url.port( 389 );
 
-        ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), pData );
+        if( nLDAPType >= 0 )
+            ret = JS_LDAP_getDataFromTypeURI( strURI.toStdString().c_str(), nLDAPType, pData );
+        else
+            ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), pData );
     }
     else if( strScheme == "file" )
     {
@@ -1563,6 +1566,11 @@ int getDataFromURI( const QString strURI, BIN *pData )
     if( ret > 0 ) ret = JSR_OK;
 
     return ret;
+}
+
+int getCAFromURI( const QString strURI, BIN *pCA )
+{
+    return getDataFromURI( strURI, JS_LDAP_TYPE_CA_CERTIFICATE, pCA );
 }
 
 int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo )

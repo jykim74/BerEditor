@@ -415,7 +415,8 @@ bool isBase64( const QString strBase64String );
 bool isBase64URL( const QString strBase64URLString );
 bool isURLEncode( const QString strURLEncode );
 
-int getDataFromURI( const QString strURI, BIN *pData );
+int getDataFromURI( const QString strURI, int nLDAPType, BIN *pData );
+int getCAFromURI( const QString strURI, BIN *pCA );
 int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo);
 
 int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey );
