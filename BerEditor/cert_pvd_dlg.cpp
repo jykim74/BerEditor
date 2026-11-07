@@ -1649,6 +1649,12 @@ void CertPVDDlg::clickPathClear()
     mUntrustPathText->clear();
     mCRLPathText->clear();
     mTargetDNText->clear();
+    mPathTree->clear();
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
 }
 
 void CertPVDDlg::checkATTime()
