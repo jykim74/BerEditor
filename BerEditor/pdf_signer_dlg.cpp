@@ -1895,10 +1895,17 @@ void PDFSignerDlg::clickClearInfo()
     mDSSTree->clear();
 
     QTreeWidgetItem* tItem = new QTreeWidgetItem;
+    tItem->setIcon( 0, QIcon(":/images/pdf.png" ));
     tItem->setText( 0, kDSS );
-
     mDSSTree->insertTopLevelItem( 0, tItem );
+
+
     mPathTree->clear();
+
+    QTreeWidgetItem* pathItem = new QTreeWidgetItem;
+    pathItem->setIcon( 0, QIcon(":/images/cert_pvd.png" ));
+    pathItem->setText( 0, "Certificate Path" );
+    mPathTree->insertTopLevelItem( 0, pathItem );
 }
 
 void PDFSignerDlg::clickEncrypt()
