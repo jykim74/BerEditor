@@ -665,8 +665,6 @@ void DocSignerDlg::initUI()
     mCMSSrcTypeCombo->addItems( kDataTypeList );
     mCMSSrcTypeCombo->setCurrentText( kDataHex );
 
-    mCMSFlagNOCHAINCheck->setChecked(true);
-
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
     checkCMSEncode();
@@ -981,29 +979,40 @@ int DocSignerDlg::getCMSFlags()
         return -1;
 
     if( mCMSFlagNOCERTSCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOCERTS;
+        nFlags |= JS_CMS_FLAG_NOCERTS;
 
     if( mCMSFlagNOSIGSCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOSIGS;
+        nFlags |= JS_CMS_FLAG_NOSIGS;
 
-    if( mCMSFlagNOCHAINCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOCHAIN;
+    if( mCMSFlagPARTIALCheck->isChecked() )
+        nFlags |= JS_CMS_FLAG_PARTIAL;
 
     if( mCMSFlagNOINTERNCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOINTERN;
+        nFlags |= JS_CMS_FLAG_NOINTERN;
 
     if( mCMSFlagNOVERIFYCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOVERIFY;
+        nFlags |= JS_CMS_FLAG_NOVERIFY;
 
     if( mCMSFlagDETACHEDCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_DETACHED;
+        nFlags |= JS_CMS_FLAG_DETACHED;
 
     if( mCMSFlagBINARYCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_BINARY;
+        nFlags |= JS_CMS_FLAG_BINARY;
 
     if( mCMSFlagNOATTRCheck->isChecked() )
-        nFlags |= JS_PKCS7_FLAG_NOATTR;
+        nFlags |= JS_CMS_FLAG_NOATTR;
 
+    if( mCMSFlagNOCRLCheck->isChecked() )
+        nFlags |= JS_CMS_FLAG_NOCRL;
+
+    if( mCMSFlagNOATTRVERIFYCheck->isChecked() )
+        nFlags |= JS_CMS_FLAG_NO_ATTR_VERIFY;
+
+    if( mCMSFlagCADESCheck->isChecked() )
+        nFlags |= JS_CMS_FLAG_CADES;
+
+    if( mCMSFlagNOSIGNINGTIMECheck->isChecked() )
+        nFlags |= JS_CMS_FLAG_NO_SIGNING_TIME;
 
     return nFlags;
 }
@@ -1408,7 +1417,7 @@ void DocSignerDlg::clickCMSVerifySign()
         goto end;
     }
 
-    if( mCMSFlagGroup->isChecked() && (nFlags & JS_PKCS7_FLAG_DETACHED) )
+    if( mCMSFlagGroup->isChecked() && (nFlags & JS_CMS_FLAG_DETACHED) )
     {
         DataInputDlg dataInput;
         if( dataInput.exec() == QDialog::Accepted )
