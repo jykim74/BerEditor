@@ -3186,6 +3186,8 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
 
     berApplet->log( QString( "Verify PDF Data[Len:%1]: %2").arg(binData.nLen).arg( getHexString( &binData )));
 
+    if( binCert.nLen <= 0 ) JS_CMS_getSignedDataSigner( &binCMS, &binCert );
+
     ret = JS_PDF_verifyCMS_DSS(
         &binData,
         &binCert,
