@@ -905,6 +905,7 @@ void PDFSignerDlg::clickGetInfo()
     const BINList *pCurList = NULL;
     int nCount = 0;
     int nNum = 0;
+    QString strPDF = "Normal";
 
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sRange, 0x00, sizeof(sRange));
@@ -938,6 +939,7 @@ void PDFSignerDlg::clickGetInfo()
     }
 
     clickClearInfo();
+
 
     mInfoTable->setRowCount(0);
 
@@ -981,6 +983,25 @@ void PDFSignerDlg::clickGetInfo()
     {
         BIN binData = {0,0};
         BIN binHash = {0,0};
+        BIN binCMS = {0,0};
+        BIN binTSP = {0,0};
+        JCMSSigned sSigned;
+        JSignerInfoList *pInfoList = NULL;
+
+        memset( &sSigned, 0x00, sizeof(sSigned));
+
+        strPDF = "CMS";
+
+        ret = JS_PDF_getContentsFile(
+            strSrcPath.toLocal8Bit().toStdString().c_str(),
+            strPasswd.length() > 0 ? strPasswd.toStdString().c_str() : NULL,
+            &binCMS );
+
+        ret = JS_CMS_getSignedData( &binCMS, &sSigned, &pInfoList, &binTSP );
+        if( ret == JSR_OK )
+        {
+            if( binTSP.nLen > 0 ) strPDF += ":TSP";
+        }
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -1015,6 +1036,11 @@ void PDFSignerDlg::clickGetInfo()
 
             JS_BIN_reset( &binData );
             JS_BIN_reset( &binHash );
+            JS_BIN_reset( &binCMS );
+            JS_BIN_reset( &binTSP );
+
+            JS_CMS_resetSigned( &sSigned );
+            if( pInfoList ) JS_CMS_resetSignerInfoList( &pInfoList );
         }
     }
 
@@ -1068,6 +1094,7 @@ void PDFSignerDlg::clickGetInfo()
 
     if( ret == JSR_OK )
     {
+        strPDF += ":DSS";
         QTreeWidgetItem* rootItem = mDSSTree->topLevelItem(0);
         JDSSDataList    *pDSSDataList = NULL;
         JDSSDataList    *pVRIDataList = NULL;
@@ -1181,6 +1208,7 @@ void PDFSignerDlg::clickGetInfo()
 
             if( pVRIDataList )
             {
+                strPDF += ":VRI";
                 pCurData = pVRIDataList->pDSSData;
 
                 if( pCurData )
@@ -1304,6 +1332,7 @@ void PDFSignerDlg::clickGetInfo()
 
     if( binTSP.nLen > 0 )
     {
+        strPDF += ":DocTimeStamp";
         BIN binData = {0,0};
         BIN binHash = {0,0};
         mInfoTable->insertRow(i);
@@ -1345,6 +1374,12 @@ void PDFSignerDlg::clickGetInfo()
         item->setIcon( 0, QIcon(":/images/tsp.png" ));
         mDSSTree->topLevelItem(0)->addChild( item );
     }
+
+    mInfoTable->insertRow(0);
+    mInfoTable->setRowHeight(0,10);
+    mInfoTable->setItem( 0, 0, new QTableWidgetItem( tr("PDF Type" )));
+    mInfoTable->setItem( 0, 1, new QTableWidgetItem( QString("%1").arg( strPDF ) ));
+    i++;
 
     berApplet->messageBox( tr("PDF information import complete"), this );
     mDSSTree->expandAll();
