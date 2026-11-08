@@ -906,6 +906,7 @@ void PDFSignerDlg::clickGetInfo()
     int nCount = 0;
     int nNum = 0;
     QString strPDF = "Normal";
+    QString strType;
 
     memset( &sInfo, 0x00, sizeof(sInfo));
     memset( &sRange, 0x00, sizeof(sRange));
@@ -1375,11 +1376,15 @@ void PDFSignerDlg::clickGetInfo()
         mDSSTree->topLevelItem(0)->addChild( item );
     }
 
-    mInfoTable->insertRow(0);
-    mInfoTable->setRowHeight(0,10);
-    mInfoTable->setItem( 0, 0, new QTableWidgetItem( tr("PDF Type" )));
-    mInfoTable->setItem( 0, 1, new QTableWidgetItem( QString("%1").arg( strPDF ) ));
-    i++;
+    strType = getType( strPDF );
+    if( strType.length() > 0 )
+    {
+        mInfoTable->insertRow(0);
+        mInfoTable->setRowHeight(0,10);
+        mInfoTable->setItem( 0, 0, new QTableWidgetItem( tr("PDF Type" )));
+        mInfoTable->setItem( 0, 1, new QTableWidgetItem( QString("%1 [%2]").arg( strPDF ).arg( strType) ));
+        i++;
+    }
 
     berApplet->messageBox( tr("PDF information import complete"), this );
     mDSSTree->expandAll();
@@ -2534,6 +2539,31 @@ end :
     JS_BIN_reset( &binTSP );
 
     return ret;
+}
+
+const QString PDFSignerDlg::getType( const QString strPDF )
+{
+    QString strType;
+
+    if( strPDF.contains( "CMS" ) )
+    {
+        strType = "B_B";
+
+        if( strPDF.contains( "TSP" ) )
+        {
+            strType = "B_T";
+
+            if( strPDF.contains( "DSS" ) )
+            {
+                strType = "B_LT";
+
+                if( strPDF.contains( "DocTimeStamp" ) )
+                    strType = "B_LTA";
+            }
+        }
+    }
+
+    return strType;
 }
 
 void PDFSignerDlg::clickAddDocTSP()

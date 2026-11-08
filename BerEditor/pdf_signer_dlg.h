@@ -102,6 +102,7 @@ private:
     int getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList );
 
     int appendDocTSP( const QString strUnsignedPath );
+    const QString getType( const QString strPDF );
 };
 
 #endif
