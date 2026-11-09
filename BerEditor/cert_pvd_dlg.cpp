@@ -26,6 +26,7 @@
 #include "ocsp_rsp_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
+#include "cert_id_dlg.h"
 
 const QString kTypeTCert = "TrustCert";
 const QString kTypeUCert = "UntrustCert";
@@ -529,6 +530,8 @@ void CertPVDDlg::slotPathMenu( QPoint pos )
     QAction* viewAct = new QAction( tr("View" ), this );
     QAction* delAct = new QAction( tr("Delete" ), this );
     QAction* sendAct = new QAction( tr( "Send target" ), this );
+    QAction* getCRLAct = new QAction( tr( "Get CRL" ), this );
+    QAction* checkOCSPAct = new QAction( tr( "Check OCSP" ), this );
 
     QModelIndex idx = mPathTable->currentIndex();
     QTableWidgetItem *pItem = mPathTable->item( idx.row(), 0 );
@@ -539,12 +542,18 @@ void CertPVDDlg::slotPathMenu( QPoint pos )
     connect( viewAct, SIGNAL(triggered(bool)), this, SLOT(viewData()));
     connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delPath()));
     connect( sendAct, SIGNAL(triggered(bool)), this, SLOT( sendTarget()));
+    connect( getCRLAct, SIGNAL(triggered(bool)), this, SLOT(getCRL()));
+    connect( checkOCSPAct, SIGNAL(triggered(bool)), this, SLOT(checkOCSP()));
 
     menu->addAction( viewAct );
     menu->addAction( delAct );
 
     if( strType == kTypeUCert )
+    {
         menu->addAction( sendAct );
+        menu->addAction( getCRLAct );
+        menu->addAction( checkOCSPAct );
+    }
 
     menu->popup( mPathTable->viewport()->mapToGlobal(pos));
 }
@@ -656,6 +665,75 @@ void CertPVDDlg::viewTreeData()
 
 
     JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::getCRL()
+{
+    int ret = 0;
+    BIN binCert = {0,0};
+    BIN binCRL = {0,0};
+
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    QString strType = item->text();
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    ret = CertInfoDlg::getCRL2( &binCert, berApplet->settingsMgr()->getOnlineCA_CRL(), &binCRL );
+
+    if( binCRL.nLen > 0 )
+    {
+        addList( kTypeCRL, &binCRL );
+        berApplet->messageBox( tr("I have added the CRL."), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr("CRL information is missing or cannot be retrieved: %1").arg(JERR(ret)), this );
+    }
+
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCRL );
+}
+
+void CertPVDDlg::checkOCSP()
+{
+    int ret = 0;
+    BIN binCert = {0,0};
+    BIN binCA = {0,0};
+    BIN binOCSP = {0,0};
+    CertIDDlg certID;
+
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    QString strType = item->text();
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    ret = CertInfoDlg::getCA2( &binCert, berApplet->settingsMgr()->onlineCA_CRL(), &binCA );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "failed to get CA certificate: %1").arg( JERR(ret) ), this);
+        goto end;
+    }
+
+    ret = CertInfoDlg::getOCSP2( &binCert, &binCA, &binOCSP );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "failed to get OCSP response: %1").arg( JERR(ret) ), this);
+        goto end;
+    }
+
+    certID.setResponse( &binOCSP );
+    certID.exec();
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binOCSP );
 }
 
 void CertPVDDlg::delPath()

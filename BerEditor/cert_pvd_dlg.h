@@ -47,6 +47,8 @@ private slots:
 
     void viewData();
     void viewTreeData();
+    void getCRL();
+    void checkOCSP();
 
     void delPath();
     void sendTarget();

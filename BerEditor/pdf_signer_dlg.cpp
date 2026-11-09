@@ -1377,14 +1377,16 @@ void PDFSignerDlg::clickGetInfo()
     }
 
     strType = getType( strPDF );
-    if( strType.length() > 0 )
-    {
-        mInfoTable->insertRow(0);
-        mInfoTable->setRowHeight(0,10);
-        mInfoTable->setItem( 0, 0, new QTableWidgetItem( tr("PDF Type" )));
+    mInfoTable->insertRow(0);
+    mInfoTable->setRowHeight(0,10);
+    mInfoTable->setItem( 0, 0, new QTableWidgetItem( tr("PDF Type" )));
+
+    if( strType.length() > 1 )
         mInfoTable->setItem( 0, 1, new QTableWidgetItem( QString("%1 [%2]").arg( strPDF ).arg( strType) ));
-        i++;
-    }
+    else
+        mInfoTable->setItem( 0, 1, new QTableWidgetItem( QString("%1").arg( strPDF ) ));
+
+    i++;
 
     berApplet->messageBox( tr("PDF information import complete"), this );
     mDSSTree->expandAll();
@@ -2970,7 +2972,8 @@ void PDFSignerDlg::clickVerifyDSS()
     }
     else
     {
-        berApplet->log( "There is no TSP" );
+        berApplet->warningBox( tr("There is no TSP"), this );
+        goto end;
     }
 
 
@@ -3201,7 +3204,8 @@ void PDFSignerDlg::clickVerifyDSS_VRI()
     }
     else
     {
-        berApplet->log( "There is no TSP" );
+        berApplet->warningBox( tr("There is no TSP"), this );
+        goto end;
     }
 
     ret = JS_PDF_getData( &binPDF, &sRange, &binData );
