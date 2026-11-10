@@ -41,6 +41,8 @@ private slots:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
 
+    void changeParamCombo();
+
     void slotPathMenu( QPoint pos );
     void slotPathTreeMenu( QPoint pos );
     void slotParamMenu( QPoint pos );

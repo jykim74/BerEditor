@@ -67,6 +67,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mPathTable, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(viewData()));
     connect( mPathTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(viewTreeData()));
 
+    connect( mParamCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeParamCombo()));
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
@@ -381,6 +382,58 @@ void CertPVDDlg::dropEvent(QDropEvent *event)
     }
 }
 
+void CertPVDDlg::changeParamCombo()
+{
+    QString strParam = mParamCombo->currentText();
+    mParamValueText->setToolTip( "" );
+    mParamValueText->setToolTip( "" );
+
+    if( strParam == "Policy" )
+    {
+        mParamValueText->setToolTip( tr("object name or an OID") );
+        mParamValueText->setPlaceholderText( "arg" );
+    }
+    else if( strParam == "Purpose" )
+    {
+        mParamValueText->setToolTip( tr("sslclient, sslserver, nssslserver, smimesign, smimeencrypt, crlsign, ocsphelper, timestampsign, codesign and any") );
+        mParamValueText->setPlaceholderText( "purpose" );
+    }
+    else if( strParam == "Name" )
+    {
+        mParamValueText->setToolTip( tr("ssl_client, ssl_server, smime_sign with alias pkcs7, smime_encrypt, code_sign, and default") );
+        mParamValueText->setPlaceholderText( "name" );
+    }
+    else if( strParam == "Depth" )
+    {
+        mParamValueText->setToolTip( tr("Limit the certificate chain to num intermediate CA certificates.") );
+        mParamValueText->setPlaceholderText( "num" );
+    }
+    else if( strParam == "AuthLevel" )
+    {
+        mParamValueText->setToolTip( tr("Set the certificate chain authentication security level to level.") );
+        mParamValueText->setPlaceholderText( "level" );
+    }
+    else if( strParam == "HostName" )
+    {
+        mParamValueText->setToolTip( tr("Verify if hostname matches DNS name") );
+        mParamValueText->setPlaceholderText( "hostname" );
+    }
+    else if( strParam == "Email" )
+    {
+        mParamValueText->setToolTip( tr("Verify if email matches the email address") );
+        mParamValueText->setPlaceholderText( "email" );
+    }
+    else if( strParam == "IP" )
+    {
+        mParamValueText->setToolTip( tr("Verify if ip matches the IP address") );
+        mParamValueText->setPlaceholderText( "ip" );
+    }
+    else
+    {
+        mParamValueText->setPlaceholderText( tr("String value" ) );
+    }
+}
+
 void CertPVDDlg::initUI()
 {
     QStringList sPathLabels = { tr( "Type"), tr( "DN" ) };
@@ -411,7 +464,7 @@ void CertPVDDlg::initUI()
     mVerifyDateTime->setDateTime(dateTime);
 
     mParamCombo->addItems( kParamList );
-    mParamValueText->setPlaceholderText( tr("String value" ));
+    changeParamCombo();
 
     mTrustPathText->setPlaceholderText( tr( "Trust anchor certificate file path") );
     mUntrustPathText->setPlaceholderText( tr( "Intermediate CA certificate file path" ));

@@ -7031,7 +7031,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="707"/>
-        <location filename="../cert_pvd_dlg.cpp" line="398"/>
+        <location filename="../cert_pvd_dlg.cpp" line="451"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
@@ -7077,7 +7077,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="386"/>
+        <location filename="../cert_pvd_dlg.cpp" line="439"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
@@ -7086,27 +7086,67 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="398"/>
+        <location filename="../cert_pvd_dlg.cpp" line="451"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="414"/>
+        <location filename="../cert_pvd_dlg.cpp" line="433"/>
         <source>String value</source>
         <translation>문자 값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="416"/>
+        <location filename="../cert_pvd_dlg.cpp" line="393"/>
+        <source>object name or an OID</source>
+        <translation>객체 이름 또는 OID</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="398"/>
+        <source>sslclient, sslserver, nssslserver, smimesign, smimeencrypt, crlsign, ocsphelper, timestampsign, codesign and any</source>
+        <translation>sslclient, sslserver, nssslserver, smimesign, smimeencrypt, crlsign, ocsphelper, timestampsign, codesign and any</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="403"/>
+        <source>ssl_client, ssl_server, smime_sign with alias pkcs7, smime_encrypt, code_sign, and default</source>
+        <translation>ssl_client, ssl_server, smime_sign with alias pkcs7, smime_encrypt, code_sign, and default</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="408"/>
+        <source>Limit the certificate chain to num intermediate CA certificates.</source>
+        <translation>인증서 체인을 중간 CA 인증서 수로 제한합니다.</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="413"/>
+        <source>Set the certificate chain authentication security level to level.</source>
+        <translation>인증서 체인 인증 보안 수준을 레벨로 설정하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="418"/>
+        <source>Verify if hostname matches DNS name</source>
+        <translation>호스트 이름이 DNS 이름과 일치하는지 확인하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="423"/>
+        <source>Verify if email matches the email address</source>
+        <translation>이메일 주소가 일치하는지 확인하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="428"/>
+        <source>Verify if ip matches the IP address</source>
+        <translation>IP 주소가 일치하는지 확인하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="469"/>
         <source>Trust anchor certificate file path</source>
         <translation>신뢰 앵커 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="417"/>
+        <location filename="../cert_pvd_dlg.cpp" line="470"/>
         <source>Intermediate CA certificate file path</source>
         <translation>중간 CA 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="418"/>
+        <location filename="../cert_pvd_dlg.cpp" line="471"/>
         <source>CRL file path</source>
         <translation>CRL 파일 경로</translation>
     </message>
@@ -7115,94 +7155,94 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="386"/>
+        <location filename="../cert_pvd_dlg.cpp" line="439"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="530"/>
-        <location filename="../cert_pvd_dlg.cpp" line="564"/>
+        <location filename="../cert_pvd_dlg.cpp" line="583"/>
+        <location filename="../cert_pvd_dlg.cpp" line="617"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="531"/>
-        <location filename="../cert_pvd_dlg.cpp" line="595"/>
+        <location filename="../cert_pvd_dlg.cpp" line="584"/>
+        <location filename="../cert_pvd_dlg.cpp" line="648"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="532"/>
+        <location filename="../cert_pvd_dlg.cpp" line="585"/>
         <source>Send target</source>
         <translation>타겟 보내기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="533"/>
+        <location filename="../cert_pvd_dlg.cpp" line="586"/>
         <source>Get CRL</source>
         <translation>CRL 가져오기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="534"/>
+        <location filename="../cert_pvd_dlg.cpp" line="587"/>
         <source>Check OCSP</source>
         <translation>OCSP 체크</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="565"/>
+        <location filename="../cert_pvd_dlg.cpp" line="618"/>
         <source>Send Path</source>
         <translation>경로 보내기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="566"/>
+        <location filename="../cert_pvd_dlg.cpp" line="619"/>
         <source>Send All Path</source>
         <translation>모두 경로 보내기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="689"/>
+        <location filename="../cert_pvd_dlg.cpp" line="742"/>
         <source>I have added the CRL.</source>
         <translation>CRL을 추가하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="693"/>
+        <location filename="../cert_pvd_dlg.cpp" line="746"/>
         <source>CRL information is missing or cannot be retrieved: %1</source>
         <translation>CRL 정보가 없거나 가져 올 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="719"/>
+        <location filename="../cert_pvd_dlg.cpp" line="772"/>
         <source>failed to get CA certificate: %1</source>
         <translation>CA 인증서 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="726"/>
+        <location filename="../cert_pvd_dlg.cpp" line="779"/>
         <source>failed to get OCSP response: %1</source>
         <translation>OCSP 응답을 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="884"/>
+        <location filename="../cert_pvd_dlg.cpp" line="937"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 CA 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="946"/>
+        <location filename="../cert_pvd_dlg.cpp" line="999"/>
         <source>The certificate verification (byCA) successful</source>
         <translation>인증서 검증에 성공 하였습니다 (CA검증)</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="951"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1004"/>
         <source>The certificate verification (byCA) failed: %1</source>
         <translation>인증서 검증에 실패 하였습니다 (CA검증) : %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1358"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1411"/>
         <source>Trust values ​​are not supported when using a trust list</source>
         <translation>신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1529"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1582"/>
         <source>Select trust CA certificate</source>
         <translation>신뢰 CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1558"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1611"/>
         <source>Select untrust CA certificate</source>
         <translation>비 신뢰 CA 인증서를 선택하세요</translation>
     </message>
@@ -7215,29 +7255,29 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1095"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1322"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1634"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1148"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1375"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1687"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1188"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1241"/>
         <source>Policy check successful [Explicit Policy: %1]</source>
         <translation>정책 확인 성공[명시적 정책: %1]</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1196"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1249"/>
         <source>Validation Fail because X509_V_FLAG_EXPLICIT_POLICY was requested But policy_oids is empty</source>
         <translation>X509_V_FLAG_EXPLICIT_POLICY가 요청되었지만 policy_oids가 비어 있기 때문에 유효성 검사에 실패했습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1198"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1251"/>
         <source>At least one of the certs contains invalid or inconsistent extensions</source>
         <translation>최소한 하나의 인증서에 유효하지 않거나 일관되지 않은 확장자가 포함되어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1200"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1253"/>
         <source>Internal Error</source>
         <translation>내부 오류</translation>
     </message>
@@ -7246,12 +7286,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1442"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1495"/>
         <source>The certificate path verification is successful.</source>
         <translation>인증서 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1447"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1500"/>
         <source>The certificate path verification failed [%1]</source>
         <translation>인증서 검증에 실패 하였습니다 [%1]</translation>
     </message>
@@ -7260,14 +7300,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1586"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1639"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="1788"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1813"/>
-        <location filename="../cert_pvd_dlg.cpp" line="1838"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1841"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1866"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1891"/>
         <source>failed to read data</source>
         <translation></translation>
     </message>
