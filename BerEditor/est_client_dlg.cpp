@@ -811,16 +811,62 @@ void ESTClientDlg::clickSend()
 
     if( strReq.length() > 0 )
     {
+        QString strAuth;
+
+        if( mAuthGroup->isChecked() )
+        {
+            QString strUser = mAuthUserIDText->text();
+            QString strPass = mAuthPasswdText->text();
+            QString strUP;
+            BIN bin = {0,0};
+            char *pBase64 = NULL;
+
+            if( strUser.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Enter a username" ), this );
+                mAuthUserIDText->setFocus();
+                return;
+            }
+
+            if( strPass.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Enter a password" ), this );
+                mAuthPasswdText->setFocus();
+                return;
+            }
+
+            strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
+            JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
+            JS_BIN_encodeBase64( &bin, &pBase64 );
+            strAuth = QString( "Basic %1").arg( pBase64 );
+
+            JS_BIN_reset( &bin );
+            if( pBase64 ) JS_free( pBase64 );
+        }
+
         JS_BIN_set( &binReq, (unsigned char *)strReq.toStdString().c_str(), strReq.length() );
 
-        ret = JS_HTTP_requestPostBin2(
-            strLink.toStdString().c_str(),
-            NULL,
-            NULL,
-            "application/pkcs10",
-            &binReq,
-            &nStatus,
-            &binRsp );
+        if( mAuthGroup->isChecked() == true )
+        {
+            ret = JS_HTTP_requestAuthPostBin(
+                strLink.toStdString().c_str(),
+                "application/pkcs10",
+                strAuth.toStdString().c_str(),
+                &binReq,
+                &nStatus,
+                &binRsp );
+        }
+        else
+        {
+            ret = JS_HTTP_requestPostBin2(
+                strLink.toStdString().c_str(),
+                NULL,
+                NULL,
+                "application/pkcs10",
+                &binReq,
+                &nStatus,
+                &binRsp );
+        }
     }
     else
     {

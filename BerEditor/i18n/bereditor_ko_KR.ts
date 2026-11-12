@@ -9505,8 +9505,8 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../est_client_dlg.ui" line="103"/>
         <location filename="../est_client_dlg.ui" line="284"/>
         <location filename="../est_client_dlg.ui" line="297"/>
-        <location filename="../est_client_dlg.ui" line="447"/>
-        <location filename="../est_client_dlg.ui" line="567"/>
+        <location filename="../est_client_dlg.ui" line="518"/>
+        <location filename="../est_client_dlg.ui" line="638"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -9558,38 +9558,53 @@ mailto : jykim74@gmail.com</translation>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="434"/>
+        <location filename="../est_client_dlg.ui" line="392"/>
+        <source>EST Server requires authorization</source>
+        <translation>EST 서버는 인증을 요구합니다</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="421"/>
+        <source>UserID</source>
+        <translation>유저 ID</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="428"/>
+        <source>Passwd</source>
+        <translation>암호</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.ui" line="505"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="454"/>
+        <location filename="../est_client_dlg.ui" line="525"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="467"/>
-        <location filename="../est_client_dlg.ui" line="580"/>
+        <location filename="../est_client_dlg.ui" line="538"/>
+        <location filename="../est_client_dlg.ui" line="651"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="507"/>
+        <location filename="../est_client_dlg.ui" line="578"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="514"/>
+        <location filename="../est_client_dlg.ui" line="585"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="651"/>
+        <location filename="../est_client_dlg.ui" line="722"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.ui" line="658"/>
+        <location filename="../est_client_dlg.ui" line="729"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -9622,6 +9637,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.cpp" line="207"/>
+        <location filename="../est_client_dlg.cpp" line="833"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
@@ -9711,7 +9727,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>EST URL을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.cpp" line="846"/>
+        <location filename="../est_client_dlg.cpp" line="826"/>
+        <source>Enter a username</source>
+        <translation>사용자 이름을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../est_client_dlg.cpp" line="892"/>
         <source>EST message sent</source>
         <translation>EST 메세지를 보냈습니다</translation>
     </message>
