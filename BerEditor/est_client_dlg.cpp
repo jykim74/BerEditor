@@ -274,7 +274,7 @@ void ESTClientDlg::clickMake()
 
 void ESTClientDlg::clickMakeCACerts()
 {
-    berApplet->warningBox( tr("It is not supported"), this );
+    berApplet->warningBox( tr("No request message is needed."), this );
 }
 
 void ESTClientDlg::clickMakeSimpleEnroll()
@@ -416,7 +416,7 @@ void ESTClientDlg::clickMakeServerKeyGen()
 
 void ESTClientDlg::clickMakeCSRAttrs()
 {
-    berApplet->warningBox( tr("It is not supported"), this );
+    berApplet->warningBox( tr("No request message is needed."), this );
 }
 
 void ESTClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
@@ -952,8 +952,11 @@ end :
 
 void ESTClientDlg::clickViewCert()
 {
-    BIN binCert = {0,0};
     int nType = -1;
+    BINList *pBinList = NULL;
+    BINList *pCurList = NULL;
+    int nCount = 0;
+
     QString strRsp = mResponseText->toPlainText();
 
     if( strRsp.length() < 1 )
@@ -962,14 +965,19 @@ void ESTClientDlg::clickViewCert()
         return;
     }
 
-    JS_BIN_decodePEM( strRsp.toStdString().c_str(), &nType, &binCert );
+    nCount = JS_BIN_decodePEMList( strRsp.toStdString().c_str(), &pBinList );
+    if( nCount <= 0 ) goto end;
 
-    if( binCert.nLen > 0 )
+    pCurList = pBinList;
+    while( pCurList )
     {
         CertInfoDlg certInfo;
-        certInfo.setCertBIN( &binCert );
+        certInfo.setCertBIN( &pCurList->Bin );
         certInfo.exec();
 
-        JS_BIN_reset( &binCert );
+        pCurList = pCurList->pNext;
     }
+
+end :
+    if( pBinList ) JS_BIN_resetList( &pBinList );
 }
