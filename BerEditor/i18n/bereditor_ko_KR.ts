@@ -9595,8 +9595,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.ui" line="585"/>
+        <source>View Certificate</source>
+        <translation>인증서 보기</translation>
+    </message>
+    <message>
         <source>Verify</source>
-        <translation>검증</translation>
+        <translation type="vanished">검증</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.ui" line="722"/>
@@ -9637,7 +9641,8 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.cpp" line="207"/>
-        <location filename="../est_client_dlg.cpp" line="833"/>
+        <location filename="../est_client_dlg.cpp" line="775"/>
+        <location filename="../est_client_dlg.cpp" line="872"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
@@ -9717,22 +9722,24 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.cpp" line="697"/>
+        <location filename="../est_client_dlg.cpp" line="961"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
         <location filename="../est_client_dlg.cpp" line="749"/>
-        <location filename="../est_client_dlg.cpp" line="804"/>
+        <location filename="../est_client_dlg.cpp" line="845"/>
         <source>Enter EST URL</source>
         <translation>EST URL을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.cpp" line="826"/>
+        <location filename="../est_client_dlg.cpp" line="768"/>
+        <location filename="../est_client_dlg.cpp" line="865"/>
         <source>Enter a username</source>
         <translation>사용자 이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../est_client_dlg.cpp" line="892"/>
+        <location filename="../est_client_dlg.cpp" line="944"/>
         <source>EST message sent</source>
         <translation>EST 메세지를 보냈습니다</translation>
     </message>

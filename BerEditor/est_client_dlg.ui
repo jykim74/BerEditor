@@ -580,9 +580,9 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mVerifyBtn">
+      <widget class="QPushButton" name="mViewCertBtn">
        <property name="text">
-        <string>Verify</string>
+        <string>View Certificate</string>
        </property>
       </widget>
      </item>

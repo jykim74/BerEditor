@@ -60,7 +60,7 @@ ESTClientDlg::ESTClientDlg(QWidget *parent)
 
     connect( mGetCABtn, SIGNAL(clicked()), this, SLOT(clickGetCA()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
-    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
+    connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
 
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
 
@@ -753,12 +753,53 @@ void ESTClientDlg::clickGetCA()
     strURL += "/";
     strURL += kEST_CACerts;
 
-    ret = JS_HTTP_requestGetBin2(
-        strURL.toStdString().c_str(),
-        NULL,
-        NULL,
-        &nStatus,
-        &binRSP );
+    QString strAuth;
+
+    if( mAuthGroup->isChecked() )
+    {
+        QString strUser = mAuthUserIDText->text();
+        QString strPass = mAuthPasswdText->text();
+        QString strUP;
+        BIN bin = {0,0};
+        char *pBase64 = NULL;
+
+        if( strUser.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a username" ), this );
+            mAuthUserIDText->setFocus();
+            return;
+        }
+
+        if( strPass.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mAuthPasswdText->setFocus();
+            return;
+        }
+
+        strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
+        JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
+        JS_BIN_encodeBase64( &bin, &pBase64 );
+        strAuth = QString( "Basic %1").arg( pBase64 );
+
+        JS_BIN_reset( &bin );
+        if( pBase64 ) JS_free( pBase64 );
+
+        ret = JS_HTTP_requestAuthGetBin(
+            strURL.toStdString().c_str(),
+            strAuth.toStdString().c_str(),
+            &nStatus,
+            &binRSP );
+    }
+    else
+    {
+        ret = JS_HTTP_requestGetBin2(
+            strURL.toStdString().c_str(),
+            NULL,
+            NULL,
+            &nStatus,
+            &binRSP );
+    }
 
     if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
     {
@@ -809,41 +850,41 @@ void ESTClientDlg::clickSend()
     strLink += ";";
     strLink += strCmd;
 
-    if( strReq.length() > 0 )
+    QString strAuth;
+
+    if( mAuthGroup->isChecked() )
     {
-        QString strAuth;
+        QString strUser = mAuthUserIDText->text();
+        QString strPass = mAuthPasswdText->text();
+        QString strUP;
+        BIN bin = {0,0};
+        char *pBase64 = NULL;
 
-        if( mAuthGroup->isChecked() )
+        if( strUser.length() < 1 )
         {
-            QString strUser = mAuthUserIDText->text();
-            QString strPass = mAuthPasswdText->text();
-            QString strUP;
-            BIN bin = {0,0};
-            char *pBase64 = NULL;
-
-            if( strUser.length() < 1 )
-            {
-                berApplet->warningBox( tr( "Enter a username" ), this );
-                mAuthUserIDText->setFocus();
-                return;
-            }
-
-            if( strPass.length() < 1 )
-            {
-                berApplet->warningBox( tr( "Enter a password" ), this );
-                mAuthPasswdText->setFocus();
-                return;
-            }
-
-            strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
-            JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
-            JS_BIN_encodeBase64( &bin, &pBase64 );
-            strAuth = QString( "Basic %1").arg( pBase64 );
-
-            JS_BIN_reset( &bin );
-            if( pBase64 ) JS_free( pBase64 );
+            berApplet->warningBox( tr( "Enter a username" ), this );
+            mAuthUserIDText->setFocus();
+            return;
         }
 
+        if( strPass.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mAuthPasswdText->setFocus();
+            return;
+        }
+
+        strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
+        JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
+        JS_BIN_encodeBase64( &bin, &pBase64 );
+        strAuth = QString( "Basic %1").arg( pBase64 );
+
+        JS_BIN_reset( &bin );
+        if( pBase64 ) JS_free( pBase64 );
+    }
+
+    if( strReq.length() > 0 )
+    {
         JS_BIN_set( &binReq, (unsigned char *)strReq.toStdString().c_str(), strReq.length() );
 
         if( mAuthGroup->isChecked() == true )
@@ -870,12 +911,23 @@ void ESTClientDlg::clickSend()
     }
     else
     {
-        ret = JS_HTTP_requestGetBin2(
-            strLink.toStdString().c_str(),
-            NULL,
-            NULL,
-            &nStatus,
-            &binRsp );
+        if( mAuthGroup->isChecked() == true )
+        {
+            ret = JS_HTTP_requestAuthGetBin(
+                strLink.toStdString().c_str(),
+                strAuth.toStdString().c_str(),
+                &nStatus,
+                &binRsp );
+        }
+        else
+        {
+            ret = JS_HTTP_requestGetBin2(
+                strLink.toStdString().c_str(),
+                NULL,
+                NULL,
+                &nStatus,
+                &binRsp );
+        }
     }
 
     if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
@@ -898,7 +950,26 @@ end :
     if( pRsp ) JS_free( pRsp );
 }
 
-void ESTClientDlg::clickVerify()
+void ESTClientDlg::clickViewCert()
 {
+    BIN binCert = {0,0};
+    int nType = -1;
+    QString strRsp = mResponseText->toPlainText();
 
+    if( strRsp.length() < 1 )
+    {
+        berApplet->warnLog( tr( "There is no response" ), this);
+        return;
+    }
+
+    JS_BIN_decodePEM( strRsp.toStdString().c_str(), &nType, &binCert );
+
+    if( binCert.nLen > 0 )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCert );
+        certInfo.exec();
+
+        JS_BIN_reset( &binCert );
+    }
 }

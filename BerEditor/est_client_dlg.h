@@ -64,7 +64,7 @@ private slots:
     void clickClearAll();
     void clickGetCA();
     void clickSend();
-    void clickVerify();
+    void clickViewCert();
 
     void checkEncPriKey();
 private:
