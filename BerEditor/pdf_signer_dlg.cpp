@@ -1689,7 +1689,11 @@ void PDFSignerDlg::clickMakeSign()
         if( ret != 0 ) goto end;
 
         ret = JS_CMS_makeSignedWithTSP( &binCMS, &binTSP, &binSignedTSP );
-        if( ret != 0 ) goto end;
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr("failed to make signed with TSP: %1").arg(JERR(ret)), this );
+            goto end;
+        }
 
         JS_BIN_reset( &binCMS );
         JS_BIN_copy( &binCMS, &binSignedTSP );

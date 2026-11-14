@@ -107,6 +107,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mGetURL_CRLBtn, SIGNAL(clicked()), this, SLOT(clickGetURL_CRL()));
 
     connect( mCertTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
+    connect( mCertTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(treeViewCert()));
     connect( mCertTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
     initUI();
