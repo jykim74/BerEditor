@@ -986,6 +986,7 @@ void PDFSignerDlg::clickGetInfo()
         BIN binHash = {0,0};
         BIN binCMS = {0,0};
         BIN binTSP = {0,0};
+        BIN binSigner = {0,0};
         JCMSSigned sSigned;
         JSignerInfoList *pInfoList = NULL;
 
@@ -1003,6 +1004,10 @@ void PDFSignerDlg::clickGetInfo()
         {
             if( binTSP.nLen > 0 ) strPDF += ":TSP";
         }
+
+        ret = JS_CMS_getSignedDataSigner( &binCMS, &binSigner );
+        if( ret == JSR_OK && binSigner.nLen > 0 ) makePathTree( &binSigner );
+
 
         //ret = JS_PDF_findByteRangeFile( strSrcPath.toLocal8Bit().toStdString().c_str(), &sRange );
         ret = JS_PDF_findByteRangeFile(
@@ -1039,6 +1044,7 @@ void PDFSignerDlg::clickGetInfo()
             JS_BIN_reset( &binHash );
             JS_BIN_reset( &binCMS );
             JS_BIN_reset( &binTSP );
+            JS_BIN_reset( &binSigner );
 
             JS_CMS_resetSigned( &sSigned );
             if( pInfoList ) JS_CMS_resetSignerInfoList( &pInfoList );
@@ -1402,8 +1408,28 @@ void PDFSignerDlg::clickGetInfo()
 void PDFSignerDlg::clickMakePath()
 {
     int ret = 0;
-    int count = 0;
     BIN binCert = {0,0};
+
+    CertManDlg certMan;
+    certMan.setMode( ManModeSelCert );
+    certMan.setTitle( tr( "Select the certificate for which to build a path tree." ) );
+    if( certMan.exec() != QDialog::Accepted )
+        goto end;
+
+    certMan.getCert( &binCert );
+    mTabWidget->setCurrentIndex(2);
+
+    ret = makePathTree( &binCert );
+
+end :
+    JS_BIN_reset( &binCert );
+}
+
+int PDFSignerDlg::makePathTree( const BIN *pCert )
+{
+    int ret = 0;
+    int count = 0;
+
     BINList *pCAList = NULL;
     const BINList *pCurList = NULL;
 
@@ -1415,17 +1441,9 @@ void PDFSignerDlg::clickMakePath()
     pathItem->setText( 0, "Certificate Path" );
     mPathTree->insertTopLevelItem( 0, pathItem );
 
-    CertManDlg certMan;
-    certMan.setMode( ManModeSelCert );
-    certMan.setTitle( tr( "Select the certificate for which to build a path tree." ) );
-    if( certMan.exec() != QDialog::Accepted )
-        goto end;
+    JS_BIN_addList( &pCAList, pCert );
 
-    certMan.getCert( &binCert );
-
-    JS_BIN_addList( &pCAList, &binCert );
-
-    ret = CertPVDDlg::getStatusDataList( &binCert, bOnline, &pCAList, NULL, NULL );
+    ret = CertPVDDlg::getStatusDataList( pCert, bOnline, &pCAList, NULL, NULL );
     count = JS_BIN_countList( pCAList );
 
     for( int i = 0; i < count; i++ )
@@ -1494,10 +1512,10 @@ void PDFSignerDlg::clickMakePath()
     }
 
     mPathTree->expandAll();
-    mTabWidget->setCurrentIndex(2);
+
 end :
-    JS_BIN_reset( &binCert );
     if( pCAList ) JS_BIN_resetList( &pCAList );
+    return ret;
 }
 
 void PDFSignerDlg::clickMakeSign()
@@ -1514,6 +1532,8 @@ void PDFSignerDlg::clickMakeSign()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binTSP = {0,0};
+
+    BINList *pMoreCertList = NULL;
 
 //    QString strHash = mHashCombo->currentText();
     QString strPasswd;
@@ -1685,8 +1705,14 @@ void PDFSignerDlg::clickMakeSign()
 
     if( ret == JSR_OK && mUseTSPCheck->isChecked() == true )
     {
+        BIN binTSPSigner = {0,0};
+
         ret = getTSP( &binData, &binTSP );
-        if( ret != 0 ) goto end;
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "failed to get TSP: %1" ).arg(JERR(ret)), this );
+            goto end;
+        }
 
         ret = JS_CMS_makeSignedWithTSP( &binCMS, &binTSP, &binSignedTSP );
         if( ret != 0 )
@@ -1695,8 +1721,12 @@ void PDFSignerDlg::clickMakeSign()
             goto end;
         }
 
+        JS_CMS_getSignedDataSigner( &binTSP, &binTSPSigner );
+        if( binTSPSigner.nLen > 0 ) JS_BIN_addList( &pMoreCertList, &binTSPSigner );
+
         JS_BIN_reset( &binCMS );
         JS_BIN_copy( &binCMS, &binSignedTSP );
+        JS_BIN_reset( &binTSPSigner );
     }
 
     berApplet->log( QString( "CMS[Len:%1]").arg( binCMS.nLen));
@@ -1722,7 +1752,7 @@ void PDFSignerDlg::clickMakeSign()
             BIN binCMS_PDF = {0,0};
             JS_BIN_fileRead( strTmpPath.toStdString().c_str(), &binCMS_PDF );
 
-            ret = appendDSS_VRI( strTmpPath, strTmpPath2, &binCMS_PDF, &binCert, mDocTimeStampCheck->isChecked() );
+            ret = appendDSS_VRI( strTmpPath, strTmpPath2, &binCMS_PDF, &binCert, pMoreCertList, mDocTimeStampCheck->isChecked() );
             JS_BIN_reset( &binCMS_PDF );
             if( ret != CKR_OK )
             {
@@ -1732,7 +1762,7 @@ void PDFSignerDlg::clickMakeSign()
         }
         else
         {
-            ret = appendDSS( strTmpPath, strTmpPath2, &binCert, mDocTimeStampCheck->isChecked() );
+            ret = appendDSS( strTmpPath, strTmpPath2, &binCert, pMoreCertList, mDocTimeStampCheck->isChecked() );
             if( ret != CKR_OK )
             {
                 berApplet->warningBox( tr( "failed to append DSS: %1" ).arg( JERR(ret)), this );
@@ -1787,6 +1817,7 @@ end :
     JS_BIN_reset( &binUnsigned );
     JS_PKI_resetCertInfo( &sCertInfo );
     JS_PDF_resetSignLabel( &sSignLabel );
+    if( pMoreCertList ) JS_BIN_resetList( &pMoreCertList );
 }
 
 void PDFSignerDlg::clickVerifySign()
@@ -2262,7 +2293,9 @@ end :
 
 int PDFSignerDlg::appendDSS( const QString strSrcPath,
               const QString strDstPath,
-              const BIN *pCert, int bDocTSP )
+              const BIN *pCert,
+              const BINList *pMoreCertList,
+              int bDocTSP )
 {
     int ret = 0;
     BIN binCRL = {0,0};
@@ -2270,10 +2303,22 @@ int PDFSignerDlg::appendDSS( const QString strSrcPath,
     BINList *pCertList = NULL;
     BINList *pCRLList = NULL;
     BINList *pOCSPList = NULL;
+    const BINList *pCurList = NULL;
 
     JS_BIN_addList( &pCertList, pCert );
 
     getDSSList( pCert, &pCertList, &pCRLList, &pOCSPList );
+
+    if( pMoreCertList )
+    {
+        pCurList = pMoreCertList;
+
+        while( pCurList )
+        {
+            JS_BIN_addList( &pCertList, &pCurList->Bin );
+            pCurList = pCurList->pNext;
+        }
+    }
 
     ret = JS_PDF_appendDSS( strSrcPath.toStdString().c_str(),
                            strDstPath.toStdString().c_str(),
@@ -2294,7 +2339,9 @@ end :
 int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
                   const QString strDstPath,
                   const BIN *pCMS_PDF,
-                  const BIN *pCert, int bDocTSP )
+                  const BIN *pCert,
+                  const BINList *pMoreCertList,
+                  int bDocTSP )
 {
     int ret = 0;
 
@@ -2307,6 +2354,7 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     BIN binCRL = {0,0};
     BIN binOCSP = {0,0};
 
+    const BINList *pCurList = NULL;
 
     memset( &sDSSData, 0x00, sizeof(sDSSData));
     memset( &sVRIData, 0x00, sizeof(sVRIData));
@@ -2314,6 +2362,18 @@ int PDFSignerDlg::appendDSS_VRI( const QString strSrcPath,
     JS_PDF_setDSSDataName( &sDSSData, "DSS" );
 
     getDSSList( pCert, &sDSSData.pCertList, &sDSSData.pCRLList, &sDSSData.pOCSPList );
+
+    if( pMoreCertList )
+    {
+        pCurList = pMoreCertList;
+
+        while( pCurList )
+        {
+            JS_BIN_addList( &sDSSData.pCertList, &pCurList->Bin );
+            pCurList = pCurList->pNext;
+        }
+    }
+
     JS_BIN_addList( &sDSSData.pCertList, pCert );
 
     JS_PKI_genHash( "SHA256", pCMS_PDF, &binHash );
@@ -2410,7 +2470,7 @@ void PDFSignerDlg::clickAddDSS()
         goto end;
     }
 
-    ret = appendDSS( strSrcPath, strDstPath, &binCert, 0 );
+    ret = appendDSS( strSrcPath, strDstPath, &binCert, NULL, 0 );
 
     if( ret == JSR_OK )
     {
@@ -2494,7 +2554,7 @@ void PDFSignerDlg::clickAddDSS_VRI()
     }
 
 
-    ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert, 0 );
+    ret = appendDSS_VRI( strSrcPath, strDstPath, &binCMS_PDF, &binCert, NULL, 0 );
 
     if( ret == JSR_OK )
     {
@@ -3426,10 +3486,29 @@ int PDFSignerDlg::getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP )
 int PDFSignerDlg::getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList )
 {
     int ret = 0;
+    BINList *pCurList = NULL;
 
     bool bOnline = berApplet->settingsMgr()->getOnlineCA_CRL();
 
     ret = CertPVDDlg::getStatusDataList( pCert, bOnline, ppCertList, ppCRLList, ppOCSPList );
+
+    if( ppOCSPList != NULL )
+    {
+        pCurList = *ppOCSPList;
+        while( pCurList )
+        {
+            BIN binOCSP = {0,0};
+            JS_OCSP_getResponseSigner( &pCurList->Bin, &binOCSP );
+            if( binOCSP.nLen > 0 )
+            {
+                JS_BIN_addList( ppCertList, &binOCSP );
+                JS_BIN_reset( &binOCSP );
+            }
+
+            pCurList = pCurList->pNext;
+        }
+    }
+
     return ret;
 }
 

@@ -91,18 +91,23 @@ private:
 
     int appendDSS( const QString strSrcPath,
                   const QString strDstPath,
-                  const BIN *pCert, int bDocTSP );
+                  const BIN *pCert,
+                  const BINList *pMoreCertList,
+                  int bDocTSP );
 
     int appendDSS_VRI( const QString strSrcPath,
                       const QString strDstPath,
                       const BIN *pCMS,
-                      const BIN *pCert, int bDocTSP );
+                      const BIN *pCert,
+                      const BINList *pMoreCertList,
+                      int bDocTSP );
 
     int getDSS( const BIN *pCert, BIN *pCA, BIN *pCRL, BIN *pOCSP );
     int getDSSList( const BIN *pCert, BINList **ppCertList, BINList **ppCRLList, BINList **ppOCSPList );
 
     int appendDocTSP( const QString strUnsignedPath );
     const QString getType( const QString strPDF );
+    int makePathTree( const BIN *pCert );
 };
 
 #endif
