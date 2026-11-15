@@ -21,8 +21,7 @@
 
 const QString kESTUsedURL = "ESTUsedURL";
 const QStringList kESTCmdList = {
-    kEST_CACerts, kEST_SimpleEnroll, kEST_SimpleReenroll,
-    kEST_FullCMC, kEST_ServerKeyGen, kEST_CSRAttrs
+    kEST_CACerts, kEST_SimpleEnroll, kEST_SimpleReenroll, kEST_CSRAttrs
 };
 
 
