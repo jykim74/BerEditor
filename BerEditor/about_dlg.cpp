@@ -3,6 +3,8 @@
  *
  * All rights reserved.
  */
+#include <QFile>
+
 #include "about_dlg.h"
 #include "ber_applet.h"
 #include "auto_update_service.h"
@@ -82,67 +84,31 @@ void AboutDlg::initialize()
     tabWidget->setCurrentIndex(0);
 }
 
+QString AboutDlg::readLicenseText()
+{
+    QFile file(":/LICENSE");
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return {};
+    }
+
+    return QString::fromUtf8(file.readAll());
+}
+
 void AboutDlg::showInfo()
 {
-#if 0
-    QString strAbout = tr("This program is a freeware tool created using open source."
-                          "If you do not use this for commercial purposes, you can use it freely " );
-
-    strAbout += "<br><br>Copyright (C) 2024 JayKim &lt;jykim74@gmail.com&gt;";
-#else
-
-    QString strAbout = "Copyright (C) 2024 JayKim &lt;jykim74@gmail.com&gt;";
-    strAbout += "<br><br>";
-    strAbout += tr("All rights reserved.");
-    strAbout += "<br><br>";
-
-    strAbout += tr(" Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:");
-    strAbout += "<br><br>";
-
-    strAbout += tr(" - Redistributions of source code must retain the above copyright notice,this list of conditions and the following disclaimer.");
-    strAbout += "<br><br>";
-
-    strAbout += tr(" - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.");
-    strAbout += "<br><br>";
-
-    strAbout += tr(" - Neither the name of the author nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission." );
-    strAbout += "<br><br>";
-
-    strAbout +=
-        tr( "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "
-        "\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT "
-        "LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS "
-        " FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE "
-        " COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, "
-        " INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES "
-        " (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR "
-        " SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) "
-        " HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, "
-        " STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) "
-        " ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF "
-        " ADVISED OF THE POSSIBILITY OF SUCH DAMAGE." );
-
-
-    strAbout += tr( "This program links to software with different licenses from: " );
-
-    strAbout +=
-        "<br><br>"
-        " - https://www.openssl.org ( Apache-2.0 )<br>"
-        "- https://www.qt.io ( LGPLv3 )<br>"
-        "- https://www.openldap.org ( The OpenLDAP Public )<br>"
-        "- https://www.gnu.org/software/libtool ( LGPLv3 )";
-
-#endif
+    QString strAbout = readLicenseText();
     QString strLibVersion = JS_GEN_getBuildInfo();
 
-    strAbout += "<br><br>Library: ";
+    strAbout += "\n\nJKLab PKI Library: ";
     strAbout += strLibVersion;
-    strAbout += "<br>";
+    strAbout += "\n";
     strAbout += berApplet->getBrand();
     strAbout += " : ";
     strAbout += getBuild();
 
-    mAboutText->setHtml( strAbout );
+//    mAboutText->setHtml( strAbout );
+    mAboutText->setText( strAbout );
 }
 
 void AboutDlg::showCopyright()

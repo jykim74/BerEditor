@@ -127,5 +127,6 @@
         <file>images/pdf.png</file>
         <file>images/est.png</file>
         <file>images/manual.png</file>
+        <file>LICENSE</file>
     </qresource>
 </RCC>

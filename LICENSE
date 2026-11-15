@@ -1,38 +1,119 @@
-Copyright (C) 2024 JayKim <jykim74@gmail.com>
+Copyright (C) 2016 - 2026 JayKim <jykim74@gmail.com>
+All rights reserved.
 
- All rights reserved.
+1. Scope
 
+This license applies to the BerEditor source code and other materials owned
+by the copyright holder and provided under this license (the "Software").
+Third-party components and materials are excluded and remain subject to
+their respective licenses, as described in Section 5.
 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
+The source code is made available for inspection, study, and evaluation.
+This is a proprietary source-available license, not an open-source license.
 
- - Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
- - Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
- - Neither the name of the author nor the names of its contributors may be
-   used to endorse or promote products derived from this software without
-   specific prior written permission.
+2. Limited Permission
 
+Subject to this license, you may download and retain private copies of the
+Software solely to read, inspect, study, and evaluate its source code.
+You must preserve all copyright, license, and attribution notices.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+This license does not grant permission to build or run the Software from
+source, modify it, create derivative works, incorporate it into another
+product, or distribute it, except as expressly permitted by Section 5 or
+by separate written permission from the copyright holder.
 
+Use of official BerEditor binaries is governed by the terms supplied with
+those binaries and any applicable activation agreement. Access to source
+code does not grant an activation key, subscription, or entitlement to
+restricted features.
 
-This program links to software with different licenses from:
+3. Restrictions
 
-- https://www.openssl.org ( Apache-2.0 License )
-- https://www.qt.io ( LGPLv3 License )
-- https://www.openldap.org ( The OpenLDAP Public License )
-- https://www.gnu.org/software/libtool ( LGPLv3 License )
+Except as expressly permitted by Section 5 or by separate written
+permission from the copyright holder, you must not:
+
+(a) distribute, publish, sublicense, sell, rent, or otherwise make available
+    the Software, modified versions, derivative works, or binaries built
+    from the source code, whether for payment or free of charge;
+(b) remove, disable, bypass, circumvent, or alter any license validation,
+    activation, subscription, expiration, feature restriction, file-size
+    limit, or other access control in BerEditor;
+(c) generate, forge, share without authorization, or use unauthorized
+    activation keys, license files, credentials, patches, or tools to
+    enable restricted features;
+(d) use or provide a modified build, patch, or service that enables access
+    to features without the authorization required by the copyright holder;
+(e) remove or misrepresent copyright, license, attribution, or ownership
+    notices; or
+(f) use the BerEditor name, logos, or the names of the copyright holder or
+    contributors to imply endorsement without prior written permission.
+
+4. Ownership and Separate Permission
+
+The copyright holder retains all rights not expressly granted here.
+No trademark rights are granted. Public access to the source code does
+not place it in the public domain or grant additional rights.
+
+Requests for permission to modify, build, redistribute, integrate, or
+otherwise use the Software beyond this license may be sent to:
+jykim74@gmail.com
+
+5. Third-Party Components and Mandatory Rights
+
+BerEditor uses or includes third-party components, which may include
+OpenSSL, Qt, OpenLDAP, libltdl, Sparkle, WinSparkle, jsmn, sscep, OpenKMIP,
+XMLSec, libxml2, libxslt, QPDF, and dumpasn1, depending on the build and
+platform. This list is informational and may not be exhaustive.
+
+Third-party copyright notices, license texts, source-file notices, and
+applicable distribution materials govern those components. This license
+does not replace their licenses, claim ownership of their code, or impose
+additional restrictions on rights granted under their licenses.
+
+Nothing in this license limits rights that cannot lawfully be restricted
+or rights required by applicable third-party licenses. In particular,
+where required by the GNU LGPL applicable to a distributed component,
+you may modify the application for your own use and reverse engineer it
+for debugging such modifications, and replace or relink the LGPL-covered
+component and run the resulting application, to the extent required by
+that license. The restrictions above do not apply to those activities
+to the extent they conflict with those required rights.
+
+6. Earlier Releases and Other Rights Holders
+
+This license applies to copies provided under it. It does not revoke or
+retroactively restrict rights validly granted for copies previously
+provided under another license. Such copies remain governed by their
+applicable license terms.
+
+This license grants rights only to the extent the copyright holder is
+entitled to grant them. Materials belonging to other rights holders
+remain subject to their applicable terms.
+
+7. Termination
+
+The permissions granted by this license terminate automatically if you
+breach its terms. Upon termination, you must stop exercising those
+permissions and delete copies held solely under this license, except
+where retention is required by law or permitted under independent rights.
+Termination does not affect rights preserved by Sections 5 and 6.
+
+8. Disclaimer of Warranty
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SOFTWARE IS
+PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE COPYRIGHT
+HOLDER DOES NOT WARRANT THAT THE SOFTWARE IS ERROR-FREE, SECURE, OR
+SUITABLE FOR ANY PARTICULAR CRYPTOGRAPHIC, CERTIFICATE, SIGNING, OR
+OTHER SECURITY-SENSITIVE PURPOSE.
+
+9. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
+THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES,
+INCLUDING LOSS OF DATA, KEYS, CERTIFICATES, PROFITS, OR BUSINESS,
+ARISING FROM OR IN CONNECTION WITH THE SOFTWARE OR ITS USE, WHETHER
+IN CONTRACT, TORT, OR OTHERWISE, EVEN IF ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGE.

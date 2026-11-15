@@ -33,6 +33,8 @@ private:
 
     void showInfo();
     void showCopyright();
+
+    QString readLicenseText();
 };
 
 #endif // ABOUT_DLG_H
