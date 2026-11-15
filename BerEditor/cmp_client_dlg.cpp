@@ -1,4 +1,6 @@
 #include <QSettings>
+#include <QMenu>
+#include <QClipboard>
 
 #include "cmp_client_dlg.h"
 #include "mainwindow.h"
@@ -53,6 +55,8 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickRun()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+
+    connect( mITAVTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotITAVTableMenuRequested(QPoint)));
 
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
@@ -198,6 +202,47 @@ void CMPClientDlg::setUsedURL( const QString strURL )
 
     mURLCombo->clear();
     mURLCombo->addItems( list );
+}
+
+void CMPClientDlg::slotITAVTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QModelIndex idx = mITAVTable->currentIndex();
+    QTableWidgetItem* item = mITAVTable->item( idx.row(), 0 );
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QAction *copyValueAct = new QAction( tr( "Copy value" ), this );
+
+    QString strName = item->text();
+
+    connect( copyValueAct, SIGNAL(triggered(bool)), this, SLOT(copyITAVValue()));
+
+    menu->addAction( copyValueAct );
+
+    menu->popup( mITAVTable->viewport()->mapToGlobal(pos));
+}
+
+void CMPClientDlg::copyITAVValue()
+{
+    QModelIndex idx = mITAVTable->currentIndex();
+    QTableWidgetItem* item = mITAVTable->item( idx.row(), 1 );
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "No avaiable item" ), this );
+        return;
+    }
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( item->text() );
+
+    berApplet->messageBox( tr( "The value has been copied." ), this );
 }
 
 void CMPClientDlg::clickClearURL()

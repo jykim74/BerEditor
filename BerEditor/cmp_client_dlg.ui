@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>731</height>
+    <height>951</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -402,6 +402,13 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="mGENMWidget">
      <property name="minimumSize">
       <size>
@@ -410,7 +417,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mGENMTab">
       <attribute name="title">

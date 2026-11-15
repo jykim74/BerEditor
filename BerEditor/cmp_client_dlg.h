@@ -19,6 +19,9 @@ public:
     ~CMPClientDlg();
 
 private slots:
+    void slotITAVTableMenuRequested( QPoint pos );
+    void copyITAVValue();
+
     void clickClearURL();
     void changeCmd();
     void clickRun();
