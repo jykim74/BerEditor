@@ -10,6 +10,9 @@ The main window is the starting point for opening and navigating encoded data. T
 
 ![BerEditor main window showing a decoded data structure](https://jykim74.github.io/bereditor_manual/images/mainwindow.png)
 
+## Download
+[BerEditor Download](https://jykim74.github.io/wiki/bereditor/download/)
+
 ## What BerEditor is for
 
 ASN.1 defines data types and structures; BER (Basic Encoding Rules) and DER (Distinguished Encoding Rules) encode those structures as bytes. The bytes themselves can be difficult to interpret by eye. BerEditor decodes supported BER/DER data into a tree so that the structure and values can be examined, and provides tools to create, edit, compare, and validate encoded data.
