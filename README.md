@@ -11,6 +11,9 @@ The main window is the starting point for opening and navigating encoded data. T
 ![BerEditor main window showing a decoded data structure](https://jykim74.github.io/bereditor_manual/images/mainwindow.png)
 
 ## Download
+
+Executable files are available for download for Windows, macOS (Intel), and Linux 64-bit.
+
 [BerEditor Download](https://jykim74.github.io/wiki/bereditor/download/)
 
 ## What BerEditor is for
