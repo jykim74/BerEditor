@@ -945,7 +945,7 @@ void CMPClientDlg::clickCR()
         return;
     }
 
-    if( strDN.length() )
+    if( strDN.length() < 1 )
     {
         berApplet->warningBox( tr("Enter subject DN" ), this );
         mSubjectDNText->setFocus();
