@@ -8,7 +8,7 @@ This overview follows the feature set described by the BerEditor project page an
 
 The main window is the starting point for opening and navigating encoded data. The screenshot below shows the BerEditor interface with a decoded structure displayed in the central view.
 
-![BerEditor main window showing a decoded data structure](images/mainwindow.png)
+![BerEditor main window showing a decoded data structure](https://jykim74.github.io/bereditor_manual/images/mainwindow.png)
 
 ## What BerEditor is for
 
