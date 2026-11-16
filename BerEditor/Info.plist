@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>bereditor</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.jsinc.bereditor</string>
+	<string>com.jklab.bereditor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleName</key>

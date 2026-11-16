@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    QCoreApplication::setOrganizationName( "JS Inc" );
-    QCoreApplication::setOrganizationDomain( "jssoft.com" );
+    QCoreApplication::setOrganizationName( "JKLab" );
+    QCoreApplication::setOrganizationDomain( "jklab.com" );
     QCoreApplication::setApplicationName( "BerEditor" );
 
     QGuiApplication::setWindowIcon(QIcon(":/images/bereditor.png"));
