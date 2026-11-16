@@ -34,6 +34,7 @@ class CertManDlg : public QDialog, public Ui::CertManDlg
 public:
     explicit CertManDlg(QWidget *parent = nullptr);
     ~CertManDlg();
+    void setReload();
 
     void setMode( int nMode );
     void setPQCEnable( bool bVal );

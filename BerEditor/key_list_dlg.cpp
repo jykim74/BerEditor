@@ -52,6 +52,11 @@ KeyListDlg::~KeyListDlg()
 
 }
 
+void KeyListDlg::setReload()
+{
+    load_keylist_ = false;
+}
+
 void KeyListDlg::setManage( bool bMan )
 {
     if( bMan == true )

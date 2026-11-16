@@ -352,7 +352,7 @@ QString SettingsMgr::getCertPath()
     QSettings sets;
 
     sets.beginGroup( kBehaviorGroup );
-    cert_path_ = sets.value( kCertPath, "JSPKI" ).toString();
+    cert_path_ = sets.value( kCertPath, kCertManPath ).toString();
     sets.endGroup();
 
     return cert_path_;

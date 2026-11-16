@@ -117,6 +117,7 @@ static QString kSelectStyle =
     "} ";
 
 const int kFileMax = 1048576; // 1024 * 1024
+const QString kCertManPath = "JKPKI";
 
 #define TOOL_BAR_WIDTH      24
 #define TOOL_BAR_HEIGHT     24

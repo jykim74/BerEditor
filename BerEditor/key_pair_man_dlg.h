@@ -29,6 +29,7 @@ class KeyPairManDlg : public QDialog, public Ui::KeyPairManDlg
 public:
     explicit KeyPairManDlg(QWidget *parent = nullptr);
     ~KeyPairManDlg();
+    void setReload();
     void setMode( int nMode );
     void setPQCEnable( bool bVal );
     void setTitle( const QString strTitle );

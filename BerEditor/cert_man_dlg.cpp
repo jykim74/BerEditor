@@ -203,6 +203,15 @@ CertManDlg::~CertManDlg()
     JS_BIN_reset( &crl_ );
 }
 
+void CertManDlg::setReload()
+{
+    load_ee_ = false;
+    load_other_ = false;
+    load_ca_ = false;
+    load_crl_ = false;
+    load_trust_ = false;
+}
+
 void CertManDlg::setTab( int index )
 {
     mTabWidget->setCurrentIndex( index );

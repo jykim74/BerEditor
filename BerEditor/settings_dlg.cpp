@@ -14,6 +14,9 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "mainwindow.h"
+#include "cert_man_dlg.h"
+#include "key_pair_man_dlg.h"
+#include "key_list_dlg.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
@@ -108,6 +111,15 @@ void SettingsDlg::updateSettings()
         mgr->setSupportKeyPairChange( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
         mgr->setPriEncMethod( mPriEncMethodCombo->currentText() );
         mgr->setOnlineCA_CRL( mOnlineCA_CRLCheck->isChecked() );
+
+        if( berApplet->mainWindow()->certManDlg() )
+            berApplet->mainWindow()->certManDlg()->setReload();
+
+        if( berApplet->mainWindow()->keyPairManDlg() )
+            berApplet->mainWindow()->keyPairManDlg()->setReload();
+
+        if( berApplet->mainWindow()->keyListDlg() )
+            berApplet->mainWindow()->keyListDlg()->setReload();
     }
 
     bool language_changed = false;
@@ -203,7 +215,7 @@ void SettingsDlg::findCertPath()
     if( folderName.length() > 0 )
     {
         folderName += "/";
-        folderName += "JSPKI";
+        folderName += kCertManPath;
 
         mCertPathText->setText( folderName );
     }

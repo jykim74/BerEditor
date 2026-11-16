@@ -621,7 +621,7 @@ void CertInfoDlg::clickSaveToMan()
     if( ret > 0 )
     {
         if( berApplet->mainWindow()->certManDlg() )
-            berApplet->mainWindow()->certManDlg()->setLoadEE( false );
+            berApplet->mainWindow()->certManDlg()->setLoadOther( false );
 
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     }
@@ -643,6 +643,8 @@ void CertInfoDlg::clickSaveToCA()
     {
         if( berApplet->mainWindow()->certManDlg() )
             berApplet->mainWindow()->certManDlg()->setLoadCA( false );
+
+
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     }
     else
@@ -677,6 +679,7 @@ void CertInfoDlg::clickSaveTrustedCA()
     {
         if( berApplet->mainWindow()->certManDlg() )
             berApplet->mainWindow()->certManDlg()->setLoadTrust( false );
+
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     }
     else

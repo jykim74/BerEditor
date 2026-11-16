@@ -146,6 +146,11 @@ KeyPairManDlg::~KeyPairManDlg()
 
 }
 
+void KeyPairManDlg::setReload()
+{
+    load_keypair_ = false;
+}
+
 void KeyPairManDlg::setMode( int nMode )
 {
     mode_ = nMode;
