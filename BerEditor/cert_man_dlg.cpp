@@ -2202,6 +2202,11 @@ void CertManDlg::clickImport()
     if( strPFXFile.length() < 1 ) return;
 
     JS_BIN_fileReadBER( strPFXFile.toLocal8Bit().toStdString().c_str(), &binPFX );
+    if( binPFX.nLen <= 0 )
+    {
+        berApplet->warningBox( tr("The file(%1) cannot be read.").arg( strPFXFile ), this );
+        return;
+    }
 
     if( passwdDlg.exec() != QDialog::Accepted )
         return;
