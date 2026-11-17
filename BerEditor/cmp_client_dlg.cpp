@@ -266,11 +266,11 @@ void CMPClientDlg::changeCmd()
 
     if( strCmd == kCMP_GENM || strCmd == kCMP_SignGENM )
     {
-        mITAVGroup->setEnabled( true );
+        mGENMWidget->setEnabled( true );
     }
     else
     {
-        mITAVGroup->setEnabled( false );
+        mGENMWidget->setEnabled( false );
     }
 
     if( strCmd == kCMP_SignGENM || strCmd == kCMP_KUR || strCmd == kCMP_RR )
