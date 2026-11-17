@@ -21,6 +21,7 @@ public:
     void setPriKey( const BIN *pPri );
     const QString getCSRHex();
 
+    void setDN( const QString strDN );
     void setInfo( const QString strInfo );
     void setSAN( const QStringList listSAN );
 

@@ -139,7 +139,8 @@ SOURCES += \
     cmp_info_dlg.cpp \
     sel_list_dlg.cpp \
     dns_check_dlg.cpp \
-    est_client_dlg.cpp
+    est_client_dlg.cpp \
+    make_dn_dlg.cpp
 
 
 HEADERS += \
@@ -244,7 +245,8 @@ HEADERS += \
     cmp_info_dlg.h \
     sel_list_dlg.h \
     dns_check_dlg.h \
-    est_client_dlg.h
+    est_client_dlg.h \
+    make_dn_dlg.h
 
 
 
@@ -401,7 +403,8 @@ FORMS += \
         cmp_info_dlg.ui \
         sel_list_dlg.ui \
         dns_check_dlg.ui \
-        est_client_dlg.ui
+        est_client_dlg.ui \
+        make_dn_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

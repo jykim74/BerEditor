@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>951</height>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -365,19 +365,16 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_10">
+    <layout class="QGridLayout" name="gridLayout_7">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="0">
-      <widget class="QLabel" name="mSubjectDNLabel">
+     <item row="0" column="0">
+      <widget class="QLabel" name="mRefNumLabel">
        <property name="text">
-        <string>Subject DN</string>
+        <string>Ref Num</string>
        </property>
       </widget>
-     </item>
-     <item row="1" column="1" colspan="3">
-      <widget class="QLineEdit" name="mSubjectDNText"/>
      </item>
      <item row="0" column="2">
       <widget class="QLabel" name="mAuthCodeLabel">
@@ -386,18 +383,35 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mRefNumLabel">
-       <property name="text">
-        <string>Ref Num</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="mRefNumText"/>
      </item>
      <item row="0" column="3">
       <widget class="QLineEdit" name="mAuthCodeText"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_12">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mSubjectDNLabel">
+       <property name="text">
+        <string>Subject DN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mSubjectDNText"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mMakeDNBtn">
+       <property name="text">
+        <string>Make DN</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -946,9 +960,6 @@
   <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
-  <tabstop>mRefNumText</tabstop>
-  <tabstop>mAuthCodeText</tabstop>
-  <tabstop>mSubjectDNText</tabstop>
   <tabstop>mCmdCombo</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mRequestClearBtn</tabstop>

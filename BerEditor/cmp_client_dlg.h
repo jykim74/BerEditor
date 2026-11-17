@@ -24,6 +24,7 @@ private slots:
 
     void clickClearURL();
     void changeCmd();
+    void clickMakeDN();
     void clickRun();
 
     void clickGENM();

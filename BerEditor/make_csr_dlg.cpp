@@ -122,6 +122,26 @@ const QString MakeCSRDlg::getCSRHex()
     return getHexString( &csr_ );
 }
 
+void MakeCSRDlg::setDN( const QString strDN )
+{
+    QStringList listRDN = strDN.split( "," );
+
+    for( int i = 0; i < listRDN.size(); i++ )
+    {
+        QString strRDN = listRDN.at(i);
+        QStringList nameVal = strRDN.split( "=" );
+        if( nameVal.size() < 2 ) continue;
+
+        QString strName = nameVal.at(0);
+        QString strValue = nameVal.at(1);
+
+        mRDNTable->insertRow(0);
+        mRDNTable->setRowHeight(0, 10);
+        mRDNTable->setItem( 0, 0, new QTableWidgetItem( strName ));
+        mRDNTable->setItem( 0, 1, new QTableWidgetItem( strValue ));
+    }
+}
+
 void MakeCSRDlg::setInfo( const QString strInfo )
 {
     mInfoLabel->setText( strInfo );

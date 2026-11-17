@@ -14,6 +14,7 @@
 #include "new_passwd_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "cmp_info_dlg.h"
+#include "make_dn_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -55,6 +56,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickRun()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mMakeDNBtn, SIGNAL(clicked()), this, SLOT(clickMakeDN()));
 
     connect( mITAVTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotITAVTableMenuRequested(QPoint)));
 
@@ -290,15 +292,26 @@ void CMPClientDlg::changeCmd()
         mAuthCodeLabel->setEnabled(true);
     }
 
-    if( strCmd == kCMP_IR || strCmd == kCMP_CR )
+    if( strCmd == kCMP_IR || strCmd == kCMP_CR || strCmd == kCMP_P10CR )
     {
         mSubjectDNLabel->setEnabled( true );
         mSubjectDNText->setEnabled( true );
+        mMakeDNBtn->setEnabled( true );
     }
     else
     {
         mSubjectDNLabel->setEnabled( false );
         mSubjectDNText->setEnabled( false );
+        mMakeDNBtn->setEnabled( false );
+    }
+}
+
+void CMPClientDlg::clickMakeDN()
+{
+    MakeDNDlg makeDN;
+    if( makeDN.exec() == QDialog::Accepted )
+    {
+        mSubjectDNText->setText( makeDN.getDN() );
     }
 }
 
@@ -819,6 +832,13 @@ void CMPClientDlg::clickIR()
         return;
     }
 
+    if( strDN.length() < 1 )
+    {
+        MakeDNDlg makeDN;
+        if( makeDN.exec() == QDialog::Accepted )
+            mSubjectDNText->setText( makeDN.getDN() );
+    }
+
     if( strDN.length() < 1)
     {
         berApplet->warningBox( tr("Enter subject DN" ), this );
@@ -947,6 +967,13 @@ void CMPClientDlg::clickCR()
 
     if( strDN.length() < 1 )
     {
+        MakeDNDlg makeDN;
+        if( makeDN.exec() == QDialog::Accepted )
+            mSubjectDNText->setText( makeDN.getDN() );
+    }
+
+    if( strDN.length() < 1 )
+    {
         berApplet->warningBox( tr("Enter subject DN" ), this );
         mSubjectDNText->setFocus();
         return;
@@ -1062,6 +1089,7 @@ void CMPClientDlg::clickP10CR()
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+    QString strDN = mSubjectDNText->text();
 
     char sResMsg[1024];
     memset( sResMsg, 0x00, sizeof(sResMsg));
@@ -1121,6 +1149,7 @@ void CMPClientDlg::clickP10CR()
     strPriHex = genKeyPair.getPriKeyHex();
     JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
 
+    if( strDN.length() > 1 ) makeCSR.setDN( strDN );
     makeCSR.setPriKey( &binNewPri );
     if( makeCSR.exec() != QDialog::Accepted ) goto end;
 
