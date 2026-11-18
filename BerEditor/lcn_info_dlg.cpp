@@ -180,7 +180,10 @@ void LCNInfoDlg::notifyCheck()
     memset( &sNameVal, 0x00, sizeof(sNameVal));
 
     // 12 hours check
-    if( now_t < ( notify_t + kCheckSecs ) ) return;
+    if( now_t < ( notify_t + kCheckSecs ) )
+        return;
+    else
+        setNotifyTime( now_t );
 
     if( strUUID.length() < 1 )
     {
@@ -222,8 +225,6 @@ void LCNInfoDlg::notifyCheck()
             mMessageLabel->setText( strLabel );
         }
     }
-
-    setNotifyTime( now_t );
 
 end :
     if( pRsp ) JS_free( pRsp );
