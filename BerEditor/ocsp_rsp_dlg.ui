@@ -38,6 +38,9 @@
         <iconset resource="bereditor.qrc">
          <normaloff>:/images/ocsp.png</normaloff>:/images/ocsp.png</iconset>
        </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
